@@ -1,0 +1,37 @@
+Funktionale Anforderungen
+
+1. Client (Mobile Device)
+  1.1 Allgemein
+    - Installation der Applikation
+    - Starten / Beenden der Applikation
+    - Speciherung Lokaler Daten
+    - 
+  1.1 Beritgestelltes UI für
+    - Anmelde / Registrieren
+    - Angabe persönlicher Daten
+    - Anzeigen und Auswählen der Essenslinien
+    - Angeben des bevorzugten Zeitraums
+    - Anzeigen und Auswählen einer Gruppe
+    - Anzeigen eines Userprfils
+
+2. Server
+    - User anlegen / löschen
+    - User anmelden / abmelden
+    - Gruppe erstellen
+    - Gruppe löschen
+	- Manuell durch User
+	- Automatisch durch Timeout
+    - User tritt Gruppe bei
+    - User verlässt Gruppe
+    - Automatische Löschung
+    - Informationen Bearbeiten von User / Gruppe
+    - Abfragen der Mensa Pläne
+  
+Nicht Funktionale Anforderungen
+  - Antworten vom Server dürfen nicht später als eine Sekunde nach Anfrage beim Client eingehen.
+  - Es können bis zu 10.000 User in der Datenbank angelegt werden.
+  - Eingaben dürfen nicht länger als 100 Zeiche sein.
+  - Es können beim Suchen passender Gruppen bis zu 30 Ergebnisse geliefert werden.
+  - Änderung von Informationen sollen in unter 100ms systemweit bekannt sein.
+  - Das System muss parallel von bis zu 1000 Usern benutz werden können.
+  - Das System darf nicht mehr als einen Neustart pro Woche brauchen.
