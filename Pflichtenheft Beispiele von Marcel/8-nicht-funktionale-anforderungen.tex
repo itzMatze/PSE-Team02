@@ -1,0 +1,54 @@
+\section{Nicht-funktionale Anforderungen}
+\definelist{nfalist}{NFA}
+
+Hier werden nicht-funktionale Anforderungen an \getProjectName \ aufgelistet. Diese werden als qualitative Anforderungen, Einschränkungen und optionale nicht-funktionale Anforderungen angegeben, die sich auf optionale Anforderungen beziehen.
+
+\subsection{Qualitative Anforderungen}
+
+Im Folgenden werden Anforderungen an messbare Qualitätsmerkmale von \getProjectName \ gestellt.
+
+\subsubsection{Benutzbarkeit}
+\begin{nfalist}
+	\item Das Hinzufügen und Lösen von \glspl{bereich}n und \glspl{berechtigung} zu bzw. von \glspl{kg} (\ref{fahinzubereich}, \ref{falösenkg}) muss in höchstens fünf Schritten in der GUI möglich sein.
+	\item Der Name einer \gls{komponente} (\ref{fabereichbenennen}) darf bis zu 30 Zeichen lang sein.
+	\item Die Beschreibung einer \gls{komponente} (\ref{fakomponentebeschreiben}) darf bis zu 250 Zeichen lang sein.
+\end{nfalist}
+\subsubsection{Geschwindigkeit}
+\begin{nfalist}[resume]
+	\item Beim Betreten eines Bereichs durch ein \gls{endgeraet} (\ref{faberechtigungenbereitstellen}) dürfen maximal zehn Sekunden bis zum Erhalten der Berechtigung vergehen.
+	\item Änderungen des Namens oder der Beschreibung einer \gls{komponente} (\ref{fanamebeschreibungbearbeiten}) müssen in Echtzeit (<50ms) systemweit bekanntgemacht werden.
+	\item Die kontinuierliche Bestimmung der Position von mindestens fünf \glspl{endgeraet}n (\ref{fapositionberechnen}, \ref{fawhitelistmanagen}) darf maximal fünf Sekunden verzögert auf reale Änderungen reagieren. 
+\end{nfalist}
+\subsubsection{Zuverlässigkeit}
+\begin{nfalist}[resume]
+	\item Das System muss für mindestens fünf \glspl{endgeraet} zuverlässig funktionieren.
+	\item Das System muss ab drei \glspl{ap} zuverlässig funktionieren. 
+	\item Das System muss mindestens zwei \glspl{kg} (\ref{fakgerstellen}) unterstützen.
+	\item Eine \gls{kg} muss mindestens zwei \glspl{bereich} (\ref{fabegrenzungziehen}) unterstützen.
+	\item Eine \gls{kg} muss mindestens zwei \glspl{berechtigung} (\ref{faberechtigungdefinieren}) unterstützen.
+	\item Die Genauigkeit einer \gls{bereich}sgrenze (\ref{fabegrenzungziehen}, \ref{fawhitelistmanagen}) muss auf mindestens drei Meter genau sein.
+	\item Die Ortung eines \gls{endgeraet}s (\ref{fapositionberechnen}) muss auf mindestens drei Meter genau sein. 
+\end{nfalist}
+% \subsubsection{Wartbarkeit}
+% % \begin{nfalist}[resume]
+
+% % \end{nfalist}
+
+
+% \subsection{Einschränkungen}
+
+% Die Einschränkungen dienen der Definition von Rahmenbedingungen der Entwicklung von \getProjectName.
+
+% \begin{nfalist}[resume]
+% 	\item Es werden die Software des Servers inklusive der Administratoroberfläche, sowie die Software der \glspl{ap} mitgeliefert.
+% \end{nfalist}
+
+
+\subsection{Optionale nicht-funktionale Anforderungen}
+
+Diese nicht-funktionalen Anforderungen beziehen sich auf optionale Anforderungen und sind somit an deren Umsetzung gebunden.
+
+\begin{nfalist}[resume]	
+	\item Bezüglich einer \gls{berechtigung} müssen mindestens zehn Geräte manuell permanent hinzugefügt und ausgeschlossen werden können (\ref{oaberechtigungmanuell}, \ref{oablockierenmanuell}).
+	\item Es müssen Dateien vom Typ \emph{.png} als Bilddatei des Grundrisses akzeptiert werden (\ref{fagebplanladen}).
+\end{nfalist}

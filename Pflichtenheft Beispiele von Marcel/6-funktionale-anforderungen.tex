@@ -1,0 +1,81 @@
+\section{Funktionale Anforderungen}
+Im Folgenden werden die Funktionalen Anforderungen, eingeteilt in \glspl{ap} und Server, aufgelistet.
+\definelist{apfalist}{APFA}
+\definelist{sfalist}{SFA}
+\definelist{ofalist}{OFA}
+\subsection{Pflichtanforderungen}
+Die folgenden Funktionalen Anforderungen werden im fertigen Softwareprodukt enthalten sein.
+
+\subsubsection{\glspl{ap}}
+\begin{apfalist}
+	\item \label{faserverinformieren} Informieren des Servers nach dem Aktivieren eines neuen \gls{ap}s
+	\item \label{faendgeraetelokaliseren} Lokalisieren von \glspl{endgeraet}n (\ref{endgeraetlokal})
+	\begin{apfalist}
+		\item \label{faendgeraetsignalempfangen} Empfangen von Signalen eines \gls{endgeraet}s
+		\item \label{faendgeraetdatenuebermitteln} Übermitteln der Signalstärke von \glspl{endgeraet}n an den Server
+	\end{apfalist}
+	\item \label{faapslokalisieren} Lokalisieren anderer \glspl{ap}
+	\begin{apfalist}
+		\item \label{fasignalsenden} Senden von Signalen für andere \glspl{ap}
+		\item \label{faapsignalempfangen}Empfangen von Signalen anderer \glspl{ap}
+		\item \label{faapdatenuebermitteln} Übermitteln der resultierenden Daten an den Server
+	\end{apfalist}
+\end{apfalist}
+\subsubsection{Server}
+\begin{sfalist}
+	\item \label{faguioeffnenschliessen} Starten/Beenden der GUI
+	\item \label{fabegrenzungziehen} Definieren eines rechteckigen \gls{bereich}s durch Ziehen von \glspl{gf} (\ref{kompintegrieren},\ref{bereichrechteckig})
+	\item \label{faeinausblendenbereich} Darstellen der Grenzen eines \gls{bereich}s in der GUI (\ref{kompanzeigen})
+	\item \label{faberechtigungdefinieren} Definieren einer neuen \gls{berechtigung} (\ref{kompintegrieren})
+	\item \label{fakoppeln} Verbinden von zusammengehörenden \glspl{bereich}n und deren \glspl{berechtigung} mittels \glspl{kg}
+	\begin{sfalist}
+		\item \label{fakgerstellen} Erstellen von \glspl{kg} (\ref{kompintegrieren})
+		\item \label{fahinzubereich} Hinzufügen von \glspl{bereich}n und \glspl{berechtigung} zu \glspl{kg} (\ref{kgzuweisen})
+		\item \label{fabereichberechtigunganzeigen} Darstellen der Grenzen aller \glspl{bereich} einer \glspl{kg} in der GUI (\ref{kompanzeigen})
+		\item \label{falösenkg}Lösen von \glspl{bereich}n und \glspl{berechtigung} von \glspl{kg}
+	\end{sfalist}
+	\item \label{fabereichbenennen} Benennen von \glspl{komponente} (\ref{kompintegrieren})
+	\item \label{fakomponentebeschreiben} Hinzufügen einer Beschreibung für \glspl{komponente} (\ref{kompintegrieren})
+	\item \label{faentfernenbereich} Löschen eines \gls{bereich}s (\ref{kompentfernen})
+	\item \label{faberechtigunglöschen} Löschen einer \gls{berechtigung} (\ref{kompentfernen})
+	\item \label{fakglöschen} Löschen einer \gls{kg} (\ref{kompentfernen})
+	\item \label{fahinzufuegen} Empfangen der Informationen eines neu aktivierten \gls{ap}s
+	\item \label{faapintegrieren} Integrieren von neu aktivierten \glspl{ap} in das bestehende System
+	\item \label{faapanzeigen} Anzeigen der Position aller \glspl{ap} in der GUI
+	\item \label{faapaktualisieren} Automatisches Aktualisieren der Anzeige der Positionen aller \glspl{ap}, nachdem es Änderungen durch den Server gab
+	\item \label{fadatenempfangen} Empfangen der Signalstärke eines \gls{endgeraet}s von \glspl{ap}
+	\item \label{fapositionberechnen} Berechnen der Position eines \gls{endgeraet}s anhand der erhaltenen Signalstärken
+	\item \label{faserversignalempfangen} Empfangen der Signale von \glspl{ap} zur Abstandsbestimmung zwischen \glspl{ap}
+	\item \label{faapabstaendebestimmen} Bestimmen der Abstände zwischen \glspl{ap} anhand der erhaltenen Signale
+	\item \label{fawhitelistmanagen} Verwalten von \glspl{whitelist} über alle \glspl{endgeraet}, die sich aktuell in den mit einer \gls{berechtigung} gekoppelten \glspl{bereich}n befinden
+	\begin{sfalist}
+		\item \label{faberechtigungenbereitstellen} Erteilen der \glspl{berechtigung} für \glspl{endgeraet} in gekoppelten \glspl{bereich}n (\ref{endgeraetberechtigung})
+		\item \label{faberechtigungentziehen} Entziehen der \glspl{berechtigung} für \glspl{endgeraet}, die gekoppelte \glspl{bereich} verlassen	
+	\end{sfalist}
+	\item \label{fakomponentenspeichern} Speichern von \glspl{komponente} und \glspl{whitelist}
+\end{sfalist}
+
+\subsection{Optionale Anforderungen}
+Die im Folgenden definierten Funktionalen Anforderungen können dem Softwareprodukt hinzugefügt werden, sind aber kein grundlegender Bestandteil des Endprodukts.
+
+
+\begin{ofalist}
+	\item \label{favisualisieren} Visualisieren der Position aller \glspl{ap}, \glspl{bereich}n und \glspl{kg} auf einem Grundriss (\ref{grundrissanzeigen})
+	\begin{ofalist}
+		\item \label{fagebplanladen} Laden/Hinzufügen eines Grundrisses
+		\item \label{fagebplananzeigen} Anzeigen der \glspl{ap} auf einem Grundriss
+		\item \label{fazoomen} Zoomen eines Grundrisses an beliebiger Stelle
+	\end{ofalist}	
+	\item \label{fanamebeschreibungbearbeiten} Bearbeiten des Namens und der Beschreibung von \glspl{komponente} (\ref{kompbearbeiten})
+	\item \label{oakomponentenbearbeiten} Bearbeiten von bereits gesetzten \glspl{ap} und \glspl{bereich}n
+	\item \label{bereichkreisfoermig} Definieren eines kreisförmigen \gls{bereich}s um einen \gls{ap} (\ref{bereichkreis})
+	\item \label{oaaploeschen} Entfernen eines \glspl{ap}
+	\item \label{fadeaktivierenbereich} Deaktivieren eines \gls{bereich}s
+	\item \label{oadeaktivierenkg} Deaktivieren einer \gls{kg}
+	\item \label{oaheatmapberechnen} Berechnen einer \gls{heatmap} für einen \gls{bereich}
+	\item \label{oaheatmap} Anzeigen einer \gls{heatmap} (\ref{heatmapanzeigen})
+	\item \label{oaberechtigungmanuell} Manuelles Eintragen für dauerhafte \gls{berechtigung} von bestimmten \glspl{endgeraet}n (\ref{permaberechtigung})
+	\item \label{oablockierenmanuell} Manuelles Eintragen für dauerhaftes Blockieren von bestimmten \glspl{endgeraet}n (\ref{permaberechtigung})
+	\item \label{oamanuellelistenspeichern} Speichern von manuell veränderbaren \glspl{blacklist} und \glspl{whitelist}
+	\item \label{oakomplementaerbereich} Erweitern von \glspl{gf} durch einen Komplementärbereich in einem \gls{bereich}, in dem die \glspl{berechtigung} nicht zugänglich sind
+\end{ofalist}
