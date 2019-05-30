@@ -90,17 +90,17 @@ Smartphone
 \section{Produktschnittstellen} 
  
 \chapter{Funktionale Anforderungen}
-In diesem Abschnitt werden die funktionalen Anforderungen definiert. Sie werden eingeteilt in Client und Server Funktionalitäten.
+TODO Sie werden eingeteilt in Client und Server Funktionalitäten.
 
 \section{Client}
-Auf dem Client (in diesem Fall einen mobiles Endgerät) müssen alle folgende Anforderungen erfüllt sein. 
+Auf dem Client (in diesem Fall ein Smatphone) müssen alle folgende Anforderungen erfüllt sein. 
 
 \subsection{Allgemein}
 
 \begin{addmargin}[25pt]{0pt} 
 \textbf{/CAFA10/} Installation der Applikation \\
 \textbf{/CAFA20/} Starten / Beenden der Applikation\\
-\textbf{/CAFA30/} Speciherung lokaler Daten\\
+\textbf{/CAFA30/} Speciherung lokaler Daten (Login Daten)\\
 \end{addmargin}
 
 \subsection{User Interface}
@@ -112,6 +112,9 @@ Auf dem Client (in diesem Fall einen mobiles Endgerät) müssen alle folgende An
 \textbf{/CIFA40/} Angeben des bevorzugten Zeitraums\\
 \textbf{/CIFA50/} Anzeigen und Auswählen einer Gruppe\\
 \textbf{/CIFA60/} Anzeigen eines Userprofils\\
+Anzeigen des Regelwerks\\
+Anzeigen der Gruppenseite\\
+Einstellngen des Profils\\
 \end{addmargin}
 
 \section{Server}
@@ -119,17 +122,19 @@ Auf dem Client (in diesem Fall einen mobiles Endgerät) müssen alle folgende An
 \begin{addmargin}[25pt]{0pt} 
 \textbf{/SFA10/} User anlegen / löschen\\
 \textbf{/SFA20/} User anmelden / abmelden\\
-\textbf{/SFA30/} Gruppe erstellen\\
+\textbf{/SFA30/} Gruppe erstellen mit Parametern\\
 \textbf{/SFA40/} Gruppe löschen\\
 	\begin{addmargin}[25pt]{0pt} 
-	\textbf{/SFA41/} Manuell durch User\\
+	\textbf{/SFA41/} Durch Autretten des letzten Users\\
+	\textbf{/SFA41/} Durch Admin\\
 	\textbf{/SFA42/} Automatisch durch Timeout\\
 	\end{addmargin}
+\textbf{/SFA41/} Anzeigen der Gruppen zu Parametern\\
 \textbf{/SFA120/} User tritt Gruppe bei\\
 \textbf{/SFA130/} User verlässt Gruppe\\
-\textbf{/SFA120/} Automatische Löschung\\
-\textbf{/SFA130/} Informationen bearbeiten von User / Gruppe\\
+\textbf{/SFA130/} Informationen bearbeiten von User\\
 \textbf{/SFA120/} Abfragen der Mensapläne\\
+\textbf{/SFA41/} Abfragen von Userprofil\\
 \end{addmargin}
 
 \chapter{Produktdaten}
