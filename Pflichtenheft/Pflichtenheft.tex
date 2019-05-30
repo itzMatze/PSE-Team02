@@ -98,14 +98,39 @@ Auf dem Client (in diesem Fall einen mobiles Endgerät) müssen alle folgende An
 \subsection{Allgemein}
 
 \begin{addmargin}[25pt]{0pt} 
-
-\textbf{/CFA110/} Installation der Applikation \\
-\textbf{/CFA120/} Starten / Beenden der Applikation\\
-\textbf{/CFA130/} Speciherung Lokaler Daten\\
-
+\textbf{/CAFA10/} Installation der Applikation \\
+\textbf{/CAFA20/} Starten / Beenden der Applikation\\
+\textbf{/CAFA30/} Speciherung lokaler Daten\\
 \end{addmargin}
- 
+
 \subsection{User Interface}
+
+\begin{addmargin}[25pt]{0pt} 
+\textbf{/CIFA10/} Anmelden / Registrieren \\
+\textbf{/CIFA20/} Angaben persönlicher Daten\\
+\textbf{/CIFA30/} Anzeigen und Auswählen der Essenslinien\\
+\textbf{/CIFA40/} Angeben des bevorzugten Zeitraums\\
+\textbf{/CIFA50/} Anzeigen und Auswählen einer Gruppe\\
+\textbf{/CIFA60/} Anzeigen eines Userprofils\\
+\end{addmargin}
+
+\section{Server}
+
+\begin{addmargin}[25pt]{0pt} 
+\textbf{/SFA10/} User anlegen / löschen\\
+\textbf{/SFA20/} User anmelden / abmelden\\
+\textbf{/SFA30/} Gruppe erstellen\\
+\textbf{/SFA40/} Gruppe löschen\\
+	\begin{addmargin}[25pt]{0pt} 
+	\textbf{/SFA41/} Manuell durch User\\
+	\textbf{/SFA42/} Automatisch durch Timeout\\
+	\end{addmargin}
+\textbf{/SFA120/} User tritt Gruppe bei\\
+\textbf{/SFA130/} User verlässt Gruppe\\
+\textbf{/SFA120/} Automatische Löschung\\
+\textbf{/SFA130/} Informationen bearbeiten von User / Gruppe\\
+\textbf{/SFA120/} Abfragen der Mensapläne\\
+\end{addmargin}
 
 \chapter{Produktdaten}
 \begin{itemize}
@@ -115,11 +140,16 @@ Auf dem Client (in diesem Fall einen mobiles Endgerät) müssen alle folgende An
 \end{itemize}
 
 \chapter{Nichtfunktionale Anforerungen}
-\begin{itemize}
-\item /NF10/ 
-\item /NF20/
 
-\end{itemize}
+\begin{addmargin}[25pt]{0pt} 
+\textbf{/NFA10/} Antworten vom Server dürfen nicht später als eine Sekunde nach Anfrage beim Client eingehen.\\
+\textbf{/NFA20/} Es können bis zu 10.000 User in der Datenbank angelegt werden.\\
+\textbf{/NFA30/} Eingaben dürfen nicht länger als 100 Zeiche sein.\\
+\textbf{/NFA40/} Es können beim Suchen passender Gruppen bis zu 30 Ergebnisse geliefert werden.\\
+\textbf{/NFA50/} Änderung von Informationen sollen in unter 100ms systemweit bekannt sein.\\
+\textbf{/NFA60/} Das System muss parallel von bis zu 1000 Usern benutzt werden können.\\
+\textbf{/NFA70/} Das System darf nicht mehr als einen Neustart pro Woche brauchen.\\
+\end{addmargin}
 
 
 \chapter{Gloale Testfälle}
