@@ -7,7 +7,6 @@
 \usepackage[bookmarks,bookmarksnumbered]{hyperref}
  
 \begin{document}
- 
 \title{Pflichtenheft für MensaMeat}
 
 \maketitle
@@ -80,7 +79,7 @@ erwartet bis zu 3 mal täglich, jeweils weniger als 10 Minuten am Stück
 Das Produkt läuft als App auf einem Smartphone
 
 \section{Software}
-Andorid, ab Version 4.4?
+Android, ab Version 4.4?
  
 \section{Hardware}
 Smartphone 
@@ -93,7 +92,7 @@ Smartphone
 TODO Sie werden eingeteilt in Client und Server Funktionalitäten.
 
 \section{Client}
-Auf dem Client (in diesem Fall ein Smatphone) müssen alle folgende Anforderungen erfüllt sein. 
+Auf dem Client (in diesem Fall ein Smartphone) müssen alle folgende Anforderungen erfüllt sein. 
 
 \subsection{Allgemein}
 
@@ -138,13 +137,33 @@ Einstellngen des Profils\\
 \end{addmargin}
 
 \chapter{Produktdaten}
-\begin{itemize}
-\item /D10/ 
-\item /D20A/
-%nach dem selben Schema weiter; \item und was dahinter stehen soll %
-\end{itemize}
 
-\chapter{Nichtfunktionale Anforerungen}
+\section{Benutzerdaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D10/} Über einen Benutzer der App sind folgende Daten zu speichern:\\
+Benutzername, Passwort, (E-Mail), ALTER?, Profilbild, Motto, Geschlecht, STATUS?(Student, Prof., Sonstiges), Essenspräferenzen, Administratorfunktionen\\
+\textbf{/D20/} Handelt es sich um einen Benutzer des Status Student, so ist zusätzlich der Studiengang zu erfassen\\
+\textbf{/D30/} Während der Nutzung der Applikation werden Statistiken anhand folgender Daten erhoben:\\
+Anzahl der erstellten Gruppen, Anzahl der Gruppenbeitritte, Anzahl der Gruppenaustritte, Anzahl der erfolgreichen Treffen\\
+\end{addmargin}
+
+\section{Gruppendaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D40/} Über jede erstellte Gruppe sind folgende Daten zu speichern:\\
+Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Gruppenmitglieder\\
+\end{addmargin}
+
+\section{Mensadaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D50} Die zu speichernden Mensadaten beinhalten lediglich den tagesaktuellen Speiseplan\\
+\end{addmargin}
+
+
+
+\chapter{Nichtfunktionale Anforderungen}
 
 \begin{addmargin}[25pt]{0pt} 
 \textbf{/NFA10/} Antworten vom Server dürfen nicht später als eine Sekunde nach Anfrage beim Client eingehen.\\
@@ -170,4 +189,6 @@ Einstellngen des Profils\\
  
 
  
+
+
 \end{document}
