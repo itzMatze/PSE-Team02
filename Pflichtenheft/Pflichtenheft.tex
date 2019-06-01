@@ -7,7 +7,6 @@
 \usepackage[bookmarks,bookmarksnumbered]{hyperref}
  
 \begin{document}
- 
 \title{Pflichtenheft für MensaMeat}
 
 \maketitle
@@ -80,7 +79,7 @@ erwartet bis zu 3 mal täglich, jeweils weniger als 10 Minuten am Stück
 Das Produkt läuft als App auf einem Smartphone
 
 \section{Software}
-Andorid, ab Version 4.4?
+Android, ab Version 4.4?
  
 \section{Hardware}
 Smartphone 
@@ -93,7 +92,7 @@ Smartphone
 TODO Sie werden eingeteilt in Client und Server Funktionalitäten.
 
 \section{Client}
-Auf dem Client (in diesem Fall ein Smatphone) müssen alle folgende Anforderungen erfüllt sein. 
+Auf dem Client (in diesem Fall ein Smartphone) müssen alle folgende Anforderungen erfüllt sein. 
 
 \subsection{Allgemein}
 
@@ -139,13 +138,33 @@ Einstellngen des Profils\\
 \end{addmargin}
 
 \chapter{Produktdaten}
-\begin{itemize}
-\item /D10/ 
-\item /D20A/
-%nach dem selben Schema weiter; \item und was dahinter stehen soll %
-\end{itemize}
 
-\chapter{Nichtfunktionale Anforerungen}
+\section{Benutzerdaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D10/} Über einen Benutzer der App sind folgende Daten zu speichern:\\
+Benutzername, Passwort, (E-Mail), ALTER?, Profilbild, Motto, Geschlecht, STATUS?(Student, Prof., Sonstiges), Essenspräferenzen, Administratorfunktionen\\
+\textbf{/D20/} Handelt es sich um einen Benutzer des Status Student, so ist zusätzlich der Studiengang zu erfassen\\
+\textbf{/D30/} Während der Nutzung der Applikation werden Statistiken anhand folgender Daten erhoben:\\
+Anzahl der erstellten Gruppen, Anzahl der Gruppenbeitritte, Anzahl der Gruppenaustritte, Anzahl der erfolgreichen Treffen\\
+\end{addmargin}
+
+\section{Gruppendaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D40/} Über jede erstellte Gruppe sind folgende Daten zu speichern:\\
+Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Gruppenmitglieder\\
+\end{addmargin}
+
+\section{Mensadaten}
+
+\begin{addmargin}[25pt]{0pt}
+\textbf{/D50} Die zu speichernden Mensadaten beinhalten lediglich den tagesaktuellen Speiseplan\\
+\end{addmargin}
+
+
+
+\chapter{Nichtfunktionale Anforderungen}
 
 \begin{addmargin}[25pt]{0pt} 
 
@@ -162,12 +181,34 @@ Einstellngen des Profils\\
 \end{addmargin}
 
 
-\chapter{Gloale Testfälle}
-\begin{itemize}
-\item /T10/ 
-\item /T20/
+\chapter{Globale Testfälle}
+\begin{addmargin}[25pt]{0pt} 
+\textbf{/T10/} Ein nicht registrierter Nutzer öffnet die App, registriert sich erfolgreich und gelangt auf die „Profil Bearbeiten“-Seite\\
+  \begin{addmargin}[25pt]{0pt} 
+  \textbf{/T110/} Bearbeitet dieser sein Profil vollständig, ist der Registrierungsprozess abgeschlossen und ihm stehen alle Funktionen zur Verfügung\\
+  \textbf{/T120/} Schließt dieser die Applikation, so wird er beim erneuten Öffnen direkt zur Profilbearbeitung weitergeleitet. Wiederholen bis erfolgreich abgeschlossen.\\
+  \end{addmargin}
+\textbf{/T20/}  Ein registrierter Nutzer öffnet die App und betrachtet die Essenmöglichkeiten des aktuellen Tages\\
+\textbf{/T30/} Auswahl einer Linie und Uhrzeit sowie der Beitritt einer vorgeschlagenen Gruppe\\
+  \begin{addmargin}[25pt]{0pt} 
+  \textbf{/T310/} Erfolgreiche Teilnahme am Gruppentreffen\\
+  \textbf{/T320/} Vorzeitiger Austritt aus der Gruppe und das anschließenden Anzeigen der Homeseite\\
+  \end{addmargin}
+\textbf{/T40/}  Erstellungsprozess einer Gruppe\\
+  \begin{addmargin}[25pt]{0pt} 
+  \textbf{/T410/} Erfolgreiche Erstellung durch Eingabe aller erforderlichen Daten\\
+  \textbf{/T420/} Absichtlicher Abbruch des Erstellungsprozess\\
+  \textbf{/T430/} Erstellung wird durch fehlende Parameter nicht beendet\\
+  \end{addmargin}
+\textbf{/T50/} Ein Administrator öffnet die App und gelangt auf die Adminseite\\
+  \begin{addmargin}[25pt]{0pt} 
+  \textbf{/T510/} Administrator löscht Gruppe\\
+  \textbf{/T520/} Administrator löscht Benutzer\\
+  \end{addmargin}
 
-\end{itemize}
+
+
+\end{addmargin}
 
 \chapter{Systemmodelle}
 
@@ -175,4 +216,6 @@ Einstellngen des Profils\\
  
 
  
+
+
 \end{document}
