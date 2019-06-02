@@ -31,8 +31,8 @@ Mit dieser App sollen Personen(Studenten), die in der Mensa essen möchten, in d
 \hypertarget{mk10}{\textbf{/MK10/}} Erstellen und Bearbeiten eines persönlichen Profils, bestehdend aus: \\ Einem eindeutigen Nutzernamen, Alter, Geschlecht, Status (Student, Professor, Auszubildener, Schüler, Sonstiges), Motto)\\
 \hypertarget{mk20}{\textbf{/MK20/}} Einsehen des Mensaplans des aktuellen Tages\\
 \hypertarget{mk30}{\textbf{/MK30/}} Auswählen der Mensalinien/Mensawerke\\
-\hypertarget{mk40}{\textbf{/MK40/}} Einsehen der Gruppen, mit übereinstimmenden Mensalnien/Werken\\
-\hypertarget{mk50}{\textbf{/MK50/}}Einstellen eines Zeitintervalls für das Essengehen \\
+\hypertarget{mk40}{\textbf{/MK40/}} Einsehen der \hyperlink{gruppe}{Gruppen}, mit übereinstimmenden Mensalnien/Werken\\
+\hypertarget{mk50}{\textbf{/MK50/}} Einstellen eines Zeitintervalls für das Essengehen \\
 \hypertarget{mk60}{\textbf{/MK60/}} Erstellen einer Gruppe\\
 \hypertarget{mk70}{\textbf{/MK70/}} Beitreten einer Gruppe\\
 \hypertarget{mk80}{\textbf{/MK80/}} Verlassen einer Gruppe\\
@@ -118,33 +118,34 @@ Auf dem Client (in diesem Fall ein Smartphone) müssen alle folgende Anforderung
 \begin{addmargin}[25pt]{0pt} 
 \hypertarget{cifa10}{\textbf{/CIFA10/}} Anmelden / Registrieren \\
 Es muss eine Seite geben auf der Buttons für Anmeldung und Registrierung sind.
-\hypertarget{cifa20}{\textbf{/CIFA20/}} Angaben persönlicher Daten (\hyperlink{mk10}{MK10})\\
+\hypertarget{cifa20}{\textbf{/CIFA20/}} Angeben persönlicher Daten (\hyperlink{mk10}{MK10})\\
 \hypertarget{cifa30}{\textbf{/CIFA30/}} Anzeigen und Auswählen der Essenslinien (\hyperlink{mk20}{MK20})\\
 \hypertarget{cifa40}{\textbf{/CIFA40/}} Angeben des bevorzugten Zeitraums (\hyperlink{mk50}{MK50})\\
 \hypertarget{cifa50}{\textbf{/CIFA50/}} Anzeigen und Auswählen einer Gruppe (\hyperlink{m40}{MK40} / (\hyperlink{mk70}{MK70}))\\
-\hypertarget{cifa60}{\textbf{/CIFA60/}} Anzeigen eines Userprofils (\hyperlink{mk90}{MK90})\\
+\hypertarget{cifa60}{\textbf{/CIFA60/}} Anzeigen eines Benutzerprofils (\hyperlink{mk90}{MK90})\\
 \hypertarget{cifa70}{\textbf{/CIFA70/}} Anzeigen des Regelwerks\\
 \hypertarget{cifa80}{\textbf{/CIFA80/}} Anzeigen der Gruppenseite\\
+\hypertarget{cifa90}{\textbf{/CIFA90/}} Erstellen einer Gruppe\\
 \end{addmargin}
 
 \section{Server}
 
 \begin{addmargin}[25pt]{0pt} 
-\hypertarget{sfa10}{\textbf{/SFA10/}} User anlegen / löschen\\
-\hypertarget{sfa20}{\textbf{/SFA20/}} User anmelden / abmelden\\
-\hypertarget{sfa30}{\textbf{/SFA30/}} Gruppe erstellen mit Parametern\\
-\hypertarget{sfa40}{\textbf{/SFA40/}} Gruppe löschen\\
+\hypertarget{sfa10}{\textbf{/SFA10/}} \hyperlink{benutzer}{Benutzer} anlegen / löschen\\
+\hypertarget{sfa20}{\textbf{/SFA20/}} Benutzer anmelden / abmelden (\hyperlink{mk10}{MK10})\\
+\hypertarget{sfa30}{\textbf{/SFA30/}} Gruppe erstellen mit Parametern(\hyperlink{mk60}{MK60})\\
+\hypertarget{sfa40}{\textbf{/SFA40/}} Gruppe löschen (\hyperlink{mk100}{MK100})\\
 	\begin{addmargin}[25pt]{0pt} 
-	\hypertarget{sfa41}{\textbf{/SFA41/}} Durch Autretten des letzten Users\\
+	\hypertarget{sfa41}{\textbf{/SFA41/}} Durch Autretten des letzten Benutzers\\
 	\hypertarget{sfa42}{\textbf{/SFA42/}} Durch Admin\\
 	\hypertarget{sfa43}{\textbf{/SFA43/}} Automatisch bei Mitternacht.\\
 	\end{addmargin}
-\hypertarget{sfa50}{\textbf{/SFA50/}} Anzeigen der Gruppen zu Parametern\\
-\hypertarget{sfa60}{\textbf{/SFA60/}} User tritt Gruppe bei\\
-\hypertarget{sfa70}{\textbf{/SFA70/}} User verlässt Gruppe\\
-\hypertarget{sfa80}{\textbf{/SFA80/}} Informationen bearbeiten von User\\
-\hypertarget{sfa90}{\textbf{/SFA90/}} Abfragen der Mensapläne\\
-\hypertarget{sfa100}{\textbf{/SFA100/}} Abfragen von Userprofil\\
+\hypertarget{sfa50}{\textbf{/SFA50/}} Anzeigen der Gruppen zu Parametern (\hyperlink{m40}{MK40})\\
+\hypertarget{sfa60}{\textbf{/SFA60/}} Benutzer tritt Gruppe bei (\hyperlink{m70}{MK70})\\
+\hypertarget{sfa70}{\textbf{/SFA70/}} Benutzer verlässt Gruppe (\hyperlink{m80}{MK80})\\
+\hypertarget{sfa80}{\textbf{/SFA80/}} Informationen bearbeiten von Benutzer (\hyperlink{m10}{MK10})\\
+\hypertarget{sfa90}{\textbf{/SFA90/}} Abfragen der Mensapläne (\hyperlink{m20}{MK20})\\
+\hypertarget{sfa100}{\textbf{/SFA100/}} Abfragen von Benutzerprofil (\hyperlink{m90}{MK90})\\
 \end{addmargin}
 
 \chapter{Produktdaten}
@@ -181,12 +182,12 @@ Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Ersteller, Gruppenmi
 
 \begin{addmargin}[25pt]{0pt} 
 
-\hypertarget{nfa10}{\textbf{/NFA10/}} Es können bis zu 10.000 User in der Datenbank angelegt werden.\\
+\hypertarget{nfa10}{\textbf{/NFA10/}} Es können bis zu 10.000 Benutzer in der Datenbank angelegt werden.\\
 \hypertarget{nfa20}{\textbf{/NFA20/}} Eingaben dürfen nicht länger als 255 Zeiche sein.\\
 \hypertarget{nfa30}{\textbf{/NFA30/}} Benutzernamen dürfen nicht länger als 40 Zeiche sein.\\
-\hypertarget{nfa40}{\textbf{/NFA40/}} Es können beim Suchen passender Gruppen bis zu 24 Ergebnisse geliefert werden, um die Serverauslastung zu minimieren.\\
-\hypertarget{nfa50}{\textbf{/NFA50/}} Serverarbeiten fidnen nur zwischen 0:00 und 6:00 Uhr statt.\\
-\hypertarget{nfa60}{\textbf{/NFA60/}} Das System muss parallel von bis zu 1000 Usern benutzt werden können.\\
+\hypertarget{nfa40}{\textbf{/NFA40/}} Es können beim Suchen passender Gruppen bis zu 24 Ergebnisse geliefert werden, um die Serverauslastung zu minimieren. (\hyperlink{m40}{MK40})\\
+\hypertarget{nfa50}{\textbf{/NFA50/}} Serverarbeiten finden nur zwischen 0:00 und 6:00 Uhr statt.\\
+\hypertarget{nfa60}{\textbf{/NFA60/}} Das System muss parallel von bis zu 1000 Benutzern benutzt werden können.\\
 \hypertarget{nfa70}{\textbf{/NFA70/}} Das System darf nicht mehr als einen Neustart pro Woche brauchen.\\
 \hypertarget{nfa80}{\textbf{/NFA80/}} Es soll ab Öffnen der App in 6 Klicks möglich sein einer Gruppe beizutreten .\\
 \hypertarget{nfa90}{\textbf{/NFA90/}} Alle Buttons sollen gut lesbar und leicht anklickbar sein.\\
@@ -316,7 +317,8 @@ Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Ersteller, Gruppenmi
 \item \hypertarget{label7}{Bitmoji}: Personalisiertes Comic Profilbild
 \item \hypertarget{label8}{Administratorfunktionen}: Erweiterte Funktionen die nur ausgewählten Benutzern zustehen
 \item \hypertarget{label9}{Benutzerstatistiken}: Sagen aus wie oft und erfolgreich ein Nutzer an Treffen teilgenommen hat 
-
+\item \hypertarget{benutzer}{Benutzer}: Eine Person, die die Anwendung benutzt.
+\item \hypertarget{gruppe}{Gruppe}: Ein Zusammenschluss von Benutzern, die sich zum gemeinsamen Essen an einer bestimmten Linie zu einer bestimmten Uhrzeit verabredet haben.
   
  \end{itemize}
  
