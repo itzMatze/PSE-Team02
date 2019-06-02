@@ -152,23 +152,26 @@ Es muss eine Seite geben auf der Buttons für Anmeldung und Registrierung sind.
 
 \begin{addmargin}[25pt]{0pt}
 \hypertarget{d10}{\textbf{/D10/}} Über einen Benutzer der App sind folgende Daten zu speichern:\\
-Benutzername, Passwort, (E-Mail), ALTER?, Profilbild, Motto, Geschlecht, STATUS?(Student, Prof., Sonstiges), Essenspräferenzen, Administratorfunktionen\\
+Benutzername, Passwort, E-Mail (\hyperlink{wk20}{WK20}), Alter, Profilbild oder Bitmoji(\hyperlink{wk30}{WK30}), Motto, Geschlecht, Status (Student, Prof., Sonstiges), Essenspräferenzen, Administratorfunktionen (Ja/Nein)\\
 \hypertarget{d20}{\textbf{/D20/}} Handelt es sich um einen Benutzer des Status Student, so ist zusätzlich der Studiengang zu erfassen\\
-\hypertarget{d30}{\textbf{/D30/}} Während der Nutzung der Applikation werden Statistiken anhand folgender Daten erhoben:\\
-Anzahl der erstellten Gruppen, Anzahl der Gruppenbeitritte, Anzahl der Gruppenaustritte, Anzahl der erfolgreichen Treffen\\
+\hypertarget{d30}{\textbf{/D30/}} Erstellt ein Benutzer eine Gruppe, so wird diese Gruppe für Benutzerstatistiken und mögliche Ränge gespeichert\\
+\hypertarget{d40}{\textbf{/D40/}}Tritt ein Benutzer einer Gruppe bei, so wird dies für Benutzerstatistiken gespeichert\\
+\hypertarget{d50}{\textbf{/D50/}}Tritt ein Benutzer aus einer Gruppe aus, wird dies ebenfalls für Benutzerstatistiken gespeichert\\
+
+
 \end{addmargin}
 
 \section{Gruppendaten}
 
 \begin{addmargin}[25pt]{0pt}
-\hypertarget{d40}{\textbf{/D40/}} Über jede erstellte Gruppe sind folgende Daten zu speichern:\\
-Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Gruppenmitglieder\\
+\hypertarget{d60}{\textbf{/D60/}} Über jede erstellte Gruppe sind folgende Daten zu speichern:\\
+Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Ersteller, Gruppenmitglieder\\
 \end{addmargin}
 
 \section{Mensadaten}
 
 \begin{addmargin}[25pt]{0pt}
-\hypertarget{d50}{\textbf{/D50/}} Die zu speichernden Mensadaten beinhalten lediglich den tagesaktuellen Speiseplan\\
+\hypertarget{d70}{\textbf{/D70/}} Die zu speichernden Mensadaten beinhalten lediglich den tagesaktuellen Speiseplan\\
 \end{addmargin}
 
 
@@ -195,25 +198,25 @@ Gruppenname, Motto, Essenslinie, Uhrzeit, Teilnehmeranzahl, Gruppenmitglieder\\
 \begin{addmargin}[25pt]{0pt} 
 \hypertarget{t10}{\textbf{/T10/}} Ein nicht registrierter Nutzer öffnet die App, registriert sich erfolgreich und gelangt auf die „Profil Bearbeiten“-Seite\\
   \begin{addmargin}[25pt]{0pt} 
-  \hypertarget{t11}{\textbf{/T11/}} Bearbeitet dieser sein Profil vollständig, ist der Registrierungsprozess abgeschlossen und ihm stehen alle Funktionen zur Verfügung\\
-  \hypertarget{t12}{\textbf{/T12/}} Schließt dieser die Applikation, so wird er beim erneuten Öffnen direkt zur Profilbearbeitung weitergeleitet. Wiederholen bis erfolgreich abgeschlossen.\\
+  \hypertarget{t11}{\textbf{/T11/}} Bearbeitet dieser sein Profil vollständig, ist der Registrierungsprozess abgeschlossen und ihm stehen alle Benutzerfunktionen zur Verfügung\\
+  \hypertarget{t12}{\textbf{/T12/}} Schließt dieser vorzeitig die Applikation, so wird er beim erneuten Öffnen direkt zur Profilbearbeitung weitergeleitet. Wiederholen bis erfolgreich abgeschlossen.\\
   \end{addmargin}
-\hypertarget{t20}{\textbf{/T10/}} Ein registrierter Nutzer öffnet die App und betrachtet die Essenmöglichkeiten des aktuellen Tages\\
-\hypertarget{t30}{\textbf{/T10/}} Auswahl einer Linie und Uhrzeit sowie der Beitritt einer vorgeschlagenen Gruppe\\
+\hypertarget{t20}{\textbf{/T20/}} Ein registrierter Nutzer öffnet die App und betrachtet die Essenmöglichkeiten des aktuellen Tages\\
+\hypertarget{t30}{\textbf{/T30/}} Ein Benutzer wählt eine Essenslinie und Uhrzeit aus und tritt anschließend einer der vorgeschlagenen Gruppen bei\\
   \begin{addmargin}[25pt]{0pt} 
-  \hypertarget{t31}{\textbf{/T10/}} Erfolgreiche Teilnahme am Gruppentreffen\\
-  \hypertarget{t32}{\textbf{/T10/}} Vorzeitiger Austritt aus der Gruppe und das anschließenden Anzeigen der Homeseite\\
+  \hypertarget{t31}{\textbf{/T31/}} Erfolgreiche Teilnahme am Gruppentreffen\\
+  \hypertarget{t32}{\textbf{/T32/}} Vorzeitiger Austritt aus der Gruppe und das anschließenden Anzeigen der Homeseite\\
   \end{addmargin}
-\hypertarget{t40}{\textbf{/T10/}}  Erstellungsprozess einer Gruppe\\
+\hypertarget{t40}{\textbf{/T40/}}  Erstellungsprozess einer Gruppe\\
   \begin{addmargin}[25pt]{0pt} 
-  \hypertarget{t41}{\textbf{/T10/}} Erfolgreiche Erstellung durch Eingabe aller erforderlichen Daten\\
-  \hypertarget{t42}{\textbf{/T10/}} Absichtlicher Abbruch des Erstellungsprozess\\
-  \hypertarget{t43}{\textbf{/T10/}} Erstellung wird durch fehlende Parameter nicht beendet\\
+  \hypertarget{t41}{\textbf{/T41/}} Erfolgreiche Erstellung durch Eingabe aller erforderlichen Daten\\
+  \hypertarget{t42}{\textbf{/T42/}} Absichtlicher Abbruch des Erstellungsprozess\\
+  \hypertarget{t43}{\textbf{/T43/}} Erstellung wird durch fehlende Parameter nicht beendet\\
   \end{addmargin}
-\hypertarget{t50}{\textbf{/T10/}} Ein Administrator öffnet die App und gelangt auf die Adminseite\\
+\hypertarget{t50}{\textbf{/T50/}} Ein Administrator öffnet die App und gelangt auf die Adminseite\\
   \begin{addmargin}[25pt]{0pt} 
-  \hypertarget{t10}{\textbf{/T10/}} Administrator löscht Gruppe\\
-  \hypertarget{t10}{\textbf{/T10/}} Administrator löscht Benutzer\\
+  \hypertarget{t10}{\textbf{/T51/}} Administrator löscht Gruppe\\
+  \hypertarget{t10}{\textbf{/T52/}} Administrator löscht Benutzer\\
   \end{addmargin}
 
 
