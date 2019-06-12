@@ -1,0 +1,61 @@
+-BeginActivity
+
+Diese Oberfläche empfängt den Benutzer, wenn dieser die App das erste Mal startet. Er kann sich dann mit seinem bereits vorhandenem Account anmelden, falls er zum Beispiel nur ein neues Smartphone hat. Alternativ hat er die Möglichkeit sich zu registrieren und einen neuen Account anzulegen.
+
++loginButton():void
+Diese Methode wird aufgerufen, wenn der Login-Button der Activity gedrückt wird. Sie ruft dann die gotoLoginPage() Methode in der Klasse BeginHandler auf.
++registerButton():void
+Diese Methode wird aufgerufen, wenn der Register-Button der Activity gedrückt wird. Sie ruft dann die gotoRegisterPage() Methode in der Klasse BeginHandler auf.
+
+
+
+-BeginHandler
+
+Diese Klasse verwaltet alle Funktionen, die die BeginActivity dem Benutzer bietet.
+
++gotoLoginPage():void
+Diese Methode startet die LoginActivity Klasse, damit der Benutzer sich mit seinem Account einloggen kann.
++gotoRegisterPage():void
+Diese Methode startet die RegisterActivity Klasse, damit der Benutzer sich mit seinen Daten registrieren und somit einen Account anlegen kann.
+
+
+
+-LoginActivity
+
+Diese Klasse bietet die Oberfläche der App, in der sich der Benutzer mit seinen Accountdaten anmelden kann.
+
++loginButton():void
+Diese Methode wird aufgerufen, wenn der Benutzer seine Eingaben bestätigen will und sich anmelden will. Sie ruft dann die Methode login() in der Klasse LoginHandler auf und übergibt die eingegebenen Daten.
++onBackPressed():void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse LoginHandler aufgerufen wird.
+
+
+
+-LoginHandler
+
+Diese Klasse verwaltet alle Funktionen, die die LoginActivity dem Benutzer bietet.
+
++login(String userName, String password):void
+Diese Methode überprüft die Anmeldedaten und startet die Klasse ...Activity, falls die Überprüfung erfolgreich war. Falls nicht wird eine Fehlermeldung in der LoginActivity erzeugt.
++goBack():void
+Diese Methode startet die Klasse BeginActivity wieder.
+
+
+
+-RegisterActivity
+
+Dieser Klasse bietet die Oberfläche der App, in der sich der Benutzer neu registrieren kann.
+
++registerButton():void
+Diese Methode wird aufgerufen, wenn der Benutzer seine Angaben bestätigen will und mit den angegebenen Daten ein Account anlegen möchte. Dafür wird die Methode register() in der Klasse RegisterHandler aufgerufen und die eingegebenen Daten dieser Methode übergeben.
++onBackPressed():void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse RegisterHandler aufgerufen wird. Dafür wird allerdings erst überprüft, ob die Passwortwiederholung mit dem ersten übereinstimmt, sonst wird eine Fehlermeldung angezeigt.
+
+
+
+-RegisterHandler
+
+Diese Klasse verwaltet alle Funktionen, die die RegisterActivity dem Benutzer bietet.
+
++register(String userName, String password)
+Diese Methode überprüft, ob der userName, den der Benutzer angegeben hat, noch verfügbar ist. Falls dem so ist, wird der Account mit den angegebenen Daten erzeugt.
