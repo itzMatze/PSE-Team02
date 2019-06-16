@@ -1,0 +1,53 @@
+Ablauf - Gruppe verlassen (Alleine / mit Anderen)
+
+Man ist in einer Gruppe und die App zeigt gerade die Details der Gruppe an. Der User drückt den Gruppe verlassen Button und bestätigt das Verlassen, nachdem die App ihn fragt.
+Der Client sendet die Nachricht an den Server, dass der User XY die Gruppe Z verlässt. Dazu sendet er die GruppenId und die UserId. 
+Der Server holt sich die Gruppe mit der passenden Id von der Datenbank.
+Jetzt können zwei Dinge passieren. Entweder hat die Gruppe mehrere User, dann entnimmt der Server entimmt der Gruppe den User, der sie verlassen hat und updatet die Gruppendaten auf dem Datenbank,
+Oder die Gruppe hat nur einen User, dann löscht der Server löscht die Gruppe in der Datenbank.
+In beiden Fällen sendet der Server dem Client eine Antwort und Die Anwendung springt zurück auf die Home Seite.
+
+Plant UML Code:
+
+
+
+@startuml
+actor user
+
+user -> GUI: open App
+
+GUI -> server: getGroupById(groupId)
+
+database db
+server -> db: getGroupById(groupId)
+server <-- db: group
+
+GUI <-- server: group
+user <-- GUI: show group details
+
+user -> GUI: click on leave group button
+user <- GUI: ask if user is sure
+user -> GUI: confirm
+
+GUI -> server: removeUserFrom Group(userId, GroupId)
+server -> db: getGroupById(groupId)
+server <-- db: group
+
+alt group has more than one member
+
+server -> server: removeUserWithId(userId)  
+server -> db: updateGroup(group)
+server <-- db:
+
+
+else group has only one member
+
+server -> db: deleteGroup(groupId)
+server <-- db:
+
+end
+
+GUI <-- server:
+user <-- GUI: show home screen.
+
+@enduml
