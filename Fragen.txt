@@ -1,3 +1,4 @@
 Fragen an die Betreuer:
 
 In was für einem Format soll die HTTp Schnittstelle im Klassendiagramm des Servers wiedergegeben werden? (vgl.: Fridget Entwurfsdokument)
+Wie sicher soll das Backend sein. Im moment kann jeder, wenn er die Syntax vom Server kennt Gruppen löschen und User von Gruppen entfernen und in andere stecken. 

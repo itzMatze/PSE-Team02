@@ -22,6 +22,7 @@ class UserController {
 class GroupController {
   +Group getGroupById(string groupId)
   +Group[] getGroupsByPrefferences(Prefferecnces prefs)
+  +void createGroup(Group group)
   ..for admins..
   +void deleteGroup(string groupId)
 }
