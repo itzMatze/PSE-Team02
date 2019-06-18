@@ -1,0 +1,108 @@
+@startumlclass 
+skinparam classAttributeIconSize 0
+
+class ViewModel {
+	+onCleared(): void
+}
+
+abstract class MmViewModel {
+	+gotoHome(): void
+	+gotoEditUserProfile(): void
+	{abstract} +next(): void 
+}
+
+class BeginViewModel {
+	+gotoLogin(): void
+	+gotoRegister(): void
+}
+
+BeginViewModel --|> MmViewModel
+
+class LoginViewModel {
+	+login(String userName, String password): void
+	+gotoBegin(): void
+}
+
+LoginViewModel --|> MmViewModel
+
+class RegisterViewModel {
+	+register(String userName, String password): void
+	+gotoBegin(): void
+}
+
+RegisterViewModel --|> MmViewModel
+
+class EditUserProfileViewModel {
+	+saveProfile(): void
+	+goBack(): void
+}
+
+EditUserProfileViewModel --|> MmViewModel
+
+class HomeViewModel {
+	+saveLines()
+	+editUserProfileButton()
+	+logoutButton()
+}
+
+HomeViewModel --|> MmViewModel
+
+class AdministerGroupsViewModel {
+	+gotoHome()
+}
+
+AdministerGroupsViewModel --|> MmViewModel
+AdministerGroupsViewModel o-- GroupViewModel
+
+class AdministerUsersViewModel {
+	+gotoHome()
+}
+
+AdministerUsersViewModel --|> MmViewModel
+AdministerUsersViewModel o-- UserViewModel
+
+class SetTimeViewModel {
+	+saveTime()
+	+gotoHome()
+}
+
+SetTimeViewModel --|> MmViewModel
+
+class GroupSelectionViewModel {
+	+gotoCreateNewGroup()
+	+gotoSetTimeViewModel()
+}
+
+GroupSelectionViewModel --|> MmViewModel
+
+class GroupViewModel {
+	+joinGroup()
+}	
+
+GroupSelectionViewModel o-- GroupViewModel
+
+class UserViewModel {
+	+gotoUserProfileView()
+}	
+
+GroupViewModel o-- UserViewModel
+
+class UserProfileViewModel {
+	+goBack()
+}	
+
+UserProfileViewModel --|> MmViewModel
+	
+class CreateNewGroupViewModel {
+	+gotoGroupSelection()
+}	
+
+CreateNewGroupViewModel --|> MmViewModel
+	
+class ConfirmedGroupViewModel {
+	+leaveGroup()
+}	
+
+ConfirmedGroupViewModel --|> MmViewModel
+
+@enduml

@@ -1,0 +1,152 @@
+@startumlclass 
+skinparam classAttributeIconSize 0
+' TODO: Ask PSE if all arguments needed
+' TODO: ASk PSE how limit classes per row
+
+class AppCompatActivity {
+	+onCreate(): void
+}
+
+abstract class MmActivity {
+	homeButton: Button
+	displayHomeButton: Boolean
+	nextButton: Button
+	displayNextButton: Boolean
+	editUserProfileButton: Button
+	displayEditUserProfileButton: Boolean
+	+homeButton(): void
+	+editUserProfileButton(): void
+	{abstract}+nextButton(): void
+}
+
+MmActivity --|> AppCompatActivity
+
+class BeginActivity {
+	loginButton: Button
+	registerButton: Button
+	+loginButton(): void
+	+registerButton(): void
+}
+
+BeginActivity --|> MmActivity
+
+class LoginActivity {
+	loginButton: Button
+	messageArea: TextView
+	usernameField: EditText
+	passwordField: EditText
+	+loginButton(): void
+	+onBackPressed(): void
+}
+
+LoginActivity --|> MmActivity
+
+class RegisterActivity {
+	registerButton: Button
+	messageArea: TextView
+	usernameField: EditText
+	passwordField: EditText
+	+registerButton(): void
+	+onBackPressed(): void
+}
+
+RegisterActivity --|> MmActivity
+
+class EditUserProfileActivity {
+	saveButton: Button
+	+saveButton(): void
+	+onBackPressed(): void
+}
+
+EditUserProfileActivity --|> MmActivity
+
+class HomeActivity {
+	logoutButton: Button
+	editUserProfileButton: Button
+	lineList: List<LineView>
+	administerUsers: Button
+	administerGroups: Button
+	+nextButton(): void
+	+editUserProfileButton(): void
+	+logoutButton(): void
+}
+
+HomeActivity --|> MmActivity
+
+class LineView {
+}
+
+HomeActivity o-- LineView
+
+class AdministerGroupsActivity {
+	groupsList: List<GroupView>
+	+onBackPressed(): void
+}
+
+AdministerGroupsActivity --|> MmActivity
+AdministerGroupsActivity o-- GroupView
+
+class AdministerUsersActivity {
+	usersList: List<UserView>
+	+onBackPressed(): void
+}
+
+AdministerUsersActivity --|> MmActivity
+AdministerUsersActivity o-- UserView
+
+class SetTimeActivity {
+	intervalStartTime: 
+	intervalEndTime: 
+	isInterval: 
+	+nextButton(): void
+	+onBackPressed(): void
+}
+
+SetTimeActivity --|> MmActivity
+
+class GroupSelectionActivity {
+	groupsList: List<GroupView>
+	createNewGroupButton: Button
+	+createNewGroupButton(): void
+	+onBackPressed(): void
+}
+
+GroupSelectionActivity --|> MmActivity
+
+class GroupView {
+	joinButton: Button
+	usersList: List<UserView>
+	+joinButton(): void
+}	
+
+GroupSelectionActivity o-- GroupView
+
+class UserView {
+	viewProfileButton: Button
+	+viewProfileButton(): void
+}	
+
+GroupView o-- UserView
+
+class UserProfileViewActivity {
+	+onBackPressed(): void
+}	
+
+UserProfileViewActivity --|> MmActivity
+	
+class CreateNewGroupActivity {
+	cancelButton: Button
+	+cancel(): void
+}	
+
+CreateNewGroupActivity --|> MmActivity
+	
+class ConfirmedGroupActivity {
+	usersList: List<UserView>
+	leaveButton: Button
+	+leaveButton(): void
+}	
+
+ConfirmedGroupActivity 	--|> MmActivity
+
+@enduml
