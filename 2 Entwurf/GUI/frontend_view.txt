@@ -61,6 +61,7 @@ class EditUserProfileActivity {
 EditUserProfileActivity --|> MmActivity
 
 class UserPictureView {
+	+UserPictureView(bigView: Boolean, hasSelector: Boolean)
 }
 
 EditUserProfileActivity o-- UserPictureView
@@ -132,12 +133,14 @@ class UserView {
 }	
 
 GroupView o-- UserView
+UserView o-- UserPictureView
 
 class UserProfileViewActivity {
 	+onBackPressed(): void
 }	
 
 UserProfileViewActivity --|> MmActivity
+UserProfileViewActivity o-- UserPictureView
 	
 class CreateNewGroupActivity {
 	cancelButton: Button

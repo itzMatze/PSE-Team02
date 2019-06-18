@@ -11,6 +11,8 @@ abstract class MmViewModel {
 	{abstract} +next(): void 
 }
 
+MmViewModel --|> ViewModel
+
 class BeginViewModel {
 	+gotoLogin(): void
 	+gotoRegister(): void
@@ -40,6 +42,7 @@ class EditUserProfileViewModel {
 EditUserProfileViewModel --|> MmViewModel
 
 class UserPictureViewModel {
+	+savePicture(): void
 }
 
 
@@ -92,12 +95,14 @@ class UserViewModel {
 }	
 
 GroupViewModel o-- UserViewModel
+UserViewModel o-- UserPictureViewModel
 
 class UserProfileViewModel {
 	+goBack()
 }	
 
 UserProfileViewModel --|> MmViewModel
+UserProfileViewModel o-- UserPictureViewModel
 	
 class CreateNewGroupViewModel {
 	+gotoGroupSelection()
