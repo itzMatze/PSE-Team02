@@ -49,11 +49,17 @@
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/SequenzdiagramRegistration.jpg}
 \end{center}
-
+\subsection*{Beschreibung}
+Der Client öffnet zum ersten mal die Anwendung MensaMeet und sieht den Registrierungsbildschrim. Dort soll er einen Nutzernamen und ein Passwort eingeben. Da der Nutzername eindeutig sein muss, wird beim Server angefragt, ob dieser Nutzername schon vergeben ist. Dazu wird in der Datenbank nach diesem Nutzernamen gesucht. Ist der Name schon vergeben, so wird er zurückgegeben und der Client erhält die Meldung "Dieser Nutzername ist bereits vergeben".
+Falls der Nutzername noch nicht vergeben ist, wird er nun der Datenbank hinzugefügt und dem Client wird die erfolgreiche Durchführung übermittelt. Der Client wird nun auf die nächste Seite geleitet.
+\newpage
 \subsection{Mensalinien wählen}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/chooseLineAndTimeSD.png}
 \end{center}
+\subsection*{Beschreibung}
+Der Client öffnet die Anwendung (die Registrierung ist bereits erfolgt). Nun soll der Client als Scrolldown-menü die Mensalinien mit ihrem jeweiligen Angebot zu sehen kriegen (Dies ist der "HomeScreen"). Dazu werden die Mensadaten über den Server von der Datenbank angefragt, aufbereitet und dem Client übermittelt. Dieser kann nun die Linien anklicken an denen er gern essen möchte. Danach stellt er das für ihn geeignete Zeitintervall ein. Diese Daten werden dem Server übermittelt, welcher in der Datenbank nach passenden Gruppen sucht und diese zurückgibt. Der Client kann sich die Gruppen anschauen und einer davon beitreten. Beim Versuch beizutreten wird dem Server die UserID und GroupID übermittelt. Es wird überprüft ob die Gruppe bereits voll ist, ist dies der Fall, erhält der Client eine Fehlermeldung und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Datenbank aktualisiert und dem Client der Beitritt bestätigt. 
+Falls keine Gruppen passend zu den Angaben des Clients gefunden wurde, erhält der Client eine passende Meldung und kann entweder zurück zum HomeScreen oder selbst eine Gruppe erstellen.
 
 
 \subsection{Gruppe beitreten}
@@ -61,15 +67,28 @@
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/SD_checkInfo&joinGroup.png}
 \end{center}
 
+\subsection*{Beschreibung}
+Der Client bekommt, passend zu seinen ausgewählten Linien und seinem eingestellten Zeitintervall, Gruppen in einem Scrolldown-menü angezeigt.
+Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an den Server eine Anfrage mit der GroupID gesendet. Der Server sucht die Gruppe in der Datenbank und übermittelt die angefragten Daten dem Client. Dieser drückt nun auf "Beitreten". Nun wird dem Server die UserID und GroupID übermittelt. Er prüft in der Datenbank ob die Gruppe bereits voll ist. Ist dies der Fall, erhält der Client eine Fehlermeldung : "Deine gewählte Gruppe ist bereits voll" und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Datenbank aktualisiert und dem Client der Beitritt bestätigt. 
+
+\newpage
 \subsection{Gruppe erstellen}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.jpg}
 \end{center}
+\subsection*{Beschreibung}
+Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.
 
+\newpage
 \subsection{Gruppe verlassen}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/leaveGroupSD.png}
 \end{center}
+
+\subsection*{Beschreiung}
+Der Client öffnet die App MensaMeet. Da er bereits Mitglied einer Gruppe ist, wird ihm die Detailansicht seiner Gruppe angezeigt.
+In dieser Ansicht ist ein Button "Gruppe verlassen". Der Client drückt diesen Button und muss seine Entscheidung bestätigen. Für den Austritt wird dem Server die UserID und GroupID übermittelt. Der Server sucht via GroudID die Gruppe in der Datenbank um sie zu aktualisieren. Der Client wird aus der Gruppe entfernt und die Mitgliederzahl der Gruppe überprüft. Ist diese nun bei 0, so wird die Gruppe aus der Datenbank gelöscht.
+Der Client erhält in beiden Fällen die Bestätigung zum Austritt aus der Gruppe und wird wieder zum HomeScreen geleitet.
 
 
 \chapter{Änderungen zum Pflichtenheft}
