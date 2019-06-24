@@ -1,0 +1,204 @@
+Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
+
+
+
+@startuml
+
+User <|-down- UserProfile
+Group "1" *-up- "*" UserProfile
+Line "1" *-up- "*" Meal
+MensaData "1" *-up- "*" Line
+
+class User {Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
+
+
+
+
+@startuml
+
+title Server Models - Class Diagramm
+
+User <|-down- UserProfile
+Group "1" *-up- "*" UserProfile
+Line "1" *-up- "*" Meal
+MensaData "1" *-up- "*" Line
+
+class User {
+  -String id
+  -String name
+  -String password
+  +<<Constructor>>User(string name, string password)
+  +string getId()
+  +string getName()
+  +string getPassword()
+}
+
+class UserProfile {
+  -String motto
+  -Date birthDate
+  -Sex gender
+  -Subject subject
+  -Status status
+  -int profilePictureId
+  +<<Constructor>>UserProfile(string motto, Date birthDate, Sex gender, Subject subject, Status status, int pictureId) 
+  +string getMotto()
+  +Date getBirthDate()
+  +Sex getGender()
+  +Subject getSubject()
+  +Status getStatus()
+  +int getProfilePictureId()
+}
+ 
+class Group {
+  -string id
+  -string name
+  -string motto
+  -int maxMembers
+  -string line
+  -Date meetingDate
+  -List<UserProfiles> users
+  +<<Constructor>> Group(string name, string motto, int maxMembers, string line, Date meetingDate, List<UserProfile> user)
+  +string getId()
+  +string getName()
+  +string getMotto()
+  +int getMaxMembers()
+  +string getLine()
+  +Date getMeetingDate()
+  +List<UserProfile> getUser()
+}
+
+class Meal {
+  -String name
+  -float price
+  -FoodType[] types
+  +<<Constructor>> Meal(string name, float price, FoodType[] types)
+  +string getName()
+  +float getPrice()
+  +FoodType[] getFoodTypes()
+}
+
+class Line {
+  -Meal[] meals
+  +<<Constructor>> Line(Meal[] meals)
+  +Meal[] getMeals()
+}
+
+class MensaData {
+  -Line[] lines
+  +<<Constructor>> MensaData(Line[] lines)
+  +Line[] getLines()
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Status {
+  MEAT
+  VEGETERIAN
+  VEGAN
+  PESCETERIAN
+}
+
+enum FoodType {
+  BEEF
+  REGIONAL_MEAT
+  PORK
+  REGIONAL_PORK
+  FISH
+  VEGETARIAN
+  VEGAN
+  LAB
+  ORGANIC
+  MENSA_VITAL
+}
+
+enum Subject {
+  IT
+  ECONOMY
+  MATH
+  PHYSICS
+  CHEMISTRY
+  BIOLIGY
+  LINGUISTIC
+}
+
+@enduml
+  -string id
+  +String getId()
+  +String name
+  +String password
+}
+
+class UserProfile {
+  +String motto
+  +Date birthDate
+  +Sex gender
+  +Subject subject
+  +Status status
+  +int profilePictureId
+}
+ 
+class Group {
+  +string id
+  +string name
+  +string motto
+  +int maxMembers
+  +string line
+  +Date meetingDate
+  +List<UserProfiles> users
+}
+
+class Meal {
+  +String name
+  +float price
+  +FoodType[] types
+}
+
+class Line {
+  +Meal[] meals
+}
+
+class MensaData {
+  +Line[] lines
+}
+
+enum Sex {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Status {
+  MEAT
+  VEGETERIAN
+  VEGAN
+  PESCETERIAN
+}
+
+enum FoodType {
+  BEEF
+  REGIONAL_MEAT
+  PORK
+  REGIONAL_PORK
+  FISH
+  VEGETARIAN
+  VEGAN
+  LAB
+  ORGANIC
+  MENSA_VITAL
+}
+
+enum Subject {
+  IT
+  ECONOMY
+  MATH
+  PHYSICS
+  CHEMISTRY
+  BIOLIGY
+  LINGUISTIC
+}
+
+@enduml
