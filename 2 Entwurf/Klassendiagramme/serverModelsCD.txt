@@ -1,39 +1,24 @@
 Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
 
 
-
-@startuml
-
-User <|-down- UserProfile
-Group "1" *-up- "*" UserProfile
-Line "1" *-up- "*" Meal
-MensaData "1" *-up- "*" Line
-
-class User {Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
-
-
-
-
 @startuml
 
 title Server Models - Class Diagramm
 
-User <|-down- UserProfile
-Group "1" *-up- "*" UserProfile
+Group "1" *-up- "*" User
 Line "1" *-up- "*" Meal
 MensaData "1" *-up- "*" Line
 
-class User {
-  -String id
+class Credentials {
   -String name
   -String password
   +<<Constructor>>User(string name, string password)
-  +string getId()
   +string getName()
   +string getPassword()
 }
 
-class UserProfile {
+class User {
+  -string id
   -String motto
   -Date birthDate
   -Sex gender
@@ -41,6 +26,7 @@ class UserProfile {
   -Status status
   -int profilePictureId
   +<<Constructor>>UserProfile(string motto, Date birthDate, Sex gender, Subject subject, Status status, int pictureId) 
+  +string getId()
   +string getMotto()
   +Date getBirthDate()
   +Sex getGender()
@@ -71,10 +57,12 @@ class Meal {
   -String name
   -float price
   -FoodType[] types
+  -Ingridients[] ingridients
   +<<Constructor>> Meal(string name, float price, FoodType[] types)
   +string getName()
   +float getPrice()
   +FoodType[] getFoodTypes()
+  +Ingidients[] getIngridients()
 }
 
 class Line {
@@ -89,80 +77,33 @@ class MensaData {
   +Line[] getLines()
 }
 
-enum Sex {
-  MALE
-  FEMALE
-  OTHER
+class Prefferences {
+  -List<Line> prefferedLines
+  -Time startTime
+  -Time endTime
+  +<<Constructor>> Prefferences(List<Line> prefferedLines, Time startTime, Time endTime)
+  +List<Line> getPrefferedLines()
+  +Time getStartTime()
+  +Time getEndTime()
 }
 
-enum Status {
-  MEAT
-  VEGETERIAN
-  VEGAN
-  PESCETERIAN
+enum MealLine {
+  LINE_ONE
+  LINE_TWO
+  LINE_THREE
+  LINE_FOUR_FIVE
+  CUTLET_BAR
+  LINE_SIX
+  LATE_LINE
+  CURRY_LINE
+  CAFETERIA
+  CAFETERIA_LATE
+  PIZZA_LINE
+  PIZZA_LINE_PASTA
+  PIZZA_LINE_SALAD
 }
 
-enum FoodType {
-  BEEF
-  REGIONAL_MEAT
-  PORK
-  REGIONAL_PORK
-  FISH
-  VEGETARIAN
-  VEGAN
-  LAB
-  ORGANIC
-  MENSA_VITAL
-}
-
-enum Subject {
-  IT
-  ECONOMY
-  MATH
-  PHYSICS
-  CHEMISTRY
-  BIOLIGY
-  LINGUISTIC
-}
-
-@enduml
-  -string id
-  +String getId()
-  +String name
-  +String password
-}
-
-class UserProfile {
-  +String motto
-  +Date birthDate
-  +Sex gender
-  +Subject subject
-  +Status status
-  +int profilePictureId
-}
- 
-class Group {
-  +string id
-  +string name
-  +string motto
-  +int maxMembers
-  +string line
-  +Date meetingDate
-  +List<UserProfiles> users
-}
-
-class Meal {
-  +String name
-  +float price
-  +FoodType[] types
-}
-
-class Line {
-  +Meal[] meals
-}
-
-class MensaData {
-  +Line[] lines
+enum Ingredients {
 }
 
 enum Sex {
@@ -172,10 +113,11 @@ enum Sex {
 }
 
 enum Status {
-  MEAT
-  VEGETERIAN
-  VEGAN
-  PESCETERIAN
+  PROFESSOR
+  COLLEGE_STUDENT
+  APPRENTICE
+  STUDENT
+  OTHER 
 }
 
 enum FoodType {
