@@ -35,7 +35,7 @@ Das Datainding kann als bidirektionaler Beobachter verstanden werden. Die lose K
 
 \subsection{Server}
 Für die Server Seite wird die MVC Architektur verwendet.
-Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  (In unserem Fall wird MySQL verwendet).
+Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  (In unserem Fall wird MySQL verwendet, als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern wollen wir JPA mit Hibernate benutzen).
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
 \section{Systemkomponenten}
 \section{Komponentenbeschreibung}
