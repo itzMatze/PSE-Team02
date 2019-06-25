@@ -10,38 +10,36 @@ Plant UML code:
 
 title Server Controller - Class Diagram
 
-
 class UserController {
-  +User getUserById(string userId)
-  +User[] getAllUser()
-  +void createUser(Credentials credentials)
+  +ResponseEntity<UserProfile> getUserById(string userId)
+  +ResponseEntity<void> createUser(Credentials credentials)
   ..for admins..
-  +void deleteUser(string userId)
+  +ResponseEntity<void> deleteUser(string userId)
 }
 
 class GroupController {
-  +Group getGroupById(string groupId)
-  +Group[] getGroupsByPrefferences(Prefferecnces prefs)
-  +void createGroup(Group group)
+  +ResponseEntity<Group> getGroupById(string groupId)
+  +ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)
+  +ResponseEntity<void> createGroup(Group group)
   ..for admins..
-  +void deleteGroup(string groupId)
+  +ResponseEntity<void> deleteGroup(string groupId)
 }
 
 class MembershipController {
-  +boolean addUserToGroup(string userId, string groupId)
-  +boolean removeUserFromGroup(string userId, string groupId)
+  +ResponseEntity<void> addUserToGroup(string userId, string groupId)
+  +ResponseEntity<void> removeUserFromGroup(string userId, string groupId)
 }
 
 class MensalineController {
-  +Line[] getCurrentLineInfo()
+  +ResponseEntity<MensaData> getMensaData()
 }
 
 class AuthenticationControler {
-  +Token login(Credentials credentials)
+  +ResponseEntity<Token> login(Credentials credentials)
 }
 
 class UserProfileController {
-  +void updateUserProfile(string userId, User user)
+  +ResponseEntity<void> updateUserProfile(UserProfile user)
 }
 
 @enduml
