@@ -1,0 +1,27 @@
+@startuml
+
+
+
+Client -> GUI: username, password
+activate Client
+activate GUI
+GUI -> Server: find(username)
+
+activate Server
+Server -> Database: boolean find(username)
+alt username taken
+activate Database
+Database --> Server: return true
+Server --> GUI: false
+GUI --> Client: show "username is taken"
+
+else      username free
+Database --> Server: return false
+Server -> Database: addUser(username, password)
+Database --> Server: return UserID
+Server --> GUI: UserID
+GUI -> GUI: loads profile page
+end
+
+
+@enduml
