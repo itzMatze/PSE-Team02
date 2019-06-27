@@ -1,32 +1,48 @@
 @startuml
-title Server Controller - Class Diagram
+actor user
 
-class MensaLineDataController {
-  +LineData[] getLineData()
-  +void updateLineData()
-}
+user -> GUI: open App
 
-class UserController {
-  +User getUserById(String userId)
-  +User addUser(User user)
-  +bool removeUser(String userId)
-  +bool updateUser(User user)
-}
+GUI -> server: String loadMenu()
 
-class GroupController {
-  +Group getGroupById(String groupId)
-  +Group addGroup(Group group)
-  +Group[] getGroupByPreferences(Preferences prefs)
-  +bool removeGroup(String groupId)
-}
+database db
+server -> db: Line[] getCurrentLineInfo()
+server <-- db: Line[]
 
-class MembershipController {
-  +bool addUserToGroup(String UserId, String groupId)
-  +bool removeUserFromGroup(String userId, String groupId)
-}
+GUI <-- server: return String
+user <-- GUI: show menu
 
-class AuthenticationController {
-  +User register(Credentials creds)
-  +User login(Credentials creds)
-}
+user -> GUI: choose line and time
+GUI -> server: Group[] getGroupsByPrefferencess(prefferences prefs)
+server -> db: Group[] getAllGroups()
+server <-- db: return Group[]
+
+alt
+
+GUI <-- server: return Group[]
+user <-- GUI: show available groups
+
+user -> GUI: choose one group
+GUI -> server: boolean joinGroup(String userId, String groupId)
+server -> db: boolean addUserToGroup(string userId, string groupId)
+
+alt 
+
+server <-- db: return true
+GUI <-- server: return true
+user <-- GUI: show confirmation
+
+
+else maximum reached
+
+server <-- db: return false
+GUI <-- server: return false
+user <-- GUI: show participation failure
+
+end
+else no group with same parameters
+
+GUI <-- server: return null
+user <-- GUI: create group or show homescreen
+end
 @enduml
