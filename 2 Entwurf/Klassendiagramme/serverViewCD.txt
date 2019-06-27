@@ -1,5 +1,5 @@
 
-Dieses Klassendiagramm zeigt die Klassen der Schnittstelle des Servers. Diese Klassen stellen die Funktionalitäten für die Kommunikation zwischen Client und Server bereit.
+Dieses Klassendiagramm zeigt die Klassen der Schnittstelle des Servers. Diese Klassen stellen die FunktionalitÃ¤ten fÃ¼r die Kommunikation zwischen Client und Server bereit.
 
 
 
