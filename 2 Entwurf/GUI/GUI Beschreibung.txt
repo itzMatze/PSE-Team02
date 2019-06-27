@@ -2,20 +2,20 @@
 
 Diese Oberfläche empfängt den Benutzer, wenn dieser die App das erste Mal startet. Er kann sich dann mit seinem bereits vorhandenem Account anmelden, falls er zum Beispiel nur ein neues Smartphone hat. Alternativ hat er die Möglichkeit sich zu registrieren und einen neuen Account anzulegen.
 
-+loginButton():void
-Diese Methode wird aufgerufen, wenn der Login-Button der Activity gedrückt wird. Sie ruft dann die gotoLoginPage() Methode in der Klasse BeginHandler auf.
-+registerButton():void
-Diese Methode wird aufgerufen, wenn der Register-Button der Activity gedrückt wird. Sie ruft dann die gotoRegisterPage() Methode in der Klasse BeginHandler auf.
++loginButton(): void
+Diese Methode wird aufgerufen, wenn der loginButton der Activity gedrückt wird. Sie ruft dann die gotoLoginPage() Methode in der Klasse BeginViewModel auf.
++registerButton(): void
+Diese Methode wird aufgerufen, wenn der registerButton der Activity gedrückt wird. Sie ruft dann die gotoRegisterPage() Methode in der Klasse BeginViewModel auf.
 
 
 
--BeginHandler
+-BeginViewModel
 
-Diese Klasse verwaltet alle Funktionen, die die BeginActivity dem Benutzer bietet.
+Diese Klasse verwaltet alle Funktionen, die die Klasse BeginActivity dem Benutzer bietet.
 
-+gotoLoginPage():void
++gotoLogin(): void
 Diese Methode startet die LoginActivity Klasse, damit der Benutzer sich mit seinem Account einloggen kann.
-+gotoRegisterPage():void
++gotoRegister(): void
 Diese Methode startet die RegisterActivity Klasse, damit der Benutzer sich mit seinen Daten registrieren und somit einen Account anlegen kann.
 
 
@@ -24,38 +24,315 @@ Diese Methode startet die RegisterActivity Klasse, damit der Benutzer sich mit s
 
 Diese Klasse bietet die Oberfläche der App, in der sich der Benutzer mit seinen Accountdaten anmelden kann.
 
-+loginButton():void
-Diese Methode wird aufgerufen, wenn der Benutzer seine Eingaben bestätigen will und sich anmelden will. Sie ruft dann die Methode login() in der Klasse LoginHandler auf und übergibt die eingegebenen Daten.
-+onBackPressed():void
-Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse LoginHandler aufgerufen wird.
++loginButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer seine Eingaben bestätigen will und sich anmelden will. Sie ruft dann die Methode login() in der Klasse LoginViewModel auf und übergibt die eingegebenen Daten.
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse LoginViewModel aufgerufen wird.
 
 
 
--LoginHandler
+-LoginViewModel
 
-Diese Klasse verwaltet alle Funktionen, die die LoginActivity dem Benutzer bietet.
+Diese Klasse verwaltet alle Funktionen, die die Klasse LoginActivity dem Benutzer bietet.
 
-+login(String userName, String password):void
++login(String userName, String password): void
 Diese Methode überprüft die Anmeldedaten und startet die Klasse ...Activity, falls die Überprüfung erfolgreich war. Falls nicht wird eine Fehlermeldung in der LoginActivity erzeugt.
-+goBack():void
++gotoBegin(): void
 Diese Methode startet die Klasse BeginActivity wieder.
 
 
 
 -RegisterActivity
 
-Dieser Klasse bietet die Oberfläche der App, in der sich der Benutzer neu registrieren kann.
+Diese Klasse bietet die Oberfläche der App, in der sich der Benutzer neu registrieren kann.
 
-+registerButton():void
-Diese Methode wird aufgerufen, wenn der Benutzer seine Angaben bestätigen will und mit den angegebenen Daten ein Account anlegen möchte. Dafür wird die Methode register() in der Klasse RegisterHandler aufgerufen und die eingegebenen Daten dieser Methode übergeben.
-+onBackPressed():void
-Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse RegisterHandler aufgerufen wird. Dafür wird allerdings erst überprüft, ob die Passwortwiederholung mit dem ersten übereinstimmt, sonst wird eine Fehlermeldung angezeigt.
++registerButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer seine Angaben bestätigen will und mit den angegebenen Daten ein Account anlegen möchte. Dafür wird die Methode register() in der Klasse RegisterViewModel aufgerufen und die eingegebenen Daten dieser Methode übergeben. Dafür wird allerdings erst überprüft, ob die Passwortwiederholung mit dem ersten übereinstimmt, sonst wird eine Fehlermeldung angezeigt.
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode gotoBegin() in der Klasse RegisterViewModel aufgerufen wird.
 
 
 
--RegisterHandler
+-RegisterViewModel
 
-Diese Klasse verwaltet alle Funktionen, die die RegisterActivity dem Benutzer bietet.
+Diese Klasse verwaltet alle Funktionen, die die Klasse RegisterActivity dem Benutzer bietet.
 
-+register(String userName, String password)
++register(String userName, String password): void
 Diese Methode überprüft, ob der userName, den der Benutzer angegeben hat, noch verfügbar ist. Falls dem so ist, wird der Account mit den angegebenen Daten erzeugt.
++gotoBegin(): void
+Diese Methode startet die Klasse BeginActivity wieder.
+
+
+
+-SetTimeActivity
+
+Diese Klasse bietet die Oberfläche der App, in der man als Benutzer die Zeit auswählen kann, zu der man essen gehen möchte.
+
++nextButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer seine Zeitangaben bestätigen will und dafür auf den nextButton der Activity tippt. Es wird die Methode saveTime() in der Klasse SetTimeViewModel aufgerufen und die eingegebenen Zeiten dieser Methode übergeben.
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode gotoHome() in der Klasse SetTimeViewModel aufgerufen wird. 
+
+
+
+-SetTimeViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse SetTimeActivity dem Benutzer bietet.
+
++saveTime(): void
+Diese Methode speichert die eingegebenen Zeiten zur weiteren Verwendung für die nachfolgenden Funktionen in der App ab.
++gotoHome()
+Diese Methode startet die Klasse ...Activity wieder.
+
+
+
+-CreateNewGroupActivity
+
+Diese Klasse bietet die Oberfläche der App, die es dem Benutzer ermöglicht eine neue Gruppe zu gründen.
+
++cancel(): void
+Diese Methode wird aufgerufen, wenn der Benutzer den Vorgang abbrechen will und dafür den cancelButton der Activity antippt. Dies hat zur Folge, dass die Klasse ...Activity gestartet wird.
+
+
+
+-CreateNewGroupViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse CreateNewGroupActivity dem Benutzer bietet.
+
++gotoGroupSelection(): void
+Diese Methode startet die Klasse ...Activity.
+
+
+
+-ConfirmedGroupActivity
+
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer die Gruppe, der er beigetreten ist, anzeigt.
+
++leaveButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer die Gruppe wieder verlassen möchte und dafür den leaveButton der Activity antippt. Um den Vorgang durchzuführen wird die Methode ... in der Klasse ConfirmedGroupViewModel aufgerufen.
+
+
+
+-ConfirmedGroupViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse ConfirmedGroupActivity dem Benutzer bietet.
+
++leaveGroup(): void
+Der Benutzer wird wieder aus der Gruppe entfernt und die Klasse ...Activity wird gestartet.
+
+
+
+-UserProfielViewActivity
+
+Diese Klasse zeigt dem Benutzer ein Benutzerprofil an.
+
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse UserProfileViewModel aufgerufen wird.
+
+
+
+-UserProfileViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserProfileViewModel dem Benutzer bietet.
+
++goBack(): void
+Diese Methode startet die Klasse ...Activity wieder.
+
+
+
+-EditUserProfileActivity
+
+Diese Klasse bietet die Oberfläche der App, die es dem Benutzer erlaubt sein Profil zu bearbeiten und diverse Änderungen daran vorzunehmen.
+
++saveButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer die getätigten Änderungen bestätigen will und dafür den saveButton antippt. Es wird die Methode saveProfile() in der Klasse EditUserProfileViewModel aufgerufen.
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode goBack() in der Klasse EditUserProfileViewModel aufgerufen wird.
+
+
+
+-EditUserProfileViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse EditUserProfileActivity dem Benutzer bietet.
+
++saveProfile(): void
+Diese Methode speichert alle Änderungen und Ergänzungen, die der Benutzer bei der Profilbearbeitung gemacht hat, und speichert diese.
++goBack(): void
+Diese Methode startet die Klasse ...Activity wieder.
+
+
+
+-HomeActivity
+
+Diese Klasse bietet die Oberfläche der App, die als Homescreen für den Benutzer agiert. Der Benutzer kann hier seine bevorzugten Linien auswählen, an denen er gerne essen gehen würde.
+
++nextButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer seine bevorzugten Linien ausgewählt hat und diese bestätigen will. Er tippt dafür den nextButton an und es wird somit die Methode saveLines() in der Klasse HomeViewModel aufgerufen.
++editUserProfileButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer den editUserProfileButton angetippt hat, weil er sein Profil bearbeiten will. Dafür wird die Methode editUserProfileButton() in der Klasse HomeViewModel aufgerufen.
++logoutButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer sich ausloggen will und dafür den logoutButton der Activity angetippt hat. Um den Vorgang durchzuführen, wird die Methode logoutButton() in der Klasse HomeViewModel aufgerufen.
+
+
+
+-HomeViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse HomeActivity dem Benutzer bietet.
+
++saveLines(): void
+Diese Methode speichert die Linien, die der Benutzer als Favoriten angegeben hat und startet die Klasse ...Activity.
++editUserProfileButton(): void
+Diese Methode startet die Klasse EditUserProfileActivity.
++logoutButton(): void
+Diese Methode entfernt die lokal auf dem Android-Gerät gespeicherten Anmeldedaten und startet die Klasse BeginActivity.
+
+
+
+-AdministerUsersActivity
+
+...
+
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode gotoHome() in der Klasse AdministerUsersViewModel aufgerufen wird.
+
+
+
+-AdministerUsersActivity
+
+...
+
++gotoHome(): void
+Diese Methode startet die Klasse HomeActivity.
+
+
+
+-GroupView
+
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer eine Gruppe und seine Teilnehmer anzeigt.
+
++joinButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer den joinButton der Activity angetippt hat, weil er dieser beitreten will. Dafür wird die Methode joinGroup() in der Klasse GroupViewModel aufgerufen.
+
+
+
+-GroupViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse GroupView dem Benutzer bietet.
+
++joinGroup(): void
+Diese Methode fügt den Benutzer in die Gruppe hinzu, die aktuell von der Klasse GroupView angezeigt wird.
+
+
+
+-GroupSelectionActivity
+
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer verschiedene Gruppen anzeigt, die anhand seiner davor eingegebenen Präferenzen ausgewählt wurden. Er kann hier die Gruppen antippen, um sich weitere Details über diese anzeigen zu lassen.
+
++createNewGroupButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer eine neue Gruppe gründen will und dafür auf den createNewGroupButton tippt. Sie ruft dann die Methode gotoCreateNewGroup() in der Klasse GroupSelectionViewModel auf.
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode gotoSetTimeViewModel() in der Klasse GroupSelectionViewModel aufgerufen wird.
+
+
+
+-GroupSelectionViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse GroupSelectionActivity dem Benutzer bietet.
+
++gotoCreateNewGroup(): void
+Diese Methode startet die Klasse CreateNewGroupActivity.
++gotoSetTimeViewModel(): void
+Diese Methode startet die Klasse SetTimeActivity.
+
+
+
+-AdministerGroupsActivity
+
+...
+
++onBackPressed(): void
+Überschreibt die Methode, die den Zurück-Button des Android-Geräts verwaltet, sodass die Methode gotoHome() in der Klasse AdministerGroupsViewModel aufgerufen wird.
+
+
+
+-AdministerGroupsViewModel
+
+...
+
++gotoHome(): void
+Diese Methode startet die Klasse HomeActivity.
+
+
+
+-UserView
+
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer ein anderes Profil anzeigt.
+
++viewProfileButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer auf den viewProfileButton getippt hat, weil er sich das Profil des anderen Benutzers ansehen will. Dafür wird die Methode gotoUserProfileView() in der Klasse UserViewModel aufgerufen.
+
+
+
+-UserViewModel
+
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserView dem Benutzer bietet.
+
++gotoUserProfileView()
+Diese Methode startet die Klasse ...Activity.
+
+
+
+-UserPictureView
+
+...
+
++UserPictureView(bigView: Boolean, hasSelector: Boolean): void
+Diese Methode ist der Konstruktor für diese Klasse.
+
+
+
+-UserPictureViewModel
+
+...
+
++savePicture(): void
+Diese Methode speichert das Bild, das der Benutzer angegeben hat, als neues Profilbild.
+
+
+
+-MmActivity
+
+Diese abstrakte Klasse bildet das Grundgerüst für die übrigen Activitys.
+
++homeButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer auf den homeButton getippt hat. Sie ruft die Methode gotoHome() in der Klasse MmViewModel auf.
++editUserProfileButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer auf den editUserProfileButton getippt hat, um sein Profil zu bearbeiten. Es wird die Methode gotoEditUserProfile() in der Klasse MmViewModel aufgerufen.
++nextButton(): void
+Diese Methode wird aufgerufen, wenn der Benutzer auf den nextButton tippt. Sie wird häufig von den Unterklassen überschrieben, um die Funktionalität korrekt auszuführen und damit der Benutzer zu der richtigen nächsten Oberfläche geführt wird.
+
+
+
+-MmViewModel
+
+Diese abstrakte Klasse verwaltet alle Funktionen, die die Klasse MmActivity ihren Unterklassen bereitstellt.
+
++gotoHome(): void
+Diese Methode startet die Klasse HomeActivity.
++gotoEditUserProfile(): void
+Diese Methode startet die Klasse EditUserProfileActivity.
++next(): void
+...
+
+
+
+-AppCompactActivity
+
+Diese Klasse bildet die Oberklasse für alle Activitys, also für alle Oberflächen, die die App hat.
+
++onCreate(): void
+Diese Methode initialisiert Activity und deren Elemente.
+
+
+
+-LineView
