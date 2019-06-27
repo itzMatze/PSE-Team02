@@ -7,20 +7,20 @@ Client -> server: getMenu()
 
 database db
 server -> db: getLine()
-server <-- db: return lines
+server <-- db: lines
 
-Client <-- server: return menu
+Client <-- server: menu
 user <-- Client: show menu
 
 user -> Client: choose line and time
 Client -> server: getGroupsByPrefferencess(prefs)
 server -> db: getAllGroups()
-server <-- db: return groups
-server --> server: filterGroups(prefs)
+server <-- db: groups
+server -> server: filterGroups(prefs)
 
 alt
 
-Client <-- server: return fitting groups
+Client <-- server: fitting groups
 user <-- Client: show available groups
 
 user -> Client: choose one group
@@ -29,21 +29,21 @@ server -> db: addUserToGroup(userToken, groupToken)
 
 alt 
 
-server <-- db: return confirmation
-Client <-- server: return confirmation
+server <-- db: confirmation
+Client <-- server: confirmation
 user <-- Client: show confirmation
 
 
 else maximum members reached
 
-server <-- db: return error
-Client <-- server: return error
+server <-- db: error
+Client <-- server: error
 user <-- Client: show participation failure
 
 end
 else no group with same parameters
 
-Client <-- server: return no groups
+Client <-- server: no groups
 user <-- Client: create group or show homescreen
 end
 @enduml
