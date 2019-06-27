@@ -1,48 +1,49 @@
 @startuml
 actor user
 
-user -> GUI: open App
+user -> Client: open App
 
-GUI -> server: String loadMenu()
+Client -> server: getMenu()
 
 database db
-server -> db: Line[] getCurrentLineInfo()
-server <-- db: Line[]
+server -> db: getLine()
+server <-- db: return lines
 
-GUI <-- server: return String
-user <-- GUI: show menu
+Client <-- server: return menu
+user <-- Client: show menu
 
-user -> GUI: choose line and time
-GUI -> server: Group[] getGroupsByPrefferencess(prefferences prefs)
-server -> db: Group[] getAllGroups()
-server <-- db: return Group[]
+user -> Client: choose line and time
+Client -> server: getGroupsByPrefferencess(prefs)
+server -> db: getAllGroups()
+server <-- db: return groups
+server --> server: filterGroups(prefs)
 
 alt
 
-GUI <-- server: return Group[]
-user <-- GUI: show available groups
+Client <-- server: return fitting groups
+user <-- Client: show available groups
 
-user -> GUI: choose one group
-GUI -> server: boolean joinGroup(String userId, String groupId)
-server -> db: boolean addUserToGroup(string userId, string groupId)
+user -> Client: choose one group
+Client -> server: joinGroup(userToken, groupToken)
+server -> db: addUserToGroup(userToken, groupToken)
 
 alt 
 
-server <-- db: return true
-GUI <-- server: return true
-user <-- GUI: show confirmation
+server <-- db: return confirmation
+Client <-- server: return confirmation
+user <-- Client: show confirmation
 
 
-else maximum reached
+else maximum members reached
 
-server <-- db: return false
-GUI <-- server: return false
-user <-- GUI: show participation failure
+server <-- db: return error
+Client <-- server: return error
+user <-- Client: show participation failure
 
 end
 else no group with same parameters
 
-GUI <-- server: return null
-user <-- GUI: create group or show homescreen
+Client <-- server: return no groups
+user <-- Client: create group or show homescreen
 end
 @enduml
