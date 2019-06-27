@@ -1,0 +1,28 @@
+@startuml
+
+
+title create group
+activate Client
+activate GUI
+activate Server
+activate Database
+Server --> GUI : returns fitting groups
+
+GUI --> Client: shwos dropdown menu
+
+Client -> GUI: klicks creategroup
+GUI -> Server: creategroup(mensaline, name, starttime, maxmembers, motto)
+Server -> Database: boolean find(groupname)
+alt groupname taken
+Database --> Server: return true 
+Server --> GUI: return false
+GUI --> Client: shows "groupname taken"
+else groupname free:
+Database -> Database: addgroup(group)
+Database --> Server: return groupID
+Server --> GUI: confirmation
+GUI --> Client: shows grouppage
+end
+
+
+@enduml
