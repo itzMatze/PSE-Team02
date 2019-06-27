@@ -1,27 +1,32 @@
 @startuml
 
 
+actor Bob as User
+User -> Client: Opens MensaMeet for the first time
 
-Client -> GUI: username, password
 activate Client
-activate GUI
-GUI -> Server: find(username)
+Client --> User: shows registration page
+User -> Client: types in E-Mail and password
+
+Client -> Server: registerUser(Crendentials)
 
 activate Server
-Server -> Database: boolean find(username)
-alt username taken
+Server -> Firebase: registerUser(Crendentials)
+activate Firebase
+
+Firebase --> Server: Token
+deactivate Firebase
 activate Database
-Database --> Server: return true
-Server --> GUI: false
-GUI --> Client: show "username is taken"
+Server -> Database: addUser(Token)
 
-else      username free
-Database --> Server: return false
-Server -> Database: addUser(username, password)
-Database --> Server: return UserID
-Server --> GUI: UserID
-GUI -> GUI: loads profile page
-end
-
+Database --> Server: Confirmation
+Server --> Client: User 
+note left: User beinhaltet Token, der lokal beim Client gespeichert wird
+Client --> User: shows profil edit page
+User -> Client: Enter Profil Data
+Client -> Server: updateUser(Token, Userprofil)
+Server -> Database: udateUser(Token, Userprofil)
+Database --> Server: Confirmation
+Server --> Client: Confirmation
 
 @enduml
