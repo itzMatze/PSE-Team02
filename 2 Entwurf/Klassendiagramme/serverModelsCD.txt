@@ -5,34 +5,29 @@ Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zu
 
 title Server Models - Class Diagramm
 
-Group "1" *-up- "*" User
-Line "1" *-up- "*" Meal
-MensaData "1" *-up- "*" Line
+Group "1" *-- "*" User : contains
+Line "1" *-- "*" Meal : offers
+MensaData "1" *-- "*" Line : contains 
+Preference "1" *-- "*" MealLine : contains
+Meal "1" *-- "*" Ingredients : contains
+Meal "1" *-- "*" FoodType : can be described with
+User "1" *-- "1" Gender : is of Sex
+User "1" *-- "1" Subject : is working in the field of 
+User "1" *-- "1" Status : has the title 
 
 class Credentials {
-  -String name
-  -String password
-  +<<Constructor>>User(string name, string password)
-  +string getName()
-  +string getPassword()
+  -string email
+  -string password
 }
 
 class User {
-  -string id
+  -string token
   -String motto
   -Date birthDate
   -Sex gender
   -Subject subject
   -Status status
   -int profilePictureId
-  +<<Constructor>>UserProfile(string motto, Date birthDate, Sex gender, Subject subject, Status status, int pictureId) 
-  +string getId()
-  +string getMotto()
-  +Date getBirthDate()
-  +Sex getGender()
-  +Subject getSubject()
-  +Status getStatus()
-  +int getProfilePictureId()
 }
  
 class Group {
@@ -41,50 +36,23 @@ class Group {
   -string motto
   -int maxMembers
   -string line
-  -Date meetingDate
-  -List<UserProfiles> users
-  +<<Constructor>> Group(string name, string motto, int maxMembers, string line, Date meetingDate, List<UserProfile> user)
-  +string getId()
-  +string getName()
-  +string getMotto()
-  +int getMaxMembers()
-  +string getLine()
-  +Date getMeetingDate()
-  +List<UserProfile> getUser()
+  -DateTime meetingDate
 }
 
 class Meal {
   -String name
   -float price
-  -FoodType[] types
-  -Ingridients[] ingridients
-  +<<Constructor>> Meal(string name, float price, FoodType[] types)
-  +string getName()
-  +float getPrice()
-  +FoodType[] getFoodTypes()
-  +Ingidients[] getIngridients()
 }
 
 class Line {
-  -Meal[] meals
-  +<<Constructor>> Line(Meal[] meals)
-  +Meal[] getMeals()
 }
 
 class MensaData {
-  -Line[] lines
-  +<<Constructor>> MensaData(Line[] lines)
-  +Line[] getLines()
 }
 
-class Prefferences {
-  -List<Line> prefferedLines
+class Preference {
   -Time startTime
   -Time endTime
-  +<<Constructor>> Prefferences(List<Line> prefferedLines, Time startTime, Time endTime)
-  +List<Line> getPrefferedLines()
-  +Time getStartTime()
-  +Time getEndTime()
 }
 
 enum MealLine {
@@ -104,9 +72,10 @@ enum MealLine {
 }
 
 enum Ingredients {
+  (listed below)
 }
 
-enum Sex {
+enum Gender {
   MALE
   FEMALE
   OTHER
@@ -134,13 +103,7 @@ enum FoodType {
 }
 
 enum Subject {
-  IT
-  ECONOMY
-  MATH
-  PHYSICS
-  CHEMISTRY
-  BIOLIGY
-  LINGUISTIC
+  (listed below)
 }
 
 @enduml
