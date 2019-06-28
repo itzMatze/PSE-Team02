@@ -1,4 +1,4 @@
-
+﻿
 Dieses Klassendiagramm zeigt die Klassen der Schnittstelle des Servers. Diese Klassen stellen die Funktionalitäten für die Kommunikation zwischen Client und Server bereit.
 
 
@@ -12,7 +12,7 @@ title Server Controller - Class Diagram
 
 class UserController {
   +ResponseEntity<UserProfile> getUserById(string userId)
-  +ResponseEntity<void> createUser(Credentials credentials)
+  +ResponseEntity<User> updateUserProfile(UserProfile user)
   ..for admins..
   +ResponseEntity<void> deleteUser(string userId)
 }
@@ -34,12 +34,9 @@ class MensalineController {
   +ResponseEntity<MensaData> getMensaData()
 }
 
-class AuthenticationControler {
-  +ResponseEntity<Token> login(Credentials credentials)
-}
-
-class UserProfileController {
-  +ResponseEntity<void> updateUserProfile(UserProfile user)
+class AccountService {
+  +ResponseEntity<User> login(Credentials credentials)
+  +ResponseEntity<User> register(Credentials credentials)
 }
 
 @enduml
