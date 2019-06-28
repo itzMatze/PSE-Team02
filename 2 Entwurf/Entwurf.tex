@@ -282,8 +282,9 @@ Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/Registration.png}
 \end{center}
 \subsection*{Beschreibung}
-Der Client öffnet zum ersten mal die Anwendung MensaMeet und sieht den Registrierungsbildschrim. Dort soll er einen Nutzernamen und ein Passwort eingeben. Da der Nutzername eindeutig sein muss, wird beim Server angefragt, ob dieser Nutzername schon vergeben ist. Dazu wird in der Datenbank nach diesem Nutzernamen gesucht. Ist der Name schon vergeben, so wird er zurückgegeben und der Client erhält die Meldung "Dieser Nutzername ist bereits vergeben".
-Falls der Nutzername noch nicht vergeben ist, wird er nun der Datenbank hinzugefügt und dem Client wird die erfolgreiche Durchführung übermittelt. Der Client wird nun auf die nächste Seite geleitet.
+Bob öffnet zum ersten mal die Applikation MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
+Bob sieht nun den Bildschirm zur Profilbearbeitung. Die Eingabe der Profildaten ist Pflicht, vorher kann er nicht weiter zu einer anderen Seite gelangen.
+Nachdem er seinen Nutzernamen, Motto, Alter, Geschlecht, Status, Fachrichtung eingegeben hat, werden diese Daten an den Server gesendet, der damit das Userprofil in der Datenbank aktualisiert. 
 \newpage
 \subsection{Mensalinien wählen}
 \begin{center}
@@ -306,7 +307,7 @@ Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an de
 \newpage
 \subsection{Gruppe erstellen}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/creategroup.png}
+	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.png}
 \end{center}
 \subsection*{Beschreibung}
 Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.
@@ -324,6 +325,11 @@ Der Client erhält in beiden Fällen die Bestätigung zum Austritt aus der Grupp
 
 
 \chapter{Änderungen zum Pflichtenheft}
+\begin{itemize}
+	\item Nutername und Gruppennamen müssen nicht mehr eindeutig sein \\
+	stattdessen wird für den Nutzer von Firebase ein eindeutiges Token generiert, das als Identifikator dient. Für Gruppen wird ebenfalls ein eindeutiges Token durch den Server generiert.
+	\item Zum Registrieren wird statt Nutzername und Password nun Email und Passwort benötigt. \\Diese Änderung ist bedingt durch die Nutzung von Firebase und erfüllt damit eines unserer Wunschkriterien: Dass eine Email Verifikation beim Registrieren stattfindet. 
+\end{itemize}
 
 \chapter{Glossar}
 
