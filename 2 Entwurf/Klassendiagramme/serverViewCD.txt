@@ -1,4 +1,4 @@
-
+﻿
 Dieses Klassendiagramm zeigt die Klassen der Schnittstelle des Servers. Diese Klassen stellen die Funktionalitäten für die Kommunikation zwischen Client und Server bereit.
 
 
@@ -10,14 +10,14 @@ Plant UML code:
 
 title Server Controller - Class Diagram
 
-class UserController {
+class UserService {
   +ResponseEntity<UserProfile> getUserById(string userId)
-  +ResponseEntity<void> createUser(Credentials credentials)
+  +ResponseEntity<User> updateUserProfile(UserProfile user)
   ..for admins..
   +ResponseEntity<void> deleteUser(string userId)
 }
 
-class GroupController {
+class GroupService {
   +ResponseEntity<Group> getGroupById(string groupId)
   +ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)
   +ResponseEntity<void> createGroup(Group group)
@@ -25,21 +25,18 @@ class GroupController {
   +ResponseEntity<void> deleteGroup(string groupId)
 }
 
-class MembershipController {
+class MembershipService {
   +ResponseEntity<void> addUserToGroup(string userId, string groupId)
   +ResponseEntity<void> removeUserFromGroup(string userId, string groupId)
 }
 
-class MensalineController {
+class MensalineService {
   +ResponseEntity<MensaData> getMensaData()
 }
 
-class AuthenticationControler {
-  +ResponseEntity<Token> login(Credentials credentials)
-}
-
-class UserProfileController {
-  +ResponseEntity<void> updateUserProfile(UserProfile user)
+class AccountService {
+  +ResponseEntity<User> login(Credentials credentials)
+  +ResponseEntity<User> register(Credentials credentials)
 }
 
 @enduml
