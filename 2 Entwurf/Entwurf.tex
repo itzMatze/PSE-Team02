@@ -51,27 +51,38 @@ View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Cli
 
 \section{Klassen des Server}
 \subsection{Klassendiagramm}
+
 \subsection{package.edu.kit.mensameet.models}
-\subsubsection{Class User}
+%Javadocs für Model%
+\subsubsection{Class Group}
+Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
 \subsubsection*{Beschreibung}
-Diese Klasse beschreibt einen User 
+Dies ist eine Datenhalterklasse für eine Gruppe. 
 
-\subsubsection*{Konstruktor}
-public User(String name, String password)
+\subsection{Class User}
+\subsection*{Beschreibung}
+Dies ist eine Datenhalterklasse für einen User.
 
-\subsubsection*{Methoden}
-\begin{addmargin}[25pt]{0pt}
+\subsection{Class Crendentials}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die Zugangsdaten (engl. Crendentials) eines Nutzers.
 
-\subsubsection*{Paramter}
-\begin{itemize}
-\item
-\item
-\item
-\end{itemize}
+\subsection{Class MensaData}
+\subsection*{Beschreibung}
+Diese Klasse beinhaltet den Speiseplan der Mensa des aktuellen Tages.
 
-\subsubsection*{Rückgabewert}
-\end{addmargin}
+\subsection{Class Line}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt den Speiseplan der einzelnen Linien bzw. Werke an der Mensa.
 
+\subsection{Class Meal}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die einzelnen Speisen die an der Mensa angeboten werden.
+Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
+
+\subsection{Class Preferences}
+\subsection*{Beschreibung}
+In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 
 %------------ Java Doc for the sever view package ---------------------
 
