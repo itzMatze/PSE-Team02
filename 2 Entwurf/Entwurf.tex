@@ -23,24 +23,23 @@
 
 \chapter{Grobentwurf}
 \section{Systemarchitektur}
-Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu hat jeder Client, nachdem er sich einmal registriert hat, eine eindeutige User-ID. Der Server verwaltet eine Datenbank, in welcher User- und Gruppeninformationen gehalten werden. 
+Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu erhält jeder User der sich registriert ein eindeutiges UserToken, das auf seinem Endgerät gespeichert wird. Der Server verwaltet eine Datenbank, in welcher die Mensadaten und User- und Gruppeninformationen gehalten werden. 
 Die Client-Seite der Anwendung wird mithilfe der MVVM (Model-View-Viewmodel) Architekur umgesetzt.
 Die Server-Seite mithilfe der MVC (Model-View-Control) Architektur.
+\section{Systemkomponenten}
 
 \subsection{Client}
 Die Client Seite bedient sich der MVVM Architektur. Die View dient zum anzeigen von Daten, sie beinhaltet alle grafischen Elemente, stellt also die GUI dar. Im Model werden die Daten gehalten und Funktionen zur Manipulation der Daten bereitgestellt.
 Das Viewmodel enthält die Darstellungslogik für die View und kapselt sie von der Anwendungslogik, die sich im Model befindet, ab.
-View und Viewmodel sind durch Databinding nur lose gekoppelt. Dadurch kann die View problemlos ausgetauscht werden bzw. können mehrere verscheidene Views (z.b. angepasst an Tablet, Desktop,...) zum selben Viewmodel existieren.
-Das Datainding kann als bidirektionaler Beobachter verstanden werden. Die lose Kopplung verbessert die Testbarkeit.
+View und Viewmodel sind durch Databinding nur lose gekoppelt, dadurch kann die View problemlos ausgetauscht werden bzw. können mehrere verscheidene Views (z.b. angepasst an Tablet, Desktop,...) zum selben Viewmodel existieren.
+Das Datainding kann als bidirektionaler Beobachter verstanden werden: View und Viewmodel kennen die interne Struktur voneinander nicht, aber Benachrichtigen einander, wenn es Änderungen gibt. Diese lose Kopplung durch Databinding verbessert die Testbarkeit, da so View und Viewmodel unabhängig voneiander getestet werden können.
 
 \subsection{Server}
 Für die Server Seite wird die MVC Architektur verwendet.
-Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  (In unserem Fall wird MySQL verwendet, als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern wollen wir JPA mit Hibernate benutzen).
+Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  In unserem Fall wird die relationale Datenbank MySQL verwendet. Als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern des Servers wird JPA (Java Persistance API) mit Hibernate genutzt.
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
-\section{Systemkomponenten}
-\section{Komponentenbeschreibung}
-\subsection{Client}
-\subsection{Server}
+
+\subsection{Frameworks und Interfaces}
 
 
 \chapter{Feinentwurf}
