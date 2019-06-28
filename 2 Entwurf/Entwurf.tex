@@ -304,7 +304,7 @@ Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an de
 \newpage
 \subsection{Gruppe erstellen}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.jpg}
+	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup}
 \end{center}
 \subsection*{Beschreibung}
 Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.
