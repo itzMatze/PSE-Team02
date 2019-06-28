@@ -7,7 +7,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{ae}
 \usepackage{graphicx}
-
+\usepackage{tabu}
 
 \begin{document}
 \title{Entwurf}
@@ -71,6 +71,59 @@ public User(String name, String password)
 
 \subsubsection*{Rückgabewert}
 \end{addmargin}
+
+
+%------------ Java Doc for the sever view package ---------------------
+
+
+\subsection{package.edu.kit.mensameet.view}
+
+Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden.
+
+\subsubsection{Class UserService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Daten abzufragen und zu bearbeiten. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+
+\subsubsection*{Paramter}
+\begin{itemize}
+\item
+\item
+\item
+\end{itemize}
+
+\subsubsection*{Rückgabewert}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class UserService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Daten abzufragen und zu bearbeiten. 
+
+\subsubsection*{Konstruktor}
+public User(String name, String password)
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+
+\subsubsection*{Paramter}
+\begin{itemize}
+\item
+\item
+\item
+\end{itemize}
+
+\subsubsection*{Rückgabewert}
+\end{addmargin}
+
+
+
+%-------------- Java Doc for the server controller package --------------
+
+
 
 \subsection{package.edu.kit.mensameet.services}
 \subsubsection{Class UserServices}
@@ -264,11 +317,44 @@ Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
 \end{addmargin}
 
 
+\section{HTTP Protokoll}
+
+Die REST Endpoints die in der Tabelle aufgelistet sind werden für die Kommunikation zwischen Client und Server verwendet. \\
+
+\resizebox{16cm}{!} {
+\begin{tabu} { | l | l | l | l | } 
+ \hline
+ Request Type & Endpoint & Payload & Beschreibung \\ [0.5ex] 
+ \hline
+ GET  & /user/\{token\} &  & Liefert den User mit dem übergebenem Token. \\ 
+ 
+ POST & /user  & User & Updated den User (Token liegt in User) \\ 
+ \hline
+GET & /group/{token} & & Liefert die Gruppe mit dem übergebenem Token. \\
+POST & /group-prefferences & Preferrences & Liefert alle Gruppen die zu den übergebenen Prefferenzen passen. \\
+POST  & /create-group/  & Group & Erstellt die übergebene Gruppe. \\
+DELETE  & /group/\{token\} & & Löscht die Gruppe mit dem übergebenen Token. \\
+
+\hline 
+
+POST  & /add-user-to-group?user=\{userToken\}\&group={groupToken} & & Fügt den User mit dem userToken zu der Gruppe mit dem groupToken. \\
+POST  & /remove-user-from-group?user=\{userToken\}\&group={groupToken} & & Entfernt den User mit dem userToken von der Gruppe mit dem groupToken. \\
+
+\hline
+
+POST & /login & email, password & Meldet den Client an dem Account mit den übergebenen Anmeldedaten an. \\
+POST & /register & email, password & Erstellt einen Account mit den übergebenen Anmeldedaten. \\
+
+\hline
+
+GET &  /mensadata & & Liefert die aktuellen Mensadaten.\\
+
+\hline
+
+\end{tabu}
+}
 
 
-
-
-\subsubsection{Muster}
 
 
 \chapter{Datenstrukturen}
@@ -297,7 +383,7 @@ Falls keine Gruppen passend zu den Angaben des Clients gefunden wurde, erhält d
 
 \subsection{Gruppe beitreten}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/SD_checkInfo&joinGroup.png}
+	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/checkInfoAndJoinGroupSD.png}
 \end{center}
 
 \subsection*{Beschreibung}
@@ -307,7 +393,8 @@ Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an de
 \newpage
 \subsection{Gruppe erstellen}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.png}
+\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.png}
+
 \end{center}
 \subsection*{Beschreibung}
 Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.

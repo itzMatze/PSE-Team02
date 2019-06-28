@@ -1,33 +1,52 @@
 Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
 
 
+
+@startuml
+
+User <|-down- UserProfile
+Group "1" *-up- "*" UserProfile
+Line "1" *-up- "*" Meal
+MensaData "1" *-up- "*" Line
+
+class User {Das folgende Klassendiagramm zeigt die Klassen des Servers, die für die Model zuständig sind und ihre Beziehungen.
+
+
+
+
 @startuml
 
 title Server Models - Class Diagramm
 
-Group "1" *-- "*" User : contains
-Line "1" *-- "*" Meal : offers
-MensaData "1" *-- "*" Line : contains 
-Preference "1" *-- "*" MealLine : contains
-Meal "1" *-- "*" Ingredients : contains
-Meal "1" *-- "*" FoodType : can be described with
-User "1" *-- "1" Gender : is of Sex
-User "1" *-- "1" Subject : is working in the field of 
-User "1" *-- "1" Status : has the title 
-
-class Credentials {
-  -string email
-  -string password
-}
+User <|-down- UserProfile
+Group "1" *-up- "*" UserProfile
+Line "1" *-up- "*" Meal
+MensaData "1" *-up- "*" Line
 
 class User {
-  -string token
+  -String id
+  -String name
+  -String password
+  +<<Constructor>>User(string name, string password)
+  +string getId()
+  +string getName()
+  +string getPassword()
+}
+
+class UserProfile {
   -String motto
   -Date birthDate
   -Sex gender
   -Subject subject
   -Status status
   -int profilePictureId
+  +<<Constructor>>UserProfile(string motto, Date birthDate, Sex gender, Subject subject, Status status, int pictureId) 
+  +string getMotto()
+  +Date getBirthDate()
+  +Sex getGender()
+  +Subject getSubject()
+  +Status getStatus()
+  +int getProfilePictureId()
 }
  
 class Group {
@@ -36,57 +55,51 @@ class Group {
   -string motto
   -int maxMembers
   -string line
-  -DateTime meetingDate
+  -Date meetingDate
+  -List<UserProfiles> users
+  +<<Constructor>> Group(string name, string motto, int maxMembers, string line, Date meetingDate, List<UserProfile> user)
+  +string getId()
+  +string getName()
+  +string getMotto()
+  +int getMaxMembers()
+  +string getLine()
+  +Date getMeetingDate()
+  +List<UserProfile> getUser()
 }
 
 class Meal {
   -String name
   -float price
+  -FoodType[] types
+  +<<Constructor>> Meal(string name, float price, FoodType[] types)
+  +string getName()
+  +float getPrice()
+  +FoodType[] getFoodTypes()
 }
 
 class Line {
+  -Meal[] meals
+  +<<Constructor>> Line(Meal[] meals)
+  +Meal[] getMeals()
 }
 
 class MensaData {
+  -Line[] lines
+  +<<Constructor>> MensaData(Line[] lines)
+  +Line[] getLines()
 }
 
-class Preference {
-  -Time startTime
-  -Time endTime
-}
-
-enum MealLine {
-  LINE_ONE
-  LINE_TWO
-  LINE_THREE
-  LINE_FOUR_FIVE
-  CUTLET_BAR
-  LINE_SIX
-  LATE_LINE
-  CURRY_LINE
-  CAFETERIA
-  CAFETERIA_LATE
-  PIZZA_LINE
-  PIZZA_LINE_PASTA
-  PIZZA_LINE_SALAD
-}
-
-enum Ingredients {
-  (listed below)
-}
-
-enum Gender {
+enum Sex {
   MALE
   FEMALE
   OTHER
 }
 
 enum Status {
-  PROFESSOR
-  COLLEGE_STUDENT
-  APPRENTICE
-  STUDENT
-  OTHER 
+  MEAT
+  VEGETERIAN
+  VEGAN
+  PESCETERIAN
 }
 
 enum FoodType {
@@ -103,7 +116,14 @@ enum FoodType {
 }
 
 enum Subject {
-  (listed below)
+  IT
+  ECONOMY
+  MATH
+  PHYSICS
+  CHEMISTRY
+  BIOLIGY
+  LINGUISTIC
 }
 
 @enduml
+ 

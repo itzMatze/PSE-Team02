@@ -1,0 +1,16 @@
+GET /user/{token}
+POST /user (Payload: User user)
+DELETE /user/{token}
+
+GET /group/{token}
+POST /group-prefferences (Payload: Preferrences preffs)
+POST /create-group/ (Payload: Group group)
+DELETE /group/{token}
+
+POST /add-user-to-group/{userToken}/{groupToken}
+POST /remove-user-from-group/{userToken}/{groupToken}
+
+POST /login    (Payload: string email, string password)
+POST /register (Payload: string email, string password)
+
+GET /mensadata
