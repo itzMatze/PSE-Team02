@@ -266,6 +266,8 @@ Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
 
 
 
+
+
 \subsubsection{Muster}
 
 
@@ -294,7 +296,7 @@ Falls keine Gruppen passend zu den Angaben des Clients gefunden wurde, erhält d
 
 \subsection{Gruppe beitreten}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/SD_checkInfo&joinGroup.png}
+	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/checkInfoAndJoinGroupSD.png}
 \end{center}
 
 \subsection*{Beschreibung}
@@ -304,7 +306,8 @@ Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an de
 \newpage
 \subsection{Gruppe erstellen}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup}
+\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup}
+
 \end{center}
 \subsection*{Beschreibung}
 Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.

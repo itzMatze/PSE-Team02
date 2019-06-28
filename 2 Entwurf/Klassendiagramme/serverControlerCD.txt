@@ -1,0 +1,37 @@
+@startuml
+title Server Controller - Class Diagram
+
+class MensaLineDataController {
+  +LineData[] getLineData()
+  +void updateLineData()
+}
+
+class UserController {
+  +User getUserById(String userId)
+  +User addUser(User user)
+  +bool removeUser(String userId)
+  +bool updateUser(User user)
+}
+
+class GroupController {
+  +Group getGroupById(String groupId)
+  +Group addGroup(Group group)
+  +Group[] getGroupByPreferences(Preferences prefs)
+  +bool removeGroup(String groupId)
+}
+
+class MembershipController {
+  +bool addUserToGroup(String UserId, String groupId)
+  +bool removeUserFromGroup(String userId, String groupId)
+}
+
+class AuthenticationController {
+  +User register(Credentials creds)
+  +User login(Credentials creds)
+}
+
+class TimeController {
+  +void deleteAllGroups()
+  +bool startMensaCrawler()
+}
+@enduml

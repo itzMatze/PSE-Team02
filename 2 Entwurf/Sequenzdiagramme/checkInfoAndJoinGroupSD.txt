@@ -1,0 +1,44 @@
+@startuml
+actor User
+activate User
+User-> GUI: asks for group info
+activate GUI
+
+GUI -> Server: askGroupInfo(currentGroupToken)
+activate Server
+
+Server -> Database: getGroup(groupToken)
+activate Database
+
+Server <-- Database: return group
+deactivate Database
+
+GUI <-- Server: showGroupInfo(currentGroupToken)
+deactivate Server
+User<--GUI:shows group info
+
+User-> GUI: clicks on "join the group" button
+GUI -> Server: joinGroup(currentGroupToken)
+		activate Server
+		Server -> Database: addMember(groupToken,userToken)
+	    activate Database
+	    
+alt group is not full	
+		Server <-- Database:return true			
+		GUI <-- Server:return true
+		User<-GUI:show group page with confirmation
+
+else group is full
+		Server <-- Database:return false	
+		deactivate Database		
+		GUI <-- Server:return false
+		deactivate Server	
+		User<-GUI:show error: "the chosen group is full"
+		User<-GUI:show "choose one group" page
+
+end
+deactivate GUI
+deactivate User
+
+
+@enduml
