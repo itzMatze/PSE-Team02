@@ -10,14 +10,14 @@ Plant UML code:
 
 title Server Controller - Class Diagram
 
-class UserController {
+class UserService {
   +ResponseEntity<UserProfile> getUserById(string userId)
   +ResponseEntity<User> updateUserProfile(UserProfile user)
   ..for admins..
   +ResponseEntity<void> deleteUser(string userId)
 }
 
-class GroupController {
+class GroupService {
   +ResponseEntity<Group> getGroupById(string groupId)
   +ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)
   +ResponseEntity<void> createGroup(Group group)
@@ -25,12 +25,12 @@ class GroupController {
   +ResponseEntity<void> deleteGroup(string groupId)
 }
 
-class MembershipController {
+class MembershipService {
   +ResponseEntity<void> addUserToGroup(string userId, string groupId)
   +ResponseEntity<void> removeUserFromGroup(string userId, string groupId)
 }
 
-class MensalineController {
+class MensalineService {
   +ResponseEntity<MensaData> getMensaData()
 }
 
