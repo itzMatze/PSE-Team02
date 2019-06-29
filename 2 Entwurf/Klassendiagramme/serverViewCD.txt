@@ -11,23 +11,23 @@ Plant UML code:
 title Server Controller - Class Diagram
 
 class UserService {
-  +ResponseEntity<UserProfile> getUserById(string userId)
+  +ResponseEntity<UserProfile> getUserById(string token)
   +ResponseEntity<User> updateUserProfile(UserProfile user)
   ..for admins..
-  +ResponseEntity<void> deleteUser(string userId)
+  +ResponseEntity<void> deleteUser(string token)
 }
 
 class GroupService {
-  +ResponseEntity<Group> getGroupById(string groupId)
+  +ResponseEntity<Group> getGroupById(string token)
   +ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)
   +ResponseEntity<void> createGroup(Group group)
   ..for admins..
-  +ResponseEntity<void> deleteGroup(string groupId)
+  +ResponseEntity<void> deleteGroup(string token)
 }
 
 class MembershipService {
-  +ResponseEntity<void> addUserToGroup(string userId, string groupId)
-  +ResponseEntity<void> removeUserFromGroup(string userId, string groupId)
+  +ResponseEntity<void> addUserToGroup(string userToken, string groupToken)
+  +ResponseEntity<void> removeUserFromGroup(string userToken, string groupToken)
 }
 
 class MensalineService {
