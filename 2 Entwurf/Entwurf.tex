@@ -135,75 +135,89 @@ public User(String name, String password)
 
 
 
-\subsection{package.edu.kit.mensameet.services}
-\subsubsection{Class UserServices}
+\subsection{package.edu.kit.mensameet.controller}
+\subsubsection{Class UserController}
 \subsubsection*{Beschreibung}
-Die Klasse beinhaltet die für den User zuständigen Services
+Diese Klasse ist der User Controller und beinhaltet die für den User zuständigen Methoden
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public User getUserById(String userId)\\
-	Anfrage auf ein User Profil mit der gegebenen und eindeutigen User ID
+\item public User getUser(String userToken)\\
+	Mit dieser Methode wird eine Anfrage nach einem Userprofil gestellt. Es wird nach dem eindeutigen User Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID eines Userprofils
+	\item userToken \\
+		Eindeutiger Token eines Userprofils
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item User Profil mit allen Parametern 
+	\item Userprofil
 	\end{itemize}
 
-\item Public User addUser(User user)\\
-	Hinzufügen eines Users zur Datenbank
+\item public User addUser(User user)\\
+	Diese Methode fügt einen User zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item user \\
-		Eindeutiges User Profil
+		Eindeutiges Userprofil
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item User Profil
+	\item Userprofil
 	\end{itemize}
 	
-\item Public bool removeUser(String userId)\\
-	User Profil aus der Datenbank löschen
+\item public bool removeUser(String userToken)\\
+	Diese Methode löscht ein Userprofil aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID eines User Profils
+	\item userToken \\
+		Eindeutiger Token eines Userprofils
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item True falls User Profil erfolgreich gelöscht wurde und false falls nicht
+	\item Wird das Userprofil erfolgreich gelöscht, so wird eine Bestätigung zurückgegeben. Wenn der Löschvorgang fehlschlägt wird eine Fehlermeldung zurückgegeben
+	\end{itemize}
+
+
+\item public bool updateUser(User user)\\
+	Diese Methode überschreibt ein bestehendes Userprofil mit einem Userprofil des selben Tokens, aber geänderten Parametern
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+		Eindeutiges Userprofil mit geänderten Parametern (bis auf Token)
+	\end{itemize}
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Wird das Userprofil erfolgreich überschrieben, so wird eine Bestätigung zurückgegeben. Wenn das Überschreiben fehlschlägt wird eine Fehlermeldung zurückgegeben
 	\end{itemize}
 \end{itemize}
+
 \end{addmargin}
 
-\subsubsection{Class GroupService}
+\subsubsection{Class GroupController}
 \subsubsection*{Beschreibung}
-Diese Klasse beschreibt alle für Gruppen zuständige Services
+Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zuständigen Methoden
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public Group getGroupById(String groupId)\\
-	Anfrage nach einer Gruppe mit der gegebenen und eindeutigen Gruppen ID
+\item public Group getGroup(String groupToken)\\
+	Mit dieser Methode wird eine Anfrage nach einer Gruppe gestellt. Es wird nach dem eindeutigen Group Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item groupId \\
-		Eindeutige Gruppen ID
+	\item groupToken \\
+		Eindeutiger Gruppen Token
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
 	\item Gruppe 
 	\end{itemize}
 	
-\item Public Group addGroup(Group group)\\
-	Hinzufügen einer Gruppe zur Datenbank
+\item public Group addGroup(Group group)\\
+	Diese Methode fügt eine Gruppe zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item group \\
@@ -211,116 +225,145 @@ Diese Klasse beschreibt alle für Gruppen zuständige Services
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Hinzugefügte Gruppe 
+	\item Die hinzugefügte Gruppe wird zurückgegeben
 	\end{itemize}
 	
-\item Public Group[] getGroupByPreferences(Preferences prefs)\\
-	Abfrage nach Gruppen mit passenden Präferenzen
+\item public Group[] getGroupByPreferences(Preferences prefs)\\
+	Diese Methode sucht nach Gruppen mit den passenden Präferenzen
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item prefs \\
-		Nötige Präferenzen zur Findung einer passenden Gruppe(Linie und Uhrzeit)
+		Nötige Präferenzen zur Findung einer passenden Gruppe (Linie und Uhrzeit)
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Alle Gruppen mit übereinstimmenden Präferenzen
+	\item Es werden alle Gruppen mit übereinstimmenden Präferenzen zurückgegeben
 	\end{itemize}
 
-\item Public bool removeGroup(String groupId)\\
-	Löscht Gruppe aus der Datenbank
+\item public bool removeGroup(String groupToken)\\
+	Diese Methode löscht eine Gruppe aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item groupId \\
-		Eindeutige Gruppen ID der zu löschenden Gruppe
+	\item groupToken \\
+		Eindeutiger Group Token der zu löschenden Gruppe
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls die Gruppe erfolgreich gelöscht wurde und false wenn nicht
+	\item Wird die Gruppe erfolgreich gelöscht, so wird eine Bestätigung zurückgegeben. Wenn der Löschvorgang fehlschlägt wird eine Fehlermeldung zurückgegeben
 	\end{itemize}
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class MensaLineDataService}
+\subsubsection{Class MensaDataController}
 \subsubsection*{Beschreibung}
-Diese Klasse enthält die Services die für die Verwaltung der Mensadaten zuständig sind
+Diese Klasse ist der Mensadaten Controller und enthält die Methoden, die für die Verwaltung der Mensadaten zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public LineData[] grablineData()\\
-	Abfrage des tagesaktuellen Speiseplans aller Linien vom Studentenwerk
+\item public LineData[] getLineData()\\
+	Diese Methode fragt die Datenbank nach dem tagesaktuellen Speiseplan ab
 
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Array aller Linien 
+	\item Es werden alle Essenslinien mit tagesaktuellem Menü zurückgegeben
 	\end{itemize}
 	
-\item Public LineData[] getLineData()\\
-	Abrufen der des tagesaktuellen Speiseplans aller Linien aus der Datenbank
-	\subsubsection*{Rückgabewert}
-	\begin{itemize}
-	\item Array aller Linien
-	\end{itemize}
+\item public void updateLineData()\\
+	Diese Methode beinhaltet einen Crawler der den tagesaktuellen Speiseplan der Mensa vom Studentenwerk bezieht und anschließend in der Datenbank speichert
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class MembershipService}
+\subsubsection{Class MembershipController}
 \subsubsection*{Beschreibung}
-Diese Klasse beinhaltet die Services die sich um die Gruppenmitgliedschaft der einzelnen User kümmert
+Diese Klasse ist der Membership Controller und beinhaltet die Methoden, die für die Gruppenmitgliedschaft der einzelnen User zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public bool addUserToGroup(String UserId, String groupId)\\
-	Fügt einen User zu einer Gruppe hinzu
+\item public bool addUserToGroup(String UserToken, String groupToken)\\
+	Diese Methode fügt einen User zu einer Gruppe hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID des Users der hinzugefügt werden soll
-	\item groupId \\
-		Eindeutige ID der Gruppe zu der der User hinzugefügt werden soll
+	\item userToken \\
+		Eindeutiger Token des Users der zur Gruppe hinzugefügt werden soll
+	\item groupToken \\
+		Eindeutiger Token der Gruppe, zu der der User hinzugefügt werden soll
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich hinzugefügt und false falls nicht
+	\item Falls das Hinzufügen zur Gruppe erfolgreich war, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 	
-\item Public bool removeUserFromGroup(String userId, String groupId)\\
-	Beendet die Zugehörigkeit eines Mitglieds zu einer Gruppe
+\item public bool removeUserFromGroup(String userToken, String groupToken)\\
+	Diese Methode entfernt einen User aus einer Gruppe
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID des Users der aus der Gruppe entfernt werden soll
-	\item groupId \\
-		Eindeutige ID der Gruppe aus der der User entfernt werden soll
+	\item userToken \\
+		Eindeutiger Token des Users, der aus der Gruppe entfernt werden soll
+	\item groupToken \\
+		Eindeutiger Token der Gruppe, aus der der User entfernt werden soll
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich aus der Gruppe entfernt und false falls nicht
+	\item Falls das Entfernen aus der Gruppe erfolgreich war, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class UserProfilService}
+\subsubsection{Class AuthenticationController}
 \subsubsection*{Beschreibung}
-Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
+Diese Klasse ist der Authentication Controller und beinhaltet die Methoden, die für die Registrierung und das Anmelden eines Users zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public bool updateUserProfile(User user)\\
-	Überschreibt bereits vorhandenes User Profil mit neuem Profil (ID bleibt unverändert)
+\item public User register(Credentials creds)\\
+	Diese Methode ist für die Registrierung eines Users zuständig
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item user \\
-		User Profil mit veränderten Parametern
+	\item creds \\
+		Die vom User festgelegten Daten zur Registrierung, bestehend aus E-Mail und Passwort
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich geändert und false falls nicht
+	\item Es wird ein leeres Userprofil zurückgegeben
+	\end{itemize}
+	
+\item public User login(Credentials creds)\\
+	Diese Methode ist für die Ameldung eines Users zuständig
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item creds \\
+		Die vom User bei der Registrierung festgelegten Daten, bestehend aus E-Mail und Passwort
+	\end{itemize}
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Es wird das UserProfil des Users zurückgegeben
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection{Class TimeController}
+\subsubsection*{Beschreibung}
+Diese Klasse ist der Time Controller und beinhaltet die Methoden, die für die zeitlich festgelegte Abläufe zuständig ist
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item public void deleteAllGroups()\\
+	Diese Methode löscht am Ende des Tages alle Gruppen
+	
+\item public bool startMensaCrawler()\\
+	Diese Methode startet jeden Morgen den Aufruf zum Abrufen der Mensadaten
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Wurden die Mensadaten erfolgreich abgegriffen, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 
 \end{itemize}
