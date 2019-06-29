@@ -9,7 +9,6 @@
 \usepackage{graphicx}
 \usepackage{tabu}
 
-
 \begin{document}
 \title{Entwurf}
 \author{Fangzhou Bian, Kathrin Blum, Matthias Bruns, \\Leonhard Duda, Tan Grumser, Yuguang Lin}
@@ -24,24 +23,23 @@
 
 \chapter{Grobentwurf}
 \section{Systemarchitektur}
-Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu hat jeder Client, nachdem er sich einmal registriert hat, eine eindeutige User-ID. Der Server verwaltet eine Datenbank, in welcher User- und Gruppeninformationen gehalten werden. 
+Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu erhält jeder User der sich registriert ein eindeutiges UserToken, das auf seinem Endgerät gespeichert wird. Der Server verwaltet eine Datenbank, in welcher die Mensadaten und User- und Gruppeninformationen gehalten werden. 
 Die Client-Seite der Anwendung wird mithilfe der MVVM (Model-View-Viewmodel) Architekur umgesetzt.
 Die Server-Seite mithilfe der MVC (Model-View-Control) Architektur.
+\section{Systemkomponenten}
 
 \subsection{Client}
 Die Client Seite bedient sich der MVVM Architektur. Die View dient zum anzeigen von Daten, sie beinhaltet alle grafischen Elemente, stellt also die GUI dar. Im Model werden die Daten gehalten und Funktionen zur Manipulation der Daten bereitgestellt.
 Das Viewmodel enthält die Darstellungslogik für die View und kapselt sie von der Anwendungslogik, die sich im Model befindet, ab.
-View und Viewmodel sind durch Databinding nur lose gekoppelt. Dadurch kann die View problemlos ausgetauscht werden bzw. können mehrere verscheidene Views (z.b. angepasst an Tablet, Desktop,...) zum selben Viewmodel existieren.
-Das Datainding kann als bidirektionaler Beobachter verstanden werden. Die lose Kopplung verbessert die Testbarkeit.
+View und Viewmodel sind durch Databinding nur lose gekoppelt, dadurch kann die View problemlos ausgetauscht werden bzw. können mehrere verscheidene Views (z.b. angepasst an Tablet, Desktop,...) zum selben Viewmodel existieren.
+Das Datainding kann als bidirektionaler Beobachter verstanden werden: View und Viewmodel kennen die interne Struktur voneinander nicht, aber Benachrichtigen einander, wenn es Änderungen gibt. Diese lose Kopplung durch Databinding verbessert die Testbarkeit, da so View und Viewmodel unabhängig voneiander getestet werden können.
 
 \subsection{Server}
 Für die Server Seite wird die MVC Architektur verwendet.
-Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  (In unserem Fall wird MySQL verwendet, als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern wollen wir JPA mit Hibernate benutzen).
+Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  In unserem Fall wird die relationale Datenbank MySQL verwendet. Als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern des Servers wird JPA (Java Persistance API) mit Hibernate genutzt.
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
-\section{Systemkomponenten}
-\section{Komponentenbeschreibung}
-\subsection{Client}
-\subsection{Server}
+
+\subsection{Frameworks und Interfaces}
 
 
 \chapter{Feinentwurf}
@@ -52,27 +50,38 @@ View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Cli
 
 \section{Klassen des Server}
 \subsection{Klassendiagramm}
+
 \subsection{package.edu.kit.mensameet.models}
-\subsubsection{Class User}
+%Javadocs für Model%
+\subsubsection{Class Group}
+Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
 \subsubsection*{Beschreibung}
-Diese Klasse beschreibt einen User 
+Dies ist eine Datenhalterklasse für eine Gruppe. 
 
-\subsubsection*{Konstruktor}
-public User(String name, String password)
+\subsection{Class User}
+\subsection*{Beschreibung}
+Dies ist eine Datenhalterklasse für einen User.
 
-\subsubsection*{Methoden}
-\begin{addmargin}[25pt]{0pt}
+\subsection{Class Crendentials}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die Zugangsdaten (engl. Crendentials) eines Nutzers.
 
-\subsubsection*{Paramter}
-\begin{itemize}
-\item
-\item
-\item
-\end{itemize}
+\subsection{Class MensaData}
+\subsection*{Beschreibung}
+Diese Klasse beinhaltet den Speiseplan der Mensa des aktuellen Tages.
 
-\subsubsection*{Rückgabewert}
-\end{addmargin}
+\subsection{Class Line}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt den Speiseplan der einzelnen Linien bzw. Werke an der Mensa.
 
+\subsection{Class Meal}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die einzelnen Speisen die an der Mensa angeboten werden.
+Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
+
+\subsection{Class Preferences}
+\subsection*{Beschreibung}
+In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 
 %------------ Java Doc for the sever view package ---------------------
 
@@ -126,75 +135,89 @@ public User(String name, String password)
 
 
 
-\subsection{package.edu.kit.mensameet.services}
-\subsubsection{Class UserServices}
+\subsection{package.edu.kit.mensameet.controller}
+\subsubsection{Class UserController}
 \subsubsection*{Beschreibung}
-Die Klasse beinhaltet die für den User zuständigen Services
+Diese Klasse ist der User Controller und beinhaltet die für den User zuständigen Methoden
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public User getUserById(String userId)\\
-	Anfrage auf ein User Profil mit der gegebenen und eindeutigen User ID
+\item public User getUser(String userToken)\\
+	Mit dieser Methode wird eine Anfrage nach einem Userprofil gestellt. Es wird nach dem eindeutigen User Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID eines Userprofils
+	\item userToken \\
+		Eindeutiger Token eines Userprofils
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item User Profil mit allen Parametern 
+	\item Userprofil
 	\end{itemize}
 
-\item Public User addUser(User user)\\
-	Hinzufügen eines Users zur Datenbank
+\item public User addUser(User user)\\
+	Diese Methode fügt einen User zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item user \\
-		Eindeutiges User Profil
+		Eindeutiges Userprofil
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item User Profil
+	\item Userprofil
 	\end{itemize}
 	
-\item Public bool removeUser(String userId)\\
-	User Profil aus der Datenbank löschen
+\item public bool removeUser(String userToken)\\
+	Diese Methode löscht ein Userprofil aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID eines User Profils
+	\item userToken \\
+		Eindeutiger Token eines Userprofils
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item True falls User Profil erfolgreich gelöscht wurde und false falls nicht
+	\item Wird das Userprofil erfolgreich gelöscht, so wird eine Bestätigung zurückgegeben. Wenn der Löschvorgang fehlschlägt wird eine Fehlermeldung zurückgegeben
+	\end{itemize}
+
+
+\item public bool updateUser(User user)\\
+	Diese Methode überschreibt ein bestehendes Userprofil mit einem Userprofil des selben Tokens, aber geänderten Parametern
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+		Eindeutiges Userprofil mit geänderten Parametern (bis auf Token)
+	\end{itemize}
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Wird das Userprofil erfolgreich überschrieben, so wird eine Bestätigung zurückgegeben. Wenn das Überschreiben fehlschlägt wird eine Fehlermeldung zurückgegeben
 	\end{itemize}
 \end{itemize}
+
 \end{addmargin}
 
-\subsubsection{Class GroupService}
+\subsubsection{Class GroupController}
 \subsubsection*{Beschreibung}
-Diese Klasse beschreibt alle für Gruppen zuständige Services
+Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zuständigen Methoden
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public Group getGroupById(String groupId)\\
-	Anfrage nach einer Gruppe mit der gegebenen und eindeutigen Gruppen ID
+\item public Group getGroup(String groupToken)\\
+	Mit dieser Methode wird eine Anfrage nach einer Gruppe gestellt. Es wird nach dem eindeutigen Group Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item groupId \\
-		Eindeutige Gruppen ID
+	\item groupToken \\
+		Eindeutiger Gruppen Token
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
 	\item Gruppe 
 	\end{itemize}
 	
-\item Public Group addGroup(Group group)\\
-	Hinzufügen einer Gruppe zur Datenbank
+\item public Group addGroup(Group group)\\
+	Diese Methode fügt eine Gruppe zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item group \\
@@ -202,116 +225,145 @@ Diese Klasse beschreibt alle für Gruppen zuständige Services
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Hinzugefügte Gruppe 
+	\item Die hinzugefügte Gruppe wird zurückgegeben
 	\end{itemize}
 	
-\item Public Group[] getGroupByPreferences(Preferences prefs)\\
-	Abfrage nach Gruppen mit passenden Präferenzen
+\item public Group[] getGroupByPreferences(Preferences prefs)\\
+	Diese Methode sucht nach Gruppen mit den passenden Präferenzen
 	\subsubsection*{Parameter}
 	\begin{itemize}
 	\item prefs \\
-		Nötige Präferenzen zur Findung einer passenden Gruppe(Linie und Uhrzeit)
+		Nötige Präferenzen zur Findung einer passenden Gruppe (Linie und Uhrzeit)
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Alle Gruppen mit übereinstimmenden Präferenzen
+	\item Es werden alle Gruppen mit übereinstimmenden Präferenzen zurückgegeben
 	\end{itemize}
 
-\item Public bool removeGroup(String groupId)\\
-	Löscht Gruppe aus der Datenbank
+\item public bool removeGroup(String groupToken)\\
+	Diese Methode löscht eine Gruppe aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item groupId \\
-		Eindeutige Gruppen ID der zu löschenden Gruppe
+	\item groupToken \\
+		Eindeutiger Group Token der zu löschenden Gruppe
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls die Gruppe erfolgreich gelöscht wurde und false wenn nicht
+	\item Wird die Gruppe erfolgreich gelöscht, so wird eine Bestätigung zurückgegeben. Wenn der Löschvorgang fehlschlägt wird eine Fehlermeldung zurückgegeben
 	\end{itemize}
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class MensaLineDataService}
+\subsubsection{Class MensaDataController}
 \subsubsection*{Beschreibung}
-Diese Klasse enthält die Services die für die Verwaltung der Mensadaten zuständig sind
+Diese Klasse ist der Mensadaten Controller und enthält die Methoden, die für die Verwaltung der Mensadaten zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public LineData[] grablineData()\\
-	Abfrage des tagesaktuellen Speiseplans aller Linien vom Studentenwerk
+\item public LineData[] getLineData()\\
+	Diese Methode fragt die Datenbank nach dem tagesaktuellen Speiseplan ab
 
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item Array aller Linien 
+	\item Es werden alle Essenslinien mit tagesaktuellem Menü zurückgegeben
 	\end{itemize}
 	
-\item Public LineData[] getLineData()\\
-	Abrufen der des tagesaktuellen Speiseplans aller Linien aus der Datenbank
-	\subsubsection*{Rückgabewert}
-	\begin{itemize}
-	\item Array aller Linien
-	\end{itemize}
+\item public void updateLineData()\\
+	Diese Methode beinhaltet einen Crawler der den tagesaktuellen Speiseplan der Mensa vom Studentenwerk bezieht und anschließend in der Datenbank speichert
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class MembershipService}
+\subsubsection{Class MembershipController}
 \subsubsection*{Beschreibung}
-Diese Klasse beinhaltet die Services die sich um die Gruppenmitgliedschaft der einzelnen User kümmert
+Diese Klasse ist der Membership Controller und beinhaltet die Methoden, die für die Gruppenmitgliedschaft der einzelnen User zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public bool addUserToGroup(String UserId, String groupId)\\
-	Fügt einen User zu einer Gruppe hinzu
+\item public bool addUserToGroup(String UserToken, String groupToken)\\
+	Diese Methode fügt einen User zu einer Gruppe hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID des Users der hinzugefügt werden soll
-	\item groupId \\
-		Eindeutige ID der Gruppe zu der der User hinzugefügt werden soll
+	\item userToken \\
+		Eindeutiger Token des Users der zur Gruppe hinzugefügt werden soll
+	\item groupToken \\
+		Eindeutiger Token der Gruppe, zu der der User hinzugefügt werden soll
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich hinzugefügt und false falls nicht
+	\item Falls das Hinzufügen zur Gruppe erfolgreich war, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 	
-\item Public bool removeUserFromGroup(String userId, String groupId)\\
-	Beendet die Zugehörigkeit eines Mitglieds zu einer Gruppe
+\item public bool removeUserFromGroup(String userToken, String groupToken)\\
+	Diese Methode entfernt einen User aus einer Gruppe
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item userId \\
-		Eindeutige ID des Users der aus der Gruppe entfernt werden soll
-	\item groupId \\
-		Eindeutige ID der Gruppe aus der der User entfernt werden soll
+	\item userToken \\
+		Eindeutiger Token des Users, der aus der Gruppe entfernt werden soll
+	\item groupToken \\
+		Eindeutiger Token der Gruppe, aus der der User entfernt werden soll
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich aus der Gruppe entfernt und false falls nicht
+	\item Falls das Entfernen aus der Gruppe erfolgreich war, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 \end{itemize}
 \end{addmargin}
 
-\subsubsection{Class UserProfilService}
+\subsubsection{Class AuthenticationController}
 \subsubsection*{Beschreibung}
-Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
+Diese Klasse ist der Authentication Controller und beinhaltet die Methoden, die für die Registrierung und das Anmelden eines Users zuständig sind
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item Public bool updateUserProfile(User user)\\
-	Überschreibt bereits vorhandenes User Profil mit neuem Profil (ID bleibt unverändert)
+\item public User register(Credentials creds)\\
+	Diese Methode ist für die Registrierung eines Users zuständig
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item user \\
-		User Profil mit veränderten Parametern
+	\item creds \\
+		Die vom User festgelegten Daten zur Registrierung, bestehend aus E-Mail und Passwort
 	\end{itemize}
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
-	\item true falls erfolgreich geändert und false falls nicht
+	\item Es wird ein leeres Userprofil zurückgegeben
+	\end{itemize}
+	
+\item public User login(Credentials creds)\\
+	Diese Methode ist für die Ameldung eines Users zuständig
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item creds \\
+		Die vom User bei der Registrierung festgelegten Daten, bestehend aus E-Mail und Passwort
+	\end{itemize}
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Es wird das UserProfil des Users zurückgegeben
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection{Class TimeController}
+\subsubsection*{Beschreibung}
+Diese Klasse ist der Time Controller und beinhaltet die Methoden, die für die zeitlich festgelegte Abläufe zuständig ist
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item public void deleteAllGroups()\\
+	Diese Methode löscht am Ende des Tages alle Gruppen
+	
+\item public bool startMensaCrawler()\\
+	Diese Methode startet jeden Morgen den Aufruf zum Abrufen der Mensadaten
+	\subsubsection*{Rückgabewert}
+	\begin{itemize}
+	\item Wurden die Mensadaten erfolgreich abgegriffen, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 
 \end{itemize}
@@ -322,7 +374,8 @@ Diese Klasse beinhaltet den Service zum Bearbeiten eines User Profils
 
 Die REST Endpoints die in der Tabelle aufgelistet sind werden für die Kommunikation zwischen Client und Server verwendet. \\
 
-\begin{tabu} { | c | c | c | c | } 
+\resizebox{16cm}{!} {
+\begin{tabu} { | l | l | l | l | } 
  \hline
  Request Type & Endpoint & Payload & Beschreibung \\ [0.5ex] 
  \hline
@@ -352,6 +405,7 @@ GET &  /mensadata & & Liefert die aktuellen Mensadaten.\\
 \hline
 
 \end{tabu}
+}
 
 
 
@@ -367,35 +421,36 @@ GET &  /mensadata & & Liefert die aktuellen Mensadaten.\\
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/Registration.png}
 \end{center}
 \subsection*{Beschreibung}
-Der Client öffnet zum ersten mal die Anwendung MensaMeet und sieht den Registrierungsbildschrim. Dort soll er einen Nutzernamen und ein Passwort eingeben. Da der Nutzername eindeutig sein muss, wird beim Server angefragt, ob dieser Nutzername schon vergeben ist. Dazu wird in der Datenbank nach diesem Nutzernamen gesucht. Ist der Name schon vergeben, so wird er zurückgegeben und der Client erhält die Meldung "Dieser Nutzername ist bereits vergeben".
-Falls der Nutzername noch nicht vergeben ist, wird er nun der Datenbank hinzugefügt und dem Client wird die erfolgreiche Durchführung übermittelt. Der Client wird nun auf die nächste Seite geleitet.
+Bob öffnet zum ersten mal die Applikation MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
+Bob sieht nun den Bildschirm zur Profilbearbeitung. Die Eingabe der Profildaten ist Pflicht, vorher kann er nicht weiter zu einer anderen Seite gelangen.
+Nachdem er seinen Nutzernamen, Motto, Alter, Geschlecht, Status, Fachrichtung eingegeben hat, werden diese Daten an den Server gesendet, der damit das Userprofil in der Datenbank aktualisiert. 
 \newpage
 \subsection{Mensalinien wählen}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/chooseLineAndTimeSD.png}
 \end{center}
 \subsection*{Beschreibung}
-Der Client öffnet die Anwendung (die Registrierung ist bereits erfolgt). Nun soll der Client als Scrolldown-menü die Mensalinien mit ihrem jeweiligen Angebot zu sehen kriegen (Dies ist der "HomeScreen"). Dazu werden die Mensadaten über den Server von der Datenbank angefragt, aufbereitet und dem Client übermittelt. Dieser kann nun die Linien anklicken an denen er gern essen möchte. Danach stellt er das für ihn geeignete Zeitintervall ein. Diese Daten werden dem Server übermittelt, welcher in der Datenbank nach passenden Gruppen sucht und diese zurückgibt. Der Client kann sich die Gruppen anschauen und einer davon beitreten. Beim Versuch beizutreten wird dem Server die UserID und GroupID übermittelt. Es wird überprüft ob die Gruppe bereits voll ist, ist dies der Fall, erhält der Client eine Fehlermeldung und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Datenbank aktualisiert und dem Client der Beitritt bestätigt. 
-Falls keine Gruppen passend zu den Angaben des Clients gefunden wurde, erhält der Client eine passende Meldung und kann entweder zurück zum HomeScreen oder selbst eine Gruppe erstellen.
+Der Nutzer öffnet die Anwendung (die Registrierung ist bereits erfolgt). Nun soll er als Scrolldown-menü die Mensalinien mit ihrem jeweiligen Angebot zu sehen kriegen (Dies ist der "HomeScreen"). Dazu werden die Mensadaten über den Server von der Datenbank angefragt, aufbereitet und dem Client übermittelt. Dieser kann nun die Linien anklicken an denen er gern essen möchte. Danach stellt er das für ihn geeignete Zeitintervall ein. Diese Daten werden dem Server übermittelt, welcher sich die Gruppen aus der Datenbank holt, nach den angegebenen Daten filtert und an den Client übergibt. Der Nutzer kann sich die Gruppen anschauen und einer davon beitreten. Beim Versuch beizutreten wird dem Server der User- und der GroupToken übermittelt. Es wird überprüft ob die Gruppe bereits voll ist, ist dies der Fall, erhält der Client eine Fehlermeldung und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Gruppe in der Datenbank aktualisiert, indem der User hinzugefügt wird. Dann wird über den Server eine Bestätigung an den Client geschickt und der Nutzer gelangt zur Gruppenseite. 
+Falls keine Gruppen passend zu den Angaben des Clients gefunden wurde, erhält der Client eine passende Fehlermeldung und kann entweder zurück zum HomeScreen oder selbst eine Gruppe erstellen.
 
-
+\newpage
 \subsection{Gruppe beitreten}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/checkInfoAndJoinGroupSD.png}
 \end{center}
 
+
 \subsection*{Beschreibung}
-Der Client bekommt, passend zu seinen ausgewählten Linien und seinem eingestellten Zeitintervall, Gruppen in einem Scrolldown-menü angezeigt.
-Er klickt eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an den Server eine Anfrage mit der GroupID gesendet. Der Server sucht die Gruppe in der Datenbank und übermittelt die angefragten Daten dem Client. Dieser drückt nun auf "Beitreten". Nun wird dem Server die UserID und GroupID übermittelt. Er prüft in der Datenbank ob die Gruppe bereits voll ist. Ist dies der Fall, erhält der Client eine Fehlermeldung : "Deine gewählte Gruppe ist bereits voll" und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Datenbank aktualisiert und dem Client der Beitritt bestätigt. 
+Nachdem der Nutzer, passend zu seinen ausgewählten Linien und seinem eingestellten Zeitintervall, Gruppen in einem Scrolldown-menü angezeigt bekam, klickt er nun eine Gruppe an, um mehr Informationen zu ihr zu sehen. Dazu wird an den Server eine Anfrage mit dem GroupToken gesendet. Der Server sucht damit nach der Gruppe in der Datenbank und übermittelt die Informationen dem Client. Beim User wird die angeklickte Gruppe nach unten aufgklappt, so dass nun zusätzlich zur Linie, Startzeit und Motto auch die Mitgliederliste und den "Beitreten"-Button sieht. Er drückt auf "Beitreten". Nun wird dem Server die UserID und GroupID übermittelt. Er prüft in der Datenbank ob die Gruppe inzwischen voll ist. Ist dies der Fall, erhält der Client eine Fehlermeldung : "Deine gewählte Gruppe ist bereits voll" und gelangt wieder zur Gruppenübersicht. Ist noch Platz in der Gruppe, wird die Datenbank aktualisiert und dem Client der Beitritt bestätigt. Der Nutzer gelangt zur Detailansicht seiner Gruppe. Er steht nun ebenfalls in der Mitgliederliste und sieht den Button "Gruppe Verlassen".
 
 \newpage
 \subsection{Gruppe erstellen}
 \begin{center}
-\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup}
+\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/CreateGroup.png}
 
 \end{center}
 \subsection*{Beschreibung}
-Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Nun erhält der Server die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Da der Gruppenname eindeutig sein muss, wird in der Datenbank nach einer Gruppe mit selben Namen gesucht. Gibt es eine, erhält der Client eine entsprechende Fehlermeldung und kann die Parameter bearbeiten. Gibt es noch keine Gruppe mit diesem Namen wird die Gruppe in der Datenbank angelegt und dem Client die erfolgreiche Gruppengründung bestätigt und ihm wird die Detailansicht seiner Gruppe angezeigt.
+Nachdem der User die zu ihm passenden Gruppen angefragt hat, aber keine gefunden wurde entscheidet er sich eine Gruppe zu erstellen. Er stellt dazu die erforderlichen Gruppenparameter(Gruppenname, Mensalinie, Startzeit, Motto, Maximale Mitgliederzahl) ein. Der Server erhält die Anfrage mit diesen Paramtern eine neue Gruppe anzulegen. Er generiert (aus dem Namen?) ein eindeutiges groupToken und legt die Gruppe in der Datenbank an. Dem Client wird die erfolgreiche Gruppengründung bestätigt und ihm wird als nächstes die Detailansicht seiner Gruppe angezeigt.
 
 \newpage
 \subsection{Gruppe verlassen}
@@ -404,12 +459,17 @@ Der Client entscheidet sich, selbst eine Gruppe zu erstellen. Er stellt dazu die
 \end{center}
 
 \subsection*{Beschreiung}
-Der Client öffnet die App MensaMeet. Da er bereits Mitglied einer Gruppe ist, wird ihm die Detailansicht seiner Gruppe angezeigt.
-In dieser Ansicht ist ein Button "Gruppe verlassen". Der Client drückt diesen Button und muss seine Entscheidung bestätigen. Für den Austritt wird dem Server die UserID und GroupID übermittelt. Der Server sucht via GroudID die Gruppe in der Datenbank um sie zu aktualisieren. Der Client wird aus der Gruppe entfernt und die Mitgliederzahl der Gruppe überprüft. Ist diese nun bei 0, so wird die Gruppe aus der Datenbank gelöscht.
-Der Client erhält in beiden Fällen die Bestätigung zum Austritt aus der Gruppe und wird wieder zum HomeScreen geleitet.
+Der Nutzer öffnet die App MensaMeet. Da er bereits Mitglied einer Gruppe ist, wird ihm die Detailansicht seiner Gruppe angezeigt.
+In dieser Ansicht ist ein Button "Gruppe verlassen". Er drückt diesen Button und muss seine Entscheidung bestätigen. Für den Austritt wird dem Server der User- und GroupToken übermittelt. Der Server sucht anhand des GroupToken die Gruppe in der Datenbank um sie zu aktualisieren. Der User wird aus der Gruppe entfernt und die Mitgliederzahl der Gruppe überprüft. Ist diese nun bei 0, so wird die Gruppe aus der Datenbank gelöscht.
+Der Client erhält in jedem Fall die Bestätigung zum Austritt aus der Gruppe und wird wieder zum HomeScreen überführt.
 
 
 \chapter{Änderungen zum Pflichtenheft}
+\begin{itemize}
+	\item Nutzername und Gruppennamen müssen nicht mehr eindeutig sein \\
+	stattdessen wird für den Nutzer von Firebase ein eindeutiges Token generiert, das als Identifikator dient. Für Gruppen wird ebenfalls ein eindeutiges Token durch den Server generiert.
+	\item Zum Registrieren wird statt Nutzername und Password nun Email und Passwort benötigt. \\Diese Änderung ist bedingt durch die Nutzung von Firebase und erfüllt damit eines unserer Wunschkriterien: Dass eine Email Verifikation beim Registrieren stattfindet. 
+\end{itemize}
 
 \chapter{Glossar}
 
