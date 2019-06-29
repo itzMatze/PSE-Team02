@@ -7,22 +7,22 @@ class MensaLineDataController {
 }
 
 class UserController {
-  +User getUserById(String userId)
+  +User getUser(String userToken)
   +User addUser(User user)
-  +bool removeUser(String userId)
+  +bool removeUser(String userToken)
   +bool updateUser(User user)
 }
 
 class GroupController {
-  +Group getGroupById(String groupId)
+  +Group getGroup(String groupToken)
   +Group addGroup(Group group)
   +Group[] getGroupByPreferences(Preferences prefs)
-  +bool removeGroup(String groupId)
+  +bool removeGroup(String groupToken)
 }
 
 class MembershipController {
-  +bool addUserToGroup(String UserId, String groupId)
-  +bool removeUserFromGroup(String userId, String groupId)
+  +bool addUserToGroup(String UserToken, String groupToken)
+  +bool removeUserFromGroup(String userToken, String groupToken)
 }
 
 class AuthenticationController {
