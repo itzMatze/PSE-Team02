@@ -21,11 +21,11 @@
 
 
 \chapter{Einleitung}
-Dies ist das Entwurfsdokument für die Applikation \dq MensaMeet\dq.  Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus welcher das Pflichtenheft hervorging.
-In den folgenden Kapitel wird auf die Systemarchitektur ("Grobentwurf") eingegangen. Es folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel "Feinentwurf" werden die Klassendiagramme der einzelnen Pakete im Detail vorgestellt und das verwendete HTTP Protokoll aufgeührt. Unter "Datenstrukturen" findet sich die strukturiereung unserer Datenbank wieder. 
-Im Abschnitt "dynamische Modelle" werden anhand von Sequenzdiagrammen einige Abläufe von MensaMeet anschaulich dargestellt.
-Schließlich Begründen wir in Kapitel 6 die Änderungen gegenüber dem Pflichtenheft.
-Auf den letzten Seiten dieses Dokuments findet sich ein Glossar und ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
+Dies ist das Entwurfsdokument für die Applikation (im folgenden mit App abgekürzt) "MensaMeet". Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus der das Pflichtenheft hervorging.
+In den folgenden Kapitel wird auf die Systemarchitektur ("Grobentwurf") eingegangen. Danach folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel "Feinentwurf" werden die Klassendiagramme der einzelnen Pakete vorgestellt. Unter "Datenstrukturen" findet sich die strukturiereung unserer Datenhaltung, also der Datenbank wieder. 
+Im Abschnitt "dynamische Modelle" werden einige Abläufe exemplarisch als Sequenzdiagramme dargestellt.
+Schließlich gehen wir noch auf die begründeten Änderungen zum Pflichtenheft ein.
+Im Glossar finden sich Worterklärungen und im Anhang ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
 
 
 
@@ -48,9 +48,11 @@ Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Dat
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
 
 \subsection{Frameworks und Interfaces}
-\subsection*{JPA und Hibernate}
+\subsection*{Hibernate und JPA}
 
-Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen das Java Persistence Application Programming Interface (JPA). \\ JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir implementieren JPA mithilfe des Frameworks Hibernate.\\ \\ Die Vorteile von Hibernate liegen vor allem in der Abstraktion der verwendeten Datenbank. Hibernate kann normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken speichern und aus den Datensätzen der Datenbank wiederum Objekte erzeugen. Daher müssen keine SQL-Statments geschrieben werden, was die Implemenntierung erleichtert und die Entwickling der Anwendung effizienter macht. \\  Außerdem ist Hibernate, durch die Abstraktion, kompatibel mit verschiedenen Datenbanken, sodass die verwendete Datenbank (in unserem Fall MySQL) jederzeit leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
+Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen für ORM das Java Persistence Application Programming Interface (JPA). 
+JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das Framework Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
+Hibernate bietet Kompatibilität mit verschiedenen Datenbanken, sodass die von uns verwendete Datenbank MySQL leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
 
 \subsection*{Spring}
 \subsection*{Firebase}
@@ -85,7 +87,7 @@ Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit d
 \subsection{package.edu.kit.mensameet.model}
 %Javadocs für Model%
 \subsubsection{Class Group}
-Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden
+Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
 \subsubsection*{Beschreibung}
 Dies ist eine Datenhalterklasse für eine Gruppe. 
 
@@ -114,38 +116,17 @@ Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
 \subsection*{Beschreibung}
 In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 
-\subsection{Enum Gender}
-\subsection*{Beschreibung}
-Die Geschlechter, die zu einem User gehören können. \\
-\textit{MALE} - das männliche Geschlecht \\
-\textit{FEMALE} - das weibliche Geschlecht \\
-\textit{OTHER} - weder männlicht, noch weiblich \\
-
-\subsection{Enum Subject}
-\subsection*{Beschreibung}
-Die Fachrichtungen die ein User haben kann: \\
-TODO: Hier sortierte Liste einfügen
-
-\subsection{Enum Status}
-Der Stauts den ein User haben kann: \\
-\textit{Professor} - Ein/e Professor/in oder Dozent/in \\
-\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\
-\textit{Apprentice} - Ein/e Auszubildende/r \\
-\textit{Student} - Ein/e reguläre/r Student/in \\
-\textit{Other} - Sonstiges \\
-
-\subsection{Enum Mensaline}
-
-\subsection{Enum FoodType}
-
-\subsection{Enum Ingredient}
-
 %------------ Java Doc for the sever view package ---------------------
 
 
 \subsection{package.edu.kit.mensameet.view}
 
-Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden.
+\begin{center}
+	\includegraphics[width=0.93\textwidth]{Klassendiagramme/serverViewCD.png}
+\end{center}
+
+
+Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
 
 \subsubsection{Class UserService}
 \subsubsection*{Beschreibung}
@@ -153,40 +134,217 @@ Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Da
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
-
-\subsubsection*{Paramter}
 \begin{itemize}
-\item
-\item
-\item
-\end{itemize}
 
-\subsubsection*{Rückgabewert}
+\item \texttt{ResponseEntity<User> getUserByToken(string token)}\\
+	Liefert den User mit dem übergebenen Token. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token, mit dem der User eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der gesuchte User als ResponseEntity mit status code 200.
+	Status code 404, falls der User mit dem Token nicht existiert.
+
+\item \texttt{ResponseEntity<User> updateUser(User user)}\\
+	Updated den User auf dem Server mit dem übereinstimmenden Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+		Der User der geupdated werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der geupdatete User als ResponseEntity mit status code 200.
+	Status code 404, falls der User mit dem Token nicht existiert.
+	
+\item \texttt{ResponseEntity<void> deleteUser(string token)}\\
+	Löscht den User auf dem Server mit dem übereinstimmenden Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token des User, der gelöscht werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 200, falls der User gefunden und gelöscht werden konnte.
+	Status code 404, falls der User mit dem Token nicht existiert.
+	
+\end{itemize}
 \end{addmargin}
 
 %---------------------
 
-\subsubsection{Class UserService}
+\subsubsection{Class GroupService}
 \subsubsection*{Beschreibung}
-Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Daten abzufragen und zu bearbeiten. 
-
-\subsubsection*{Konstruktor}
-public User(String name, String password)
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um Gruppen Daten abzufragen und zu bearbeiten. 
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
-
-\subsubsection*{Paramter}
 \begin{itemize}
-\item
-\item
-\item
-\end{itemize}
 
-\subsubsection*{Rückgabewert}
+\item \texttt{ResponseEntity<Group> getGroupByToken(string token)}\\
+	Liefert die Gruppe mit dem übergebenen Token. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Die gesuchte Gruppe als ResponseEntity mit status code 200.
+	Status code 404, falls die Gruppe mit dem Token nicht existiert.
+
+\item \texttt{ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)}\\
+	Liefert alle Gruppen, die zu den übergebenen Präferenzen passen.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item prefs \\
+		Die Präferenzen, mit denen die Gruppen gesucht werden sollen.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Ein Array aller passenden Gruppen als ResponseEntity mit status code 200.
+	
+\item \texttt{ResponseEntity<void> createGroup(Group group)}\\
+	Erstellt eine Gruppe auf dem Server.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item group \\
+		Die Gruppe, die erstellt werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Die erstellte Gruppe mit einen generierten token als ResponseEntity, mit status code 200.
+	
+\item \texttt{ResponseEntity<void> deleteGroup(string token)}\\
+	Löscht die Gruppe auf dem Server mit dem übereinstimmenden Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token der Gruppe, die gelöscht werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 200, falls die Gruppe gefunden und gelöscht werden konnte.
+	Status code 404, falls die Gruppe mit dem Token nicht existiert.
+
+
+\end{itemize}
 \end{addmargin}
 
+%---------------
 
+\subsubsection{Class MembershipService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um die Mitgliedschaft von Usern bei Gruppen zu bearbeiten. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<void> addUserToGroup(string userToken, string groupToken)}\\
+	Fügt einen User einer Gruppe bei.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item userToken \\
+		Der Token, mit der User eindeutig identifizierbar ist.
+	\item groupToken \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 404, falls der User oder die Gruppe nicht gefunden werden konnte.
+	Status code 200, sonst.
+
+\item \texttt{ResponseEntity<void> removeUserFromGroup(string userToken, string groupToken)}\\
+	Entfernt einen User von einer Gruppe.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item userToken \\
+		Der Token, mit der User eindeutig identifizierbar ist.
+	\item groupToken \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 404, falls der User oder die Gruppe nicht gefunden werden konnte.
+	Status code 200, sonst.
+\end{itemize}
+\end{addmargin}	
+
+%---------------
+
+
+\subsubsection{Class MensalineService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um die Daten der Mensalinien abzufragen. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<MensaData> getMensaData()}\\
+	Liefert die aktuellen Daten der Mensalinien.
+
+	\subsubsection*{Rückgabewert}
+	Die aktuellen Angebote der Mensa.
+
+\end{itemize}
+\end{addmargin}
+%---------------
+
+\subsubsection{Class AccountService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um sich zu registrieren und anzumelden. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<User> login(Credentials credentials)}\\
+	Loggt einen User ein.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item credentials \\
+		Die Email-Adresse und das Passwort des Users
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der User als ResponseEntity mit status code 200.
+	Status code 404, die email nicht vorhanden ist.
+	Status code 401, falls das Passwort falsch ist.
+
+\item \texttt{ResponseEntity<User> register(Credentials credentials)}\\
+	Registriert einen neuen User und generiert ein Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item credentials \\
+		Die Email-Adresse und das Passwort für den neuen User
+
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der neue User, mit dem Token als ResponseEntity mit status code 200.
+	Status code 406, die Email-Adresse schon benutzt wird.
+	Status code 400, falls die Form der Anfrage falsch ist. Bsw. die Email-Adresse eine falsche Form hat.
+		
+
+\end{itemize}
+\end{addmargin}
 
 %-------------- Java Doc for the server controller package --------------
 
