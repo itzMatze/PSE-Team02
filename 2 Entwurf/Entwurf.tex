@@ -115,7 +115,12 @@ In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 
 \subsection{package.edu.kit.mensameet.view}
 
-Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
+\begin{center}
+	\includegraphics[width=0.93\textwidth]{Klassendiagramme/serverViewCD.png}
+\end{center}
+
+
+\\Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
 
 \subsubsection{Class UserService}
 \subsubsection*{Beschreibung}
@@ -152,48 +157,188 @@ Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Da
 	Status code 404, falls der User mit dem Token nicht existiert.
 	
 \item \texttt{ResponseEntity<void> deleteUser(string token)}\\
-	Updated den User auf dem Server mit dem übereinstimmenden Token.
+	Löscht den User auf dem Server mit dem übereinstimmenden Token.
 
 	\subsubsection*{Parameter}
 	\begin{itemize}
-	\item user \\
-		Der User der geupdated werden soll.
+	\item token \\
+		Der Token des User, der gelöscht werden soll.
 	\end{itemize}
 
 	\subsubsection*{Rückgabewert}
-	Der geupdatete User als ResponseEntity mit status code 200.
+	Status code 200, falls der User gefunden und gelöscht werden konnte.
 	Status code 404, falls der User mit dem Token nicht existiert.
 	
-
-
 \end{itemize}
-
-\subsubsection*{Rückgabewert}
 \end{addmargin}
 
 %---------------------
 
-\subsubsection{Class UserService}
+\subsubsection{Class GroupService}
 \subsubsection*{Beschreibung}
-Diese Klasse stellt die für den Client benötigten Funktionen bereit um User Daten abzufragen und zu bearbeiten. 
-
-\subsubsection*{Konstruktor}
-public User(String name, String password)
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um Gruppen Daten abzufragen und zu bearbeiten. 
 
 \subsubsection*{Methoden}
 \begin{addmargin}[25pt]{0pt}
-
-\subsubsection*{Paramter}
 \begin{itemize}
-\item
-\item
-\item
-\end{itemize}
 
-\subsubsection*{Rückgabewert}
+\item \texttt{ResponseEntity<Group> getGroupByToken(string token)}\\
+	Liefert die Gruppe mit dem übergebenen Token. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Die gesuchte Gruppe als ResponseEntity mit status code 200.
+	Status code 404, falls die Gruppe mit dem Token nicht existiert.
+
+\item \texttt{ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)}\\
+	Liefert alle Gruppen, die zu den übergebenen Präferenzen passen.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item prefs \\
+		Die Präferenzen, mit denen die Gruppen gesucht werden sollen.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Ein Array aller passenden Gruppen als ResponseEntity mit status code 200.
+	
+\item \texttt{ResponseEntity<void> createGroup(Group group)}\\
+	Erstellt eine Gruppe auf dem Server.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item group \\
+		Die Gruppe, die erstellt werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Die erstellte Gruppe mit einen generierten token als ResponseEntity, mit status code 200.
+	
+\item \texttt{ResponseEntity<void> deleteGroup(string token)}\\
+	Löscht die Gruppe auf dem Server mit dem übereinstimmenden Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item token \\
+		Der Token der Gruppe, die gelöscht werden soll.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 200, falls die Gruppe gefunden und gelöscht werden konnte.
+	Status code 404, falls die Gruppe mit dem Token nicht existiert.
+
+
+\end{itemize}
 \end{addmargin}
 
+%---------------
 
+\subsubsection{Class MembershipService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um die Mitgliedschaft von Usern bei Gruppen zu bearbeiten. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<void> addUserToGroup(string userToken, string groupToken)}\\
+	Fügt einen User einer Gruppe bei.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item userToken \\
+		Der Token, mit der User eindeutig identifizierbar ist.
+	\item groupToken \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 404, falls der User oder die Gruppe nicht gefunden werden konnte.
+	Status code 200, sonst.
+
+\item \texttt{ResponseEntity<void> removeUserFromGroup(string userToken, string groupToken)}\\
+	Entfernt einen User von einer Gruppe.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item userToken \\
+		Der Token, mit der User eindeutig identifizierbar ist.
+	\item groupToken \\
+		Der Token, mit dem die Gruppe eindeutig identifizierbar ist.
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Status code 404, falls der User oder die Gruppe nicht gefunden werden konnte.
+	Status code 200, sonst.
+\end{itemize}
+\end{addmargin}	
+
+%---------------
+
+
+\subsubsection{Class MensalineService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um die Daten der Mensalinien abzufragen. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<MensaData> getMensaData()}\\
+	Liefert die aktuellen Daten der Mensalinien.
+
+	\subsubsection*{Rückgabewert}
+	Die aktuellen Angebote der Mensa.
+
+\end{itemize}
+\end{addmargin}
+%---------------
+
+\subsubsection{Class AccountService}
+\subsubsection*{Beschreibung}
+Diese Klasse stellt die für den Client benötigten Funktionen bereit um sich zu registrieren und anzumelden. 
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{ResponseEntity<User> login(Credentials credentials)}\\
+	Loggt einen User ein.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item credentials \\
+		Die Email-Adresse und das Passwort des Users
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der User als ResponseEntity mit status code 200.
+	Status code 404, die email nicht vorhanden ist.
+	Status code 401, falls das Passwort falsch ist.
+
+\item \texttt{ResponseEntity<User> register(Credentials credentials)}\\
+	Registriert einen neuen User und generiert ein Token.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item credentials \\
+		Die Email-Adresse und das Passwort für den neuen User
+
+	\end{itemize}
+
+	\subsubsection*{Rückgabewert}
+	Der neue User, mit dem Token als ResponseEntity mit status code 200.
+	Status code 406, die Email-Adresse schon benutzt wird.
+	Status code 400, falls die Form der Anfrage falsch ist. Bsw. die Email-Adresse eine falsche Form hat.
+		
+
+\end{itemize}
+\end{addmargin}
 
 %-------------- Java Doc for the server controller package --------------
 
