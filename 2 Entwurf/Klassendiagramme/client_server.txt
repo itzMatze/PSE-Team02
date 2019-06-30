@@ -1,0 +1,499 @@
+@startuml
+package "Client" <<Rectangle>> {
+    scale 0.6
+	package "edu.kit.mensameet.client.view" {
+		abstract class MmActivity <<extends AppCompatActivity>> {
+			+<<constructor>>MmActivity(bool showHome, bool showEditUser, bool showNext)
+		}
+		
+		class BeginActivity <<extends MmActivity>> {
+		}
+		
+		class LoginActivity <<extends MmActivity>> {
+		}
+		
+		class RegisterActivity <<extends MmActivity>> {
+		}
+		
+		class UserActivity <<extends MmActivity>> {
+			+<<constructor>>UserActivity(bool editable)
+		}
+		
+		class HomeActivity <<extends MmActivity>> {
+		}
+		
+		class AdministerGroupsActivity <<extends MmActivity>> {
+		}
+		
+		class AdministerUsersActivity <<extends MmActivity>> {
+		}
+		
+		class SetTimeActivity <<extends MmActivity>> {
+		}
+		
+		class SelectGroupActivity <<extends MmActivity>> {
+		}
+			
+		class CreateGroupActivity <<extends MmActivity>> {
+		}
+		
+		class MmList {
+		}
+		
+		class MmItem {
+		}
+		
+		class GroupList <<extends MmList>> {
+		}	
+		
+		class GroupItem <<extends MmItem>> {
+			+<<constructor>>GroupItem(bool bigView)
+		}	
+		
+		class LineList <<extends MmList>> {
+		}
+		
+		class LineItem <<extends MmItem>> {
+		}
+		
+		class UserList <<extends MmList>> {
+		}
+		
+		class UserItem <<extends MmItem>> {
+			+<<constructor>>UserItem(MmViewMode viewMode)
+		}	
+		
+		class UserPictureView {
+			+<<constructor>>UserPictureView(MmViewMode viewMode)
+		}
+		
+		enum MmViewMode {
+			SMALL
+			BIG_NOTEDITABLE
+			BIG_EDITABLE
+		}
+		
+	}
+	package "edu.kit.mensameet.client.model" {
+		class MmSession {
+		  -List<UserProfile> allUsers
+		  -List<Group> allGroups
+		  -MensaData mensaData
+		  -UserProfile user
+		  -Line chosenLine
+		  -MmTime chosenTime
+		  -Group chosenGroup	
+		}
+		
+		class MmTime { 
+		  +<<constructor>>MmTime(Time time)
+		  +<<constructor>>MmTime(Time startTime, Time endTime)
+		  +Time getStartTime()
+		  +Time getEndTime()
+		  +bool isInterval()
+		}
+		
+		class MmUserPicture {
+		  -Image picture
+		  -int pictureId
+		}
+		
+		class MmUserPictureList <<static>> {
+		  -Image[] pictures
+		}
+		
+		class User {
+		  -string token
+		  -string name
+		  -string motto
+		  -Date birthDate
+		  -Gender gender
+		  -Subject subject
+		  -Status status
+		  -int profilePictureId
+		}
+		 
+		class Group {
+		  -string id
+		  -string name
+		  -string motto
+		  -int maxMembers
+		  -string line
+		  -Date meetingDate
+		  -List<User> users
+		}
+		
+		class Meal {
+		  -String name
+		  -float price
+		  -FoodType[] types
+		  -Ingredients[] types
+		  +<<constructor>> Meal(string name, float price, FoodType[] types)
+		  +string getName()
+		  +float getPrice()
+		  +FoodType[] getFoodTypes()
+		}
+		
+		enum Ingredients {
+		}
+		
+		class Line {
+		  -Meal[] meals
+		  +<<constructor>> Line(Meal[] meals)
+		  +Meal[] getMeals()
+		}
+		
+		class MensaData {
+		  -Line[] lines
+		}
+		
+		enum Gender {
+		  MALE
+		  FEMALE
+		  OTHER
+		}
+		
+		enum Status {
+		  MEAT
+		  VEGETERIAN
+		  VEGAN
+		  PESCETERIAN
+		}
+		
+		enum FoodType {
+		  BEEF
+		  REGIONAL_MEAT
+		  PORK
+		  REGIONAL_PORK
+		  FISH
+		  VEGETARIAN
+		  VEGAN
+		  LAB
+		  ORGANIC
+		  MENSA_VITAL
+		}
+		
+		enum Subject {
+		  IT
+		  ECONOMY
+		  MATH
+		  PHYSICS
+		  CHEMISTRY
+		  BIOLIGY
+		  LINGUISTIC
+		}
+		
+		class Credentials {
+			string email
+			string password
+		}
+		
+		enum MealLine {
+			LINE_ONE
+			LINE_TWO
+			LINE_THREE
+			LINE_FOUR_FIVE
+			CUTLET_BAR
+			LINE_SIX
+			LATE_LINE
+			CURRY_LINE
+			CAFETERIA
+			CAFETERIA_LATE
+			PIZZA_LINE
+			PIZZA_LINE_PASTA
+			PIZZA_LINE_SALAD
+		}		
+	}
+	
+	package "edu.kit.mensameet.client.viewmodel" {		
+		abstract class MmViewModel <<extends ViewModel>> {
+			+<<constructor>>MmViewModel(LiveData<Preferences> preferences)
+			+void gotoHome()
+			+void gotoUserActivity()
+			{abstract} +void next()
+		}
+		
+		class BeginViewModel <<extends MmViewModel>> {
+			+void gotoLogin()
+			+void gotoRegister()
+		}
+		
+		class LoginViewModel <<extends MmViewModel>> {
+			+void login(string username, string password)
+			+void passwordForgotten()
+			+void gotoBegin()
+		}
+		
+		class RegisterViewModel <<extends MmViewModel>> {
+			+void register(string username, string password)
+			+void gotoBegin()
+		}
+		
+		class UserViewModel <<extends MmViewModel>> {
+			+<<Constructor>>UserViewModel(LiveData<User> user, bool editable, MmActivity next)
+			+LiveData<User> loadUser()
+			+void saveUser(LiveData<User> user)
+			+void gotoNext()
+		}
+		
+		class HomeViewModel <<extends MmViewModel>> {
+			+LiveData<List<Line>> loadLines()
+			+void saveLines(LiveData<List<Line>> chosenLines)
+			+void gotoUser()
+			+void logout()
+		}
+		
+		class AdministerGroupsViewModel <<extends MmViewModel>> {
+			+LiveData<List<Group>> loadGroups()
+			+void deleteGroups(LiveData<List<Group>> groups)
+			+void gotoHome()
+		}
+		
+		class AdministerUsersViewModel <<extends MmViewModel>> {
+			+LiveData<List<User>> loadUsers()
+			+void deleteUsers(LiveData<List<User>> users)
+			+void gotoHome()
+		}
+		
+		class SetTimeViewModel <<extends MmViewModel>> {
+			+LiveData<MmTime> loadTime()
+			+void saveTime(LiveData<MmTime> time)
+			+void gotoHome()
+		}
+		
+		class SelectGroupViewModel <<extends MmViewModel>> {
+			+LiveData<List<Group>> loadSuitableGroups()
+			+void gotoCreateGroup()
+			+void gotoSetTime()
+		}
+			
+		class CreateGroupViewModel <<extends MmViewModel>> {
+			+void saveGroup(LiveData<Group> group)
+			+gotoSelectGroup()
+		}
+		
+		class MmListHandler {
+			+void select(int itemId, bool selected)
+		}
+		
+		class MmItemHandler {
+		}
+		
+		class GroupListHandler <<extends MmListHandler>> {
+			+<<Constructor>>GroupListHandler(LiveData<List<Group>> groupList)
+		}	
+		
+		class GroupItemHandler <<extends MmItemHandler>> {
+			+<<Constructor>>GroupItemHandler(LiveData<Group> group, bool bigView)
+			+LiveData<Group> loadGroup()
+			+void joinGroup()
+		}	
+		
+		class LineListHandler {
+			+<<Constructor>>LineListHandler(LiveData<MensaData> mensaData)
+		}
+		
+		class LineItemHandler {
+			+<<Constructor>>LineItemHandler(LiveData<Line> line)
+		}
+		
+		class UserListHandler <<extends MmListHandler>> {
+			+<<Constructor>>UserListHandler(LiveData<List<User>> userList)
+		}
+		
+		class UserItemHandler <<extends MmItemHandler>> {
+			+<<Constructor>>UserItemHandler(LiveData<User> user, MmViewMode viewMode)
+			+LiveData<User> loadUser()
+			+void gotoUser()
+		}	
+		
+		class UserPictureViewHandler {
+			+<<Constructor>>UserPictureViewHandler(LiveData<User> user, int profilePictureId, MmViewMode viewMode)
+			+LiveData<List<MmProfilePicture>> loadAllProfilePicutres()
+			+LiveData<MmProfilePicture> loadProfilePicture()
+			+void savePicture(int profilePictureId)
+		}
+	}
+	
+	edu.kit.mensameet.client.viewmodel ---> edu.kit.mensameet.client.view
+	edu.kit.mensameet.client.viewmodel ---> edu.kit.mensameet.client.model
+	edu.kit.mensameet.client.view ---> edu.kit.mensameet.client.model
+
+}
+
+package "Server" <<Rectangle>> {
+	package "edu.kit.mensameet.server.controller" {
+		class MensaLineDataController {
+		  +LineData[] getLineData()
+		  +void updateLineData()
+		}
+
+		class UserController {
+		  +User getUser(String userToken)
+		  +User addUser(User user)
+		  +bool removeUser(String userToken)
+		  +bool updateUser(User user)
+		}
+		
+		class GroupController {
+		  +Group getGroup(String groupToken)
+		  +Group addGroup(Group group)
+		  +Group[] getGroupByPreferences(Preferences prefs)
+		  +bool removeGroup(String groupToken)
+		}
+		
+		class MembershipController {
+		  +bool addUserToGroup(String UserToken, String groupToken)
+		  +bool removeUserFromGroup(String userToken, String groupToken)
+		}
+		
+		class AuthenticationController {
+		  +User register(Credentials creds)
+		  +User login(Credentials creds)
+		}
+		
+		class TimeController {
+		  +void deleteAllGroups()
+		  +bool startMensaCrawler()
+		}
+	}
+	
+	package "edu.kit.mensameet.server.models"{	
+		class edu.kit.mensameet.server.models.User {
+		  -String token
+		  -String motto
+		  -Date birthDate
+		  -Gender gender
+		  -Subject subject
+		  -Status status
+		  -int profilePictureId
+		}
+		 
+		class edu.kit.mensameet.server.models.Group {
+		  -string id
+		  -string name
+		  -string motto
+		  -int maxMembers
+		  -string line
+		  -Date meetingDate
+		  -List<User> users
+		}
+		
+		class edu.kit.mensameet.server.models.Meal {
+		  -String name
+		  -float price
+		  -FoodType[] types
+		  -Ingredients[] ingredients
+		
+		}
+		
+		class edu.kit.mensameet.server.models.Line {
+		  -Meal[] meals
+		}
+		
+		class edu.kit.mensameet.server.models.MensaData {
+		  -Line[] lines
+		}
+		class edu.kit.mensameet.server.models.Preference {
+		  -Time startTime
+		  -Time endTime
+		  -MealLine[] lines
+		}
+		class edu.kit.mensameet.server.models.Credentials {
+		  -string email
+		  -string password
+		}
+		
+		enum edu.kit.mensameet.server.models.Gender {
+		  MALE
+		  FEMALE
+		  OTHER
+		}
+		
+		enum edu.kit.mensameet.server.models.Status {
+		  PROFESSOR
+		  COLLEGE_STUDENT
+		  APPRENTICE
+		  STUDENT
+		  OTHER
+		}
+		enum edu.kit.mensameet.server.models.Ingredients {
+		}
+		enum edu.kit.mensameet.server.models.FoodType {
+		  BEEF
+		  REGIONAL_MEAT
+		  PORK
+		  REGIONAL_PORK
+		  FISH
+		  VEGETARIAN
+		  VEGAN
+		  LAB
+		  ORGANIC
+		  MENSA_VITAL
+		}
+		
+		enum edu.kit.mensameet.server.models.Subject {
+		  IT
+		  ECONOMY
+		  MATH
+		  PHYSICS
+		  CHEMISTRY
+		  BIOLIGY
+		  LINGUISTIC
+		}
+		
+		enum edu.kit.mensameet.server.models.Meatline {
+			LINE_ONE
+			LINE_TWO
+			LINE_THREE
+			LINE_FOUR_FIVE
+			CUTLET_BAR
+			LINE_SIX
+			LATE_LINE
+			CURRY_LINE
+			CAFETERIA
+			CAFETERIA_LATE
+			PIZZA_LINE
+			PIZZA_LINE_PASTA
+			PIZZA_LINE_SALAD
+		}
+	}
+	package "edu.kit.mensameet.server.view" {
+		class UserService {
+		  +ResponseEntity<User> getUserByToken(string token)
+		  +ResponseEntity<User> updateUser(User user)
+		  ..for admins..
+		  +ResponseEntity<void> deleteUser(string token)
+		}
+		
+		class GroupService {
+		  +ResponseEntity<Group> getGroupByToken(string token)
+		  +ResponseEntity<Group[]> getGroupsByPrefferences(Prefferecnces prefs)
+		  +ResponseEntity<void> createGroup(Group group)
+		  ..for admins..
+		  +ResponseEntity<void> deleteGroup(string token)
+		}
+		
+		class MembershipService {
+		  +ResponseEntity<void> addUserToGroup(string userToken, string groupToken)
+		  +ResponseEntity<void> removeUserFromGroup(string userToken, string groupToken)
+		}
+		
+		class MensalineService {
+		  +ResponseEntity<MensaData> getMensaData()
+		}
+		
+		class AccountService {
+		  +ResponseEntity<User> login(Credentials credentials)
+		  +ResponseEntity<User> register(Credentials credentials)
+		}
+	}	
+	edu.kit.mensameet.server.controller ---> edu.kit.mensameet.server.view
+	edu.kit.mensameet.server.controller ---> edu.kit.mensameet.server.models
+	edu.kit.mensameet.server.view ---> edu.kit.mensameet.server.models
+}
+Client -down---> Server:<<HTTP-Request>>
+Server -up---> Client:<<HTTP-Response>>
+
+
+@enduml
