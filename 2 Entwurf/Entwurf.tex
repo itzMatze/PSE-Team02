@@ -9,6 +9,131 @@
 \usepackage{graphicx}
 \usepackage{lscape} % querformat
 \usepackage{tabu}
+\usepackage{hyperref}
+\usepackage{glossaries}
+
+\makeglossaries
+
+\newglossaryentry{Token}
+{
+  name=Token,
+  description={Komponente die zur Identifizierung und Authentifizierung von Benutzern und Gruppen dient}
+}
+
+\newglossaryentry{GUI}
+{
+  name=GUI,
+  description={Graphical User Interface, beschreibt die grafische Benutzeroberfläche von Computersystemen, um die Bedienung zu erleichtern}
+}
+
+\newglossaryentry{Relationale Datenbank}
+{
+  name=Relationale Datenbank,
+  description={Sammlung von Tabellen(Relationen), in welchen Datensätze abgespeichert sind}
+}
+
+\newglossaryentry{MySQL}
+{
+  name=MySQL,
+  description={Eines der weltweit verbreitetsten relationalen Datenbankverwaltungssysteme}
+}
+
+\newglossaryentry{Client}
+{
+  name=Client,
+  description={Computerpogramm, das auf einem Endgerät ausgeführt wird und mit einem Server kommuniziert}
+}
+
+\newglossaryentry{Server}
+{
+  name=Server,
+  description={Ein Programm, das auf die Kontaktaufnahme eines Clients wartet, um eine bestimmte Dienstleistung für ihn zu erfüllen.}
+}
+
+\newglossaryentry{Firebase}
+{
+  name=Firebase,
+  description={Entwicklungs-Plattform für mobile und Webanwendungen die Infrastruktur zur Verfügung stellt, um einfacher und effizienter Funktionen mittels Programmierschnittstellen auf verschiedenen Plattformen bereitzustellen}
+}
+
+\newglossaryentry{Homescreen}
+{
+  name=Homescreen,
+  description={Hauptbildschirm der beim Öffnen einer Applikation erscheint}
+}
+
+\newglossaryentry{UUID}
+{
+  name=UUID,
+  description={Ein Universally Unique Identifier ist ein Standard für Identifikatoren, der in der Softwareentwicklung verwendet wird}
+}
+
+\newglossaryentry{Datensatz}
+{
+  name=Datensatz,
+  description={Zusammengehörige Daten einer Datei}
+}
+
+\newglossaryentry{POJO}
+{
+  name=POJO,
+  description={Plain Old Java Object, einfache Java-Klasse ohne komplexe Strukturen}
+} 
+
+\newglossaryentry{Mensadaten}
+{
+  name=Mensadaten,
+  description={Zu den Mensadaten gehören die Essenslinien und Essenswerke und deren Speisepläne}
+} 
+
+\newglossaryentry{Endgerät}
+{
+  name=Endgerät,
+  description={Internetfähige Computerhardware, wie Smartphones, Tablets, Laptops usw.}
+} 
+
+\newglossaryentry{Systemarchitektur}
+{
+  name=Systemarchitektur,
+  description={Beschreibt die innere Struktur eines Softwaresystems}
+} 
+
+\newglossaryentry{Beobachter}
+{
+  name=Beobachter,
+  description={Der Beobachter ist ein Entwurfsmuster und dient der Weitergabe von Änderungen an einem Objekt an von diesem Objekt abhängige Strukturen}
+} 
+
+\newglossaryentry{Anwendungslogik}
+{
+  name=Anwendungslogik,
+  description={Die Anwendungslogik einer Anwendung beschreibt die konkrete Verknüpfung von Bausteinen zu dieser Anwendung}
+} 
+
+\newglossaryentry{Datenbankmanagementsystem}
+{
+  name=Datenbankmanagementsystem,
+  description={Ist ein Bestandteil der Datenbank und übernimmt die Aufgabe der Organisation und Strukturierung der Daten}
+} 
+
+\newglossaryentry{Framework}
+{
+  name=Framework,
+  description={Modernes Rahmenwerk, das dem Programmierer den Entwicklungsrahmen für seine Anwendungsprogrammierung zur Verfügung stellt und damit die Software-Architektur der Anwendungsprogramme bestimmt}
+} 
+
+\newglossaryentry{Applikation}
+{
+  name=Applikation,
+  description={Software für einen Benutzer, die mindestens eine Funktion erfüllt}
+} 
+
+\newglossaryentry{Systemkomponente}
+{
+  name=Systemkomponente,
+  description={Einzelner Bestandteil eines Systems}
+} 
+
 
 \begin{document}
 \title{Entwurf}
@@ -674,7 +799,7 @@ In der Abbildung sieht man die Datenstruktur der Datenbank, also die Tabellen, d
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/Registration.png}
 \end{center}
 \subsection*{Beschreibung}
-Bob öffnet zum ersten mal die Applikation MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
+Bob öffnet zum ersten mal die \GLS{Applikation} MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
 Bob sieht nun den Bildschirm zur Profilbearbeitung. Die Eingabe der Profildaten ist Pflicht, vorher kann er nicht weiter zu einer anderen Seite gelangen.
 Nachdem er seinen Nutzernamen, Motto, Alter, Geschlecht, Status, Fachrichtung eingegeben hat, werden diese Daten an den Server gesendet, der damit das Userprofil in der Datenbank aktualisiert. 
 \newpage
@@ -724,7 +849,7 @@ Der Client erhält in jedem Fall die Bestätigung zum Austritt aus der Gruppe un
 	\item Zum Registrieren wird statt Nutzername und Password nun Email und Passwort benötigt. \\Diese Änderung ist bedingt durch die Nutzung von Firebase und erfüllt damit eines unserer Wunschkriterien: Dass eine Email Verifikation beim Registrieren stattfindet. 
 \end{itemize}
 
-\chapter{Glossar}
+\printglossaries
 
 \chapter{Anhang}
 
