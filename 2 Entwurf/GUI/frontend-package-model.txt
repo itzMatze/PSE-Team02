@@ -1,0 +1,140 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+title Client Model - Paketdiagramm\n\n
+
+package "edu.kit.mensameet.client.model" {
+
+class MmSession {
+  -List<UserProfile> allUsers
+  -List<Group> allGroups
+  -MensaData mensaData
+  -UserProfile user
+  -Line chosenLine
+  -MmTime chosenTime
+  -Group chosenGroup	
+}
+
+class MmTime { 
+  +<<constructor>>MmTime(Time time)
+  +<<constructor>>MmTime(Time startTime, Time endTime)
+  +Time getStartTime()
+  +Time getEndTime()
+  +bool isInterval()
+}
+
+class MmUserPicture {
+  -Image picture
+  -int pictureId
+}
+
+class MmUserPictureList <<static>> {
+  -Image[] pictures
+}
+
+class User {
+  -string token
+  -string name
+  -string motto
+  -Date birthDate
+  -Gender gender
+  -Subject subject
+  -Status status
+  -int profilePictureId
+}
+ 
+class Group {
+  -string id
+  -string name
+  -string motto
+  -int maxMembers
+  -string line
+  -Date meetingDate
+  -List<User> users
+}
+
+class Meal {
+  -String name
+  -float price
+  -FoodType[] types
+  -Ingredients[] types
+  +<<constructor>> Meal(string name, float price, FoodType[] types)
+  +string getName()
+  +float getPrice()
+  +FoodType[] getFoodTypes()
+}
+
+enum Ingredients {
+}
+
+class Line {
+  -Meal[] meals
+  +<<constructor>> Line(Meal[] meals)
+  +Meal[] getMeals()
+}
+
+class MensaData {
+  -Line[] lines
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum Status {
+  MEAT
+  VEGETERIAN
+  VEGAN
+  PESCETERIAN
+}
+
+enum FoodType {
+  BEEF
+  REGIONAL_MEAT
+  PORK
+  REGIONAL_PORK
+  FISH
+  VEGETARIAN
+  VEGAN
+  LAB
+  ORGANIC
+  MENSA_VITAL
+}
+
+enum Subject {
+  IT
+  ECONOMY
+  MATH
+  PHYSICS
+  CHEMISTRY
+  BIOLIGY
+  LINGUISTIC
+}
+
+class Credentials {
+	string email
+	string password
+}
+
+enum MealLine {
+	LINE_ONE
+	LINE_TWO
+	LINE_THREE
+	LINE_FOUR_FIVE
+	CUTLET_BAR
+	LINE_SIX
+	LATE_LINE
+	CURRY_LINE
+	CAFETERIA
+	CAFETERIA_LATE
+	PIZZA_LINE
+	PIZZA_LINE_PASTA
+	PIZZA_LINE_SALAD
+}
+
+}
+
+@enduml
+ 

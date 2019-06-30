@@ -1,0 +1,118 @@
+@startumlclass 
+
+skinparam classAttributeIconSize 0
+title Client ViewModel - Paketdiagramm\n\n
+
+package "edu.kit.mensameet.client.viewmodel" {
+
+abstract class MmViewModel <<extends ViewModel>> {
+	+<<constructor>>MmViewModel(LiveData<MmSession> session)
+	+void gotoHome()
+	+void gotoUserActivity()
+	{abstract} +void next()
+}
+
+class BeginViewModel <<extends MmViewModel>> {
+	+void gotoLogin()
+	+void gotoRegister()
+}
+
+class LoginViewModel <<extends MmViewModel>> {
+	+void login(string email, string password)
+	+void passwordForgotten()
+	+void gotoBegin()
+}
+
+class RegisterViewModel <<extends MmViewModel>> {
+	+void register(string email, string password)
+	+void gotoBegin()
+}
+
+class UserViewModel <<extends MmViewModel>> {
+	+<<Constructor>>UserViewModel(LiveData<User> user, bool editable, MmActivity next)
+	+LiveData<User> loadUser()
+	+void saveUser(LiveData<User> user)
+	+void gotoNext()
+}
+
+class HomeViewModel <<extends MmViewModel>> {
+	+LiveData<List<Line>> loadLines()
+	+void saveLines(LiveData<List<Line>> chosenLines)
+	+void gotoUser()
+	+void logout()
+}
+
+class AdministerGroupsViewModel <<extends MmViewModel>> {
+	+LiveData<List<Group>> loadGroups()
+	+void deleteGroups(LiveData<List<Group>> groups)
+	+void gotoHome()
+}
+
+class AdministerUsersViewModel <<extends MmViewModel>> {
+	+LiveData<List<User>> loadUsers()
+	+void deleteUsers(LiveData<List<User>> users)
+	+void gotoHome()
+}
+
+class SetTimeViewModel <<extends MmViewModel>> {
+	+LiveData<MmTime> loadTime()
+	+void saveTime(LiveData<MmTime> time)
+	+void gotoHome()
+}
+
+class SelectGroupViewModel <<extends MmViewModel>> {
+	+LiveData<List<Group>> loadSuitableGroups()
+	+void gotoCreateGroup()
+	+void gotoSetTime()
+}
+	
+class CreateGroupViewModel <<extends MmViewModel>> {
+	+void saveGroup(LiveData<Group> group)
+	+gotoSelectGroup()
+}
+
+class MmListHandler {
+	+void select(int itemId, bool selected)
+}
+
+class MmItemHandler {
+}
+
+class GroupListHandler <<extends MmListHandler>> {
+	+<<Constructor>>GroupListHandler(LiveData<List<Group>> groupList)
+}	
+
+class GroupItemHandler <<extends MmItemHandler>> {
+	+<<Constructor>>GroupItemHandler(LiveData<Group> group, bool bigView)
+	+LiveData<Group> loadGroup()
+	+void joinGroup()
+}	
+
+class LineListHandler {
+	+<<Constructor>>LineListHandler(LiveData<MensaData> mensaData)
+}
+
+class LineItemHandler {
+	+<<Constructor>>LineItemHandler(LiveData<Line> line)
+}
+
+class UserListHandler <<extends MmListHandler>> {
+	+<<Constructor>>UserListHandler(LiveData<List<User>> userList)
+}
+
+class UserItemHandler <<extends MmItemHandler>> {
+	+<<Constructor>>UserItemHandler(LiveData<User> user, MmViewMode viewMode)
+	+LiveData<User> loadUser()
+	+void gotoUser()
+}	
+
+class UserPictureViewHandler {
+	+<<Constructor>>UserPictureViewHandler(LiveData<User> user, int profilePictureId, MmViewMode viewMode)
+	+LiveData<List<MmProfilePicture>> loadAllProfilePicutres()
+	+LiveData<MmProfilePicture> loadProfilePicture()
+	+void savePicture(int profilePictureId)
+}
+
+}
+
+@enduml

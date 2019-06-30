@@ -1,0 +1,152 @@
+@startuml
+
+skinparam classAttributeIconSize 0
+title Client - Ausgewählte Klassenbeziehungen\n\n
+
+abstract class MmViewModel <<extends ViewModel>> {
+}
+
+class MmListHandler {
+}
+
+class MmItemHandler {
+}
+
+class UserPictureViewHandler {
+}
+
+abstract class MmActivity <<extends AppCompatActivity>> {
+}
+
+class UserActivity <<extends MmActivity>> {
+}
+
+class HomeActivity <<extends MmActivity>> {
+}
+
+class AdministerGroupsActivity <<extends MmActivity>> {
+}
+
+class AdministerUsersActivity <<extends MmActivity>> {
+}
+
+class SelectGroupActivity <<extends MmActivity>> {
+}
+	
+class CreateGroupActivity <<extends MmActivity>> {
+}
+
+class MmList {
+}
+
+class MmItem {
+}
+
+class GroupList <<extends MmList>> {
+}	
+
+class GroupItem <<extends MmItem>> {
+}	
+
+class LineList <<extends MmList>> {
+}
+
+class LineItem <<extends MmItem>> {
+}
+
+class UserList <<extends MmList>> {
+}
+
+class UserItem <<extends MmItem>> {
+}	
+
+class UserPictureView {
+}
+
+class MmSession {
+}
+
+class User {
+}
+ 
+class Group {
+}
+
+class Meal {
+}
+
+enum Ingredients {
+}
+
+class Line {
+}
+
+class MensaData {
+}
+
+enum Gender {
+}
+
+enum Status {
+}
+
+enum FoodType {
+}
+
+enum Subject {
+}
+
+enum MealLine {
+}
+
+MmActivity "1" *--> "1" MmViewModel
+
+MmViewModel o--> "1" MmSession
+
+MmList "1" *--> "1" MmListHandler
+
+MmItem "1" *--> "1" MmItemHandler
+
+UserPictureView "1" *--> "1" UserPictureViewHandler
+
+UserActivity o--> "1" UserItem
+
+UserItem "1" *--> "1" UserPictureView
+
+HomeActivity o--> "0..1" LineList
+
+LineList o--> "*" LineItem
+
+HomeActivity o--> "0..1" GroupItem
+
+AdministerGroupsActivity o--> "1" GroupList
+
+GroupList o--> "*" GroupItem
+
+AdministerUsersActivity o--> "1" UserList
+
+UserList o--> "*" UserItem
+
+SelectGroupActivity o--> "1" GroupList
+
+CreateGroupActivity o--> "0..*" LineItem
+
+Group "1" *--> "*" User : has as members
+
+User "1" *--> "1" Status : has the title
+
+User "1" *--> "1" Gender : is of gender
+
+User "1" *--> "1" Subject : is working in the field of
+
+MensaData "1" *--> "*" Line : contains
+
+Line "1" *--> "*" Meal : offers
+
+Meal "1" *--> "*" Ingredients : contains
+
+Meal "1" *--> "*" FoodType : can be described with
+
+Preference "1" *--> "*" MealLine
+
+@enduml
