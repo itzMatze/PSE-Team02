@@ -174,7 +174,8 @@ Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Di
 Die Client-Seite der Anwendung wird mithilfe der MVVM (Model-View-Viewmodel) Architekur umgesetzt.
 Die Server-Seite mithilfe der MVC (Model-View-Control) Architektur.
 \section{Systemkomponenten}
-
+\includegraphics[width=1.1\textwidth]{Objektdiagramme/komponentDiagramm.png}
+\section{Komponentenbeschreibung}
 \subsection{Client}
 Die Client Seite bedient sich der MVVM Architektur. Die View dient zum anzeigen von Daten, sie beinhaltet alle grafischen Elemente, stellt also die GUI dar. Im Model werden die Daten gehalten und Funktionen zur Manipulation der Daten bereitgestellt.
 Das Viewmodel enthält die Darstellungslogik für die View und kapselt sie von der Anwendungslogik, die sich im Model befindet, ab.
@@ -201,7 +202,6 @@ Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige An
 \subsection*{Firebase}
 Firebase ist ein Framework, das viele Services bietet um die Entwicklung und die Handhabung der Infrastruktur von mobilen und Webanwendungen zu vereinfachen. Es übernimmt für uns die Registrierung, Speicherung und Organisation von Nutzerdaten, die wir für die Verwaltung von Accounts benötigen. \\ \\
 Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit zur Wiederherstellung des Passworts. Firebase bietet viele weitere Funktionalitäten, wie Push Notifications, an, die wir, bei Bedarf, in Zukunft nutzen können, um Wunschkriterien zu implementieren.
-
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
 
@@ -209,7 +209,7 @@ Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung 
 
 \subsection{package.edu.kit.mensameet.client.model}
 \begin{center}
-	\includegraphics[width=1.1\textwidth]{GUI/frontend-package-model.png}
+	\includegraphics[width=0.93\textwidth]{GUI/frontend-package-model.png}
 \end{center} 
 
 %---------------
