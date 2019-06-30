@@ -20,6 +20,13 @@
 
 
 \chapter{Einleitung}
+Dies ist das Entwurfsdokument für die Applikation (im folgenden mit App abgekürzt) "MensaMeet". Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus der das Pflichtenheft hervorging.
+In den folgenden Kapitel wird auf die Systemarchitektur ("Grobentwurf") eingegangen. Danach folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel "Feinentwurf" werden die Klassendiagramme der einzelnen Pakete vorgestellt. Unter "Datenstrukturen" findet sich die strukturiereung unserer Datenhaltung, also der Datenbank wieder. 
+Im Abschnitt "dynamische Modelle" werden einige Abläufe exemplarisch als Sequenzdiagramme dargestellt.
+Schließlich gehen wir noch auf die begründeten Änderungen zum Pflichtenheft ein.
+Im Glossar finden sich Worterklärungen und im Anhang ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
+
+
 
 \chapter{Grobentwurf}
 \section{Systemarchitektur}
@@ -40,18 +47,38 @@ Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Dat
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
 
 \subsection{Frameworks und Interfaces}
+\subsection*{Hibernate und JPA}
 
+Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen für ORM das Java Persistence Application Programming Interface (JPA). 
+JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das Framework Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
+Hibernate bietet Kompatibilität mit verschiedenen Datenbanken, sodass die von uns verwendete Datenbank MySQL leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
+
+\subsection*{Spring}
+\subsection*{Firebase}
 
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
 \subsection{Klassendiagramm}
+\subsubsection{package.edu.kit.mensameet.model}
 
-\subsubsection{Muster}
+\newpage
+
+\subsubsection{package.edu.kit.mensameet.view}
+\begin{center}
+	\includegraphics[width=0.99\textwidth]{GUI/frontend_view.png}
+\end{center}
+
+
+\newpage
+\subsubsection{package.edu.kit.mensameet.viewmodel}
+\begin{center}
+	\includegraphics[width=0.99\textwidth]{GUI/frontend_viewmodel.png}
+\end{center}
 
 \section{Klassen des Server}
 \subsection{Klassendiagramm}
 
-\subsection{package.edu.kit.mensameet.models}
+\subsection{package.edu.kit.mensameet.model}
 %Javadocs für Model%
 \subsubsection{Class Group}
 Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
@@ -173,6 +200,9 @@ public User(String name, String password)
 
 
 \subsection{package.edu.kit.mensameet.controller}
+\begin{center}
+	\includegraphics[width=0.93\textwidth]{Klassendiagramme/serverControllerCD.png}
+\end{center}
 \subsubsection{Class UserController}
 \subsubsection*{Beschreibung}
 Diese Klasse ist der User Controller und beinhaltet die für den User zuständigen Methoden
@@ -448,6 +478,11 @@ GET &  /mensadata & & Liefert die aktuellen Mensadaten.\\
 
 
 \chapter{Datenstrukturen}
+
+\begin{center}
+	\includegraphics[width=0.93\textwidth]{Objektdiagramme/datenstrukturen.png}
+\end{center}
+In der Abbildung sieht man die Datenstruktur der Datenbank, also die Tabellen, die es in der Datenbank geben wird. Weil wir mySQL verwenden und mySQL nicht List-Type als Datentype unterstützt, speichern wir Liste in Form von extra Tabellen.
 
 \chapter{Dynamische Modelle}
 \section{Aktivitätsdiagramm}
