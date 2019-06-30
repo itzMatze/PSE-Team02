@@ -1,0 +1,81 @@
+@startumlclass 
+
+skinparam classAttributeIconSize 0
+title Client View - Paketdiagramm\n\n
+
+package "edu.kit.mensameet.client.view" {
+
+abstract class MmActivity <<extends AppCompatActivity>> {
+	+<<constructor>>MmActivity(bool showHome, bool showEditUser, bool showNext)
+}
+
+class BeginActivity <<extends MmActivity>> {
+}
+
+class LoginActivity <<extends MmActivity>> {
+}
+
+class RegisterActivity <<extends MmActivity>> {
+}
+
+class UserActivity <<extends MmActivity>> {
+	+<<constructor>>UserActivity(bool editable)
+}
+
+class HomeActivity <<extends MmActivity>> {
+}
+
+class AdministerGroupsActivity <<extends MmActivity>> {
+}
+
+class AdministerUsersActivity <<extends MmActivity>> {
+}
+
+class SetTimeActivity <<extends MmActivity>> {
+}
+
+class SelectGroupActivity <<extends MmActivity>> {
+}
+	
+class CreateGroupActivity <<extends MmActivity>> {
+}
+
+class MmList {
+}
+
+class MmItem {
+}
+
+class GroupList <<extends MmList>> {
+}	
+
+class GroupItem <<extends MmItem>> {
+	+<<constructor>>GroupItem(bool bigView)
+}	
+
+class LineList <<extends MmList>> {
+}
+
+class LineItem <<extends MmItem>> {
+}
+
+class UserList <<extends MmList>> {
+}
+
+class UserItem <<extends MmItem>> {
+	+<<constructor>>UserItem(MmViewMode viewMode)
+}	
+
+class UserPictureView {
+	+<<constructor>>UserPictureView(MmViewMode viewMode)
+}
+
+enum MmViewMode {
+	SMALL
+	BIG_NOTEDITABLE
+	BIG_EDITABLE
+}
+
+}
+
+@enduml
