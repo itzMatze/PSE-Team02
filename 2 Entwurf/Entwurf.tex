@@ -204,27 +204,1064 @@ Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung 
 
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
-\subsection{Klassendiagramm}
-\subsubsection{package.edu.kit.mensameet.model}
+
+%---------------------Javadocs für Client Model---------------%
+
+\subsection{package.edu.kit.mensameet.client.model}
+\begin{center}
+	\includegraphics[width=1.1\textwidth]{GUI/frontend-package-model.png}
+\end{center} 
+
+%---------------
+
+\subsubsection{Class MmSession}
+\subsubsection*{Beschreibung}
+In dieser Klasse können die Daten einer Sitzung wie Benutzer, ausgewählte Zeit, ausgewählte Linien und die ausgewählte Gruppe gespeichert werden. Bei ihrer Erzeugung werden zusätzlich noch Listen aller Benutzer bzw. Gruppen sowie die Mensadaten hineingeladen.
+
+%---------------
+
+\subsubsection{Class MmTime}
+\subsubsection*{Beschreibung}
+Diese Klasse kann eine Zeit oder einen Zeitraum speichern.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{MmTime(Time time)}\\
+	Dieser Konstruktor legt eine Zeit an.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item time \\
+		Zeit.
+	\end{itemize}
+
+\item \texttt{MmTime(Time startTime, Time endTime)}\\
+	Dieser Konstruktor legt einen Zeitraum an.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item startTime \\
+	Startzeit.
+	\item endTime \\
+	Endzeit.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{bool isInterval()}\\
+	Diese Methode gibt zurück, ob es sich um ein Zeitintervall handelt.
+
+	\subsubsection*{Rückgabewert}
+	Ob Zeitintervall.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class MmUserPicture}
+\subsubsection*{Beschreibung}
+Diese Klasse enthält eine Profilbilddatei mit zugehöriger Id.
+
+%---------------
+
+\subsubsection{Static class MmUserPictureList}
+\subsubsection*{Beschreibung}
+Diese Klasse enthält die Liste aller möglichen Profilbilder.
+
+
+\subsubsection{Class Group}
+Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
+\subsubsection*{Beschreibung}
+Dies ist eine Datenhalterklasse für eine Gruppe. 
+
+\subsection{Class User}
+\subsection*{Beschreibung}
+Dies ist eine Datenhalterklasse für einen User.
+
+\subsection{Class Credentials}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die Zugangsdaten (engl. Crendentials) eines Nutzers.
+
+\subsection{Class MensaData}
+\subsection*{Beschreibung}
+Diese Klasse beinhaltet den Speiseplan der Mensa des aktuellen Tages.
+
+\subsection{Class Line}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt den Speiseplan der einzelnen Linien bzw. Werke an der Mensa.
+
+\subsection{Class Meal}
+\subsection*{Beschreibung}
+Diese Klasse beschreibt die einzelnen Speisen die an der Mensa angeboten werden.
+Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
+
+\subsection{Class Preferences}
+\subsection*{Beschreibung}
+In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
+
+\subsubsection{Enum Gender}
+\subsection*{Beschreibung}
+Die Geschlechter, die zu einem User gehören können. \\
+\textit{MALE} - das männliche Geschlecht \\
+\textit{FEMALE} - das weibliche Geschlecht \\
+\textit{OTHER} - weder männlicht, noch weiblich \\
+
+\subsubsection{Enum Subject}
+\subsection*{Beschreibung}
+Die Fachrichtungen die ein User haben kann: \\ \\
+\textit{Angewandte Geowissenschaften}\\
+\textit{Architektur}\\
+\textit{Bauingenieurwese}\\
+\textit{Bioingenieurwesen}\\
+\textit{Biologie}\\
+\textit{Chemie}\\
+\textit{Chemieingenieurwesen und Verfahrenstechnik}\\
+\textit{Chemische Biologie}\\
+\textit{Deutsch}\\
+\textit{Elektro- und Informationstechnik}\\
+\textit{Energy Engineering and Management}\\
+\textit{Europäische Kultur und Ideengeschichte}\\
+\textit{Financial Engineering}\\
+\textit{Funktionaler und Konstruktiver Ingenieurbau-Engineering Structures}\\
+\textit{Geodäsie und Geoinformatik}\\
+\textit{Geographie}\\
+\textit{Geoökologie}\\
+\textit{Geophysik}\\
+\textit{Germanistik}\\
+\textit{Information Systems Engineering and Management} \\
+\textit{Informatik}\\
+\textit{Ingenieurpädagogik}\\
+\textit{Kunstgeschichte}\\
+\textit{Lebensmittelchemie}\\
+\textit{Management of Product Development} \\
+\textit{Maschinenbau}\\
+\textit{Materialwissenschaft und Werkstofftechnik}\\
+\textit{Mathematik}\\
+\textit{Mechanical Engineering} \\
+\textit{Mechatronik und Informationstechnik} \\
+\textit{Meteorologie}\\
+\textit{Mobilität und Infrastruktur}\\
+\textit{Mobility Systems Engineering and Management}\\
+\textit{Naturwissenschaft und Technik} \\
+\textit{Optics and Photonics}\\
+\textit{Pädagogik}\\
+\textit{Philosophie/Ethik}\\
+\textit{Physik}\\
+\textit{Production and Operations Management}\\
+\textit{Regionalwissenschaft}\\
+\textit{Remote Sensing and Geoinformatics}\\
+\textit{Sport}\\
+\textit{Sportwissenschaft}\\
+\textit{Technische Volkswirtschaftslehre} \\
+\textit{Technomathematik}\\
+\textit{Water Science and Engineering}\\
+\textit{Wirtschaftsinformatik}\\
+\textit{Wirtschaftsingenieurwesen}\\
+\textit{Wirtschaftsmathematik}\\
+\textit{Wissenschaft-Medien-Kommunikation}\\
+
+
+
+\subsubsection{Enum Status}
+\subsection*{Beschreibung}
+Der Stauts den ein User haben kann: 
+\\ \\ \textit{Professor} - Ein/e Professor/in oder Dozent/in \\
+\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\ 
+\textit{Apprentice} - Ein/e Auszubildende/r \\
+\textit{Student} - Ein/e reguläre/r Student/in \\
+\textit{Other} - Sonstiges \\
 
 \newpage
+\subsubsection{Enum FoodType}
+\subsection*{Beschreibung}
+Die Sorten von Essen die es gibt und die man Gerichten zuordnen kann:
+\\ \\ \textit{BEEF \\
+ REGIONAL\_MEAT \\
+ PORK \\
+ REGIONAL\_PORK \\
+ FISH \\
+ VEGETARIAN \\
+ VEGAN \\
+ LAB \\
+ ORGANIC \\
+ MENSA\_VITAL \\
+}
 
-\subsubsection{package.edu.kit.mensameet.view}
-%Bild im Querformat
-%\begin{landscape}
-% \includegraphics[width=1.6\textwidth]{GUI/frontend_view.png}
-%\end{landscape}
+\subsubsection{Enum Ingredient}
+\subsection*{Beschreibung}
+Die Inhaltsstoffe, die in einem Gericht enthalten sein können: \\
+\\
+\textit{(1) mit Farbstoff \\
+(2) mit Konservierungsstoff \\
+(3) mit Antioxidationsmittel \\
+(4) mit Geschmacksverstärker \\
+(5) mit Phosphat \\
+(6) Oberfläche gewachst \\
+(7) geschwefelt \\
+(8) Oliven geschwärzt \\
+(9) mit Süßungsmittel \\
+(10) kann bei übermäßigem Verzehr abführend wirken \\
+(11) enthält eine Phenylalaninquelle \\
+(12) kann Restalkohol enthalten \\
+(14) aus Fleischstücken zusammengefügt \\
+(15) mit kakaohaltiger Fettglasur \\
+(27) aus Fischstücken zusammengefügt \\
+(R) enthält Rindfleisch \\
+(RAT) enthält regionales Rindfleisch aus artgerechter Tierhaltung \\
+(S) enthält Schweinefleisch \\
+(SAT) enthält regionales Schweinefleisch aus artgerechter Tierhaltung \\
+(VEG) vegetarisches Gericht \\
+(VG) veganes Gericht (ohne Fleischzusatz) \\
+(B) kontrolliert biologischer Anbau / DE007 Öko Kontrollstelle \\
+(MSC) MSC-zertifizierter Fisch \\
+(MV) MensaVital \\
+(LAB) mit tierischem Lab \\
+(GER) mit Gelatine\\
+(Gl) Glutenhaltiges Getreide \\
+(We) Weizen \\
+(Ro) Roggen \\
+(Ge) Gerste \\
+(Ha) Hafer \\
+(Di) Dinkel \\
+(Ka) Kamut \\
+(Nu) Schalenfrüchte / Nüsse \\
+(Ma) Mandeln \\
+(Ha) Haselnüsse) \\ 
+(Wa) Walnüsse \\
+(Ca) Cashewnüsse \\
+(Pe) Pekanüsse \\
+(Pa) Paranüsse \\
+(Pi) Pistazie \\
+(Qu) Queenslandnüsse/Macadamianüsse \\
+(Ei) Eier \\
+(Er) Erdnüsse \\
+(So) Soja \\
+(Sn) Senf \\
+(Kr) Krebstiere \\
+(Fi) Fisch \\
+(ML) Milch / Laktose \\
+(Se) Sellerie \\
+(Sf) Schwefeldioxid / Sulfit \\
+(Sa) Sesam \\
+(Lu) Lupine \\
+(We) Weichtiere \\}
+  
 
-\begin{center}
- \includegraphics[width=0.99\textwidth]{GUI/frontend_view.png}
-\end{center}
-
+%------------ Java Doc for client view ---------------------
 
 \newpage
-\subsubsection{package.edu.kit.mensameet.viewmodel}
+\subsection{package.edu.kit.mensameet.client.view}
+
 \begin{center}
-	\includegraphics[width=0.99\textwidth]{GUI/frontend_viewmodel.png}
-\end{center}
+	\includegraphics[width=1.1\textwidth]{GUI/frontend-package-view.png}
+\end{center} 
+
+\subsubsection{Abstract class MmActivity extends AppCompatActivity}
+\subsubsection*{Beschreibung}
+Diese abstrakte Klasse bildet das Grundgerüst für die Activitys.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{MmActivity(bool showHome, bool showEditUser, bool showNext)}\\
+	
+	Mit diesem Konstruktor lässt sich einstellen, welche Buttons angezeigt werden sollen.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item showHome \\
+		Zeige Home-Button an.
+	\item showEditUser \\
+		Zeige Profil-Button an.
+	\item showNext \\
+		Zeige Weiter-Button an.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class BeginActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Oberfläche empfängt den Benutzer, wenn dieser die App das erste Mal startet. Er kann sich dann mit seinem bereits vorhandenem Account anmelden, falls er zum Beispiel nur ein neues Smartphone hat. Alternativ hat er die Möglichkeit sich zu registrieren und einen neuen Account anzulegen.
+
+%---------------------
+
+\subsubsection{Class LoginActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, in der sich der Benutzer mit seinen Accountdaten anmelden kann.
+%---------------------
+
+\subsubsection{Class UserActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse zeigt ein Benutzerprofil auf einer ganzen Seite an.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserActivity(bool editable)}\\
+	
+	Mit diesem Konstruktor lässt sich einstellen, ob das Profil editierbar sein soll. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item editable \\
+		Profil soll editierbar sein.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class HomeActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, die als Homescreen für den Benutzer agiert. Der Benutzer kann hier seine bevorzugten Linien auswählen, an denen er gerne essen gehen würde.
+
+%---------------------
+
+\subsubsection{Class AdministerGroupsActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse zeigt für Administratoren eine Übersicht aller Gruppen an und stellt eine Löschtaste zur Verfügung. 
+
+%---------------------
+
+\subsubsection{Class AdministerUsersActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse zeigt für Administratoren eine Übersicht aller Benutzer an und stellt eine Löschtaste zur Verfügung.
+
+%---------------------
+
+\subsubsection{Class SelectGroupActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer verschiedene Gruppen anzeigt, die anhand seiner davor eingegebenen Präferenzen ausgewählt wurden. Er kann hier die Gruppen antippen, um sich weitere Details über diese anzeigen zu lassen.
+
+%---------------------
+
+\subsubsection{Class CreateGroupActivity extends MmActivity}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, die es dem Benutzer ermöglicht eine neue Gruppe zu gründen.
+
+%---------------------
+
+\subsubsection{Class MmList}
+\subsubsection*{Beschreibung}
+Diese Klasse dient als Grundgerüst für Listen in den Activitys. 
+
+%---------------------
+
+\subsubsection{Class MmItem}
+\subsubsection*{Beschreibung}
+Diese Klasse dient als Grundgerüst für Listenelemente in den Activitys. 
+
+%---------------------
+
+\subsubsection{Class GroupList extends MmList}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet eine Oberfläche für eine Gruppenliste.
+
+%---------------------
+
+\subsubsection{Class GroupItem extends MmItem}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, die dem Benutzer eine Gruppe und seine Teilnehmer anzeigt.
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{GroupItem(bool bigView)}\\
+	Mit diesem Konstruktor lässt sich einstellen, ob die Gruppenansicht in groß für eine Einzelseite oder, für Listen geeignet, in klein erfolgen soll. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item bigView \\
+		Ob die Gruppenansicht groß sein soll. 
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class LineList extends MmList}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet eine Oberfläche für eine Liste von Mensalinien. 
+
+%---------------------
+
+\subsubsection{Class LineItem extends MmItem}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet eine Oberfläche für ein Listenelement einer Mensalinien-Liste.
+
+%---------------------
+
+\subsubsection{Class UserList extends MmList}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet eine Oberfläche für eine Benutzerliste.
+
+%---------------------
+
+\subsubsection{Class UserItem extends MmList}
+\subsubsection*{Beschreibung}
+Diese Klasse bietet die Oberfläche der App, die einen Benutzer anzeigt.
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserItem(MmViewMode viewMode)}\\
+	Mit diesem Konstruktor lässt sich einstellen, ob die Benutzeransicht in groß für eine Einzelseite, dabei bearbeitbar oder, für Listen geeignet, in klein erfolgen soll.
+
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item viewMode \\
+		Anzeigeart: groß nur lesen, groß bearbeitbar oder klein.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class UserPictureView}
+\subsubsection*{Beschreibung}
+Diese Klasse kapselt die Darstellung eines Benutzerbildes.
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserPictureView(MmViewMode viewMode)}\\
+	Mit diesem Konstruktor lässt sich einstellen, ob das Benutzerbild in groß für eine Einzelseite, dabei bearbeitbar oder, für Listen geeignet, in klein erfolgen soll.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item viewMode \\
+		Anzeigeart: groß nur lesen, groß bearbeitbar oder klein.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{enum MmViewMode}
+\subsubsection*{Beschreibung}
+Anzeigearten
+\textit{SMALL} - klein \\
+\textit{BIGNOTEDITABLE} - gross und nicht bearbeitbar \\
+\textit{BIGEDITABLE} - gross und bearbeitbar \\
+
+%---------------------
+
+\newpage
+\subsection{package.edu.kit.mensameet.client.viewmodel}
+
+%------------ Java Doc for client viewmodel ---------------------
+
+\begin{center}
+	\includegraphics[width=1.1\textwidth]{GUI/frontend-package-viewmodel.png}
+\end{center} 
+
+\subsubsection{Abstract class MmViewModel extends ViewModel}
+\subsubsection*{Beschreibung}
+Diese abstrakte Klasse verwaltet alle Grundfunktionen, die die Klasse MmActivity ihren Unterklassen bereitstellt.
+
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{MmViewModel(LiveData<MmSession> session)}\\
+	
+	Dieser Konstruktor nimmt ein MmSession-Element auf, in der die Daten der Sitzung gespeichert werden.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item session \\
+		Sitzungs-Klasse. Falls leer, wir eine neue erzeugt.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+
+\item \texttt{void gotoHome()}\\
+	Diese Methode startet die Klasse HomeActivity.
+
+\item \texttt{void gotoUser()}\\
+	Diese Methode startet die Klasse UserActivity.
+	
+\item \texttt{abstract void next()}\\
+	Diese Schablonenmethode kann von jeder abgeleiteten Klasse individuell für die folgende Activity angepasst werden.
+	
+\end{itemize}
+\end{addmargin}
+
+%---------------------
+
+\subsubsection{Class BeginViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse BeginActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{void gotoLogin()}\\
+	Diese Methode startet die LoginActivity Klasse, damit der Benutzer sich mit seinem Account einloggen kann.
+
+\item \texttt{void gotoRegister())}\\
+	Diese Methode startet die RegisterActivity Klasse, damit der Benutzer sich mit seinen Daten registrieren und somit einen Account anlegen kann.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class LoginViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse LoginActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{login(string email, string password)}\\
+	Diese Methode leitet die Anmeldedaten an FireBase zur Überprüfung weiter und startet die Klasse HomeActivity, falls die Überprüfung erfolgreich war. Falls nicht wird eine Fehlermeldung in der LoginActivity erzeugt.
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item email \\
+		FireBase-E-Mail-Adresse.
+	\item password \\
+		FireBase-Passwort.
+	\end{itemize}
+
+\item \texttt{passwordForgotten()}\\
+	Diese Methode führt auf die FireBase-Seite bei Vergessen des Passworts.
+
+\item \texttt{gotoBegin()}\\
+	Diese Methode startet die Klasse BeginActivity wieder.
+
+\end{itemize}
+\end{addmargin}	
+
+
+%---------------
+
+\subsubsection{Class RegisterViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse RegisterActivity dem Benutzer bietet.
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{register(string email, string password)}\\
+	Diese Methode leitet Registrierungsdaten an FireBase zur Überprüfung weiter und erzeugt neue Profil, fallss diese erfolgreich war. Dann wird die Klasse UserActivity zur Profilvervollständigung gestartet. Falls nicht wird eine Fehlermeldung erzeugt.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item email \\
+		FireBase-E-Mail-Adresse.
+	\item password \\
+		FireBase-Passwort.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}	
+
+%---------------
+
+\subsubsection{UserViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserActivity dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserViewModel(LiveData<User> user, bool editable, MmActivity next)}\\
+Mit diesem Konstruktor lässt sich anzeigen, ob das Profil eine Bearbeitungsansicht sein soll. Außerdem lässt sich einstellen, welche Folgeseite aufgerufen wird.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item LiveData<User> user \\
+		Der bearbeitete Benutzer.
+	\item bool editable \\
+		Ob Bearbeitungsansicht aktiviert ist.
+	\item MmActivity next \\
+		Folgeseite.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+
+\item \texttt{LiveData<User> loadUser()}\\
+	Diese Methode gibt den Benutzer zurück.
+
+	\subsubsection*{Rückgabewert}
+	Benutzer.
+
+\item \texttt{void saveUser(LiveData<User> user)}\\
+	Diese Methode speichert die Benutzerdaten.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+		Benutzer.
+	\end{itemize}
+	
+\item \texttt{void gotoNext()}\\
+	Diese Methode startet die Folgeseite.
+	
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class HomeViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse HomeActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<List<Line> > loadLines()}\\
+	Diese Methode lädt eine Liste mit dem Essensangebot der Mensalinien. 
+
+	\subsubsection*{Rückgabewert}
+	Liste des Essensangebots der Mensalinien.
+
+\item \texttt{void saveLines(LiveData<List<Line> > chosenLines)}\\
+	Diese Methode speichert die Linien, die der Benutzer als Favoriten angegeben hat und startet die Klasse SetTimeActivity.
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item chosenLines \\
+	Liste der als Favoriten angegebenen Linien.
+	\end{itemize}
+
+\item \texttt{+void logout()}\\
+    Diese Methode startet Klasse BeginActivity, wobei die MmSession-Klasse mit einer neuen ersetzt wird.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class AdministerGroupsViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse AdministerGroupsActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<List<Group> > loadGroups()}\\
+	Diese Methode lädt eine Liste aller Gruppen.
+
+	\subsubsection*{Rückgabewert}
+	Liste aller Gruppen.
+
+\item \texttt{deleteGroups(LiveData<List<Group> > groups)}\\
+	Diese Methode löscht eine Menge von Gruppen.
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item groups \\
+		Zu löschende Menge von Gruppen.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class AdministerUsersViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse AdministerUsersActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<List<User> > loadUsers()}\\
+	Diese Methode lädt eine Liste aller Benutzer.
+
+	\subsubsection*{Rückgabewert}
+	Liste aller Benutzer.
+
+\item \texttt{void deleteUsers(LiveData<List<User> > users)}\\
+Diese Methode löscht eine Menge von Benutzern.
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item users \\
+		Zu löschende Menge von Benutzern.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class SetTimeViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse SetTimeActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<MmTime> loadTime()}\\
+	Diese Methode lädt die bereits eingestellte Zeit/Zeitraum.
+
+	\subsubsection*{Rückgabewert}
+	Bereits eingestellte Zeit/Zeitraum.
+
+\item \texttt{void saveTime(LiveData<MmTime> time)}\\
+Diese Methode speichert die eingegebene Zeit/Zeitraum zur weiteren Verwendung für die nachfolgenden Funktionen in der App ab.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item time \\
+		Zu speichernde Zeit/Zeitraum
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class SelectGroupViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse SelectGroupActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<List<Group> > loadSuitableGroups()}\\
+	Diese Methode lädt alle Gruppen, die zu den gespeicherten Kriterien in der MmSession-Klasse passen.
+
+	\subsubsection*{Rückgabewert}
+	Alle passenden Gruppen.
+
+\item \texttt{void gotoCreateGroup()}\\
+Diese Methode startet die Klasse CreateNewGroupActivity.
+
+\item \texttt{void gotoSetTime()}\\	
+Diese Methode startet die Klasse SetTimeActivity.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class CreateGroupViewModel extends MmViewModel}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse CreateGroupActivity dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{void saveGroup(LiveData<Group> group)}\\
+	Diese Methode speichert die Daten der neu angelegten Gruppe.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item group \\
+		Neue Gruppenklasse.
+	\end{itemize}
+
+\item \texttt{void gotoSelectGroup()}\\
+Diese Methode startet die Klasse SelectGroupActivity.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class MmListHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse MmList dem Benutzer bietet.
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{void select(int itemId, bool selected)}\\
+	Diese Methode setzt ein Element in der Liste auf (nicht) ausgewählt.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item itemId \\
+		Id des Elements der Liste.
+	\item selected \\
+		Ob das Element ausgewählt sein soll.
+	\end{itemize}
+
+\item \texttt{bool isSelected(int itemId)}\\
+ Diese Methode gibt zurück, ob ein Element der Liste ausgewählt ist.  
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item itemId \\
+		Id des Elements der Liste
+	\end{itemize}
+
+'   \subsubsection*{Rückgabewert}
+	Ob das Element ausgewählt ist.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class MmItemHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse MmItem dem Benutzer bietet.
+
+%---------------
+
+\subsubsection{Class GroupListHandler extends MmListHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse GroupList dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{GroupListHandler(LiveData<List<Group> > groupList)}\\
+	Dieser Konstruktor erzeugt aus einer Gruppenliste die Klasse.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item groupList \\
+		Gruppenliste.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class GroupItemHandler extends MmItemHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse GroupItem dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{GroupItemHandler(LiveData<Group> group, bool bigView)}\\
+	Dieser Konstruktor erzeugt aus einer Gruppe die Klasse und gibt dabei an, ob die Anzeige im zugehörigen GroupItem groß oder klein ist, was Unterschiede in der Funktionalität zur Folge haben können soll. 
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item group \\
+		Gruppe.
+	\item bigView \\
+		Ob die Anzeige im zugehörigen GroupItem groß ist. 
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<Group> loadGroup}\\
+	Lädt die gespeicherte Gruppe.
+
+	\subsubsection*{Rückgabewert}
+	Gespeicherte Gruppe.
+
+\item \texttt{void joinGroup()}\\
+	Diese Methode fügt den Benutzer in die Gruppe hinzu.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class LineListHandler extends MmListHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse LineList dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LineListHandler(LiveData<MensaData> mensaData)}\\
+	Dieser Konstruktor erzeugt aus den Mensadaten die Klasse.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item mensaData \\
+		Mensadaten.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class LineItemHandler extends MmItemHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse LineItem dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LineItemHandler(LiveData<Line> line)}\\
+	Dieser Konstruktor erzeugt aus den Daten einer Mensalinie die Klasse.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item line \\
+		Daten einer Mensalinie.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class UserListHandler extends MmListHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserList dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserListHandler(LiveData<List<User> > userList)}\\
+	Dieser Konstruktor erzeugt aus einer Benutzerliste die Klasse.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item userList \\
+		Benutzerliste.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class UserItemHandler extends MmItemHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserItem dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserItemHandler(LiveData<User> user, MmViewMode viewMode)}\\
+	Dieser Konstruktor erzeugt aus einem Benutzer und dem Anzeigemodus (groß nur lesen, groß bearbeitbar oder klein) die Klasse. Der Anzeigemodus soll Änderungen in der Funktionalität zur Folge haben können.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+		Benutzer.
+	\item viewMode \\
+		Anzeigemodus (groß nur lesen, groß bearbeitbar oder klein).
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<User> loadUser()}\\
+	Lädt den gespeicherten Benutzer.
+
+  \subsubsection*{Rückgabewert}
+	Gespeicherter Benutzer.
+
+\end{itemize}
+\end{addmargin}
+
+%---------------
+
+\subsubsection{Class UserPictureViewHandler}
+\subsubsection*{Beschreibung}
+Diese Klasse verwaltet alle Funktionen, die die Klasse UserPictureView dem Benutzer bietet.
+
+\subsubsection*{Konstruktoren}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{UserPictureViewHandler(LiveData<User> user, int profilePictureId, MmViewMode viewMode)}\\
+	Dieser Konstruktor erzeugt die Klasse aus dem zum Bild gehörigen Benutzer, der Id des Bildes und dem Anzeigemodus (groß nur lesen, groß bearbeitbar oder klein). Der Anzeigemodus soll Änderungen in der Funktionalität zur Folge haben können.
+
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item user \\
+	Benutzer.
+	\item profilePictureId \\
+	Id des Bildes.
+	\item viewMode \\
+	Anzeigemodus (groß nur lesen, groß bearbeitbar oder klein).
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\subsubsection*{Methoden}
+\begin{addmargin}[25pt]{0pt}
+\begin{itemize}
+
+\item \texttt{LiveData<List<MmProfilePicture> > loadAllProfilePicutres()}\\
+	Lädt eine Liste aller möglichen Profilbilder, damit der Benutzer in der Klasse UserPictureView eins auswählen kann.
+
+  \subsubsection*{Rückgabewert}
+	Liste aller möglichen Profilbilder.
+
+\item \texttt{LiveData<MmProfilePicture> loadProfilePicture()}\\
+	Lädt das gespeicherte Profilbild.
+
+  \subsubsection*{Rückgabewert}
+	Das gespeicherte Profilbild.
+
+\item \texttt{void savePicture(int profilePictureId)}\\
+Speichert ein ausgewähltes Profilbild.
+	\subsubsection*{Parameter}
+	\begin{itemize}
+	\item profilePictureId \\
+	Id des ausgewählten Bildes.
+	\end{itemize}
+
+\end{itemize}
+\end{addmargin}
+
+\newpage
+\subsection{Ausgewählte Klassenbeziehungen des Clients}
+\begin{center}
+	\includegraphics[width=1.1\textwidth]{GUI/frontend_beziehungen.png}
+\end{center} 
 
 
 %Klassen des Servers%
@@ -233,7 +1270,7 @@ Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung 
 \subsection{Klassendiagramm}
 	\includegraphics[width=1\textwidth]{Klassendiagramme/serverModelsCD.png}
 \newpage
-\subsection{package.edu.kit.mensameet.model}
+\subsection{package.edu.kit.mensameet.server.model}
 %Javadocs für Model%
 \subsubsection{Class Group}
 Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
@@ -417,7 +1454,7 @@ Die Inhaltsstoffe, die in einem Gericht enthalten sein können: \\
 %------------ Java Doc for the sever view package ---------------------
 
 \newpage
-\subsection{package.edu.kit.mensameet.view}
+\subsection{package.edu.kit.mensameet.server.view}
 
 \begin{center}
 	\includegraphics[width=1.1\textwidth]{Klassendiagramme/serverViewCD.png}
@@ -646,7 +1683,7 @@ Diese Klasse stellt die für den Client benötigten Funktionen bereit um sich zu
 
 
 
-\subsection{package.edu.kit.mensameet.controller}
+\subsection{package.edu.kit.mensameet.server.controller}
 \begin{center}
 	\includegraphics[width=1.1\textwidth]{Klassendiagramme/serverControllerCD.png}
 \end{center}
