@@ -20,11 +20,11 @@
 
 
 \chapter{Einleitung}
-Dies ist das Entwurfsdokument für die Applikation \dq MensaMeet\dq.  Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus welcher das Pflichtenheft hervorging.
-In den folgenden Kapitel wird auf die Systemarchitektur ("Grobentwurf") eingegangen. Es folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel "Feinentwurf" werden die Klassendiagramme der einzelnen Pakete im Detail vorgestellt und das verwendete HTTP Protokoll aufgeührt. Unter "Datenstrukturen" findet sich die strukturiereung unserer Datenbank wieder. 
-Im Abschnitt "dynamische Modelle" werden anhand von Sequenzdiagrammen einige Abläufe von MensaMeet anschaulich dargestellt.
-Schließlich Begründen wir in Kapitel 6 die Änderungen gegenüber dem Pflichtenheft.
-Auf den letzten Seiten dieses Dokuments findet sich ein Glossar und ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
+Dies ist das Entwurfsdokument für die Applikation (im folgenden mit App abgekürzt) "MensaMeet". Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus der das Pflichtenheft hervorging.
+In den folgenden Kapitel wird auf die Systemarchitektur ("Grobentwurf") eingegangen. Danach folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel "Feinentwurf" werden die Klassendiagramme der einzelnen Pakete vorgestellt. Unter "Datenstrukturen" findet sich die strukturiereung unserer Datenhaltung, also der Datenbank wieder. 
+Im Abschnitt "dynamische Modelle" werden einige Abläufe exemplarisch als Sequenzdiagramme dargestellt.
+Schließlich gehen wir noch auf die begründeten Änderungen zum Pflichtenheft ein.
+Im Glossar finden sich Worterklärungen und im Anhang ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
 
 
 
@@ -47,9 +47,11 @@ Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Dat
 View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
 
 \subsection{Frameworks und Interfaces}
-\subsection*{JPA und Hibernate}
+\subsection*{Hibernate und JPA}
 
-Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen das Java Persistence Application Programming Interface (JPA). \\ JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir implementieren JPA mithilfe des Frameworks Hibernate.\\ \\ Die Vorteile von Hibernate liegen vor allem in der Abstraktion der verwendeten Datenbank. Hibernate kann normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken speichern und aus den Datensätzen der Datenbank wiederum Objekte erzeugen. Daher müssen keine SQL-Statments geschrieben werden, was die Implemenntierung erleichtert und die Entwickling der Anwendung effizienter macht. \\  Außerdem ist Hibernate, durch die Abstraktion, kompatibel mit verschiedenen Datenbanken, sodass die verwendete Datenbank (in unserem Fall MySQL) jederzeit leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
+Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen für ORM das Java Persistence Application Programming Interface (JPA). 
+JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das Framework Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
+Hibernate bietet Kompatibilität mit verschiedenen Datenbanken, sodass die von uns verwendete Datenbank MySQL leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
 
 \subsection*{Spring}
 \subsection*{Firebase}
@@ -79,7 +81,7 @@ Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit d
 \subsection{package.edu.kit.mensameet.model}
 %Javadocs für Model%
 \subsubsection{Class Group}
-Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden
+Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgeführt werden: User, Group.
 \subsubsection*{Beschreibung}
 Dies ist eine Datenhalterklasse für eine Gruppe. 
 
@@ -107,32 +109,6 @@ Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
 \subsection{Class Preferences}
 \subsection*{Beschreibung}
 In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
-
-\subsection{Enum Gender}
-\subsection*{Beschreibung}
-Die Geschlechter, die zu einem User gehören können. \\
-\textit{MALE} - das männliche Geschlecht \\
-\textit{FEMALE} - das weibliche Geschlecht \\
-\textit{OTHER} - weder männlicht, noch weiblich \\
-
-\subsection{Enum Subject}
-\subsection*{Beschreibung}
-Die Fachrichtungen die ein User haben kann: \\
-TODO: Hier sortierte Liste einfügen
-
-\subsection{Enum Status}
-Der Stauts den ein User haben kann: \\
-\textit{Professor} - Ein/e Professor/in oder Dozent/in \\
-\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\
-\textit{Apprentice} - Ein/e Auszubildende/r \\
-\textit{Student} - Ein/e reguläre/r Student/in \\
-\textit{Other} - Sonstiges \\
-
-\subsection{Enum Mensaline}
-
-\subsection{Enum FoodType}
-
-\subsection{Enum Ingredient}
 
 %------------ Java Doc for the sever view package ---------------------
 
