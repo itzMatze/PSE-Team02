@@ -6,7 +6,7 @@ title Client ViewModel - Paketdiagramm\n\n
 package "edu.kit.mensameet.client.viewmodel" {
 
 abstract class MmViewModel <<extends ViewModel>> {
-	+<<constructor>>MmViewModel(LiveData<Preferences> preferences)
+	+<<constructor>>MmViewModel(LiveData<MmSession> session)
 	+void gotoHome()
 	+void gotoUserActivity()
 	{abstract} +void next()
@@ -18,13 +18,13 @@ class BeginViewModel <<extends MmViewModel>> {
 }
 
 class LoginViewModel <<extends MmViewModel>> {
-	+void login(string username, string password)
+	+void login(string email, string password)
 	+void passwordForgotten()
 	+void gotoBegin()
 }
 
 class RegisterViewModel <<extends MmViewModel>> {
-	+void register(string username, string password)
+	+void register(string email, string password)
 	+void gotoBegin()
 }
 
