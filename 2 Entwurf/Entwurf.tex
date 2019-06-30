@@ -120,7 +120,7 @@ In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 \end{center}
 
 
-\\Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
+Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
 
 \subsubsection{Class UserService}
 \subsubsection*{Beschreibung}
@@ -333,7 +333,7 @@ Diese Klasse stellt die für den Client benötigten Funktionen bereit um sich zu
 
 	\subsubsection*{Rückgabewert}
 	Der neue User, mit dem Token als ResponseEntity mit status code 200.
-	Status code 406, die Email-Adresse schon benutzt wird.
+	Status code 406, falls die Email-Adresse schon benutzt wird.
 	Status code 400, falls die Form der Anfrage falsch ist. Bsw. die Email-Adresse eine falsche Form hat.
 		
 
