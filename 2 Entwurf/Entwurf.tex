@@ -188,7 +188,7 @@ Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige An
 
 \subsection*{Firebase}
 Firebase ist ein Framework, das viele Services bietet um die Entwicklung und die Handhabung der Infrastruktur von mobilen und Webanwendungen zu vereinfachen. Es übernimmt für uns die Registrierung, Speicherung und Organisation von Nutzerdaten, die wir für die Verwaltung von Accounts benötigen. \\ \\
-Wir nutzen von all den Services die Firebase bietet aber nur die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit der Wiederherstellung bei vergessen des Passworts. Firebase bietet außerdem noch viele weitere Funktionalitäten, wie push notifications an, die wir vielleicht in zukunft nutzen werden um Wunschkriterien zu implementieren.
+Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit zur Wiederherstellung des Passworts. Firebase bietet viele weitere Funktionalitäten, wie Push Notifications, an, die wir, bei Bedarf, in Zukunft nutzen können, um Wunschkriterien zu implementieren.
 
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
@@ -214,9 +214,13 @@ Wir nutzen von all den Services die Firebase bietet aber nur die Registrierung u
 	\includegraphics[width=0.99\textwidth]{GUI/frontend_viewmodel.png}
 \end{center}
 
-\section{Klassen des Server}
-\subsection{Klassendiagramm}
 
+%Klassen des Servers%
+\section{Klassen des Server}
+
+\subsection{Klassendiagramm}
+	\includegraphics[width=1\textwidth]{Klassendiagramme/serverModelsCD.png}
+\newpage
 \subsection{package.edu.kit.mensameet.model}
 %Javadocs für Model%
 \subsubsection{Class Group}
@@ -259,96 +263,90 @@ Die Geschlechter, die zu einem User gehören können. \\
 
 \subsubsection{Enum Subject}
 \subsection*{Beschreibung}
-Die Fachrichtungen die ein User haben kann: \\
-\begin{itemize}
+Die Fachrichtungen die ein User haben kann: \\ \\
+\textit{Angewandte Geowissenschaften}\\
+\textit{Architektur}\\
+\textit{Bauingenieurwese}\\
+\textit{Bioingenieurwesen}\\
+\textit{Biologie}\\
+\textit{Chemie}\\
+\textit{Chemieingenieurwesen und Verfahrenstechnik}\\
+\textit{Chemische Biologie}\\
+\textit{Deutsch}\\
+\textit{Elektro- und Informationstechnik}\\
+\textit{Energy Engineering and Management}\\
+\textit{Europäische Kultur und Ideengeschichte}\\
+\textit{Financial Engineering}\\
+\textit{Funktionaler und Konstruktiver Ingenieurbau-Engineering Structures}\\
+\textit{Geodäsie und Geoinformatik}\\
+\textit{Geographie}\\
+\textit{Geoökologie}\\
+\textit{Geophysik}\\
+\textit{Germanistik}\\
+\textit{Information Systems Engineering and Management} \\
+\textit{Informatik}\\
+\textit{Ingenieurpädagogik}\\
+\textit{Kunstgeschichte}\\
+\textit{Lebensmittelchemie}\\
+\textit{Management of Product Development} \\
+\textit{Maschinenbau}\\
+\textit{Materialwissenschaft und Werkstofftechnik}\\
+\textit{Mathematik}\\
+\textit{Mechanical Engineering} \\
+\textit{Mechatronik und Informationstechnik} \\
+\textit{Meteorologie}\\
+\textit{Mobilität und Infrastruktur}\\
+\textit{Mobility Systems Engineering and Management}\\
+\textit{Naturwissenschaft und Technik} \\
+\textit{Optics and Photonics}\\
+\textit{Pädagogik}\\
+\textit{Philosophie/Ethik}\\
+\textit{Physik}\\
+\textit{Production and Operations Management}\\
+\textit{Regionalwissenschaft}\\
+\textit{Remote Sensing and Geoinformatics}\\
+\textit{Sport}\\
+\textit{Sportwissenschaft}\\
+\textit{Technische Volkswirtschaftslehre} \\
+\textit{Technomathematik}\\
+\textit{Water Science and Engineering}\\
+\textit{Wirtschaftsinformatik}\\
+\textit{Wirtschaftsingenieurwesen}\\
+\textit{Wirtschaftsmathematik}\\
+\textit{Wissenschaft-Medien-Kommunikation}\\
 
-\item Angewandte Geowissenschaften\
-\item Architektur\
-\item Bauingenieurwesen\
-\item Bioingenieurwesen\
-\item Biologie\
-\item Chemie\
-\item Chemieingenieurwesen und Verfahrenstechnik\
-\item Chemische Biologie\
-\item Deutsch\
-\item Elektro- und Informationstechnik\
-\item Energy Engineering and Management\
-\item Europ\'e4ische Kultur und Ideengeschichte\
-\item Financial Engineering\
-\item Funktionaler und Konstruktiver Ingenieurbau-Engineering Structures\
-\item Geod\'e4sie und Geoinformatik\
-\item Geographie\
-\item Geo\'f6kologie\
-\item Geophysik\
-\item Germanistik\
-\item Information Systems Engineering and Management \
-\item Informatik\
-\item Ingenieurp\'e4dagogik\
-\item Kunstgeschichte\
-\item Lebensmittelchemie\
-\item Management of Product Development \
-\item Maschinenbau\
-\item Materialwissenschaft und Werkstofftechnik\
-\item Mathematik\
-\item Mechanical Engineering \
-\item Mechatronik und Informationstechnik \
-\item Meteorologie\
-\item Mobilit\'e4t und Infrastruktur\
-\item Mobility Systems Engineering and Management\
-\item Naturwissenschaft und Technik \
-\item Optics and Photonics\
-\item P\'e4dagogik\
-\item Philosophie/Ethik\
-\item Physik\
-\item Production and Operations Management\
-\item Regionalwissenschaft\
-\item Remote Sensing and Geoinformatics\
-\item Sport\
-\item Sportwissenschaft\
-\item Technische Volkswirtschaftslehre \
-\item Technomathematik\
-\item Water Science and Engineering\
-\item Wirtschaftsinformatik\
-\item Wirtschaftsingenieurwesen\
-\item Wirtschaftsmathematik\
-\item Wissenschaft-Medien-Kommunikation
 
-\end{itemize}
 
 \subsubsection{Enum Status}
-Der Stauts den ein User haben kann: \\
+\subsection*{Beschreibung}
+Der Stauts den ein User haben kann: 
+\\ \\ \textit{Professor} - Ein/e Professor/in oder Dozent/in \\
+\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\ 
+\textit{Apprentice} - Ein/e Auszubildende/r \\
+\textit{Student} - Ein/e reguläre/r Student/in \\
+\textit{Other} - Sonstiges \\
 
-\begin{itemize}
-\item \textit{Professor} - Ein/e Professor/in oder Dozent/in \\
-\item\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\
-\item\textit{Apprentice} - Ein/e Auszubildende/r \\
-\item\textit{Student} - Ein/e reguläre/r Student/in \\
-\item\textit{Other} - Sonstiges \\
-
-\end{itemize}
-
+\newpage
 \subsubsection{Enum FoodType}
+\subsection*{Beschreibung}
 Die Sorten von Essen die es gibt und die man Gerichten zuordnen kann:
-
-\begin{itemize}
-
-\item BEEF
-\item REGIONAL\_MEAT
-\item PORK
-\item REGIONAL\_PORK
-\item FISH
-\item VEGETARIAN
-\item VEGAN
-\item LAB
-\item ORGANIC
-\item MENSA\_VITAL
-
-\end{itemize}
+\\ \\ \textit{BEEF \\
+ REGIONAL\_MEAT \\
+ PORK \\
+ REGIONAL\_PORK \\
+ FISH \\
+ VEGETARIAN \\
+ VEGAN \\
+ LAB \\
+ ORGANIC \\
+ MENSA\_VITAL \\
+}
 
 \subsubsection{Enum Ingredient}
+\subsection*{Beschreibung}
 Die Inhaltsstoffe, die in einem Gericht enthalten sein können: \\
-
-(1) mit Farbstoff \\
+\\
+\textit{(1) mit Farbstoff \\
 (2) mit Konservierungsstoff \\
 (3) mit Antioxidationsmittel \\
 (4) mit Geschmacksverstärker \\
@@ -401,19 +399,17 @@ Die Inhaltsstoffe, die in einem Gericht enthalten sein können: \\
 (Sf) Schwefeldioxid / Sulfit \\
 (Sa) Sesam \\
 (Lu) Lupine \\
-(We) Weichtiere \\
+(We) Weichtiere \\}
 
 
 %------------ Java Doc for the sever view package ---------------------
 
-
+\newpage
 \subsection{package.edu.kit.mensameet.view}
 
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Klassendiagramme/serverViewCD.png}
-\end{center}
-
-
+	\includegraphics[width=1.1\textwidth]{Klassendiagramme/serverViewCD.png}
+\end{center} 
 Alle folgenden Klassen haben keine Konstruktoren, da sie keine Instanzen besitzen sollen,sondern lediglich statische Funktionen beinhalten, die die Schnittstelle des Servers bilden. Da alle Rückgabetypen vom Typ ResponseEntity sind werden auch alle http status codes die auftreten können beschrieben.
 
 \subsubsection{Class UserService}
@@ -640,7 +636,7 @@ Diese Klasse stellt die für den Client benötigten Funktionen bereit um sich zu
 
 \subsection{package.edu.kit.mensameet.controller}
 \begin{center}
-	\includegraphics[width=0.93\textwidth]{Klassendiagramme/serverControllerCD.png}
+	\includegraphics[width=1.1\textwidth]{Klassendiagramme/serverControllerCD.png}
 \end{center}
 \subsubsection{Class UserController}
 \subsubsection*{Beschreibung}
@@ -875,7 +871,7 @@ Diese Klasse ist der Time Controller und beinhaltet die Methoden, die für die z
 \end{itemize}
 \end{addmargin}
 
-
+\newpage
 \section{HTTP Protokoll}
 
 Die REST Endpoints die in der Tabelle aufgelistet sind werden für die Kommunikation zwischen Client und Server verwendet. \\
@@ -924,9 +920,9 @@ GET &  /mensadata & & Liefert die aktuellen Mensadaten.\\
 In der Abbildung sieht man die Datenstruktur der Datenbank, also die Tabellen, die es in der Datenbank geben wird. Weil wir mySQL verwenden und mySQL nicht List-Type als Datentype unterstützt, speichern wir Liste in Form von extra Tabellen.
 
 \chapter{Dynamische Modelle}
-\section{Aktivitätsdiagramm}
 
-\section{Sequenzdiagramm}
+\section{Sequenzdiagramme}
+Es werden nun einige Abläufe innerhalb der App  MensaMeet durch Sequenzdiagramme veranschaulicht. 
 \subsection{Registrieren}
 \begin{center}
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/Registration.png}
