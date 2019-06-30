@@ -181,8 +181,14 @@ Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit d
 JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das Framework Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
 Hibernate bietet Kompatibilität mit verschiedenen Datenbanken, sodass die von uns verwendete Datenbank MySQL leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
 
-\subsection*{Spring}
+\subsection*{Spring Boot}
+
+Spring Boot ist ein Framework, welches es erleichtern soll Java und Java EE Anwendungen zu schreiben und gute Programmierpraktiken zu fördern. Es ist eine vereinfachte Form des Spring Frameworks und bietet viele dessen Funktionalitäten auf schnell zu integierbarem Wege an. \\ \\
+Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige Anwendung schreiben zu können und um Funktionalitäten wie Dependecy Injection nutzen zu können.
+
 \subsection*{Firebase}
+Firebase ist ein Framework, das viele Services bietet um die Entwicklung und die Handhabung der Infrastruktur von mobilen und Webanwendungen zu vereinfachen. Es übernimmt für uns die Registrierung, Speicherung und Organisation von Nutzerdaten, die wir für die Verwaltung von Accounts benötigen. \\ \\
+Wir nutzen von all den Services die Firebase bietet aber nur die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit der Wiederherstellung bei vergessen des Passworts.
 
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
