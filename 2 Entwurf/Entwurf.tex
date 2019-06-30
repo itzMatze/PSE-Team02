@@ -188,7 +188,7 @@ Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige An
 
 \subsection*{Firebase}
 Firebase ist ein Framework, das viele Services bietet um die Entwicklung und die Handhabung der Infrastruktur von mobilen und Webanwendungen zu vereinfachen. Es übernimmt für uns die Registrierung, Speicherung und Organisation von Nutzerdaten, die wir für die Verwaltung von Accounts benötigen. \\ \\
-Wir nutzen von all den Services die Firebase bietet aber nur die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit der Wiederherstellung bei vergessen des Passworts.
+Wir nutzen von all den Services die Firebase bietet aber nur die Registrierung und Anmeldung mit einer Email-Adresse und einem Passwort, sowie die Möglichkeit der Wiederherstellung bei vergessen des Passworts. Firebase bietet außerdem noch viele weitere Funktionalitäten, wie push notifications an, die wir vielleicht in zukunft nutzen werden um Wunschkriterien zu implementieren.
 
 \chapter{Feinentwurf}
 \section{Klassen des Clients}
@@ -224,57 +224,184 @@ Die folgenden Klassen enthalten Standardkonstruktoren, die nicht explizit aufgef
 \subsubsection*{Beschreibung}
 Dies ist eine Datenhalterklasse für eine Gruppe. 
 
-\subsection{Class User}
+\subsubsection{Class User}
 \subsection*{Beschreibung}
 Dies ist eine Datenhalterklasse für einen User.
 
-\subsection{Class Crendentials}
+\subsubsection{Class Crendentials}
 \subsection*{Beschreibung}
 Diese Klasse beschreibt die Zugangsdaten (engl. Crendentials) eines Nutzers.
 
-\subsection{Class MensaData}
+\subsubsection{Class MensaData}
 \subsection*{Beschreibung}
 Diese Klasse beinhaltet den Speiseplan der Mensa des aktuellen Tages.
 
-\subsection{Class Line}
+\subsubsection{Class Line}
 \subsection*{Beschreibung}
 Diese Klasse beschreibt den Speiseplan der einzelnen Linien bzw. Werke an der Mensa.
 
-\subsection{Class Meal}
+\subsubsection{Class Meal}
 \subsection*{Beschreibung}
 Diese Klasse beschreibt die einzelnen Speisen die an der Mensa angeboten werden.
 Dazu gehören die Zutaten (enum Ingredients) und der Typ (enum Foodtype).
 
-\subsection{Class Preferences}
+\subsubsection{Class Preferences}
 \subsection*{Beschreibung}
 In dieser Klasse sind die Preferenzen des Nutzers zur Gruppensuche.
 
 
-\subsection{Enum Gender}
+\subsubsection{Enum Gender}
 \subsection*{Beschreibung}
 Die Geschlechter, die zu einem User gehören können. \\
 \textit{MALE} - das männliche Geschlecht \\
 \textit{FEMALE} - das weibliche Geschlecht \\
 \textit{OTHER} - weder männlicht, noch weiblich \\
 
-\subsection{Enum Subject}
+\subsubsection{Enum Subject}
 \subsection*{Beschreibung}
 Die Fachrichtungen die ein User haben kann: \\
-TODO: Hier sortierte Liste einfügen
+\begin{itemize}
 
-\subsection{Enum Status}
+\item Angewandte Geowissenschaften\
+\item Architektur\
+\item Bauingenieurwesen\
+\item Bioingenieurwesen\
+\item Biologie\
+\item Chemie\
+\item Chemieingenieurwesen und Verfahrenstechnik\
+\item Chemische Biologie\
+\item Deutsch\
+\item Elektro- und Informationstechnik\
+\item Energy Engineering and Management\
+\item Europ\'e4ische Kultur und Ideengeschichte\
+\item Financial Engineering\
+\item Funktionaler und Konstruktiver Ingenieurbau-Engineering Structures\
+\item Geod\'e4sie und Geoinformatik\
+\item Geographie\
+\item Geo\'f6kologie\
+\item Geophysik\
+\item Germanistik\
+\item Information Systems Engineering and Management \
+\item Informatik\
+\item Ingenieurp\'e4dagogik\
+\item Kunstgeschichte\
+\item Lebensmittelchemie\
+\item Management of Product Development \
+\item Maschinenbau\
+\item Materialwissenschaft und Werkstofftechnik\
+\item Mathematik\
+\item Mechanical Engineering \
+\item Mechatronik und Informationstechnik \
+\item Meteorologie\
+\item Mobilit\'e4t und Infrastruktur\
+\item Mobility Systems Engineering and Management\
+\item Naturwissenschaft und Technik \
+\item Optics and Photonics\
+\item P\'e4dagogik\
+\item Philosophie/Ethik\
+\item Physik\
+\item Production and Operations Management\
+\item Regionalwissenschaft\
+\item Remote Sensing and Geoinformatics\
+\item Sport\
+\item Sportwissenschaft\
+\item Technische Volkswirtschaftslehre \
+\item Technomathematik\
+\item Water Science and Engineering\
+\item Wirtschaftsinformatik\
+\item Wirtschaftsingenieurwesen\
+\item Wirtschaftsmathematik\
+\item Wissenschaft-Medien-Kommunikation
+
+\end{itemize}
+
+\subsubsection{Enum Status}
 Der Stauts den ein User haben kann: \\
-\textit{Professor} - Ein/e Professor/in oder Dozent/in \\
-\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\
-\textit{Apprentice} - Ein/e Auszubildende/r \\
-\textit{Student} - Ein/e reguläre/r Student/in \\
-\textit{Other} - Sonstiges \\
 
-\subsection{Enum Mensaline}
+\begin{itemize}
+\item \textit{Professor} - Ein/e Professor/in oder Dozent/in \\
+\item\textit{CollegeStudent} -  Ein/e Schüler-Student/in \\
+\item\textit{Apprentice} - Ein/e Auszubildende/r \\
+\item\textit{Student} - Ein/e reguläre/r Student/in \\
+\item\textit{Other} - Sonstiges \\
 
-\subsection{Enum FoodType}
+\end{itemize}
 
-\subsection{Enum Ingredient}
+\subsubsection{Enum FoodType}
+Die Sorten von Essen die es gibt und die man Gerichten zuordnen kann:
+
+\begin{itemize}
+
+\item BEEF
+\item REGIONAL\_MEAT
+\item PORK
+\item REGIONAL\_PORK
+\item FISH
+\item VEGETARIAN
+\item VEGAN
+\item LAB
+\item ORGANIC
+\item MENSA\_VITAL
+
+\end{itemize}
+
+\subsubsection{Enum Ingredient}
+Die Inhaltsstoffe, die in einem Gericht enthalten sein können: \\
+
+(1) mit Farbstoff \\
+(2) mit Konservierungsstoff \\
+(3) mit Antioxidationsmittel \\
+(4) mit Geschmacksverstärker \\
+(5) mit Phosphat \\
+(6) Oberfläche gewachst \\
+(7) geschwefelt \\
+(8) Oliven geschwärzt \\
+(9) mit Süßungsmittel \\
+(10) kann bei übermäßigem Verzehr abführend wirken \\
+(11) enthält eine Phenylalaninquelle \\
+(12) kann Restalkohol enthalten \\
+(14) aus Fleischstücken zusammengefügt \\
+(15) mit kakaohaltiger Fettglasur \\
+(27) aus Fischstücken zusammengefügt \\
+(R) enthält Rindfleisch \\
+(RAT) enthält regionales Rindfleisch aus artgerechter Tierhaltung \\
+(S) enthält Schweinefleisch \\
+(SAT) enthält regionales Schweinefleisch aus artgerechter Tierhaltung \\
+(VEG) vegetarisches Gericht \\
+(VG) veganes Gericht (ohne Fleischzusatz) \\
+(B) kontrolliert biologischer Anbau / DE007 Öko Kontrollstelle \\
+(MSC) MSC-zertifizierter Fisch \\
+(MV) MensaVital \\
+(LAB) mit tierischem Lab \\
+(GER) mit Gelatine\\
+(Gl) Glutenhaltiges Getreide \\
+(We) Weizen \\
+(Ro) Roggen \\
+(Ge) Gerste \\
+(Ha) Hafer \\
+(Di) Dinkel \\
+(Ka) Kamut \\
+(Nu) Schalenfrüchte / Nüsse \\
+(Ma) Mandeln \\
+(Ha) Haselnüsse) \\ 
+(Wa) Walnüsse \\
+(Ca) Cashewnüsse \\
+(Pe) Pekanüsse \\
+(Pa) Paranüsse \\
+(Pi) Pistazie \\
+(Qu) Queenslandnüsse/Macadamianüsse \\
+(Ei) Eier \\
+(Er) Erdnüsse \\
+(So) Soja \\
+(Sn) Senf \\
+(Kr) Krebstiere \\
+(Fi) Fisch \\
+(ML) Milch / Laktose \\
+(Se) Sellerie \\
+(Sf) Schwefeldioxid / Sulfit \\
+(Sa) Sesam \\
+(Lu) Lupine \\
+(We) Weichtiere \\
 
 
 %------------ Java Doc for the sever view package ---------------------
