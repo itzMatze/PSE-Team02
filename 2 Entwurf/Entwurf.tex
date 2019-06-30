@@ -62,12 +62,6 @@
   description={Hauptbildschirm der beim Öffnen einer Applikation erscheint}
 }
 
-\newglossaryentry{UUID}
-{
-  name=UUID,
-  description={Ein Universally Unique Identifier ist ein Standard für Identifikatoren, der in der Softwareentwicklung verwendet wird}
-}
-
 \newglossaryentry{Datensatz}
 {
   name=Datensatz,
@@ -133,6 +127,24 @@
   name=Systemkomponente,
   description={Einzelner Bestandteil eines Systems}
 } 
+
+\newglossaryentry{Dependency Injection}
+{
+  name=Dependency Injection,
+  description={Als Dependency Injection wird in der objektorientierten Programmierung ein Entwurfsmuster bezeichnet, welches die Abhängigkeiten eines Objekts zur Laufzeit reglementiert: Benötigt ein Objekt beispielsweise bei seiner Initialisierung ein anderes Objekt, ist diese Abhängigkeit an einem zentralen Ort hinterlegt – es wird also nicht vom initialisierten Objekt selbst erzeugt}
+} 
+
+\newglossaryentry{Wrapped}
+{
+  name=Wrapped,
+  description={Daten und Objekte können von anderen "gewrapped" sein. Das bedeutet, sie selbst sind nur ein Attribut eines größeren sie umschließenden Objekts.}
+} 
+
+\newglossaryentry{UUID}
+{
+  name=UUID,
+  description={Eine UUId steht für Universal Unique Id und ist eine Id, die so generiert wird, das sie nur einmal vorkommt und deshalb ohne abgleich mit anderen vergeben Ids einzigartig (Unique) ist.}
+}
 
 
 \begin{document}
@@ -646,7 +658,7 @@ Diese Klasse ist der User Controller und beinhaltet die für den User zuständig
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public User getUser(String userToken)\\
+\item \texttt{public User getUser(String userToken)}\\
 	Mit dieser Methode wird eine Anfrage nach einem Userprofil gestellt. Es wird nach dem eindeutigen User Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -658,7 +670,7 @@ Diese Klasse ist der User Controller und beinhaltet die für den User zuständig
 	\item Userprofil
 	\end{itemize}
 
-\item public User addUser(User user)\\
+\item \texttt{public User addUser(User user)}\\
 	Diese Methode fügt einen User zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -670,7 +682,7 @@ Diese Klasse ist der User Controller und beinhaltet die für den User zuständig
 	\item Userprofil
 	\end{itemize}
 	
-\item public bool removeUser(String userToken)\\
+\item \texttt{public bool removeUser(String userToken)}\\
 	Diese Methode löscht ein Userprofil aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -683,7 +695,7 @@ Diese Klasse ist der User Controller und beinhaltet die für den User zuständig
 	\end{itemize}
 
 
-\item public bool updateUser(User user)\\
+\item \texttt{public bool updateUser(User user)}\\
 	Diese Methode überschreibt ein bestehendes Userprofil mit einem Userprofil des selben Tokens, aber geänderten Parametern
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -706,7 +718,7 @@ Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zustä
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public Group getGroup(String groupToken)\\
+\item \texttt{public Group getGroup(String groupToken)}\\
 	Mit dieser Methode wird eine Anfrage nach einer Gruppe gestellt. Es wird nach dem eindeutigen Group Token gesucht
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -718,7 +730,7 @@ Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zustä
 	\item Gruppe 
 	\end{itemize}
 	
-\item public Group addGroup(Group group)\\
+\item \texttt{public Group addGroup(Group group)}\\
 	Diese Methode fügt eine Gruppe zur Datenbank hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -730,7 +742,7 @@ Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zustä
 	\item Die hinzugefügte Gruppe wird zurückgegeben
 	\end{itemize}
 	
-\item public Group[] getGroupByPreferences(Preferences prefs)\\
+\item \texttt{public Group[] getGroupByPreferences(Preferences prefs)}\\
 	Diese Methode sucht nach Gruppen mit den passenden Präferenzen
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -742,7 +754,7 @@ Diese Klasse ist der Group Controller und beinhaltet die für die Gruppen zustä
 	\item Es werden alle Gruppen mit übereinstimmenden Präferenzen zurückgegeben
 	\end{itemize}
 
-\item public bool removeGroup(String groupToken)\\
+\item \texttt{public bool removeGroup(String groupToken)}\\
 	Diese Methode löscht eine Gruppe aus der Datenbank
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -764,7 +776,7 @@ Diese Klasse ist der Mensadaten Controller und enthält die Methoden, die für d
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public LineData[] getLineData()\\
+\item \texttt{public LineData[] getLineData()}\\
 	Diese Methode fragt die Datenbank nach dem tagesaktuellen Speiseplan ab
 
 	\subsubsection*{Rückgabewert}
@@ -772,7 +784,7 @@ Diese Klasse ist der Mensadaten Controller und enthält die Methoden, die für d
 	\item Es werden alle Essenslinien mit tagesaktuellem Menü zurückgegeben
 	\end{itemize}
 	
-\item public void updateLineData()\\
+\item \texttt{public void updateLineData()}\\
 	Diese Methode beinhaltet einen Crawler der den tagesaktuellen Speiseplan der Mensa vom Studentenwerk bezieht und anschließend in der Datenbank speichert
 \end{itemize}
 \end{addmargin}
@@ -785,7 +797,7 @@ Diese Klasse ist der Membership Controller und beinhaltet die Methoden, die für
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public bool addUserToGroup(String UserToken, String groupToken)\\
+\item \texttt{public bool addUserToGroup(String UserToken, String groupToken)}\\
 	Diese Methode fügt einen User zu einer Gruppe hinzu
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -799,7 +811,7 @@ Diese Klasse ist der Membership Controller und beinhaltet die Methoden, die für
 	\item Falls das Hinzufügen zur Gruppe erfolgreich war, wird eine Bestätigung zurückgegeben. Eine Fehlermeldung falls nicht.
 	\end{itemize}
 	
-\item public bool removeUserFromGroup(String userToken, String groupToken)\\
+\item \texttt{public bool removeUserFromGroup(String userToken, String groupToken)}\\
 	Diese Methode entfernt einen User aus einer Gruppe
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -823,7 +835,7 @@ Diese Klasse ist der Authentication Controller und beinhaltet die Methoden, die 
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public User register(Credentials creds)\\
+\item \texttt{public User register(Credentials creds)}\\
 	Diese Methode ist für die Registrierung eines Users zuständig
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -835,7 +847,7 @@ Diese Klasse ist der Authentication Controller und beinhaltet die Methoden, die 
 	\item Es wird ein leeres Userprofil zurückgegeben
 	\end{itemize}
 	
-\item public User login(Credentials creds)\\
+\item \texttt{public User login(Credentials creds)}\\
 	Diese Methode ist für die Ameldung eines Users zuständig
 	\subsubsection*{Parameter}
 	\begin{itemize}
@@ -858,10 +870,10 @@ Diese Klasse ist der Time Controller und beinhaltet die Methoden, die für die z
 \begin{addmargin}[25pt]{0pt}
 \begin{itemize}
 
-\item public void deleteAllGroups()\\
+\item \texttt{public void deleteAllGroups()}\\
 	Diese Methode löscht am Ende des Tages alle Gruppen
 	
-\item public bool startMensaCrawler()\\
+\item \texttt{public bool startMensaCrawler()}\\
 	Diese Methode startet jeden Morgen den Aufruf zum Abrufen der Mensadaten
 	\subsubsection*{Rückgabewert}
 	\begin{itemize}
