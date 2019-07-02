@@ -28,7 +28,7 @@
 
 \newglossaryentry{Relationale Datenbank}
 {
-  name=Relationale Datenbank,
+  name=relationale Datenbank,
   description={Sammlung von Tabellen(Relationen), in welchen Datensätze abgespeichert sind}
 }
 
@@ -47,7 +47,7 @@
 \newglossaryentry{Server}
 {
   name=Server,
-  description={Ein Programm, das auf die Kontaktaufnahme eines Clients wartet, um eine bestimmte Dienstleistung für ihn zu erfüllen.}
+  description={Ein Programm, das auf die Kontaktaufnahme eines Clients wartet, um eine bestimmte Dienstleistung für ihn zu erfüllen.}
 }
 
 \newglossaryentry{Firebase}
@@ -80,7 +80,7 @@
   description={Zu den Mensadaten gehören die Essenslinien und Essenswerke und deren Speisepläne}
 } 
 
-\newglossaryentry{Endgerät}
+\newglossaryentry{Endgeraet}
 {
   name=Endgerät,
   description={Internetfähige Computerhardware, wie Smartphones, Tablets, Laptops usw.}
@@ -122,10 +122,10 @@
   description={Software für einen Benutzer, die mindestens eine Funktion erfüllt}
 } 
 
-\newglossaryentry{Systemkomponente}
+\newglossaryentry{Systemkomponenten}
 {
   name=Systemkomponente,
-  description={Einzelner Bestandteil eines Systems}
+  description={Einzelne Bestandteile eines Systems}
 } 
 
 \newglossaryentry{Dependency Injection}
@@ -160,7 +160,7 @@
 \chapter{Einleitung}
 
 Dies ist das Entwurfsdokument für die Applikation \dq MensaMeet\dq.  Es ist das Artefakt der Entwurfsphase, die direkt an die Definitionsphase anschließt, aus welcher das Pflichtenheft hervorging.
-In den folgenden Kapitel wird auf die Systemarchitektur (\dq Grobentwurf\dq) eingegangen. Es folgt die Erläutereung der Systemkomponenten, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel \dq Feinentwurf\dq werden die Klassendiagramme der einzelnen Pakete im Detail vorgestellt und das verwendete HTTP Protokoll aufgeührt. Unter \dq Datenstrukturen\dq findet sich die Strukturiereung unserer Datenbank wieder. 
+In den folgenden Kapitel wird auf die \Gls{Systemarchitektur} (\dq Grobentwurf\dq) eingegangen. Es folgt die Erläutereung der \Gls{Systemkomponenten}, sowie der verwendeten Frameworks und Schnittstellen. Im Kapitel \dq Feinentwurf\dq werden die Klassendiagramme der einzelnen Pakete im Detail vorgestellt und das verwendete HTTP Protokoll aufgeührt. Unter \dq Datenstrukturen\dq findet sich die Strukturiereung unserer Datenbank wieder. 
 Im Abschnitt \dq dynamische Modelle\dq werden an Hand von Sequenzdiagrammen einige Abläufe von MensaMeet anschaulich dargestellt.
 Schließlich Begründen wir in Kapitel 6 die Änderungen gegenüber dem Pflichtenheft.
 Auf den letzten Seiten dieses Dokuments findet sich ein Glossar und ein vollständiges Klassendiagramm für die gesamte Applikation MensaMeet.
@@ -170,34 +170,34 @@ Auf den letzten Seiten dieses Dokuments findet sich ein Glossar und ein vollstä
 
 \chapter{Grobentwurf}
 \section{Systemarchitektur}
-Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu erhält jeder User der sich registriert ein eindeutiges UserToken, das auf seinem Endgerät gespeichert wird. Der Server verwaltet eine Datenbank, in welcher die Mensadaten und User- und Gruppeninformationen gehalten werden. 
+Die App MensaMeet wird als Client-Server Anwendung umgesetzt. Clients fordern Dienste an, welche vom zentralen Server bereitgestellt werden. Dazu erhält jeder User der sich registriert ein eindeutiges UserToken, das auf seinem \Gls{Endgeraet} gespeichert wird. Der Server verwaltet eine Datenbank, in welcher die \Gls{Mensadaten} und User- und Gruppeninformationen gehalten werden. 
 Die Client-Seite der Anwendung wird mithilfe der MVVM (Model-View-Viewmodel) Architekur umgesetzt.
 Die Server-Seite mithilfe der MVC (Model-View-Control) Architektur.
 \section{Systemkomponenten}
 \includegraphics[width=1.1\textwidth]{Objektdiagramme/komponentDiagramm.png}
 \section{Komponentenbeschreibung}
 \subsection{Client}
-Die Client Seite bedient sich der MVVM Architektur. Die View dient zum anzeigen von Daten, sie beinhaltet alle grafischen Elemente, stellt also die GUI dar. Im Model werden die Daten gehalten und Funktionen zur Manipulation der Daten bereitgestellt.
-Das Viewmodel enthält die Darstellungslogik für die View und kapselt sie von der Anwendungslogik, die sich im Model befindet, ab.
+Die Client Seite bedient sich der MVVM Architektur. Die View dient zum anzeigen von Daten, sie beinhaltet alle grafischen Elemente, stellt also die \Gls{GUI} dar. Im Model werden die Daten gehalten und Funktionen zur Manipulation der Daten bereitgestellt.
+Das Viewmodel enthält die Darstellungslogik für die View und kapselt sie von der \Gls{Anwendungslogik}, die sich im Model befindet, ab.
 View und Viewmodel sind durch Databinding nur lose gekoppelt, dadurch kann die View problemlos ausgetauscht werden bzw. können mehrere verscheidene Views (z.b. angepasst an Tablet, Desktop,...) zum selben Viewmodel existieren.
-Das Datainding kann als bidirektionaler Beobachter verstanden werden: View und Viewmodel kennen die interne Struktur voneinander nicht, aber Benachrichtigen einander, wenn es Änderungen gibt. Diese lose Kopplung durch Databinding verbessert die Testbarkeit, da so View und Viewmodel unabhängig voneiander getestet werden können.
+Das Datainding kann als bidirektionaler \Gls{Beobachter} verstanden werden: View und Viewmodel kennen die interne Struktur voneinander nicht, aber Benachrichtigen einander, wenn es Änderungen gibt. Diese lose Kopplung durch Databinding verbessert die Testbarkeit, da so View und Viewmodel unabhängig voneiander getestet werden können.
 
 \subsection{Server}
-Für die Server Seite wird die MVC Architektur verwendet.
-Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  In unserem Fall wird die relationale Datenbank MySQL verwendet. Als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern des Servers wird JPA (Java Persistance API) mit Hibernate genutzt.
-View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des Client empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
+Für die \Gls{Server} Seite wird die MVC Architektur verwendet.
+Das Model ist für die Datenhaltung zuständig und beinhaltet/verwaltet eine Datenbank.  In unserem Fall wird die \Gls{Relationale Datenbank} \Gls{MySQL} verwendet. Als Kommunikationsschnittstelle zwischen der Datenbank und den Controllern des Servers wird JPA (Java Persistance API) mit Hibernate genutzt.
+View ist durch eine Schnittstelle gegeben, über die der Server Anfragen des \Gls{Client} empfängt und an den Controller delegiert. Der Controller führt diese Anfragen durch, indem er angefordere Daten aus dem Model holt oder neue Daten einfügt bzw Daten anpasst.
 
 \subsection{Frameworks und Interfaces}
 \subsection*{Hibernate und JPA}
 
-Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im Datenbankmangemantsystem (DBSM) geboten. \\  \\ Wir benutzen für ORM das Java Persistence Application Programming Interface (JPA). 
-JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das Framework Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, POJO) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
+Objektrelationales Mapping (ORM) ist eine Technik der Softwareentwicklung, mit der ein (in objektorientierten Programmiersprache geschriebenes) Programm seine Objekte in einer relationalen Datenbank ablegen kann. Dem Programm wird dazu eine objektorientierte Sicht auf die Tabellen und Beziehungen im \Gls{Datenbankmanagementsystem} (DBSM) geboten. \\  \\ Wir benutzen für ORM das Java Persistence Application Programming Interface (JPA). 
+JPA ist eine API für Datenbankzugriffe und objektrelationales Mapping und muss durch einen sogenannten JPA Provider implemetiert werden. Wir verwenden hierzu das \Gls{Framework} Hibernate.\\ \\ Hibernate ermöglicht es normale Objekte (Plain Old Java Object, \Gls{POJO}) in relationalen Datenbanken zu speichern und aus den Datensätzen der Datenbank Objekte zu erzeugen. \\
 Hibernate bietet Kompatibilität mit verschiedenen Datenbanken, sodass die von uns verwendete Datenbank MySQL leicht gegen eine andere relationale Datenbank ausgetauscht werden kann.
 
 \subsection*{Spring Boot}
 
 Spring Boot ist ein Framework, welches es erleichtern soll Java und Java EE Anwendungen zu schreiben und gute Programmierpraktiken zu fördern. Es ist eine vereinfachte Form des Spring Frameworks und bietet viele dessen Funktionalitäten auf schnell zu integierbarem Wege an. \\ \\
-Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige Anwendung schreiben zu können und um Funktionalitäten wie Dependecy Injection nutzen zu können.
+Wir benutzen Spring Boot, um schnell eine exportierbare direkt einsatzfähige Anwendung schreiben zu können und um Funktionalitäten wie \Gls{Dependency Injection} nutzen zu können.
 
 \subsection*{Firebase}
 Firebase ist ein Framework, das viele Services bietet um die Entwicklung und die Handhabung der Infrastruktur von mobilen und Webanwendungen zu vereinfachen. Es übernimmt für uns die Registrierung, Speicherung und Organisation von Nutzerdaten, die wir für die Verwaltung von Accounts benötigen. \\ \\
@@ -216,7 +216,7 @@ Wir nutzen von den Services die Firebase bietet die Registrierung und Anmeldung 
 
 \subsubsection{Class MmSession}
 \subsubsection*{Beschreibung}
-In dieser Klasse können die Daten einer Sitzung wie Benutzer, ausgewählte Zeit, ausgewählte Linien und die ausgewählte Gruppe gespeichert werden. Bei ihrer Erzeugung werden zusätzlich noch Listen aller Benutzer bzw. Gruppen sowie die Mensadaten hineingeladen.
+In dieser Klasse können die Daten einer Sitzung wie Benutzer, ausgewählte Zeit, ausgewählte Linien und die ausgewählte Gruppe gespeichert werden. Bei ihrer Erzeugung werden zusätzlich noch Listen aller Benutzer bzw. Gruppen sowie die \Gls{Mensadaten} hineingeladen.
 
 %---------------
 
@@ -527,7 +527,7 @@ Diese Klasse zeigt ein Benutzerprofil auf einer ganzen Seite an.
 
 \subsubsection{Class HomeActivity extends MmActivity}
 \subsubsection*{Beschreibung}
-Diese Klasse bietet die Oberfläche der App, die als Homescreen für den Benutzer agiert. Der Benutzer kann hier seine bevorzugten Linien auswählen, an denen er gerne essen gehen würde.
+Diese Klasse bietet die Oberfläche der App, die als \Gls{Homescreen} für den Benutzer agiert. Der Benutzer kann hier seine bevorzugten Linien auswählen, an denen er gerne essen gehen würde.
 
 %---------------------
 
@@ -1977,7 +1977,7 @@ Es werden nun einige Abläufe innerhalb der App  MensaMeet durch Sequenzdiagramm
 	\includegraphics[width=0.93\textwidth]{Sequenzdiagramme/Registration.png}
 \end{center}
 \subsection*{Beschreibung}
-Bob öffnet zum ersten mal die \GLS{Applikation} MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
+Bob öffnet zum ersten mal die \Gls{Applikation} MensaMeet und sieht den Registrierungsbildschrim. Dort soll er seine E-Mailadresse und ein Passwort eingeben. Sobald er das getan hat, werden die Daten an der Server geschickt, welcher sie an Firebase weiterleitet. Firebase legt auf seinem Server den User an und generiert ein Token zur UserIdentifikation. Das Token wird an den Server zurückgegeben, der damit einen User in der Datenbank anlegt und das Userobjekt an den Client schickt. Auf dem Client (Bobs Smartphone) wird der User/Token gespeichert und bei jeder zukünftigen Anfrage an den Server mitgegeben. 
 Bob sieht nun den Bildschirm zur Profilbearbeitung. Die Eingabe der Profildaten ist Pflicht, vorher kann er nicht weiter zu einer anderen Seite gelangen.
 Nachdem er seinen Nutzernamen, Motto, Alter, Geschlecht, Status, Fachrichtung eingegeben hat, werden diese Daten an den Server gesendet, der damit das Userprofil in der Datenbank aktualisiert. 
 \newpage
@@ -2023,7 +2023,7 @@ Der Client erhält in jedem Fall die Bestätigung zum Austritt aus der Gruppe un
 \chapter{Änderungen zum Pflichtenheft}
 \begin{itemize}
 	\item Nutzername und Gruppennamen müssen nicht mehr eindeutig sein \\
-	stattdessen wird für den Nutzer von Firebase ein eindeutiges Token generiert, das als Identifikator dient. Für Gruppen wird ebenfalls ein eindeutiges Token durch den Server generiert.
+	stattdessen wird für den Nutzer von Firebase ein eindeutiges Token generiert, das als Identifikator dient. Für Gruppen wird ebenfalls ein eindeutiges \Gls{Token} durch den Server generiert.
 	\item Zum Registrieren wird statt Nutzername und Password nun Email und Passwort benötigt. \\Diese Änderung ist bedingt durch die Nutzung von Firebase und erfüllt damit eines unserer Wunschkriterien: Dass eine Email Verifikation beim Registrieren stattfindet. 
 \end{itemize}
 
