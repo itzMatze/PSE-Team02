@@ -7,23 +7,21 @@ import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-public class MainActivity extends MensaMeetActivity {
-    private TextView mTextMessage;
+public class UserActivity extends MensaMeetActivity {
 
-    private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
+    protected BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
+                    gotoHome();
                     return true;
-                case R.id.navigation_dashboard:
-                    mTextMessage.setText(R.string.title_dashboard);
+                case R.id.navigation_back:
+                    gotoHome();
                     return true;
-                case R.id.navigation_notifications:
-                    mTextMessage.setText(R.string.title_notifications);
+                case R.id.navigation_next:
                     return true;
             }
             return false;
@@ -32,11 +30,12 @@ public class MainActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState, true, true);
-        setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_user);
+        deactivateNavigationButton(findViewById(R.id.navigation_next));
         BottomNavigationView navView = findViewById(R.id.nav_view);
-        mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        navView.setItemIconTintList(null);
     }
 
 }

@@ -1,6 +1,12 @@
 <resources>
     <string name="app_name">MensaMeet</string>
     <string name="title_home">Home</string>
+    <string name="title_back">Back</string>
+    <string name="title_next">Next</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_user">UserActivity</string>
+    <string name="title_activity_administer_groups">AdministerGroupsActivity</string>
+    <string name="title_activity_administer_users">AdministerUsersActivity</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
 </resources>
