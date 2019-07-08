@@ -38,4 +38,12 @@ public class UserService {
       FirebaseAuth.getInstance().createUser(request);
      
     }
+    
+    @RequestMapping("/addTestUser")
+    User addUser() {
+    	User test = new User("hans");
+    	test.setToken("test");
+    	userController.addUser("testObject");
+    	return test; 
+    }
 }
