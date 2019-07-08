@@ -1,0 +1,28 @@
+Woche 0:
+	Aufsetzen von Firebase (Tan)
+	Implementieren von Hibernate (Team Server)
+	Einlesen und vertraut machen mit Frameworks (Alle)
+	Rudimentäre Klassen Client (Yuguang, Fangzhou, Matze)
+	erste GUI (Yuguang, Fangzhou, Matze)
+	simple Navigation (Yuguang, Fangzhou, Matze)
+
+Woche 1:
+	Server Models (Leo) 
+	Server View (Tan, Kathrin )
+	Server Controller (Tan, Leo)
+	MySQL (Kathrin)
+	Client Basic UI Elemente (Rest)
+	Deployen des Servers auf BW Cloud (Leo)
+	
+Woche 2:
+	Client Funktionalität fertig (Yuguang, Fangzhou, Matze)
+	Login / Registrierung  am Client (Tan)
+	Kommunikation herstellen (Tan, Yuguang)	
+
+Woche 3:
+	Implementierung von Wunschkriterien (Alle)
+	weitere Unit tests (ganzes Team)
+	Verschönerungen (Die Mädchen)
+	Fehler ausmerzen (Die armen Schweine die übrig bleiben)
+	Implementierungsdoukment erstellen (ganzes Team)
+	Vorbereitung der Präsentation (ganzes Team)
