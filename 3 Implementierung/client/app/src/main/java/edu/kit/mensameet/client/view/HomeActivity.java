@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Intent;
 import android.view.View;
 import android.os.Bundle;
 
@@ -13,27 +12,22 @@ public class HomeActivity extends MensaMeetActivity {
     }
 
     public void onGoEatClick(View v) {
-        //Intent intent = new Intent(this, LineActivity.class);
-        //startActivity(intent);
+        //gotoActivity(LineActivity.class);
     }
 
     public void onProfileClick(View v) {
-        Intent intent = new Intent(this, UserActivity.class);
-        startActivity(intent);
+        gotoActivity(UserActivity.class);
     }
 
     public void onLogoutClick(View v) {
-        Intent intent = new Intent(this, BeginActivity.class);
-        startActivity(intent);
+        gotoActivity(BeginActivity.class);
     }
 
     public void onEditGroupsClick(View v) {
-        Intent intent = new Intent(this, AdministerGroupsActivity.class);
-        startActivity(intent);
+        gotoActivity(AdministerGroupsActivity.class);
     }
 
     public void onEditUsersClick(View v) {
-        Intent intent = new Intent(this, AdministerUsersActivity.class);
-        startActivity(intent);
+        gotoActivity(AdministerUsersActivity.class);
     }
 }

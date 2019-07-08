@@ -35,6 +35,7 @@ public class UserActivity extends MensaMeetActivity {
         deactivateNavigationButton(findViewById(R.id.navigation_next));
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        //entfernt die grüne Färbung in der BottomNavigation Leiste
         navView.setItemIconTintList(null);
     }
 
