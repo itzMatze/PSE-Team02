@@ -27,8 +27,7 @@ public class AuthenticationController {
 		//Send request to Firebase server and receive newly created user
 		UserRecord userRecord =  FirebaseAuth.getInstance().createUser(request);
 		
-		User newUser = new User();
-		newUser.setToken(userRecord.getUid());
+		User newUser = new User(userRecord.getUid());
 		userRepository.save(newUser);
 		
 		return newUser;
@@ -46,8 +45,7 @@ public class AuthenticationController {
 		UserRecord userRecord = FirebaseAuth.getInstance().getUserByEmail(credentials.getEmail());
 		FirebaseAuth.getInstance();
 
-		User newUser = new User();
-		newUser.setToken(userRecord.getUid());
+		User newUser = new User(userRecord.getUid());
 		
 		
 		return newUser;

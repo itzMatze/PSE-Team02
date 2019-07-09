@@ -26,6 +26,8 @@ public class User {
 		this.token = token;
 	}
 
+	public User() {}
+	
 	public String getName() {
 		return name;
 	}
@@ -37,10 +39,6 @@ public class User {
 	public String getToken() {
 		return token;
 	}
-	
-	//public void setToken() {
-	//	this.token = token;
-	//}
 	
 	public String getMotto() {
 		return motto;
