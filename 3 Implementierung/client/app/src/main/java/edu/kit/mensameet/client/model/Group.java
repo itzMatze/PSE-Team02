@@ -1,5 +1,6 @@
 package edu.kit.mensameet.client.model;
 
+//nicht festgelegt
 import java.util.Date;
 import java.util.List;
 
