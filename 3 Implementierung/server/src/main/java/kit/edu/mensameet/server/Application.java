@@ -1,5 +1,6 @@
 package kit.edu.mensameet.server;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,8 +52,10 @@ public class Application {
     }
     
     private static void initializeFirebase() throws IOException {
+    	String relativePath = new File("").getAbsolutePath();
+    	
     	//To load the configurations via an explicit address isn't recommended and insecure and should be changed in the future.
-    	FileInputStream  credentialsStream = new FileInputStream("C:\\Users\\tangr\\Desktop\\Uni\\PSE\\PSE-Team02\\3 Implementierung\\server\\src\\config\\service-account-file.json");
+    	FileInputStream  credentialsStream = new FileInputStream(relativePath + "/src/main/resources/service-account-file.json");
     	
         FirebaseOptions options =  FirebaseOptions.builder()
         		.setCredentials(GoogleCredentials.fromStream(credentialsStream))
