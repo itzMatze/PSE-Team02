@@ -4,9 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 import java.util.Date;
 
 @Entity
+@Table (name = "Groups")
 public class Group {
 	@Id
 	private String token;
@@ -16,7 +19,13 @@ public class Group {
 	private String line;
 	private Date meetingTime;
 	
+	public Group() {
+	}
 
+	public void setToken(String token) {
+		this.token = token;
+	}
+	
 	public String getToken() {
 		return token;
 	}
