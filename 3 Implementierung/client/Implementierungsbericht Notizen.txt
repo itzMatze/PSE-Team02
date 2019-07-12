@@ -1,0 +1,3 @@
+Matze: extra HomeActivity erzeugt und alte HomeActivity umbenannt in SelectLinesActivity
+MyGroupActivity angelegt, zum Anzeigen der Gruppe in der man sich aktuell befindet
+
