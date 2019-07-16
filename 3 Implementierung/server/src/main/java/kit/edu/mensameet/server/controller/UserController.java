@@ -16,40 +16,29 @@ public class UserController {
 	private UserRepository repository;
 	
 	public User getUser(String token) {
-		User user = repository.getUserByToken(token);
-		return user;
+		return repository.getUserByToken(token);
 	}
-		
-	public void addUser(String token) {
+	
+	public void addUserWithToken(String token) {
 		repository.save(new User(token));
 	}
 	
-	public boolean removeUser(String token) {
-		User user = repository.getUserByToken(token);
-		if(user == null) {
-			return false;
-		}
-		else {
-			repository.delete(user);
+	public boolean updateUser(User newUser) {
+		User userToUpdate = getUser(newUser.getToken());
+		
+		if (userToUpdate != null) {
+			userToUpdate = newUser;
 			return true;
 		}
+		
+		return false;
 	}
 	
-	public boolean updateUser(User user) {
-		User userOld = repository.getUserByToken(user.getToken());
-		
-		if (userOld == null) {
-			return false;
-		} 
-		else {
-			repository.delete(userOld);
-			repository.save(user);
-			return true;
-		}
+	public void deleteUser(String token) {
+		repository.delete(repository.getUserByToken(token));
 	}
 	
 	public User[] getAllUser() {
 		return StreamSupport.stream(repository.findAll().spliterator(), false).toArray(User[]::new);
 	}
-
 }
