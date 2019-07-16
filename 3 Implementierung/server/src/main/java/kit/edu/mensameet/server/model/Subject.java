@@ -1,5 +1,7 @@
 package kit.edu.mensameet.server.model;
-
+/*
+ * This enum represents the different subjects a college student or professor can choose from
+ */
 public enum Subject {
 	APPLIED_GEOSCIENCES("Angewandte Geowissenschaften"),
 	ARCHITECTURE("Architektur"),
@@ -48,13 +50,16 @@ public enum Subject {
 	WATER_SCIENCE_AND_ENGINEERING("Water Science and Engineering");
 	
 	private String name;
-	
+	/*
+	 * This constructor adds a String containing the name of the subject, in particular the german translation
+	 */
 	private Subject(String name) {
 		this.name = name;
 	}
-	
+	/*
+	 * This mehod returns the name of the subject
+	 */
 	public String toString(){
         return name;
     }
-
 }

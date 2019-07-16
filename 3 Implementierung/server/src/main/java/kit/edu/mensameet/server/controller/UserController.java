@@ -41,5 +41,4 @@ public class UserController {
 	public User[] getAllUser() {
 		return StreamSupport.stream(repository.findAll().spliterator(), false).toArray(User[]::new);
 	}
-	
 }
