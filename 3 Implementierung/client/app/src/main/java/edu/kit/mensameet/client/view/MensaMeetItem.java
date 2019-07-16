@@ -72,6 +72,7 @@ public abstract class MensaMeetItem<Object> {
             LinearLayout linearLayout = (LinearLayout)view;
             linearLayout.removeAllViews();
             linearLayout.addView(sublist.getView());
+
         }
 
 
