@@ -35,4 +35,8 @@ public class BeginActivity extends MensaMeetActivity {
         editor.clear();
         editor.commit();
     }
+
+    public void onTestClick(View v) {
+        gotoActivity(TestActivity.class);
+    }
 }
