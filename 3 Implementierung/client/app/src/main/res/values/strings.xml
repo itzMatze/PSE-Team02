@@ -14,4 +14,6 @@
     <string name="invalid_username_message">Ungültiger Benutzername.</string>
     <string name="invalid_password_message">Ungültiges Passwort.</string>
     <string name="passwords_not_equal_message">Passwörter stimmen nicht überein.</string>
+    <string name="username_not_found_message">Keinen Benutzernamen gefunden</string>
+    <string name="motto_not_found_message">Kein Motto gefunden</string>
 </resources>
