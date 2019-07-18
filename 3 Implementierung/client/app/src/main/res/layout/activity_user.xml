@@ -7,21 +7,126 @@
     android:layout_height="match_parent"
     tools:context=".UserActivity">
 
-    <TextView
-        android:id="@+id/something"
+    <ToggleButton
+        android:id="@+id/genderButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:enabled="false"
+        android:text="Male"
+        android:textOff="Male"
+        android:textOn="Female"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="314dp" />
+
+    <Button
+        android:id="@+id/editProfileButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Irgendwas"
+        android:onClick="onEditProfileClick"
+        android:text="Profil bearbeiten"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="191dp"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/birthDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="false"
+        android:hint="DD:MM:YYYY"
+        android:selectAllOnFocus="false"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintDimensionRatio="7:1"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="261dp" />
+
+    <EditText
+        android:id="@+id/motto"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="false"
+        android:hint="Motto"
+        android:selectAllOnFocus="false"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="211dp" />
+
+    <TextView
+        android:id="@+id/mottoText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="Motto"
+        android:selectAllOnFocus="false"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="211dp" />
+
+    <EditText
+        android:id="@+id/username"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="false"
+        android:fadeScrollbars="false"
+        android:hint="Username"
+        android:isScrollContainer="false"
+        android:selectAllOnFocus="false"
+        android:textSize="24sp"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="162dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.65" />
+        app:layout_constraintVertical_bias="0.53"
+        app:srcCompat="@drawable/ic_dashboard_black_24dp" />
+
+    <TextView
+        android:id="@+id/usernameText"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="true"
+        android:selectAllOnFocus="false"
+        android:text="Username"
+        android:textSize="24sp"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="162dp" />
+
+    <TextView
+        android:id="@+id/birthDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:editable="true"
+        android:enabled="true"
+        android:hint="DD:MM:YYYY"
+        android:selectAllOnFocus="false"
+        android:textSize="24sp"
+        tools:layout_editor_absoluteX="32dp"
+        tools:layout_editor_absoluteY="261dp" />
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/nav_view"
@@ -33,52 +138,5 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:menu="@menu/bottom_nav_menu" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="111dp"
-        android:layout_marginEnd="111dp"
-        android:scaleType="fitCenter"
-        android:visibility="visible"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024"
-        app:srcCompat="@drawable/ic_dashboard_black_24dp" />
-
-    <TextView
-        android:id="@+id/username"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Motto"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintDimensionRatio="7:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.55" />
-
-    <TextView
-        android:id="@+id/username3"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="32dp"
-        android:text="Username"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/nav_view"
-        app:layout_constraintDimensionRatio="7:1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45" />
 
 </android.support.constraint.ConstraintLayout>

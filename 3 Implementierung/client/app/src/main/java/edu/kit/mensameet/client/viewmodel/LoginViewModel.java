@@ -14,13 +14,13 @@ public class LoginViewModel extends MensaMeetViewModel {
         return offlineCode;
     }
 
-    private int offlineLogin(String email, String password, Context context) {
+    private int offlineLogin(String username, String password, Context context) {
         //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         String savedEmail = sharedPrefs.getString(context.getString(R.string.username_file_id), "");
         //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
         String savedPassword = sharedPrefs.getString(context.getString(R.string.password_file_id), "");
-        if (!email.equals(savedEmail) || email.length() == 0) {
+        if (!username.equals(savedEmail) || username.length() == 0) {
             return 1;
         } else if (!password.equals(savedPassword) || password.length() == 0) {
             return 2;
@@ -29,7 +29,7 @@ public class LoginViewModel extends MensaMeetViewModel {
         }
     }
 
-    private int onlineLogin(String email, String password, Context context) {
+    private int onlineLogin(String username, String password, Context context) {
         return 0;
     }
 

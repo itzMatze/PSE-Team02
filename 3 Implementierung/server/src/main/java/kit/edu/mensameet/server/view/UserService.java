@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,14 +32,15 @@ public class UserService {
     }
     */
 
+	
 	@RequestMapping("/user") 
-	public User	getUserByToken(String token) {
+	public User	getUserByToken(@RequestHeader(value="token") String token) {
 		return userController.getUser(token);
 	}
 	
     @PostMapping("/user")
-    void createUser(@RequestParam String token) throws FirebaseAuthException {
-    	FirebaseAuth.getInstance().verifyIdToken(token);
+    void createUser(@RequestHeader(value="token") String token) throws FirebaseAuthException {
+    	//FirebaseAuth.getInstance().verifyIdToken(token);
     	
     	userController.addUserWithToken(token);
     }
@@ -46,7 +48,7 @@ public class UserService {
     @PutMapping("/user") 
     public void updateUser(@RequestBody User user) throws NotFoundException {
     	if (userController.updateUser(user)) {
-    		throw new NotFoundException("User with token " + user.getToken() + "doesn't exist.");
+    		throw new NotFoundException("User with token " + user.getToken() + " doesn't exist.");
     	}
     }
     

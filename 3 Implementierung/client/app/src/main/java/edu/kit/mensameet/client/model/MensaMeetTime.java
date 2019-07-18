@@ -19,6 +19,15 @@ public class MensaMeetTime {
         return endTime != null;
     }
 
+    public Time getStartTime() {
+        return startTime;
+    }
+
+    /*
+    for testing
+    todo: delete, ask question why
+     */
+
     @Override
     public String toString(){
         if (startTime == null){
