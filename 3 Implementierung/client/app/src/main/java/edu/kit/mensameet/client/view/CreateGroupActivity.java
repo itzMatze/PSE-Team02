@@ -1,10 +1,10 @@
 package edu.kit.mensameet.client.view;
 
 import android.arch.lifecycle.Observer;
-import android.content.Intent;
-import android.os.Bundle;
-import android.databinding.DataBindingUtil;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
+import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 
@@ -16,6 +16,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
     private ActivityCreateGroupBinding binding;
     private CreateGroupViewModel viewModel;
+    private static final int SAVE_TIME_REQUEST = 5;
+    private static final int HOME_MENU_REQUEST = 6;
+    private static final String SAVE_TIME_ID = "saveTime";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,16 +28,25 @@ public class CreateGroupActivity extends MensaMeetActivity {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        final MensaMeetActivity context = this;
-        final Intent intent1 = new Intent(this, HomeActivity.class);
+        final CreateGroupActivity context = this;
+        final Intent backToHome = new Intent(this, HomeActivity.class);
+        final Intent chooseTime = new Intent(this, SetTimeActivity.class);
 
+        /*
+        decide which activity to start
+         */
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<CreateGroupViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<CreateGroupViewModel, String> it) {
-
                 switch(it.second){
-                    case "createGroup":
-                        context.startActivity(intent1);
+                    case CreateGroupViewModel.CREATE_GROUP_ID:
+                        context.startActivityForResult(backToHome, HOME_MENU_REQUEST);
+                        break;
+                    case CreateGroupViewModel.CREATE_GROUP_ADD_TIME_ID:
+                        context.startActivityForResult(chooseTime, SAVE_TIME_REQUEST);
+                        break;
+                    case CreateGroupViewModel.CREATE_GROUP_TO_SELECT_GROUP_ID:
+                        //TODO: add context.startActivityForResult(chooseTime, TO_SELECT_LINES_REQUEST);
                         break;
                     default:
                         break;
@@ -42,8 +54,22 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             }
         });
-
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode){
+            case SAVE_TIME_REQUEST:
+                String time = data.getStringExtra(SAVE_TIME_ID);
+                if(time != null){
+                    viewModel.addTime(time);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 
 
 }

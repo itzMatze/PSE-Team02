@@ -31,4 +31,5 @@
     <string name="showTime">gewählte Zeit</string>
     <string name="selectLine">wähle eine Linie:</string>
     <string name="groups">Gruppen:</string>
+    <string name="chooseTime">Zeit</string>
 </resources>
