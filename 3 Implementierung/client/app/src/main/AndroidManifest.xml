@@ -10,6 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".TestActivity"
+            android:label="TestActivity">
+        </activity>
+        <activity
             android:name=".AdministerUsersActivity"
             android:label="@string/title_activity_administer_users" />
         <activity
@@ -52,5 +56,7 @@
             </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
 </manifest>
