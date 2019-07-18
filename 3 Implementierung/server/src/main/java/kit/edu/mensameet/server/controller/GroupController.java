@@ -59,27 +59,27 @@ public class GroupController {
 			MealLine[] prefLines = pref.getMealLines();
 			
 			for(int k = 0; k < prefLines.length; j++) {
-				
-				if(prefLines[k].name() == allGroups[i].getLine().getMealLine().name()) {
-					
-					
-					
-					
-					
-					
-					//time match
-					
-					
-					
-					
-					
-					fittingGroups[j] = allGroups[i];
-					j++;
-					break;
-				}
-				else {
-					k++;
-				}
+//				
+//				if(prefLines[k].name() == allGroups[i].getLine().getMealLine().name()) {
+//					
+//					
+//					
+//					
+//					
+//					
+//					//time match
+//					
+//					
+//					
+//					
+//					
+//					fittingGroups[j] = allGroups[i];
+//					j++;
+//					break;
+//				}
+//				else {
+//					k++;
+//				}
 			}
 			i++;
 		}	

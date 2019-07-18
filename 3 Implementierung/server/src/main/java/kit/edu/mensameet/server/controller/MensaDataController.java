@@ -6,24 +6,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import kit.edu.mensameet.server.model.Line;
+import kit.edu.mensameet.server.model.MensaData;
 
 @Component
 public class MensaDataController {
 	
-	@Autowired
-	private MensaDataRepository repository;
+	private MensaData mensaData;
 	
-	public Line[] getLineData() {
-		Line[] lines = StreamSupport.stream(repository.findAll().spliterator(), false).toArray(Line[]::new);
-		return lines;
+	public MensaData getMensaData() {
+		if (mensaData == null) {
+			updateMensaData();
+		}
+		
+		return mensaData;
 	}
 	
 	
-//	public void updateLineData() {
-//		crawler
-//	}
-	
-	
-	
-
+	public void updateMensaData() {
+		//crawl mensaData
+	}
 }

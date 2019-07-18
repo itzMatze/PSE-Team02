@@ -1,10 +1,17 @@
 package kit.edu.mensameet.server.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import com.google.api.client.util.DateTime;
 
 import java.util.Date;
 import java.time.Clock;
@@ -13,29 +20,32 @@ import java.time.Clock;
  */
 
 @Entity
-@Table (name = "groups")
+@Table (name = "mm_groups")
 public class Group {
 	@Id
 	private String token;
 	private String name;
 	private String motto;
 	private int maxMembers;
-	private Line line;
-	//private  meetingTime;
-	private User[] members;
 	private int currentMembers;
+	private DateTime meetingTime;
+
+	@OneToOne
+	private Line line;
+	
+	private User[] members;
 	/*
 	 * This constructor overrides the default constructor, which is neccessary for creating an array of users
 	 * with the size of int maxMembers
 	 */
-	public Group(String token, String name, String motto,int maxMembers, Line line) {
+	public Group(String token, String name, String motto,int maxMembers, Line line, DateTime meetingTime) {
 		this.members = new User[maxMembers];
 		this.token = token;
 		this.name = name;
 		this.motto = motto;
 		this.maxMembers = maxMembers;
 		this.line = line;
-		
+		this.meetingTime = meetingTime;
 	}
 	/*
 	 * default setter for token
