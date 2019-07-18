@@ -15,11 +15,30 @@ public class UserController {
 	@Autowired
 	private UserRepository repository;
 	
-	public User[] getAllUser() {
-		return StreamSupport.stream(repository.findAll().spliterator(), false).toArray(User[]::new);
+	public User getUser(String token) {
+		return repository.getUserByToken(token);
 	}
 	
-	public void addUser(String name) {
-		repository.save(new User(name));
+	public void addUserWithToken(String token) {
+		repository.save(new User(token));
+	}
+	
+	public boolean updateUser(User newUser) {
+		User userToUpdate = getUser(newUser.getToken());
+		
+		if (userToUpdate != null) {
+			userToUpdate = newUser;
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void deleteUser(String token) {
+		repository.delete(repository.getUserByToken(token));
+	}
+	
+	public User[] getAllUser() {
+		return StreamSupport.stream(repository.findAll().spliterator(), false).toArray(User[]::new);
 	}
 }
