@@ -12,9 +12,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.api.client.util.DateTime;
+import java.time.LocalTime;
 
-import java.util.Date;
-import java.time.Clock;
 /*
  * This class represents a group, which is part of the server Model
  */
@@ -28,7 +27,7 @@ public class Group {
 	private String motto;
 	private int maxMembers;
 	private int currentMembers;
-	private DateTime meetingTime;
+	private LocalTime meetingTime;
 
 	@OneToOne
 	private Line line;
@@ -38,7 +37,7 @@ public class Group {
 	 * This constructor overrides the default constructor, which is neccessary for creating an array of users
 	 * with the size of int maxMembers
 	 */
-	public Group(String token, String name, String motto,int maxMembers, Line line, DateTime meetingTime) {
+	public Group(String token, String name, String motto,int maxMembers, Line line, LocalTime meetingTime) {
 		this.members = new User[maxMembers];
 		this.token = token;
 		this.name = name;
@@ -132,11 +131,12 @@ public class Group {
 		this.currentMembers = currentMembers; 
 	}
 	
-//	public Date getMeetingTime() {
-//		return meetingTime;
-//	}
-//	
-//	public void setMeetingTime(Date meetingTime) {
-//		this.meetingTime = meetingTime;
-//	}
+	public LocalTime getMeetingTime() {
+		return meetingTime;
+	}
+	
+	public void setMeetingTime(LocalTime meetingTime) {
+		this.meetingTime = meetingTime;
+		//LocalTime meetingTime = LocalTime.parse( "20:11:13" ); falls String
+	}
 }
