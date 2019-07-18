@@ -1,41 +1,50 @@
 package kit.edu.mensameet.server.model;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import java.util.Date;
-import java.time.Clock;
+import com.google.api.client.util.DateTime;
+import java.time.LocalTime;
+
 /*
  * This class represents a group, which is part of the server Model
  */
 
 @Entity
-@Table (name = "groups")
+@Table (name = "mm_groups")
 public class Group {
 	@Id
 	private String token;
 	private String name;
 	private String motto;
 	private int maxMembers;
-	private Line line;
-	//private  meetingTime;
-	private User[] members;
 	private int currentMembers;
+	private LocalTime meetingTime;
+
+	@OneToOne
+	private Line line;
+	
+	private User[] members;
 	/*
 	 * This constructor overrides the default constructor, which is neccessary for creating an array of users
 	 * with the size of int maxMembers
 	 */
-	public Group(String token, String name, String motto,int maxMembers, Line line) {
+	public Group(String token, String name, String motto,int maxMembers, Line line, LocalTime meetingTime) {
 		this.members = new User[maxMembers];
 		this.token = token;
 		this.name = name;
 		this.motto = motto;
 		this.maxMembers = maxMembers;
 		this.line = line;
-		
+		this.meetingTime = meetingTime;
 	}
 	/*
 	 * default setter for token
@@ -122,11 +131,12 @@ public class Group {
 		this.currentMembers = currentMembers; 
 	}
 	
-//	public Date getMeetingTime() {
-//		return meetingTime;
-//	}
-//	
-//	public void setMeetingTime(Date meetingTime) {
-//		this.meetingTime = meetingTime;
-//	}
+	public LocalTime getMeetingTime() {
+		return meetingTime;
+	}
+	
+	public void setMeetingTime(LocalTime meetingTime) {
+		this.meetingTime = meetingTime;
+		//LocalTime meetingTime = LocalTime.parse( "20:11:13" ); falls String
+	}
 }

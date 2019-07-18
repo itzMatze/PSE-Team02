@@ -4,77 +4,85 @@ package edu.kit.mensameet.client.model;
 import java.util.Date;
 
 public class User {
-    private String token;
+    private static User instance = new User();
+    private String token = "";
+    private String username = "";
+    private String motto = "";
+    private Date birthDate;
+    private Gender gender;
+    private Subject subject;
+    private Status status;
+    private int profilePictureId;
 
-    public String getToken() {
-        return token;
+    public static User getInstance() {
+        return instance;
     }
 
     public void setToken(String token) {
         this.token = token;
     }
 
-    public String getName() {
-        return name;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getMotto() {
-        return motto;
-    }
-
-    public void setMotto(String motto) {
+    public void setmotto(String motto) {
         this.motto = motto;
-    }
-
-    public Date getBirthDate() {
-        return birthDate;
     }
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
-    public Gender getGender() {
-        return gender;
-    }
-
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public Subject getSubject() {
-        return subject;
     }
 
     public void setSubject(Subject subject) {
         this.subject = subject;
     }
 
-    public Status getStatus() {
-        return status;
-    }
-
     public void setStatus(Status status) {
         this.status = status;
-    }
-
-    public int getProfilePictureId() {
-        return profilePictureId;
     }
 
     public void setProfilePictureId(int profilePictureId) {
         this.profilePictureId = profilePictureId;
     }
 
-    private String name;
-    private String motto;
-    private Date birthDate;
-    private Gender gender;
-    private Subject subject;
-    private Status status;
-    private int profilePictureId;
+    public String getToken() {
+        return token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getMotto() {
+        return motto;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public Subject getSubject() {
+        return subject;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public int getProfilePictureId() {
+        return profilePictureId;
+    }
+
+    public void clear() {
+        instance = new User();
+    }
 }

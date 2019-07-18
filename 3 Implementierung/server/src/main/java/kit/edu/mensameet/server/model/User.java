@@ -31,6 +31,9 @@ public class User {
 	public User(String token) {
 		this.token = token;
 	}
+	
+	public User() {}
+	
 	/*
 	 * default getter for the name
 	 */

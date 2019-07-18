@@ -5,7 +5,9 @@ import java.util.stream.StreamSupport;
 import org.assertj.core.internal.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import kit.edu.mensameet.server.model.User;
 
@@ -15,23 +17,28 @@ public class UserController {
 	@Autowired
 	private UserRepository repository;
 	
+	@Autowired
+	private FirebaseAuthentifcator fbAuth;
+	
 	public User getUser(String token) {
-		return repository.getUserByToken(token);
+		String userToken = fbAuth.encryptToUserToken(token);
+		return repository.getUserByToken(userToken);
 	}
 	
-	public void addUserWithToken(String token) {
-		repository.save(new User(token));
+	public void addUserWithToken(String fbToken) {
+		String userToken = fbAuth.encryptToUserToken(fbToken);
+		repository.save(new User(userToken));
 	}
 	
 	public boolean updateUser(User newUser) {
 		User userToUpdate = getUser(newUser.getToken());
 		
 		if (userToUpdate != null) {
-			userToUpdate = newUser;
-			return true;
+			//Update the User and 
+			repository.save(newUser);
 		}
 		
-		return false;
+		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor Not Found");
 	}
 	
 	public void deleteUser(String token) {

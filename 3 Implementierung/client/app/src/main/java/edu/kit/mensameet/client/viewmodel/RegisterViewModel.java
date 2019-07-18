@@ -3,6 +3,7 @@ package edu.kit.mensameet.client.viewmodel;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.view.R;
 
 public class RegisterViewModel extends MensaMeetViewModel {
@@ -14,10 +15,10 @@ public class RegisterViewModel extends MensaMeetViewModel {
         return offlineCode;
     }
 
-    private int offlineRegister(String email, String password, String passwordConfirm, Context context) {
+    private int offlineRegister(String username, String password, String passwordConfirm, Context context) {
         //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig,
         //3 heißt Passwörter stimmen nicht überein
-        if (email.length() == 0) {
+        if (username.length() == 0) {
             return 1;
         } else if (password.length() == 0) {
             return 2;
@@ -28,10 +29,11 @@ public class RegisterViewModel extends MensaMeetViewModel {
             //weil SharedPreferences nur auf einem Context Objekt funktioniert und eine Activity ein solches Objekt ist
             SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(context.getString(R.string.username_file_id), email);
+            editor.putString(context.getString(R.string.username_file_id), username);
             //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
             editor.putString(context.getString(R.string.password_file_id), password);
             editor.commit();
+            User.getInstance().setUsername(username);
             return 0;
         }
     }

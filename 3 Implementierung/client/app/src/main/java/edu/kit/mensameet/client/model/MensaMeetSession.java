@@ -15,9 +15,6 @@ public class MensaMeetSession {
     private MensaMeetSession() {}
 
     public static MensaMeetSession getInstance() {
-        if (instance == null) {
-            instance = new MensaMeetSession();
-        }
         return instance;
     }
 
@@ -53,27 +50,27 @@ public class MensaMeetSession {
         return allUsers;
     }
 
-    public List<Group> setAllGroups() {
+    public List<Group> getAllGroups() {
         return allGroups;
     }
 
-    public MensaData setMensaData() {
+    public MensaData getMensaData() {
         return mensaData;
     }
 
-    public User setUser() {
+    public User getUser() {
         return user;
     }
 
-    public List<Line> setChosenLines() {
+    public List<Line> getChosenLines() {
         return chosenLines;
     }
 
-    public MensaMeetTime setChosenTime() {
+    public MensaMeetTime getChosenTime() {
         return chosenTime;
     }
 
-    public Group setChosenGroup() {
+    public Group getChosenGroup() {
         return chosenGroup;
     }
 }

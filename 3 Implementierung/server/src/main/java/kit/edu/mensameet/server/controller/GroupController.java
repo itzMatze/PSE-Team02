@@ -6,6 +6,7 @@ import org.assertj.core.internal.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
+import java.time.LocalTime;
 
 import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.MealLine;
@@ -57,24 +58,19 @@ public class GroupController {
 		
 		while(i < allGroups.length) {
 			MealLine[] prefLines = pref.getMealLines();
+			LocalTime start = pref.getStartTime();
+			LocalTime end = pref.getEndTime();
 			
 			for(int k = 0; k < prefLines.length; j++) {
 				
 				if(prefLines[k].name() == allGroups[i].getLine().getMealLine().name()) {
+					LocalTime meetingTime = allGroups[i].getMeetingTime();
 					
-					
-					
-					
-					
-					
-					//time match
-					
-					
-					
-					
-					
-					fittingGroups[j] = allGroups[i];
-					j++;
+					if(meetingTime.isAfter(start) && meetingTime.isBefore(end)) {
+						fittingGroups[j] = allGroups[i];
+						j++;
+						break;
+					}
 					break;
 				}
 				else {
