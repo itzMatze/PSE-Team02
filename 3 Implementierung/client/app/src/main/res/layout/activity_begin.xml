@@ -6,7 +6,7 @@
         <variable name="vm" type="edu.kit.mensameet.client.viewmodel.BeginViewModel"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -80,5 +80,5 @@
             app:layout_constraintVertical_bias="0.926"
             tools:visibility="visible" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

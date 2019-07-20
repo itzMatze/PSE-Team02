@@ -2,8 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
-import android.support.annotation.NonNull;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import androidx.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;

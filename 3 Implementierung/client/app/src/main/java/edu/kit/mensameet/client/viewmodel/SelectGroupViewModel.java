@@ -1,7 +1,9 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
+
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 public class SelectGroupViewModel extends MensaMeetViewModel {
     private RecyclerView recyclerView;

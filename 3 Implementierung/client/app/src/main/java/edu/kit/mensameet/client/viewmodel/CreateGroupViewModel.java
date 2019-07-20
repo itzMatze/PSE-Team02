@@ -1,16 +1,17 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Pair;
 
 import java.sql.Time;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
- * Class {@code CreateGroupViewModel} is responsible for preparing and managing the data for {@code CreateGroupView} Activity.
+ * Class {@code CreateGroupViewModel} is responsible for preparing and managing the data for {@code CreateGroup} Activity.
  * It also handles the communication of the Activity with the rest of the application
  */
 public class CreateGroupViewModel extends MensaMeetViewModel {
@@ -22,10 +23,14 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     private MutableLiveData<Group> group;
     private MutableLiveData<String> groupName;
     private MutableLiveData<String> motto;
-    public MutableLiveData<MensaMeetTime> time;
-    private MutableLiveData<String> timeString;
-    private MutableLiveData<Integer> number;
-    private SingleLiveEvent<Pair<CreateGroupViewModel, String>> uiEventLiveData;//A lifecycle-aware observable that sends only new updates after subscription
+    private MutableLiveData<MensaMeetTime> time;
+    private MutableLiveData<String> timeString;// this.time to string in format hh:mm:ss
+    private MutableLiveData<Integer> number;// number of maximal members in the group
+    /*
+    SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
+    use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
+     */
+    private SingleLiveEvent<Pair<CreateGroupViewModel, String>> uiEventLiveData;
 
     /*
     TODO: edit in order to save group
@@ -73,7 +78,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
 
     /*
-    following getter are used for data-binding
+    following getter methods are used for data-binding
      */
 
     /**

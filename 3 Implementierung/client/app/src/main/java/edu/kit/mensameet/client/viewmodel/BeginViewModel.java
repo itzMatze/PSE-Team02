@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.R;
 
 public class BeginViewModel extends MensaMeetViewModel {
@@ -11,7 +12,11 @@ public class BeginViewModel extends MensaMeetViewModel {
     public static final String LOGIN_ID = "login";
     public static final String REGISTER_ID = "register";
     public static final String TEST_LIST_CLASSES_ID = "testListClasses";
-    private SingleLiveEvent<Pair<BeginViewModel, String>> uiEventLiveData;//A lifecycle-aware observable that sends only new updates after subscription
+    /*
+    SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
+    use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
+     */
+    private SingleLiveEvent<Pair<BeginViewModel, String>> uiEventLiveData;
 
     //Überprüft ob schon ein Username gespeichert ist, um herauszufinden, ob an dem Gerät schon ein Benutzer angemeldet ist
     public boolean isLoggedIn(Context context) {

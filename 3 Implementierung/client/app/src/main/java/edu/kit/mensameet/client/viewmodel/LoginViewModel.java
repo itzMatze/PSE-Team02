@@ -1,9 +1,11 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
+
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.R;
 
 public class LoginViewModel extends MensaMeetViewModel {
@@ -64,22 +66,6 @@ public class LoginViewModel extends MensaMeetViewModel {
         return uiEventLiveData;
     }
 
-    /**
-     * @return error
-     */
-    //TODO: error code in final static oder resource file schreiben
-    public String getError() {
-        switch(login()){
-            case 0:
-                return null;
-            case 1:
-                return context.getString(R.string.invalid_username_message);
-            case 2:
-                return context.getString(R.string.invalid_password_message);
-            default:
-                return "unknown error";
-        }
-    }
     private int offlineLogin() {
         //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);

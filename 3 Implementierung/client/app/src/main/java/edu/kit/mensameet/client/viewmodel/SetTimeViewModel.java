@@ -1,11 +1,12 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import android.util.Pair;
 
 import java.sql.Time;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 public class SetTimeViewModel extends MensaMeetViewModel {
 

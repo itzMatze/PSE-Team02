@@ -3,13 +3,25 @@ package edu.kit.mensameet.client.viewmodel;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.lifecycle.MutableLiveData;
+
+import com.google.firebase.auth.FirebaseAuth;
+
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.view.R;
 
+/**
+ * Class {@code RegisterViewModel} is responsible for preparing and managing the data for {@code RegisterActivity} Activity.
+ * It also handles the communication of the Activity with the rest of the application
+ */
 public class RegisterViewModel extends MensaMeetViewModel {
+    private MutableLiveData<String> userName;
+    private MutableLiveData<String> password;
+
+
     public int register(String email, String password, String passwordConfirm, Context context) {
         int offlineCode = offlineRegister(email, password, passwordConfirm, context);
-        int onlineCode = onlineRegister(email, password, passwordConfirm, context);
+        int onlineCode = onlineRegister();
         //hier können die beiden Codes abgefragt werden und dann ein gesammelter Fehlercode zurückgegeben werden,
         //dieser kann beispielsweise einfach zweistellig sein
         return offlineCode;
@@ -38,7 +50,10 @@ public class RegisterViewModel extends MensaMeetViewModel {
         }
     }
 
-    private int onlineRegister(String email, String password, String passwordConfirm, Context context) {
+    /**
+     * @return a integer presenting error Status
+     */
+    private int onlineRegister() {
         return 0;
     }
 }
