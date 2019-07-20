@@ -58,7 +58,7 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void fillData(MensaMeetListAdapter.ViewHolder holder) {
 
-        fillTextField(holder, ItemElements.TITLE, super.objectData.getName());
+        fillTextField(holder, ItemElements.TITLE, super.objectData.getUsername());
         fillTextField(holder, ItemElements.MOTTO, super.objectData.getMotto());
 
     }

@@ -33,4 +33,6 @@
     <string name="selectLine">wähle eine Linie:</string>
     <string name="groups">Gruppen:</string>
     <string name="chooseTime">Zeit</string>
+    <string name="register">Register</string>
+    <string name="test_list_classes_only_for_test_purposes">Test List classes (only for test purposes)</string>
 </resources>

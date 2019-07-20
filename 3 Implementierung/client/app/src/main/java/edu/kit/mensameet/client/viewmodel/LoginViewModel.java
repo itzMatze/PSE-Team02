@@ -1,35 +1,102 @@
 package edu.kit.mensameet.client.viewmodel;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.util.Pair;
 import edu.kit.mensameet.client.view.R;
 
 public class LoginViewModel extends MensaMeetViewModel {
-    public int login(String email, String password, Context context) {
-        int offlineCode = offlineLogin(email, password, context);
-        int onlineCode = onlineLogin(email, password, context);
+    //todo: move this later to MensaMeetViewModel
+    public static final String LOG_IN_ID = "logIn";
+
+    private MutableLiveData<String> userName;
+    private MutableLiveData<String> password;
+    private SingleLiveEvent<Pair<LoginViewModel, String>> uiEventLiveData;//A lifecycle-aware observable that sends only new updates after subscription
+
+    public Context context;// to visit SharedPreferences
+    /**
+     * onClick method for log in
+     * @param item LoginViewModel
+     */
+    public void onLoginClick(LoginViewModel item) {
+        uiEventLiveData.setValue(new Pair<LoginViewModel, String>(item,LOG_IN_ID));
+    }
+
+    public int login() {
+        int offlineCode = offlineLogin();
+        int onlineCode = onlineLogin();
         //hier können die beiden Codes abgefragt werden und dann ein gesammelter Fehlercode zurückgegeben werden,
         //dieser kann beispielsweise einfach zweistellig sein
         return offlineCode;
     }
 
-    private int offlineLogin(String username, String password, Context context) {
+    /**
+     * @return userName
+     */
+    public MutableLiveData<String> getUserName() {
+        if (userName == null){
+            userName = new MutableLiveData<>();
+            userName.setValue("");
+        }
+        return userName;
+    }
+
+    /**
+     * @return password
+     */
+    public MutableLiveData<String> getPassword() {
+        if (password == null){
+            password = new MutableLiveData<>();
+            password.setValue("");
+        }
+        return password;
+    }
+
+    /**
+     * @return A lifecycle-aware observable that sends only new updates after subscription
+     */
+    public SingleLiveEvent<Pair<LoginViewModel, String>> getUiEventLiveData() {
+        if(uiEventLiveData == null){
+            uiEventLiveData = new SingleLiveEvent<>();
+            uiEventLiveData.setValue(new Pair<LoginViewModel, String>(null, "default"));
+        }
+        return uiEventLiveData;
+    }
+
+    /**
+     * @return error
+     */
+    //TODO: error code in final static oder resource file schreiben
+    public String getError() {
+        switch(login()){
+            case 0:
+                return null;
+            case 1:
+                return context.getString(R.string.invalid_username_message);
+            case 2:
+                return context.getString(R.string.invalid_password_message);
+            default:
+                return "unknown error";
+        }
+    }
+    private int offlineLogin() {
         //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         String savedEmail = sharedPrefs.getString(context.getString(R.string.username_file_id), "");
         //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
         String savedPassword = sharedPrefs.getString(context.getString(R.string.password_file_id), "");
-        if (!username.equals(savedEmail) || username.length() == 0) {
+        //todo: save return code as final static or in resource
+        if (!userName.getValue().equals(savedEmail) || userName.getValue().length() == 0) {
             return 1;
-        } else if (!password.equals(savedPassword) || password.length() == 0) {
+        } else if (!password.getValue().equals(savedPassword) || password.getValue().length() == 0) {
             return 2;
         } else {
             return 0;
         }
     }
 
-    private int onlineLogin(String username, String password, Context context) {
+    private int onlineLogin() {
         return 0;
     }
 

@@ -14,6 +14,7 @@ import edu.kit.mensameet.client.model.MensaMeetTime;
  * It also handles the communication of the Activity with the rest of the application
  */
 public class CreateGroupViewModel extends MensaMeetViewModel {
+    //todo: move this later to MensaMeetViewModel
     public static final String CREATE_GROUP_ID = "createGroup";
     public static final String CREATE_GROUP_ADD_TIME_ID = "createGroupAddTime";
     public static final String CREATE_GROUP_TO_SELECT_GROUP_ID = "createGroupToSelectGroup";
@@ -24,16 +25,17 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     public MutableLiveData<MensaMeetTime> time;
     private MutableLiveData<String> timeString;
     private MutableLiveData<Integer> number;
-    private SingleLiveEvent<Pair<CreateGroupViewModel, String>> uiEventLiveData;
+    private SingleLiveEvent<Pair<CreateGroupViewModel, String>> uiEventLiveData;//A lifecycle-aware observable that sends only new updates after subscription
 
     /*
-    TODO: edit
+    TODO: edit in order to save group
      */
     public void saveGroups(LiveData<Group> group) {
 
     }
 
     /**
+     * onClick method for create Group Button
      * @param item CreateGroupViewModel
      */
     public void onCreateGroupClick(CreateGroupViewModel item) {
@@ -41,6 +43,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     }
 
     /**
+     * onClick method for add time Button
      * @param item CreateGroupViewModel
      */
     public void onAddTimeClick(CreateGroupViewModel item) {
@@ -48,6 +51,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     }
 
     /**
+     * onClick method for select Group Button
      * @param item CreateGroupViewModel
      */
 
@@ -96,7 +100,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /**
      * @return start time of MensaMeet group.
-     * if it's not set
+     * if it's not set, return "Zeitpunkt noch nicht gewählt"
      */
     public MutableLiveData<MensaMeetTime> getTime() {
         return time;
@@ -125,7 +129,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * @return ui Event
+     * @return A lifecycle-aware observable that sends only new updates after subscription
      */
     public SingleLiveEvent<Pair<CreateGroupViewModel, String>> getUiEventLiveData() {
         if(uiEventLiveData == null){

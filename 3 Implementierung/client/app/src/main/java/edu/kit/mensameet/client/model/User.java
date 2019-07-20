@@ -26,7 +26,7 @@ public class User {
         this.username = username;
     }
 
-    public void setmotto(String motto) {
+    public void setMotto(String motto) {
         this.motto = motto;
     }
 

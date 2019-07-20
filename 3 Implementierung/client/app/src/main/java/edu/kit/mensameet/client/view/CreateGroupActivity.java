@@ -16,6 +16,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
     private ActivityCreateGroupBinding binding;
     private CreateGroupViewModel viewModel;
+    //todo: move to MensaMeetActivity
     private static final int SAVE_TIME_REQUEST = 5;
     private static final int HOME_MENU_REQUEST = 6;
     private static final String SAVE_TIME_ID = "saveTime";
@@ -28,13 +29,12 @@ public class CreateGroupActivity extends MensaMeetActivity {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        final CreateGroupActivity context = this;
-        final Intent backToHome = new Intent(this, HomeActivity.class);
-        final Intent chooseTime = new Intent(this, SetTimeActivity.class);
-
         /*
         decide which activity to start
          */
+        final CreateGroupActivity context = this;
+        final Intent backToHome = new Intent(this, HomeActivity.class);
+        final Intent chooseTime = new Intent(this, SetTimeActivity.class);
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<CreateGroupViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<CreateGroupViewModel, String> it) {
