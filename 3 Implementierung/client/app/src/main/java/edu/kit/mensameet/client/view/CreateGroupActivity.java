@@ -24,6 +24,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //data binding
         binding = DataBindingUtil.setContentView(this,R.layout.activity_create_group);
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
         binding.setVm(viewModel);

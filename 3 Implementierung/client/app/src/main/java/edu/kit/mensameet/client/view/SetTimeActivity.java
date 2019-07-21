@@ -19,13 +19,12 @@ public class SetTimeActivity extends MensaMeetActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //[START] data binding
         binding = DataBindingUtil.setContentView(this,R.layout.activity_set_time);
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-
-        final SetTimeActivity context = this;
-
+        //[END] data binding
         /*
         decide which activity to start
          */

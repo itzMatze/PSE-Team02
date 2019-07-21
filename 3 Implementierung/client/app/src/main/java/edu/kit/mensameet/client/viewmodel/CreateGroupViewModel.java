@@ -79,6 +79,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /*
     following getter methods are used for data-binding
+    the if case is used to avoid NullPointerException
      */
 
     /**

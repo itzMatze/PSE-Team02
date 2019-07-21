@@ -23,6 +23,7 @@
 *.out
 *.synctex.gz
 *.json
+!google-services.json
 *target*
 *.jar
 *.war

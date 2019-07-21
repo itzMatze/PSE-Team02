@@ -2,11 +2,8 @@ package edu.kit.mensameet.client.viewmodel;
 
 import androidx.lifecycle.MutableLiveData;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Pair;
-
 import edu.kit.mensameet.client.util.SingleLiveEvent;
-import edu.kit.mensameet.client.view.R;
 
 public class LoginViewModel extends MensaMeetViewModel {
     //todo: move this later to MensaMeetViewModel
@@ -22,15 +19,7 @@ public class LoginViewModel extends MensaMeetViewModel {
      * @param item LoginViewModel
      */
     public void onLoginClick(LoginViewModel item) {
-        uiEventLiveData.setValue(new Pair<LoginViewModel, String>(item,LOG_IN_ID));
-    }
-
-    public int login() {
-        int offlineCode = offlineLogin();
-        int onlineCode = onlineLogin();
-        //hier können die beiden Codes abgefragt werden und dann ein gesammelter Fehlercode zurückgegeben werden,
-        //dieser kann beispielsweise einfach zweistellig sein
-        return offlineCode;
+        uiEventLiveData.setValue(new Pair<>(item,LOG_IN_ID));
     }
 
     /**
@@ -66,27 +55,4 @@ public class LoginViewModel extends MensaMeetViewModel {
         return uiEventLiveData;
     }
 
-    private int offlineLogin() {
-        //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig
-        SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
-        String savedEmail = sharedPrefs.getString(context.getString(R.string.username_file_id), "");
-        //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
-        String savedPassword = sharedPrefs.getString(context.getString(R.string.password_file_id), "");
-        //todo: save return code as final static or in resource
-        if (!userName.getValue().equals(savedEmail) || userName.getValue().length() == 0) {
-            return 1;
-        } else if (!password.getValue().equals(savedPassword) || password.getValue().length() == 0) {
-            return 2;
-        } else {
-            return 0;
-        }
-    }
-
-    private int onlineLogin() {
-        return 0;
-    }
-
-    public void passwordForgotten() {
-
-    }
 }
