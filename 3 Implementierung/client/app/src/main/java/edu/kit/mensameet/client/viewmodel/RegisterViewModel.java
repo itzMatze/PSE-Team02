@@ -3,7 +3,6 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.content.Context;
 import android.util.Pair;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,7 +24,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
     public static final String CREATE_ACCOUNT_FAILED_ID = "createAccountFailed";
 
     //[START]data binding
-    private Context context;
+    private Context context;//todo: for getError
     private MutableLiveData<String> email;
     private MutableLiveData<String> password;
     private MutableLiveData<String> passwordConfirm;
@@ -36,7 +35,9 @@ public class RegisterViewModel extends MensaMeetViewModel {
       */
     private SingleLiveEvent<Pair<RegisterViewModel, String>> uiEventLiveData;
 
+    //TODO:Pass information to other activity
     private String uid;
+
     //todo: used to setError in Activity:  private MutableLiveData<String> error;
 
     /**
@@ -44,7 +45,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * NOT FINAL VERSION!
      */
     public void onRegisterClick(RegisterViewModel item) {
-        if(matchPattern()){
+        if(matchPattern()) {
             createAccount(item);
         }
     }
@@ -163,7 +164,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
                             //save uid
                             uid = user.getUid();
                         } else {
-                            // If sign in fails, notify uiEventLiveData
+                            // If sign in fails, notify uiEventLiveData›
                             uiEventLiveData.setValue(new Pair<>(item, CREATE_ACCOUNT_FAILED_ID));
                         }
                     }

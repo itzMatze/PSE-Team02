@@ -12,6 +12,8 @@ import edu.kit.mensameet.client.view.databinding.ActivityLoginBinding;
 import edu.kit.mensameet.client.viewmodel.LoginViewModel;
 
 public class LoginActivity extends MensaMeetActivity {
+    //todo
+    public static final String UID_ID = "uid";
     private ActivityLoginBinding binding;
     private LoginViewModel viewModel;
 
@@ -24,9 +26,6 @@ public class LoginActivity extends MensaMeetActivity {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        //to visit SharedPreferences from view model
-        viewModel.context = this;
-
         /*
         decide which activity to start
          */
@@ -35,22 +34,18 @@ public class LoginActivity extends MensaMeetActivity {
             @Override
             public void onChanged(@Nullable Pair<LoginViewModel, String> it) {
                 switch(it.second){
-                    case LoginViewModel.LOG_IN_ID:
-                        int returnCode = viewModel.login();
-                        if (returnCode == 0) {
-                            Intent intent = new Intent(context, HomeActivity.class);
-                            startActivity(intent);
-                        }else if(returnCode == 1) {
-                            Toast toast = Toast.makeText(getApplicationContext(),"something wrong1",Toast.LENGTH_SHORT);
-                            toast.show();
-                        }else{
-                            Toast toast = Toast.makeText(getApplicationContext(),"something wrong2",Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
+                    case LoginViewModel.LOG_IN_SUCCESS_ID:
+                        // log in success, update UI with the logged-in user's information
+                        Toast.makeText(context,"create acount succeed",Toast.LENGTH_LONG).show();
+                        Intent toHome = new Intent(context, HomeActivity.class);
+                        toHome.putExtra(UID_ID, viewModel.getUid());
+                        startActivity(toHome);
+                        finish();// todo: apply isLogIn(), that register and login page not visitable
+                        break;
+                    case LoginViewModel.LOG_IN_FAILD_ID:
+                        Toast.makeText(context,"failed ",Toast.LENGTH_LONG).show();
                         break;
                     default:
-                        Toast toast = Toast.makeText(getApplicationContext(),"something wrong3",Toast.LENGTH_SHORT);
-                        toast.show();
                         break;
                 }
             }

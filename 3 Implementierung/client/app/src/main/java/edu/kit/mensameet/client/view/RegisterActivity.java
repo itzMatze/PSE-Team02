@@ -14,6 +14,7 @@ import edu.kit.mensameet.client.viewmodel.RegisterViewModel;
 
 public class RegisterActivity extends MensaMeetActivity {
 
+    //todo
     public static final String UID_ID = "uid";
     private ActivityRegisterBinding binding;
     private RegisterViewModel viewModel;
@@ -37,11 +38,11 @@ public class RegisterActivity extends MensaMeetActivity {
                 switch(it.second){
                     case RegisterViewModel.CREATE_ACCOUNT_SUCCESS_ID:
                         // Sign in success, update UI with the signed-in user's information
-                        Toast.makeText(context,"create acount success",Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"create acount succeed",Toast.LENGTH_LONG).show();
                         Intent toHome = new Intent(context, HomeActivity.class);
                         toHome.putExtra(UID_ID, viewModel.getUid());
                         startActivity(toHome);
-                        finish();// theoretically back button would not find this activity again
+                        finish();// todo: apply isLogIn(), that register and login page not visitable
                         break;
                     case RegisterViewModel.CREATE_ACCOUNT_FAILED_ID:
                         Toast.makeText(context,"failed ",Toast.LENGTH_LONG).show();
