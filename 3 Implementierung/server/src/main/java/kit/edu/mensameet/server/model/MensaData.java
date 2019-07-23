@@ -4,6 +4,12 @@ package kit.edu.mensameet.server.model;
  */
 public class MensaData {
 	private Line[] lines;
+	
+	public MensaData(Line[] lines) {
+		this.lines = lines;
+	}
+	
+	
 	/*
 	 * default getter for the lines
 	 */
