@@ -2,8 +2,12 @@
 <layout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
     <data>
-        <variable name="vm" type="edu.kit.mensameet.client.viewmodel.CreateGroupViewModel"/>
+
+        <variable
+            name="vm"
+            type="edu.kit.mensameet.client.viewmodel.CreateGroupViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

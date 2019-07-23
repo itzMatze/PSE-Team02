@@ -2,8 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
 import android.os.Bundle;
+import android.view.View;
 
 import edu.kit.mensameet.client.viewmodel.HomeViewModel;
 

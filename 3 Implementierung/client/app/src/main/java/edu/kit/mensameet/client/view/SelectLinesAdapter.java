@@ -1,9 +1,10 @@
 package edu.kit.mensameet.client.view;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -19,14 +20,14 @@ public class SelectLinesAdapter extends RecyclerView.Adapter<SelectLinesAdapter.
     @Override
     public SelectLinesAdapter.LineItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
-       LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         //ItemLineBinding binding = ItemLineBinding.inflate(inflater, parent, false)
         //return LineItemViewHolder(binding)
         return null;
     }
 
 
-    public SelectLinesAdapter(List<String>  myDataset) {
+    public SelectLinesAdapter(List<String> myDataset) {
         dataList = myDataset;
     }
 
@@ -62,9 +63,10 @@ public class SelectLinesAdapter extends RecyclerView.Adapter<SelectLinesAdapter.
     }
      */
 
-    public static class LineItemViewHolder extends RecyclerView.ViewHolder{
+    public static class LineItemViewHolder extends RecyclerView.ViewHolder {
         public TextView textView;
-        public LineItemViewHolder(TextView v){
+
+        public LineItemViewHolder(TextView v) {
             super(v);
             textView = v;
         }

@@ -66,7 +66,7 @@ public abstract class MensaMeetItem<Object> {
         View view = holder.getElementById(id);
 
         if (view.getClass() == LinearLayout.class) {
-            LinearLayout linearLayout = (LinearLayout)view;
+            LinearLayout linearLayout = (LinearLayout) view;
             linearLayout.removeAllViews();
             linearLayout.addView(sublist.getView());
 

@@ -3,8 +3,10 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.content.Context;
 import android.util.Pair;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -45,7 +47,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * NOT FINAL VERSION!
      */
     public void onRegisterClick(RegisterViewModel item) {
-        if(matchPattern()) {
+        if (matchPattern()) {
             createAccount(item);
         }
     }
@@ -79,7 +81,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * @return email
      */
     public MutableLiveData<String> getEmail() {
-        if(email == null){
+        if (email == null) {
             email = new MutableLiveData<>();
             email.setValue("");
         }
@@ -90,7 +92,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * @return password
      */
     public MutableLiveData<String> getPassword() {
-        if(password == null){
+        if (password == null) {
             password = new MutableLiveData<>();
             password.setValue("");
         }
@@ -101,7 +103,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * @return passwordconfirm
      */
     public MutableLiveData<String> getPasswordConfirm() {
-        if(passwordConfirm == null){
+        if (passwordConfirm == null) {
             passwordConfirm = new MutableLiveData<>();
             passwordConfirm.setValue("");
         }
@@ -112,7 +114,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
      * @return A lifecycle-aware observable that sends only new updates after subscription
      */
     public SingleLiveEvent<Pair<RegisterViewModel, String>> getUiEventLiveData() {
-        if(uiEventLiveData == null){
+        if (uiEventLiveData == null) {
             uiEventLiveData = new SingleLiveEvent<>();
             uiEventLiveData.setValue(new Pair<RegisterViewModel, String>(null, "default"));
         }
@@ -135,21 +137,21 @@ public class RegisterViewModel extends MensaMeetViewModel {
 
     /**
      * help to check format of email and password
+     *
      * @return true if email and password not null and password equals passwordConfirm
      * otherwise false
      */
-    private boolean matchPattern(){
+    private boolean matchPattern() {
         //todo manage to show errorCode in editText
-        if(email.getValue() == null){
+        if (email.getValue() == null) {
             return false;
-        }else if (password.getValue() ==null ){
+        } else if (password.getValue() == null) {
             return false;
-        }else if (!passwordConfirm.getValue().equals(password.getValue())){
+        } else if (!passwordConfirm.getValue().equals(password.getValue())) {
             return false;
         }
         return true;
     }
-
 
     private void createAccount(final RegisterViewModel item) {
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -170,8 +172,4 @@ public class RegisterViewModel extends MensaMeetViewModel {
                     }
                 });
     }
-
-
-
-
 }

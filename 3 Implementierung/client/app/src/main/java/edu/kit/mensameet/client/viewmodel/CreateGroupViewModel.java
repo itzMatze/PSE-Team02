@@ -2,6 +2,7 @@ package edu.kit.mensameet.client.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.util.Pair;
 
 import java.sql.Time;
@@ -41,6 +42,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for create Group Button
+     *
      * @param item CreateGroupViewModel
      */
     public void onCreateGroupClick(CreateGroupViewModel item) {
@@ -49,6 +51,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for add time Button
+     *
      * @param item CreateGroupViewModel
      */
     public void onAddTimeClick(CreateGroupViewModel item) {
@@ -57,6 +60,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for select Group Button
+     *
      * @param item CreateGroupViewModel
      */
 
@@ -66,10 +70,11 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
     /**
      * set time and timeString from a given String
+     *
      * @param time a string in JDBC time in format "hh:mm:ss"
      */
-    public void addTime(String time){
-        if (this.time == null){
+    public void addTime(String time) {
+        if (this.time == null) {
             this.time = new MutableLiveData<MensaMeetTime>();
         }
         this.time.setValue(new MensaMeetTime(Time.valueOf(time)));
@@ -83,10 +88,10 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
      */
 
     /**
-     * @return  MensaMeet group name
+     * @return MensaMeet group name
      */
     public MutableLiveData<String> getGroupName() {
-        if (groupName == null){
+        if (groupName == null) {
             groupName = new MutableLiveData<>();
             groupName.setValue("");
         }
@@ -97,7 +102,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
      * @return MensaMeet group motto
      */
     public MutableLiveData<String> getMotto() {
-        if (motto == null){
+        if (motto == null) {
             motto = new MutableLiveData<>();
             motto.setValue("");
         }
@@ -112,13 +117,12 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
         return time;
     }
 
-    public MutableLiveData<String> getTimeString(){
-        if (timeString == null){
+    public MutableLiveData<String> getTimeString() {
+        if (timeString == null) {
             timeString = new MutableLiveData<>();
             timeString.setValue("Zeitpunkt noch nicht gewählt");
             return timeString;
-        }
-        else {
+        } else {
             return timeString;
         }
     }
@@ -127,7 +131,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
      * @return maximal number of group members
      */
     public MutableLiveData<Integer> getNumber() {
-        if(number == null){
+        if (number == null) {
             number = new MutableLiveData<>();
             number.setValue(0);
         }
@@ -138,7 +142,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
      * @return A lifecycle-aware observable that sends only new updates after subscription
      */
     public SingleLiveEvent<Pair<CreateGroupViewModel, String>> getUiEventLiveData() {
-        if(uiEventLiveData == null){
+        if (uiEventLiveData == null) {
             uiEventLiveData = new SingleLiveEvent<>();
             uiEventLiveData.setValue(new Pair<CreateGroupViewModel, String>(null, "default"));
         }

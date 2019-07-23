@@ -2,14 +2,16 @@ package edu.kit.mensameet.client.view;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.annotation.NonNull;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.kit.mensameet.client.model.User;
 

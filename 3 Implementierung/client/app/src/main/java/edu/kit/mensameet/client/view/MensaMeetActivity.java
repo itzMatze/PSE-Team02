@@ -1,8 +1,9 @@
 package edu.kit.mensameet.client.view;
 
-import android.view.View;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public abstract class MensaMeetActivity extends AppCompatActivity {

@@ -1,13 +1,15 @@
 package edu.kit.mensameet.client.view;
 
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.databinding.DataBindingUtil;
-import androidx.annotation.Nullable;
-import android.util.Pair;
 import android.os.Bundle;
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
 import edu.kit.mensameet.client.view.databinding.ActivityBeginBinding;
 import edu.kit.mensameet.client.viewmodel.BeginViewModel;
 
@@ -18,7 +20,7 @@ public class BeginActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_begin);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -34,7 +36,7 @@ public class BeginActivity extends MensaMeetActivity {
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<BeginViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<BeginViewModel, String> it) {
-                switch(it.second){
+                switch (it.second) {
                     case BeginViewModel.LOGIN_ID:
                         context.gotoActivity(LoginActivity.class);
                         break;

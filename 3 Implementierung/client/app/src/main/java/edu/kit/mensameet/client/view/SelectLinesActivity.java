@@ -1,13 +1,14 @@
 package edu.kit.mensameet.client.view;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Pair;
 
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //fragment: binding = ActivitySelectLinesBinding.inflate(inflater,container,false);
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_select_lines);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_select_lines);
         viewModel = ViewModelProviders.of(this).get(SelectLinesViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -53,7 +54,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<SelectLinesViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<SelectLinesViewModel, String> it) {
-                switch(it.second){
+                switch (it.second) {
                     default:
                         break;
                 }

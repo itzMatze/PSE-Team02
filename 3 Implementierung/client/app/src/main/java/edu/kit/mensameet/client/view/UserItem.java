@@ -26,7 +26,7 @@ public class UserItem extends MensaMeetItem<User> {
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.VERTICAL);
         view.setLayoutParams(super.WIDTH_MATCH_PARENT);
-        view.setPadding(10, 10, 10 ,10);
+        view.setPadding(10, 10, 10, 10);
 
         if (super.displayMode == MensaMeetDisplayMode.BIG_EDITABLE ||
                 super.displayMode == MensaMeetDisplayMode.BIG_NOTEDITABLE) {

@@ -1,16 +1,18 @@
 package edu.kit.mensameet.client.view;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import android.util.Pair;
+
 import edu.kit.mensameet.client.view.databinding.ActivitySetTimeBinding;
 import edu.kit.mensameet.client.viewmodel.SetTimeViewModel;
 
-public class SetTimeActivity extends MensaMeetActivity{
+public class SetTimeActivity extends MensaMeetActivity {
     private ActivitySetTimeBinding binding;
     private SetTimeViewModel viewModel;
     private static final int SAVE_TIME_REQUEST = 5;
@@ -20,7 +22,7 @@ public class SetTimeActivity extends MensaMeetActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //[START] data binding
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_set_time);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_set_time);
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -31,10 +33,10 @@ public class SetTimeActivity extends MensaMeetActivity{
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<SetTimeViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<SetTimeViewModel, String> it) {
-                switch(it.second){
+                switch (it.second) {
                     case "saveTime":
                         Intent resultIntent = new Intent();
-                        resultIntent.putExtra(SAVE_TIME_ID,viewModel.getTimeString());
+                        resultIntent.putExtra(SAVE_TIME_ID, viewModel.getTimeString());
                         setResult(SAVE_TIME_REQUEST, resultIntent);
                         finish();
                         break;
@@ -48,7 +50,7 @@ public class SetTimeActivity extends MensaMeetActivity{
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case SAVE_TIME_REQUEST:
                 break;
             default:

@@ -1,7 +1,6 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.View;
 import android.widget.LinearLayout;
 
@@ -31,7 +30,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.VERTICAL);
         view.setLayoutParams(super.WIDTH_MATCH_PARENT);
-        view.setPadding(10, 10, 10 ,10);
+        view.setPadding(10, 10, 10, 10);
 
         if (super.displayMode == MensaMeetDisplayMode.BIG_EDITABLE ||
                 super.displayMode == MensaMeetDisplayMode.BIG_NOTEDITABLE) {

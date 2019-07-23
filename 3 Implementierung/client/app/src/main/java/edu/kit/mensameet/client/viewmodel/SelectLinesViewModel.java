@@ -1,7 +1,8 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Pair;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
@@ -18,7 +19,7 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
      * @return UI event
      */
     public SingleLiveEvent<Pair<SelectLinesViewModel, String>> getUiEventLiveData() {
-        if(uiEventLiveData == null){
+        if (uiEventLiveData == null) {
             uiEventLiveData = new SingleLiveEvent<>();
             uiEventLiveData.setValue(new Pair<SelectLinesViewModel, String>(null, "default"));
         }

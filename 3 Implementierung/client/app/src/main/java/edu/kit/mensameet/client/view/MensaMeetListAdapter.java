@@ -1,11 +1,12 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MensaMeetListAdapter extends RecyclerView.Adapter<MensaMeetListAdap
 
     // inflates the row layout from xml when needed
     @Override
-    public  MensaMeetListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MensaMeetListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         //  View view = mInflater.inflate(R.layout.list_item_layout, parent, false);
         //  LinearLayout itemLayout = view.findViewById(R.id.itemLayout);
@@ -39,7 +40,7 @@ public class MensaMeetListAdapter extends RecyclerView.Adapter<MensaMeetListAdap
 
         view.addView(items.get(0).getView());
 
-        return new  MensaMeetListAdapter.ViewHolder(view);
+        return new MensaMeetListAdapter.ViewHolder(view);
     }
 
     // binds the data to the TextView in each row

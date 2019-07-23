@@ -1,10 +1,11 @@
 package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class AdministerGroupsActivity extends MensaMeetActivity {
 

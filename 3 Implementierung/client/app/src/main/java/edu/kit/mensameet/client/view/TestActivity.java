@@ -1,10 +1,9 @@
 package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;

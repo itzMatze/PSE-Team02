@@ -3,6 +3,7 @@ package edu.kit.mensameet.client.viewmodel;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
+
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.R;
@@ -28,6 +29,7 @@ public class BeginViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for reset all local data button
+     *
      * @param item BeginViewModel
      */
     public void onResetClick(BeginViewModel item) {
@@ -36,6 +38,7 @@ public class BeginViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for register button
+     *
      * @param item BeginViewModel
      */
     public void onRegisterClick(BeginViewModel item) {
@@ -44,6 +47,7 @@ public class BeginViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for login button
+     *
      * @param item BeginViewModel
      */
     public void onLoginClick(BeginViewModel item) {
@@ -52,6 +56,7 @@ public class BeginViewModel extends MensaMeetViewModel {
 
     /**
      * onClick method for test list classes button
+     *
      * @param item BeginViewModel
      */
     public void onTestClick(BeginViewModel item) {
@@ -62,7 +67,7 @@ public class BeginViewModel extends MensaMeetViewModel {
      * @return A lifecycle-aware observable that sends only new updates after subscription
      */
     public SingleLiveEvent<Pair<BeginViewModel, String>> getUiEventLiveData() {
-        if(uiEventLiveData == null){
+        if (uiEventLiveData == null) {
             uiEventLiveData = new SingleLiveEvent<>();
             uiEventLiveData.setValue(new Pair<BeginViewModel, String>(null, "default"));
         }

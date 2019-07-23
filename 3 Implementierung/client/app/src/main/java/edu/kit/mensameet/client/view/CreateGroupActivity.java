@@ -1,12 +1,13 @@
 package edu.kit.mensameet.client.view;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Pair;
+
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import android.content.Intent;
-import androidx.databinding.DataBindingUtil;
-import android.os.Bundle;
-import androidx.annotation.Nullable;
-import android.util.Pair;
 
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
@@ -25,7 +26,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //data binding
-        binding = DataBindingUtil.setContentView(this,R.layout.activity_create_group);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
@@ -39,7 +40,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<CreateGroupViewModel, String>>() {
             @Override
             public void onChanged(@Nullable Pair<CreateGroupViewModel, String> it) {
-                switch(it.second){
+                switch (it.second) {
                     case CreateGroupViewModel.CREATE_GROUP_ID:
                         context.startActivityForResult(backToHome, HOME_MENU_REQUEST);
                         break;
@@ -59,10 +60,10 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode){
+        switch (requestCode) {
             case SAVE_TIME_REQUEST:
                 String time = data.getStringExtra(SAVE_TIME_ID);
-                if(time != null){
+                if (time != null) {
                     viewModel.addTime(time);
                 }
                 break;
@@ -70,7 +71,6 @@ public class CreateGroupActivity extends MensaMeetActivity {
                 break;
         }
     }
-
 
 
 }

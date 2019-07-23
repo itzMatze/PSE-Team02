@@ -2,9 +2,11 @@ package edu.kit.mensameet.client.viewmodel;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import android.util.Pair;
 
 import java.sql.Time;
+
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
@@ -24,7 +26,7 @@ public class SetTimeViewModel extends MensaMeetViewModel {
      * @return time
      */
     public LiveData<MensaMeetTime> getTime() {
-        if(time == null){
+        if (time == null) {
             time = new MutableLiveData<>();
             time.setValue(new MensaMeetTime(new Time(0)));
         }
@@ -34,7 +36,7 @@ public class SetTimeViewModel extends MensaMeetViewModel {
     /**
      * @return a string representing start time in format HH:MM:SS
      */
-    public String getTimeString(){
+    public String getTimeString() {
         return time.getValue().getStartTime().toString();
     }
 
@@ -42,24 +44,25 @@ public class SetTimeViewModel extends MensaMeetViewModel {
      * @param time
      */
     public void setTime(LiveData<MensaMeetTime> time) {
-        this.time = (MutableLiveData)time;
+        this.time = (MutableLiveData) time;
     }
 
 
     /**
      * save time in the given view model using stored hour and minute
+     *
      * @param item view model
      */
     public void onSaveTimeClick(SetTimeViewModel item) {
-        time.setValue(new MensaMeetTime(new Time(hour.getValue(), minute.getValue(),0)));
+        time.setValue(new MensaMeetTime(new Time(hour.getValue(), minute.getValue(), 0)));
         uiEventLiveData.setValue(new Pair<>(item, "saveTime"));
     }
 
     /**
      * @return hour
      */
-    public MutableLiveData<Integer>  getHour(){
-        if (hour == null){
+    public MutableLiveData<Integer> getHour() {
+        if (hour == null) {
             hour = new MutableLiveData<>();
             hour.setValue(0);
         }
@@ -69,8 +72,8 @@ public class SetTimeViewModel extends MensaMeetViewModel {
     /**
      * @return minute
      */
-    public MutableLiveData<Integer>  getMinute() {
-        if (minute == null){
+    public MutableLiveData<Integer> getMinute() {
+        if (minute == null) {
             minute = new MutableLiveData<>();
             minute.setValue(0);
         }
@@ -81,7 +84,7 @@ public class SetTimeViewModel extends MensaMeetViewModel {
      * @return UI event
      */
     public SingleLiveEvent<Pair<SetTimeViewModel, String>> getUiEventLiveData() {
-        if(uiEventLiveData == null){
+        if (uiEventLiveData == null) {
             uiEventLiveData = new SingleLiveEvent<>();
             uiEventLiveData.setValue(new Pair<SetTimeViewModel, String>(null, "default"));
         }
