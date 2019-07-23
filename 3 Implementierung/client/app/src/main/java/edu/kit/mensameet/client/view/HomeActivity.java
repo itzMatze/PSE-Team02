@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.View;
 import android.os.Bundle;
-import android.widget.TextView;
 
 import edu.kit.mensameet.client.viewmodel.HomeViewModel;
 

@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.model;
 
-//nicht festgelegt
 import java.sql.Time;
 
 public class MensaMeetTime {
