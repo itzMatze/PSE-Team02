@@ -51,7 +51,6 @@ public class TestActivity extends AppCompatActivity {
 
         GroupList groupList = new GroupList(this, dataList, true);
         container.addView(groupList.getView());
-
     }
 }
 

@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.viewmodel;
 
-
 import android.content.Context;
 import android.util.Pair;
 
@@ -14,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.kit.mensameet.client.util.SingleLiveEvent;
-
 
 /**
  * Class {@code RegisterViewModel} is responsible for preparing and managing the data for {@code RegisterActivity} Activity.

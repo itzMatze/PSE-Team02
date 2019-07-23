@@ -37,5 +37,4 @@ public class AdministerGroupsActivity extends MensaMeetActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         navView.setItemIconTintList(null);
     }
-
 }

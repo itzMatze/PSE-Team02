@@ -43,7 +43,6 @@ public class SetTimeActivity extends MensaMeetActivity {
                     default:
                         break;
                 }
-
             }
         });
     }
@@ -55,9 +54,6 @@ public class SetTimeActivity extends MensaMeetActivity {
                 break;
             default:
                 break;
-
         }
     }
-
-
 }

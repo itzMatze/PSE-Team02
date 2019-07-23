@@ -11,7 +11,6 @@ public class UserItem extends MensaMeetItem<User> {
     public UserItem(Context context, MensaMeetDisplayMode displayMode, User objectData) {
         //TODO: Put displayMode into MensaMeetItem as static subclass
         super(context, displayMode, objectData);
-
     }
 
     public class ItemElements {
@@ -33,7 +32,6 @@ public class UserItem extends MensaMeetItem<User> {
 
             view.addView(super.createTextField(ItemElements.TITLE, super.TITLE_PARAMS, super.BIG_TEXT_SIZE));
             view.addView(super.createTextField(ItemElements.MOTTO, super.WIDTH_MATCH_PARENT, super.SMALL_TEXT_SIZE));
-
         } else if (super.displayMode == MensaMeetDisplayMode.SMALL ||
                 super.displayMode == MensaMeetDisplayMode.SMALL_CHECKBOXES) {
 
@@ -60,6 +58,5 @@ public class UserItem extends MensaMeetItem<User> {
 
         fillTextField(holder, ItemElements.TITLE, super.objectData.getUsername());
         fillTextField(holder, ItemElements.MOTTO, super.objectData.getMotto());
-
     }
 }

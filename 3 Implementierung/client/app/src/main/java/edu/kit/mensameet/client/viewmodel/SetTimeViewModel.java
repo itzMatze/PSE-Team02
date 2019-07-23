@@ -47,7 +47,6 @@ public class SetTimeViewModel extends MensaMeetViewModel {
         this.time = (MutableLiveData) time;
     }
 
-
     /**
      * save time in the given view model using stored hour and minute
      *

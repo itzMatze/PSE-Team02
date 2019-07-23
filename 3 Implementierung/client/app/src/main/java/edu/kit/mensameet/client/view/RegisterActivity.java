@@ -30,7 +30,6 @@ public class RegisterActivity extends MensaMeetActivity {
         viewModel.setContext(this);
         //[end]data binding
 
-
         final RegisterActivity context = this;
         viewModel.getUiEventLiveData().observe(this, new Observer<Pair<RegisterViewModel, String>>() {
             @Override
@@ -53,6 +52,4 @@ public class RegisterActivity extends MensaMeetActivity {
             }
         });
     }
-
-
 }

@@ -25,5 +25,4 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
         }
         return uiEventLiveData;
     }
-
 }

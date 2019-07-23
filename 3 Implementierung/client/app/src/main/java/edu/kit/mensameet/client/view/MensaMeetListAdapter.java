@@ -48,7 +48,6 @@ public class MensaMeetListAdapter extends RecyclerView.Adapter<MensaMeetListAdap
     public void onBindViewHolder(MensaMeetListAdapter.ViewHolder holder, int position) {
 
         items.get(position).fillData(holder);
-
     }
 
     // total number of rows
@@ -89,5 +88,4 @@ public class MensaMeetListAdapter extends RecyclerView.Adapter<MensaMeetListAdap
     public interface ItemClickListener {
         void onItemClick(View view, int position);
     }
-
 }

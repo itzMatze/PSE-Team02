@@ -7,5 +7,4 @@ public class MensaMeetListHandler extends ViewModel {
     public void doSomething() {
 
     }
-
 }

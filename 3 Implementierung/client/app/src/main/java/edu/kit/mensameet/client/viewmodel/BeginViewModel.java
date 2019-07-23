@@ -73,5 +73,4 @@ public class BeginViewModel extends MensaMeetViewModel {
         }
         return uiEventLiveData;
     }
-
 }

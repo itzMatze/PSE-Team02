@@ -58,9 +58,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
                     default:
                         break;
                 }
-
             }
         });
     }
-
 }

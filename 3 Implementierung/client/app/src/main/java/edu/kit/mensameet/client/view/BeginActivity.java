@@ -55,9 +55,7 @@ public class BeginActivity extends MensaMeetActivity {
                     default:
                         break;
                 }
-
             }
         });
     }
-
 }

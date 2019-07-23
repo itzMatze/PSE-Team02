@@ -26,7 +26,6 @@ public class SelectLinesAdapter extends RecyclerView.Adapter<SelectLinesAdapter.
         return null;
     }
 
-
     public SelectLinesAdapter(List<String> myDataset) {
         dataList = myDataset;
     }
@@ -71,5 +70,4 @@ public class SelectLinesAdapter extends RecyclerView.Adapter<SelectLinesAdapter.
             textView = v;
         }
     }
-
 }

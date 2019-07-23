@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProviders;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
 
-
 public class CreateGroupActivity extends MensaMeetActivity {
 
     private ActivityCreateGroupBinding binding;
@@ -53,7 +52,6 @@ public class CreateGroupActivity extends MensaMeetActivity {
                     default:
                         break;
                 }
-
             }
         });
     }
@@ -71,6 +69,4 @@ public class CreateGroupActivity extends MensaMeetActivity {
                 break;
         }
     }
-
-
 }

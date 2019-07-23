@@ -22,5 +22,4 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
         }
         return uiEventLiveData;
     }
-
 }

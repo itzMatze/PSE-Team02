@@ -117,9 +117,7 @@ public class LoginViewModel extends MensaMeetViewModel {
                         } else {
                             uiEventLiveData.setValue(new Pair<>(item, LOG_IN_FAILD_ID));
                         }
-
                     }
                 });
     }
-
 }
