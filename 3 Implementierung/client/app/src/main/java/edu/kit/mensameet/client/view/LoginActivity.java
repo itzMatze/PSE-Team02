@@ -1,39 +1,56 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Intent;
-import android.view.View;
 import android.os.Bundle;
-import android.widget.EditText;
+import android.util.Pair;
+import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import edu.kit.mensameet.client.view.databinding.ActivityLoginBinding;
 import edu.kit.mensameet.client.viewmodel.LoginViewModel;
 
 public class LoginActivity extends MensaMeetActivity {
-    private LoginViewModel loginViewModel = new LoginViewModel();
-    private EditText usernameField;
-    private EditText passwordField;
+    //todo
+    public static final String UID_ID = "uid";
+    private ActivityLoginBinding binding;
+    private LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        usernameField = findViewById(R.id.usernameTextInput);
-        passwordField = findViewById(R.id.password);
-    }
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+        viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        binding.setVm(viewModel);
+        binding.setLifecycleOwner(this);
 
-    public void onLoginClick(View v) {
-        //frage die Eingaben des Benutzers ab
-        String username = usernameField.getText().toString();
-        String password = passwordField.getText().toString();
-        //leite die Eingaben an das ViewModel weiter
-        int returnCode = loginViewModel.login(username, password, this);
-        //setze abhängig vom Fehlercode eine Fehlermeldung oder bei 0 (erfolgreich) starte die nächste Activity
-        if (returnCode == 1) {
-            usernameField.setError(getString(R.string.invalid_username_message));
-        } else if (returnCode == 2) {
-            passwordField.setError(getString(R.string.invalid_password_message));
-        } else if (returnCode == 0) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            startActivity(intent);
-        }
+        /*
+        decide which activity to start
+         */
+        final LoginActivity context = this;
+        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<LoginViewModel, String>>() {
+            @Override
+            public void onChanged(@Nullable Pair<LoginViewModel, String> it) {
+                switch (it.second) {
+                    case LoginViewModel.LOG_IN_SUCCESS_ID:
+                        // log in success, update UI with the logged-in user's information
+                        Toast.makeText(context, "create acount succeed", Toast.LENGTH_LONG).show();
+                        Intent toHome = new Intent(context, HomeActivity.class);
+                        toHome.putExtra(UID_ID, viewModel.getUid());
+                        startActivity(toHome);
+                        finish();// todo: apply isLogIn(), that register and login page not visitable
+                        break;
+                    case LoginViewModel.LOG_IN_FAILD_ID:
+                        Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
     }
 }

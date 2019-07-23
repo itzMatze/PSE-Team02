@@ -1,15 +1,12 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import java.util.List;
 
 public abstract class MensaMeetItem<Object> {
 
@@ -69,13 +66,10 @@ public abstract class MensaMeetItem<Object> {
         View view = holder.getElementById(id);
 
         if (view.getClass() == LinearLayout.class) {
-            LinearLayout linearLayout = (LinearLayout)view;
+            LinearLayout linearLayout = (LinearLayout) view;
             linearLayout.removeAllViews();
             linearLayout.addView(sublist.getView());
-
         }
-
-
     }
 
     public abstract View getView();

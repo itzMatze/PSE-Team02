@@ -5,7 +5,8 @@ public class Credentials {
     private String email;
     private String password;
 
-    private Credentials() {}
+    private Credentials() {
+    }
 
     public static Credentials getInstance() {
         if (instance == null) {

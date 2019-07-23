@@ -12,7 +12,8 @@ public class MensaMeetSession {
     private MensaMeetTime chosenTime;
     private Group chosenGroup;
 
-    private MensaMeetSession() {}
+    private MensaMeetSession() {
+    }
 
     public static MensaMeetSession getInstance() {
         return instance;

@@ -11,7 +11,6 @@ public class UserItem extends MensaMeetItem<User> {
     public UserItem(Context context, MensaMeetDisplayMode displayMode, User objectData) {
         //TODO: Put displayMode into MensaMeetItem as static subclass
         super(context, displayMode, objectData);
-
     }
 
     public class ItemElements {
@@ -26,14 +25,13 @@ public class UserItem extends MensaMeetItem<User> {
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.VERTICAL);
         view.setLayoutParams(super.WIDTH_MATCH_PARENT);
-        view.setPadding(10, 10, 10 ,10);
+        view.setPadding(10, 10, 10, 10);
 
         if (super.displayMode == MensaMeetDisplayMode.BIG_EDITABLE ||
                 super.displayMode == MensaMeetDisplayMode.BIG_NOTEDITABLE) {
 
             view.addView(super.createTextField(ItemElements.TITLE, super.TITLE_PARAMS, super.BIG_TEXT_SIZE));
             view.addView(super.createTextField(ItemElements.MOTTO, super.WIDTH_MATCH_PARENT, super.SMALL_TEXT_SIZE));
-
         } else if (super.displayMode == MensaMeetDisplayMode.SMALL ||
                 super.displayMode == MensaMeetDisplayMode.SMALL_CHECKBOXES) {
 
@@ -58,8 +56,7 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void fillData(MensaMeetListAdapter.ViewHolder holder) {
 
-        fillTextField(holder, ItemElements.TITLE, super.objectData.getName());
+        fillTextField(holder, ItemElements.TITLE, super.objectData.getUsername());
         fillTextField(holder, ItemElements.MOTTO, super.objectData.getMotto());
-
     }
 }

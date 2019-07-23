@@ -2,9 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.view.View;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.View;
 
 import edu.kit.mensameet.client.viewmodel.HomeViewModel;
 
@@ -17,9 +16,11 @@ public class HomeActivity extends MensaMeetActivity {
         setContentView(R.layout.activity_home);
         SharedPreferences sharedPrefs = getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         //zeigt zu Testzwecken den Benutzernamen und das Passwort an
+        /*
         TextView tv = findViewById(R.id.message);
         tv.setText("Username: " + sharedPrefs.getString(getString(R.string.username_file_id), "notFound")
                 + "Passwort: " + sharedPrefs.getString(getString(R.string.password_file_id), "notFound"));
+         */
     }
 
     public void onGoEatClick(View v) {

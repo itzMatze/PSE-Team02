@@ -1,19 +1,9 @@
 package edu.kit.mensameet.client.view;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,11 +30,11 @@ public class TestActivity extends AppCompatActivity {
 
         List<User> userList1 = new ArrayList<User>();
         User u1 = new User();
-        u1.setName("User1");
+        u1.setUsername("User1");
         u1.setMotto("Motto1");
         userList1.add(u1);
         User u2 = new User();
-        u2.setName("User2");
+        u2.setUsername("User2");
         u2.setMotto("Motto2");
         userList1.add(u2);
         g1.setUsers(userList1);
@@ -61,7 +51,6 @@ public class TestActivity extends AppCompatActivity {
 
         GroupList groupList = new GroupList(this, dataList, true);
         container.addView(groupList.getView());
-
     }
 }
 

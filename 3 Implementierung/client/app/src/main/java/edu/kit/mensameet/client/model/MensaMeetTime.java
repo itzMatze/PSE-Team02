@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.model;
 
-//nicht festgelegt
 import java.sql.Time;
 
 public class MensaMeetTime {
@@ -29,11 +28,11 @@ public class MensaMeetTime {
      */
 
     @Override
-    public String toString(){
-        if (startTime == null){
+    public String toString() {
+        if (startTime == null) {
             return "0";
         }
-        if(isInterval()){
+        if (isInterval()) {
             return startTime.toString() + " - " + endTime.toString();
         }
         return startTime.toString();

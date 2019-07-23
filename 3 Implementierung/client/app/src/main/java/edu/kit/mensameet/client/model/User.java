@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.model;
 
-//nicht festgelegt
 import java.util.Date;
 
 public class User {
@@ -26,7 +25,7 @@ public class User {
         this.username = username;
     }
 
-    public void setmotto(String motto) {
+    public void setMotto(String motto) {
         this.motto = motto;
     }
 

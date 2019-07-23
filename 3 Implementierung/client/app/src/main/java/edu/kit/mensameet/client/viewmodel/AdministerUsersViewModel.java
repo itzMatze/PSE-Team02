@@ -1,7 +1,9 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.arch.lifecycle.LiveData;
+import androidx.lifecycle.LiveData;
+
 import java.util.List;
+
 import edu.kit.mensameet.client.model.User;
 
 public class AdministerUsersViewModel extends MensaMeetViewModel {
