@@ -10,9 +10,6 @@ import kit.edu.mensameet.server.Application;
 import kit.edu.mensameet.server.model.Line;
 import kit.edu.mensameet.server.model.MealLine;
 import kit.edu.mensameet.server.model.MensaData;
-import kit.edu.mensameet.server.model.FoodType;
-import kit.edu.mensameet.server.model.Ingredient;
-import kit.edu.mensameet.server.model.Meal;
 
 import java.io.IOException;
 import java.time.*;
@@ -143,13 +140,13 @@ public class MensaDataController {
 
 			}
 		}
-
-		for (int i = 0; i < lines.length; i++) {
-			System.out.println(lines[i].getMealLine().toString() + ": ");
-			for (int j = 0; j < lines[i].getMeals().length; j++) {
-				System.out.println(lines[i].getMeals()[j]);
-			}
-		}
+//for testing purposes
+//		for (int i = 0; i < lines.length; i++) {
+//			System.out.println(lines[i].getMealLine().toString() + ": ");
+//			for (int j = 0; j < lines[i].getMeals().length; j++) {
+//				System.out.println(lines[i].getMeals()[j]);
+//			}
+//		}
 		// create new mensaData with an Array of the created lines
 		return mensaData = new MensaData(lines);
 	}
