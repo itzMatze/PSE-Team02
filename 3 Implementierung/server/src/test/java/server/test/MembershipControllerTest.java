@@ -12,6 +12,7 @@ import org.junit.Test;
 import kit.edu.mensameet.server.controller.MembershipController;
 import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.Line;
+import kit.edu.mensameet.server.model.MealLine;
 import kit.edu.mensameet.server.model.User;
 
 public class MembershipControllerTest {
@@ -28,7 +29,7 @@ public class MembershipControllerTest {
 		users[1] = new User("Beate");
 		users[2] = new User("Cedric");
 		
-		group = new Group("token", "name", "motto", 2, new Line(), null); 
+		group = new Group("token", "name", "motto", 2, MealLine.CAFETARIA, null); 
 	}
 	
 	@Test

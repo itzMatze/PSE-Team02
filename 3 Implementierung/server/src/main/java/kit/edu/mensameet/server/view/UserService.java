@@ -40,8 +40,6 @@ public class UserService {
 	
     @PostMapping("/user")
     void createUser(@RequestHeader(value="token") String token) throws FirebaseAuthException {
-    	//FirebaseAuth.getInstance().verifyIdToken(token);
-    	
     	userController.addUserWithToken(token);
     }
     

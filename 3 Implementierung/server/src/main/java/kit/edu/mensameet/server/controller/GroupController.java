@@ -25,18 +25,15 @@ public class GroupController {
 		return group;
 	}
 	
-	public void addGroup(Group group) {
-		repository.save(group);
+	public Group addGroup(Group group) {
+		return repository.save(group);
 	}
 	
-	public boolean removeGroup(String groupToken) {
+	public void removeGroup(String groupToken) {
 		Group group = repository.getGroupByToken(groupToken);
 		
-		if(group == null) {
-			return false;
-		} else {
+		if(group != null) {
 			repository.delete(group);
-			return true;
 		}
 	}
 	
@@ -63,7 +60,7 @@ public class GroupController {
 			
 			for(int k = 0; k < prefLines.length; j++) {
 				
-				if(prefLines[k].name() == allGroups[i].getLine().getMealLine().name()) {
+				if(prefLines[k].name() == allGroups[i].getLine().name()) {
 					LocalTime meetingTime = allGroups[i].getMeetingTime();
 					
 					if(meetingTime.isAfter(start) && meetingTime.isBefore(end)) {
