@@ -30,15 +30,15 @@ public class UserController {
 		repository.save(new User(userToken));
 	}
 	
-	public boolean updateUser(User newUser) {
+	public void updateUser(User newUser) {
 		User userToUpdate = getUser(newUser.getToken());
 		
 		if (userToUpdate != null) {
 			//Update the User and 
 			repository.save(newUser);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + newUser.getToken() + " coulnd't be found.");
 		}
-		
-		throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Actor Not Found");
 	}
 	
 	public void deleteUser(String token) {

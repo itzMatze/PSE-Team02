@@ -45,9 +45,7 @@ public class UserService {
     
     @PutMapping("/user") 
     public void updateUser(@RequestBody User user) throws NotFoundException {
-    	if (userController.updateUser(user)) {
-    		throw new NotFoundException("User with token " + user.getToken() + " doesn't exist.");
-    	}
+    	userController.updateUser(user);
     }
     
     @DeleteMapping("/user")
