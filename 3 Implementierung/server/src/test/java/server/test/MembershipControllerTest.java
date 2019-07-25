@@ -38,11 +38,12 @@ public class MembershipControllerTest {
 		assertEquals(group.getMembers()[0], users[0]);
 	}
 	
-	@Test
+	@Test(expected = Test.None.class /* no exception expected */)
 	public void addUserWhenGroupIsfFull() {
 		controller.addUserToGroup(users[0], group);
 		controller.addUserToGroup(users[1], group);
-		assertEquals(controller.addUserToGroup(users[2], group), false);
+		
+		controller.addUserToGroup(users[2], group);
 	}
 	
 	@Test

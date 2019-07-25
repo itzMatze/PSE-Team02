@@ -44,8 +44,8 @@ public class UserService {
     }
     
     @PutMapping("/user") 
-    public void updateUser(@RequestBody User user) throws NotFoundException {
-    	userController.updateUser(user);
+    public void updateUser(@RequestBody User user, @RequestHeader(value = "firebaseToken") String firebaseToken) throws NotFoundException {
+    	userController.updateUser(user, firebaseToken);
     }
     
     @DeleteMapping("/user")

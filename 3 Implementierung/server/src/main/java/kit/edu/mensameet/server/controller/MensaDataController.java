@@ -21,9 +21,8 @@ import org.jsoup.nodes.Document;
 @Component
 public class MensaDataController {
 
-	private static MensaData mensaData;
+	private MensaData mensaData;
 	
-
 	public MensaData getMensaData() throws IOException {
 		if (mensaData == null) {
 			updateMensaData() ;
@@ -98,7 +97,7 @@ public class MensaDataController {
 	 * 
 	 * @param LineText is an Array of Strings, each String contains one line
 	 */
-	private static MensaData Converter(String[] LineText) {
+	private MensaData Converter(String[] LineText) {
 		// create all 13 lines
 		Line[] lines = new Line[13];
 		// iterate through all lines

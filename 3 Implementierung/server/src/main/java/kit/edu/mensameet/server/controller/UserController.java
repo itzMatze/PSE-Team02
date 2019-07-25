@@ -22,27 +22,34 @@ public class UserController {
 	
 	public User getUser(String token) {
 		String userToken = fbAuth.encryptToUserToken(token);
-		return repository.getUserByToken(userToken);
+		User user = repository.getUserByToken(userToken);
+		
+		if (user == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + user.getToken() + " coulnd't be found.");			
+		}
+		
+		return user; 
 	}
 	
 	public void addUserWithToken(String fbToken) {
 		String userToken = fbAuth.encryptToUserToken(fbToken);
+		
 		repository.save(new User(userToken));
 	}
 	
-	public void updateUser(User newUser) {
-		User userToUpdate = getUser(newUser.getToken());
+	public void updateUser(User user, String firebaseToken) {
+		String userToken = fbAuth.encryptToUserToken(firebaseToken);
 		
-		if (userToUpdate != null) {
-			//Update the User and 
-			repository.save(newUser);
-		} else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + newUser.getToken() + " coulnd't be found.");
-		}
+		//used to check wether user exists
+		getUser(userToken);
+		user.setToken(userToken);
+		
+		repository.save(user);
 	}
 	
-	public void deleteUser(String token) {
-		repository.delete(repository.getUserByToken(token));
+	public void deleteUser(String firebaseToken) {
+		String userToken = fbAuth.encryptToUserToken(firebaseToken);
+		repository.delete(repository.getUserByToken(userToken));
 	}
 	
 	public User[] getAllUser() {

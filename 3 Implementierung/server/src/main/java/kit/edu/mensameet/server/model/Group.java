@@ -116,13 +116,13 @@ public class Group {
 	/*
 	 * adds a user to the group and increments the current member count 
 	 */
-	public boolean setMembers(User user) {
-		if (currentMembers < maxMembers) {
-			members[currentMembers] = user;
-			currentMembers++;
-			return true;
+	public void setMembers(User user) {
+		if (members == null) {
+			members = new User[maxMembers];
 		}
-		return false;
+		
+		members[currentMembers] = user;
+		currentMembers++;
 	}
 	/*
 	 * default getter for current member count
