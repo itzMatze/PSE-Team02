@@ -2,6 +2,8 @@ package server.test;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalTime;
+
 import org.junit.Before;
 
 import org.junit.After;
@@ -13,9 +15,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+<<<<<<< HEAD
 import org.springframework.web.server.ResponseStatusException;
 
 import kit.edu.mensameet.server.Application;
+=======
+
+import kit.edu.mensameet.server.Application;
+import kit.edu.mensameet.server.controller.GroupRepository;
+>>>>>>> 32d719bf77b2fb438167a30579f60dd0ea1eb763
 import kit.edu.mensameet.server.controller.MembershipController;
 import kit.edu.mensameet.server.controller.UserController;
 import kit.edu.mensameet.server.model.Group;
@@ -31,10 +39,12 @@ public class MembershipControllerTest {
 	Group group;
 
 	@Autowired
-	UserController userController;
-
-	@Autowired
 	MembershipController controller;
+	
+	@Autowired
+	GroupRepository repository;
+	
+	private LocalTime meetingTime = LocalTime.of(12, 30);
 	
 	@Before
 	public void setUp() {
@@ -44,10 +54,7 @@ public class MembershipControllerTest {
 		users[1] = new User("Beate");
 		users[2] = new User("Cedric");
 		
-		//users need to be saved be listed in a group
-		
-		
-		group = new Group("token", "name", "motto", 2, MealLine.CAFETARIA, null); 
+		group = new Group("token", "name", "motto", 2, MealLine.CAFETARIA, meetingTime); 
 	}
 	
 	@Test
@@ -80,25 +87,11 @@ public class MembershipControllerTest {
 	public void removeUser() {
 		controller.addUserToGroup(users[0], group);
 		controller.addUserToGroup(users[1], group);
-		User[] groupcontent = group.getMembers();
-		//System.out.println(groupcontent[0].getToken());
-		//System.out.println(groupcontent[1].getToken());
 		controller.removeUserFromGroup(users[0], group);
 		System.out.println(group.getMembers());
 		assertEquals(group.getMembers()[0], users[1]);
 		
-		/*
-		 * for (int i = 0; i < group.getMaxMembers(); i++) {
-			if (group.getMembers()[i].getToken() == user.getToken()) {
-				group.getMembers()[i] = group.getMembers()[group.getCurrentMembers()];
-				group.getMembers()[group.getCurrentMembers()] = null;
-				group.setCurrentMembers(group.getCurrentMembers() - 1);
-				return true;
-			}
-		}
-		return false;
-	}
-		 */
+
 	}
 	
 	@After
