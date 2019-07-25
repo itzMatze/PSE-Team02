@@ -7,6 +7,8 @@ import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.web.context.annotation.ApplicationScope;
 
 import java.time.LocalTime;
+
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +37,10 @@ public class GroupControllerTest {
 	@Autowired
 	private GroupController controller;
 	
+	
 
 	private MealLine line = MealLine.CAFETARIA;
 	private LocalTime meetingTime = LocalTime.of(12, 30);
-	
 	private Group testGroup = new Group("token", "name", "motto", 2, line, meetingTime ); 
 
 	@Test
@@ -48,13 +50,23 @@ public class GroupControllerTest {
 
 	
 	@Test
-	public void groupAddedCorrectly() {
-		System.out.println(testGroup.toString());
-		
-		Group a = repository.save(testGroup);
-		//assertEquals(a, testGroup);
-		assertTrue(repository.getGroupByToken(testGroup.getToken()) != null);
+	public void groupAddedCorrectlyToRepository() {
+		Group a = controller.addGroup(testGroup);
+		assertEquals(testGroup.getToken(), a.getToken());
 	}
 	
+	@Test
+	public void removeGroup() {
+		controller.addGroup(testGroup);
+		controller.removeGroup("token");
+		Group[] groups = controller.getAllGroups();
+		assertNotEquals(groups[0].getToken(), testGroup.getToken());
+	}
+	
+	@After
+	public void tearDown() {
+		testGroup = null;
+		controller.removeAllGroups();
+	}
 
 }
