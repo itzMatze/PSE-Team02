@@ -15,15 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-<<<<<<< HEAD
 import org.springframework.web.server.ResponseStatusException;
 
 import kit.edu.mensameet.server.Application;
-=======
-
-import kit.edu.mensameet.server.Application;
 import kit.edu.mensameet.server.controller.GroupRepository;
->>>>>>> 32d719bf77b2fb438167a30579f60dd0ea1eb763
 import kit.edu.mensameet.server.controller.MembershipController;
 import kit.edu.mensameet.server.controller.UserController;
 import kit.edu.mensameet.server.model.Group;
