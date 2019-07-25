@@ -32,8 +32,8 @@ import kit.edu.mensameet.server.model.MealLine;
 @AutoConfigureMockMvc
 public class GroupControllerTest {
 	
-//	@Autowired
-//	private GroupRepository repository;
+	@Autowired
+	private GroupRepository repository;
 	
 	@Autowired
 	private GroupController controller;
@@ -56,7 +56,7 @@ public class GroupControllerTest {
 	/*
 	 * This test fails; 
 	 * repository seems to still contain "testGroup" after using the method removeGroup
-	 * 
+	 * The next test "test" shows something's wrong with the method getGroupByToken
 	 */
 	@Test
 	public void GroupRemovedCorrectlyFromRepository() {
@@ -68,6 +68,14 @@ public class GroupControllerTest {
 
 	}
 
+	@Test
+	public void test() {
+		//controller.addGroup(testGroup2);
+		repository.save(testGroup2);
+		Group a = repository.getGroupByToken("token2");
+		assertEquals(a.getToken(), "token2");
+		
+	}
 	
 	@Test 
 	public void AllGroupsRemovedCorrectlyFromRepository() {
@@ -77,6 +85,8 @@ public class GroupControllerTest {
 		Group[] noGroups = controller.getAllGroups(); 
 		assertEquals(noGroups.length, 0);
 	}
+	
+
 	
 	@After
 	public void tearDown() {
