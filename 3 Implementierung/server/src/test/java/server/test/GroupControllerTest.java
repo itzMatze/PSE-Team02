@@ -9,6 +9,7 @@ import org.springframework.web.context.annotation.ApplicationScope;
 import java.time.LocalTime;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,20 +32,18 @@ import kit.edu.mensameet.server.model.MealLine;
 @AutoConfigureMockMvc
 public class GroupControllerTest {
 	
-	@Autowired
-	private GroupRepository repository;
+//	@Autowired
+//	private GroupRepository repository;
 	
 	@Autowired
 	private GroupController controller;
-	
-	
 
 	private MealLine line = MealLine.CAFETARIA;
 	private LocalTime meetingTime = LocalTime.of(12, 30);
 	private Group testGroup = new Group("token", "name", "motto", 2, line, meetingTime ); 
-
+	private Group testGroup2 = new Group ("token2", "name2", "motto2", 4, line, meetingTime);	
 	@Test
-	public void meetingTimeNotNull() {	
+	public void meetingTimeWorksCorrectly() {	
 			assertEquals(meetingTime.toString(), "12:30");
 	}
 
@@ -54,19 +53,35 @@ public class GroupControllerTest {
 		Group a = controller.addGroup(testGroup);
 		assertEquals(testGroup.getToken(), a.getToken());
 	}
-	
+	/*
+	 * This test fails; 
+	 * repository seems to still contain "testGroup" after using the method removeGroup
+	 * 
+	 */
 	@Test
-	public void removeGroup() {
+	public void GroupRemovedCorrectlyFromRepository() {
 		controller.addGroup(testGroup);
 		controller.removeGroup("token");
-		Group[] groups = controller.getAllGroups();
-		assertNotEquals(groups[0].getToken(), testGroup.getToken());
+		Group[] allGroups = controller.getAllGroups();
+		assertEquals(allGroups.length, 0);
+		//assertNotEquals(allGroups[0].getToken(), testGroup.getToken());
+
+	}
+
+	
+	@Test 
+	public void AllGroupsRemovedCorrectlyFromRepository() {
+		controller.addGroup(testGroup);
+		controller.addGroup(testGroup2);
+		controller.removeAllGroups();
+		Group[] noGroups = controller.getAllGroups(); 
+		assertEquals(noGroups.length, 0);
 	}
 	
 	@After
 	public void tearDown() {
-		testGroup = null;
 		controller.removeAllGroups();
 	}
+	
 
 }

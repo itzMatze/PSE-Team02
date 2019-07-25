@@ -33,7 +33,7 @@ public class Group {
 	@Enumerated(EnumType.STRING)
 	private MealLine line;
 
-	private User[] members;
+	private User[] members = null;
 	
 	public Group() {
 		this.token = UUID.randomUUID().toString();
