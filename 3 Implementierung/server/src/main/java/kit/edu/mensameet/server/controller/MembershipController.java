@@ -24,11 +24,14 @@ public class MembershipController {
 	}
 	
 	public boolean removeUserFromGroup(User user, Group group) {
+		//delete user at position @hroup.getCurrentMemembers and replace him with the last user in the array.
+		
 		for (int i = 0; i < group.getMaxMembers(); i++) {
 			if (group.getMembers()[i].getToken() == user.getToken()) {
-				group.getMembers()[i] = group.getMembers()[group.getCurrentMembers()];
-				group.getMembers()[group.getCurrentMembers()] = null;
+				group.getMembers()[i] = group.getMembers()[group.getCurrentMembers() - 1];
+				group.getMembers()[group.getCurrentMembers() - 1] = null;
 				group.setCurrentMembers(group.getCurrentMembers() - 1);
+				groupRepository.save(group);
 				return true;
 			}
 		}

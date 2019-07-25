@@ -3,13 +3,18 @@ package kit.edu.mensameet.server.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.google.api.client.util.DateTime;
 import java.time.LocalTime;
@@ -33,6 +38,9 @@ public class Group {
 	@Enumerated(EnumType.STRING)
 	private MealLine line;
 
+	@OneToMany
+	@OrderColumn
+	@NotFound(action = NotFoundAction.IGNORE)
 	private User[] members;
 	
 	public Group() {
