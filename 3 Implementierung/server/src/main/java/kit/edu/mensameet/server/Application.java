@@ -12,6 +12,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 
@@ -26,31 +28,19 @@ import kit.edu.mensameet.server.controller.UserRepository;
 import kit.edu.mensameet.server.model.User;
 
 @SpringBootApplication
-public class Application {
-
-	private static final Logger log = LoggerFactory.getLogger(Application.class);
+public class Application extends SpringBootServletInitializer{
 
     public static void main(String[] args) throws IOException {
         SpringApplication.run(Application.class, args);
         initializeFirebase();
     }
-    
-    @Bean
-	public CommandLineRunner demo(UserRepository repository, UserController controller) {
-		return (args) -> {
-			// save a couple of customers
-			
-			repository.save(new User("Jack"));
 
-			// fetch all customers
-			log.info("Customers found with findAll():");
-			log.info("-------------------------------");
-			for (User user : controller.getAllUser()) {
-				log.info(user.toString());
-			}
-		};
+    @Override
+    protected SpringApplicationBuilder configure(
+      SpringApplicationBuilder application) {
+      return application.sources(Application.class);
     }
-    
+
     private static void initializeFirebase() throws IOException {
     	String relativePath = new File("").getAbsolutePath();
     	

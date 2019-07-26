@@ -55,10 +55,10 @@ public class MembershipControllerTest {
 	@Test
 	public void addUserWhenGroupEmpty() {
 		controller.addUserToGroup(users[0], group);
-		assertEquals(group.getMembers()[0], users[0]);
+		assertEquals(group.getMembers().indexOf(0), users[0]);
 	}
 	
-	@Test(expected = ResponseStatusException.class /* no exception expected */)
+	@Test(expected = ResponseStatusException.class)
 	public void addUserWhenGroupIsfFull() {
 		controller.addUserToGroup(users[0], group);
 		controller.addUserToGroup(users[1], group);
@@ -69,7 +69,7 @@ public class MembershipControllerTest {
 	@Test
 	public void removeLastUserFromGroup() {
 		controller.addUserToGroup(users[0], group);
-		assertEquals(controller.removeUserFromGroup(users[0], group), true);
+		controller.removeUserFromGroup(users[0], group);
 	}
 	
 //	@Test
@@ -84,9 +84,7 @@ public class MembershipControllerTest {
 		controller.addUserToGroup(users[1], group);
 		controller.removeUserFromGroup(users[0], group);
 		System.out.println(group.getMembers());
-		assertEquals(group.getMembers()[0], users[1]);
-		
-
+		assertEquals(group.getMembers().get(0), users[1]);
 	}
 	
 	@After

@@ -7,7 +7,9 @@ import java.util.stream.StreamSupport;
 import org.assertj.core.internal.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalTime;
 
@@ -25,6 +27,11 @@ public class GroupController {
 	
 	public Group getGroup(String token) {
 		Group group = repository.getGroupByToken(token);
+		
+		if (group == null) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with token " + token + " coulnd't be found.");
+		}
+		
 		return group;
 	}
 	

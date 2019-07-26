@@ -18,6 +18,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import com.google.api.client.util.DateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.UUID;
 
 /*
@@ -32,7 +33,6 @@ public class Group {
 	private String name;
 	private String motto;
 	private int maxMembers;
-	private int currentMembers;
 	private LocalTime meetingTime;
 	
 	@Enumerated(EnumType.STRING)
@@ -41,11 +41,10 @@ public class Group {
 	@OneToMany
 	@OrderColumn
 	@NotFound(action = NotFoundAction.IGNORE)
-	private User[] members;
+	private List<User> members;
 	
 	public Group() {
 		this.token = UUID.randomUUID().toString();
-		this.currentMembers = 0;
 	}
 
 	public Group(String token, String name, String motto, int maxMembers, MealLine line, LocalTime time) {
@@ -56,7 +55,6 @@ public class Group {
 		this.line = line;
 		this.meetingTime = time;
 		this.token = UUID.randomUUID().toString();
-		this.currentMembers = 0;
 	}
 	
 	
@@ -118,31 +116,22 @@ public class Group {
 	/*
 	 * default getter for the group members
 	 */
-	public User[] getMembers() {
+	public List<User> getMembers() {
 		return members;
 	}
 	/*
 	 * adds a user to the group and increments the current member count 
 	 */
-	public void setMembers(User user) {
-		if (members == null) {
-			members = new User[maxMembers];
+	public void addMembers(User user) {
+		if (members.size() < maxMembers) {			
+			members.add(user);
 		}
-		
-		members[currentMembers] = user;
-		currentMembers++;
 	}
 	/*
 	 * default getter for current member count
 	 */
-	public int getCurrentMembers() {
-		return currentMembers;
-	}
-	/*
-	 * default setter for current member count
-	 */
-	public void setCurrentMembers(int currentMembers) {
-		this.currentMembers = currentMembers; 
+	public int getMemberCount() {
+		return members.size();
 	}
 	
 	public LocalTime getMeetingTime() {

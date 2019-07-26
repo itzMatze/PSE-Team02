@@ -2,6 +2,8 @@ package kit.edu.mensameet.server.controller;
 import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.User;
 
+import java.util.Iterator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,26 +17,33 @@ public class MembershipController {
 	private GroupRepository groupRepository;
 	
 	public void addUserToGroup(User user, Group group) {
-		if (group.getCurrentMembers() + 1 > group.getMaxMembers()) {
+		if (group.getMemberCount() + 1 > group.getMaxMembers()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Group is already full.");
 		} else {
-			group.setMembers(user);
+			group.addMembers(user);
 			groupRepository.save(group);
 		}
 	}
 	
-	public boolean removeUserFromGroup(User user, Group group) {
-		//delete user at position @hroup.getCurrentMemembers and replace him with the last user in the array.
+	public void removeUserFromGroup(User user, Group group) {
+		Iterator<User> iterator = group.getMembers().iterator();
 		
-		for (int i = 0; i < group.getMaxMembers(); i++) {
-			if (group.getMembers()[i].getToken() == user.getToken()) {
-				group.getMembers()[i] = group.getMembers()[group.getCurrentMembers() - 1];
-				group.getMembers()[group.getCurrentMembers() - 1] = null;
-				group.setCurrentMembers(group.getCurrentMembers() - 1);
-				groupRepository.save(group);
-				return true;
+		while (iterator.hasNext()) {
+			User iteratedUser = iterator.next();
+			
+			if (iteratedUser.getToken() == user.getToken()) {
+				group.getMembers().remove(iteratedUser);
+				
+				if (group.getMemberCount() == 0) {
+					groupRepository.delete(group);
+				} else {
+					groupRepository.save(group);					
+				}
+				
+				return;
 			}
 		}
-		return false;
+		
+		throw new ResponseStatusException(HttpStatus.CONFLICT, "User with token " + user.getToken() + " couldn't be found in group.");
 	}
 }

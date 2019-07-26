@@ -31,7 +31,7 @@ public class MensaDataController {
 		return mensaData;
 	}
 
-	public MensaData updateMensaData() throws IOException {
+	public void updateMensaData() throws IOException {
 		// LocalDate for the current week of year for getting the current mealplan
 		LocalDate localDate = LocalDate.now();
 		int weekNumber = localDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
@@ -75,6 +75,7 @@ public class MensaDataController {
 					i++;
 				}
 			}
+			
 			// for the other meal lines you can split the string normally
 			else {
 				// Split the whole pageText at each MealLine
@@ -88,7 +89,7 @@ public class MensaDataController {
 			}
 		}
 		// LineTextConverter(LineText);
-		return mensaData = Converter(LineText);
+		mensaData = Converter(LineText);
 
 	}
 

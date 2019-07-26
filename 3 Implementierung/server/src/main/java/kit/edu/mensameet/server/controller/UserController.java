@@ -25,7 +25,7 @@ public class UserController {
 		User user = repository.getUserByToken(userToken);
 		
 		if (user == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + user.getToken() + " coulnd't be found.");			
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found.");			
 		}
 		
 		return user; 
