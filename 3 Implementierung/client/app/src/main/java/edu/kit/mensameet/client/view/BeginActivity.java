@@ -24,7 +24,7 @@ public class BeginActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        //wenn auf dem Gerät bereits ein Benutzer angemeldet ist, wechsle direkt zur HomeActivity
+        //if there is already a user logged in on this device, switch directly to the HomeActivity
         if (viewModel.isLoggedIn(this)) {
             gotoHome();
         }

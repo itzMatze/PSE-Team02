@@ -19,7 +19,7 @@ public class BeginViewModel extends MensaMeetViewModel {
      */
     private SingleLiveEvent<Pair<BeginViewModel, String>> uiEventLiveData;
 
-    //Überprüft ob schon ein Username gespeichert ist, um herauszufinden, ob an dem Gerät schon ein Benutzer angemeldet ist
+    //checks if there is already an username stored locally to find out, if an user is already logged in at this device
     public boolean isLoggedIn(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         String savedUsername = sharedPrefs.getString(context.getString(R.string.username_file_id), "");

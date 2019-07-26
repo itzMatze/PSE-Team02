@@ -60,7 +60,7 @@ public class UserActivity extends MensaMeetActivity {
         deactivateNavigationButton(findViewById(R.id.navigation_next));
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        //entfernt die grüne Färbung in der BottomNavigation Leiste
+        //removes the green coloring of the BottomNavigation bar
         navView.setItemIconTintList(null);
     }
 
@@ -74,9 +74,9 @@ public class UserActivity extends MensaMeetActivity {
 
     private void switchToEdit() {
 
-        //setzt die Eingabefelder auf sichtbar und anwählbar und die Textfelder auf unsichtbar
+        //sets the input fields to visible and clickable and the text fields to invisible
         setEditable(true);
-        //fügt in die Bearbeitungsfelder die vorher gespeicherten Attribute ein, sofern diese schon einmal gesetzt wurden
+        //fills the editable fields with the previously saved attributes, if they were set once
         username.setText(User.getInstance().getUsername());
         String savedMotto = User.getInstance().getMotto();
         if (savedMotto.length() > 0) {
@@ -88,9 +88,9 @@ public class UserActivity extends MensaMeetActivity {
 
     private void switchToView() {
         User user = User.getInstance();
-        //setzt die Eingabefelder auf unsichtbar und nicht anwählbar und die Textfelder auf sichtbar
+        //sets the input fields to invisible and not clickable and the text fields to visible
         setEditable(false);
-        //fügt den Benutzernamen und falls vorhanden die anderen Attribute ein
+        //inserts the username and if available the other attributes
         usernameText.setText(User.getInstance().getUsername());
         String savedMotto = User.getInstance().getMotto();
         if (savedMotto.length() > 0) {
@@ -101,7 +101,7 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     private void setEditable(boolean isEditable) {
-        //setzt die Sichtbarkeit für die TextEdit Elemente und die TextView Elemente, bei den TextEdit Elementen auch noch das enabled Attribut
+        //sets the visibility of the TextEdit elements and the TextView elements, for the TextEdit elements also the enabled attribute
         int visibilityOfEdit = View.INVISIBLE;
         int visibilityOfView = View.VISIBLE;
         if (isEditable) {
