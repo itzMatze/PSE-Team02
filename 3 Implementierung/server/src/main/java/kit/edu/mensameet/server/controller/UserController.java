@@ -2,7 +2,6 @@ package kit.edu.mensameet.server.controller;
 
 import java.util.stream.StreamSupport;
 
-import org.assertj.core.internal.Iterables;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;

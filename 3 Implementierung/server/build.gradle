@@ -18,6 +18,7 @@ war {
     baseName = 'spring-boot-war-example'
     version = '0.0.1-SNAPSHOT'
 }
+
 repositories {
     mavenCentral()
 }

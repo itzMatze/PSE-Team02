@@ -49,7 +49,7 @@ public class MembershipControllerTest {
 		users[1] = new User("Beate");
 		users[2] = new User("Cedric");
 		
-		group = new Group("token", "name", "motto", 2, MealLine.CAFETARIA, meetingTime); 
+		group = new Group("name", "motto", 2, MealLine.CAFETARIA, meetingTime); 
 	}
 	
 	@Test

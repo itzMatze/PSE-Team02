@@ -47,8 +47,7 @@ public class Group {
 		this.token = UUID.randomUUID().toString();
 	}
 
-	public Group(String token, String name, String motto, int maxMembers, MealLine line, LocalTime time) {
-		this.token = token;
+	public Group(String name, String motto, int maxMembers, MealLine line, LocalTime time) {
 		this.name = name;
 		this.motto = motto;
 		this.maxMembers = maxMembers;

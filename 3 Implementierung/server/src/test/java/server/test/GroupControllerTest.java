@@ -40,8 +40,8 @@ public class GroupControllerTest {
 
 	private MealLine line = MealLine.CAFETARIA;
 	private LocalTime meetingTime = LocalTime.of(12, 30);
-	private Group testGroup = new Group("token", "name", "motto", 2, line, meetingTime ); 
-	private Group testGroup2 = new Group ("token2", "name2", "motto2", 4, line, meetingTime);	
+	private Group testGroup = new Group("name", "motto", 2, line, meetingTime ); 
+	private Group testGroup2 = new Group ("name2", "motto2", 4, line, meetingTime);	
 	@Test
 	public void meetingTimeWorksCorrectly() {	
 			assertEquals(meetingTime.toString(), "12:30");
@@ -60,20 +60,22 @@ public class GroupControllerTest {
 	 */
 	@Test
 	public void GroupRemovedCorrectlyFromRepository() {
-		controller.addGroup(testGroup);
-		controller.removeGroup("token");
+		testGroup = controller.addGroup(testGroup);
+		controller.removeGroup(testGroup.getToken());
+		
 		Group[] allGroups = controller.getAllGroups();
+		System.out.println(allGroups.length);
 		assertEquals(allGroups.length, 0);
 		//assertNotEquals(allGroups[0].getToken(), testGroup.getToken());
-
 	}
 
 	@Test
 	public void test() {
-		//controller.addGroup(testGroup2);
-		repository.save(testGroup2);
-		Group a = repository.getGroupByToken("token2");
-		assertEquals(a.getToken(), "token2");
+		//When creating a group the token of that group is set automatically, so that no two groups have the same one
+		
+		testGroup2 = repository.save(testGroup2);
+		Group a = repository.getGroupByToken(testGroup2.getToken());
+		assertEquals(a.getToken(), testGroup2.getToken());
 		
 	}
 	
