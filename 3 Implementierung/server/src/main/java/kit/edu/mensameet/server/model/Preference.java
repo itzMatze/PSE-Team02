@@ -11,6 +11,14 @@ public class Preference {
 	private MealLine[] mealLines;
 	
 	
+	public Preference(LocalTime startTime, LocalTime endTime, MealLine[] lines) {
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.mealLines = lines;
+	}
+	
+	public Preference() {}
+	
 	/*
 	 * default getter for the starting time of an interval in which the user wants to eat
 	 */

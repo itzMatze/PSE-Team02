@@ -40,16 +40,12 @@ public class UserService {
 	
     @PostMapping("/user")
     void createUser(@RequestHeader(value="token") String token) throws FirebaseAuthException {
-    	//FirebaseAuth.getInstance().verifyIdToken(token);
-    	
     	userController.addUserWithToken(token);
     }
     
     @PutMapping("/user") 
-    public void updateUser(@RequestBody User user) throws NotFoundException {
-    	if (userController.updateUser(user)) {
-    		throw new NotFoundException("User with token " + user.getToken() + " doesn't exist.");
-    	}
+    public void updateUser(@RequestBody User user, @RequestHeader(value = "firebaseToken") String firebaseToken) throws NotFoundException {
+    	userController.updateUser(user, firebaseToken);
     }
     
     @DeleteMapping("/user")

@@ -3,16 +3,22 @@ package kit.edu.mensameet.server.model;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import com.google.api.client.util.DateTime;
 import java.time.LocalTime;
+import java.util.UUID;
 
 /*
  * This class represents a group, which is part of the server Model
@@ -28,24 +34,32 @@ public class Group {
 	private int maxMembers;
 	private int currentMembers;
 	private LocalTime meetingTime;
-
-	@OneToOne
-	private Line line;
 	
+	@Enumerated(EnumType.STRING)
+	private MealLine line;
+
+	@OneToMany
+	@OrderColumn
+	@NotFound(action = NotFoundAction.IGNORE)
 	private User[] members;
-	/*
-	 * This constructor overrides the default constructor, which is neccessary for creating an array of users
-	 * with the size of int maxMembers
-	 */
-	public Group(String token, String name, String motto,int maxMembers, Line line, LocalTime meetingTime) {
-		this.members = new User[maxMembers];
+	
+	public Group() {
+		this.token = UUID.randomUUID().toString();
+		this.currentMembers = 0;
+	}
+
+	public Group(String token, String name, String motto, int maxMembers, MealLine line, LocalTime time) {
 		this.token = token;
 		this.name = name;
 		this.motto = motto;
 		this.maxMembers = maxMembers;
 		this.line = line;
-		this.meetingTime = meetingTime;
+		this.meetingTime = time;
+		this.token = UUID.randomUUID().toString();
+		this.currentMembers = 0;
 	}
+	
+	
 	/*
 	 * default setter for token
 	 */
@@ -92,13 +106,13 @@ public class Group {
 	/*
 	 * default getter for Line
 	 */
-	public Line getLine() {
+	public MealLine getLine() {
 		return line;
 	}
 	/*
 	 * default setter for Line
 	 */
-	public void setLine(Line line) {
+	public void setMealLine(MealLine line) {
 		this.line = line;
 	}
 	/*
@@ -110,13 +124,13 @@ public class Group {
 	/*
 	 * adds a user to the group and increments the current member count 
 	 */
-	public boolean setMembers(User user) {
-		if (currentMembers < maxMembers) {
-			members[currentMembers] = user;
-			currentMembers++;
-			return true;
+	public void setMembers(User user) {
+		if (members == null) {
+			members = new User[maxMembers];
 		}
-		return false;
+		
+		members[currentMembers] = user;
+		currentMembers++;
 	}
 	/*
 	 * default getter for current member count
