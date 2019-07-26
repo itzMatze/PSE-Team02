@@ -9,9 +9,6 @@ public class Credentials {
     }
 
     public static Credentials getInstance() {
-        if (instance == null) {
-            instance = new Credentials();
-        }
         return instance;
     }
 

@@ -7,7 +7,9 @@ public class Meal {
     private Ingredients[] ingredients;
 
     public Meal(String name, float price, FoodType[] types) {
-
+        this.name = name;
+        this.price = price;
+        this.types = types;
     }
 
     public String getName() {
