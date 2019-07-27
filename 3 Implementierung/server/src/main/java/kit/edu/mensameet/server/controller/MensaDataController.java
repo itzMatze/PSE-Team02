@@ -22,24 +22,32 @@ import org.jsoup.nodes.Document;
 public class MensaDataController {
 
 	private MensaData mensaData;
+	private LocalDate today = LocalDate.now();
+	
 	
 	public MensaData getMensaData() throws IOException {
-		if (mensaData == null) {
-			updateMensaData() ;
-		}
+//		if (!(today.getDayOfWeek() == DayOfWeek.SATURDAY ||	today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+			if (mensaData == null) {
+				updateMensaData() ;
+			}
+//		}
+//		System.out.println("Wochenende :o");
 		
 		return mensaData;
 	}
+	
+	
+	
+	
 
 	public void updateMensaData() throws IOException {
-		// LocalDate for the current week of year for getting the current mealplan
-		LocalDate localDate = LocalDate.now();
-		int weekNumber = localDate.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
-
-		System.out.println(weekNumber);
+		
+		int weekNumber = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
+		//System.out.println(today.toString());
+		//System.out.println(weekNumber);
 		// get the current mealplan
 		Document doc = Jsoup.connect(
-				"https://www.sw-ka.de/de/essen/?view=ok&STYLE=popup_plain&c=adenauerring&p=1&kw=" + (weekNumber)).get();
+				"https://www.sw-ka.de/de/essen/?view=ok&STYLE=popup_plain&c=adenauerring&p=1&kw=" + (weekNumber + 1)).get();
 
 		String pageText = doc.body().text();
 
@@ -140,7 +148,7 @@ public class MensaDataController {
 
 			}
 		}
-//for testing purposes
+////for testing purposes
 //		for (int i = 0; i < lines.length; i++) {
 //			System.out.println(lines[i].getMealLine().toString() + ": ");
 //			for (int j = 0; j < lines[i].getMeals().length; j++) {
