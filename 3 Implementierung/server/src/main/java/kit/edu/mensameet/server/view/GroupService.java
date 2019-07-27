@@ -3,6 +3,7 @@ package kit.edu.mensameet.server.view;
 import java.time.LocalTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.google.firebase.auth.FirebaseAuthException;
 
@@ -30,50 +32,36 @@ public class GroupService {
 	private UserController userController;
 	
 	@Autowired
-	private FirebaseAuthentifcator fbAuthentificator;
+	private FirebaseAuthentifcator fbAuth;
 	
 	@RequestMapping("/group") 
-	public Group getGroupByToken(@RequestHeader(value="token") String token, @RequestParam(value="groupToken") String groupToken) {
+	public Group getGroupByToken(@RequestHeader(value="firebaseToken") String firebaseToken, 
+								 @RequestParam(value="groupToken") String groupToken) {
+		fbAuth.authenticateFirebaseToken(firebaseToken);
 		return groupController.getGroup(groupToken);
 	}
 	
-	@RequestMapping("/time")
-	public LocalTime getGroupByToken() {
-		return LocalTime.now();
-	}
-	
     @PostMapping("/group-prefferences")
-    Group[] getGroupsByPrefferences(@RequestHeader(value="token") String token, @RequestBody Preference prefs) throws FirebaseAuthException {
-    	//FirebaseAuth.getInstance().verifyIdToken(token);
-    	
+    Group[] getGroupsByPrefferences(@RequestHeader(value="firebaseToken") String firebaseToken, 
+    								@RequestBody Preference prefs) {
+    	fbAuth.authenticateFirebaseToken(firebaseToken);	
     	return groupController.getGroupByPreferences(prefs);
     }
     
     @PostMapping("/create-group") 
-    public Group createGroup(@RequestHeader(value="token") String token, @RequestBody Group group) {
+    public Group createGroup(@RequestHeader(value="firebaseToken") String firebaseToken, @RequestBody Group group) {
+    	fbAuth.authenticateFirebaseToken(firebaseToken);
     	return groupController.addGroup(group);
     }
     
     @DeleteMapping("/group")
     public void deleteGroup(@RequestHeader(value="token") String token, @RequestParam(value="groupToken") String groupToken) {
-    	String userToken = fbAuthentificator.encryptToUserToken(token);
+    	String userToken = fbAuth.authenticateAndEncryptFirebaseTokenToUserToken(token);
     	
-		//if the user has no administration permissions the task will canceled.
 		if (!userController.getUser(userToken).getIsAdmin()) {
-			return;
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with token " + userToken + " has no permission to do this action."); 
 		}
     	
     	groupController.removeGroup(groupToken);
     }
-    
-    @RequestMapping("/prefs")
-    public Preference getPrefs() {
-    	MealLine[] lines;
-    	lines = new MealLine[3];
-    	lines[0] = MealLine.LINE_SIX;
-    	lines[1] = MealLine.CAFETARIA_LATE;
-    	lines[2] = MealLine.LINE_FOUR_FIVE;
-    	return new Preference(LocalTime.of(11, 30), LocalTime.of(13, 0), lines);
-    }
-    
 }

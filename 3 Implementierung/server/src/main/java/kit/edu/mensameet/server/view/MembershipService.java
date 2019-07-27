@@ -29,9 +29,8 @@ public class MembershipService {
 	
 	@PostMapping("add-user-to-group")
 	public void addUserToGroup(@RequestParam(value = "firebaseToken") String firebaseToken,
-							   @RequestParam(value = "userToken") String userToken,
 							   @RequestParam(value = "groupToken") String groupToken) {
-		fbAuthentificator.encryptToUserToken(firebaseToken);
+		String userToken = fbAuthentificator.authenticateAndEncryptFirebaseTokenToUserToken(firebaseToken);
 		User user = userController.getUser(userToken);
 		Group group = groupController.getGroup(groupToken);
 		
@@ -40,9 +39,8 @@ public class MembershipService {
 
 	@PostMapping("remove-user-from-group")
 	public void removeUserFromGroup(@RequestParam(value = "firebaseToken") String firebaseToken,
-								    @RequestParam(value = "userToken") String userToken,
 								    @RequestParam(value = "groupToken") String groupToken) {
-		fbAuthentificator.encryptToUserToken(firebaseToken);
+		String userToken = fbAuthentificator.authenticateAndEncryptFirebaseTokenToUserToken(firebaseToken);
 		User user = userController.getUser(userToken);
 		Group group = groupController.getGroup(groupToken);
 		

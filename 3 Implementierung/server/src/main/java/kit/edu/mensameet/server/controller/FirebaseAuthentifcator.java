@@ -15,24 +15,28 @@ public class FirebaseAuthentifcator {
 	@Value("${production.mode}")
 	private boolean productionMode; 
 	
-	public String encryptToUserToken(String firebaseToken) {
+	public String authenticateAndEncryptFirebaseTokenToUserToken(String firebaseToken) {
 		String uid ;
 		
 		if (productionMode) {			
-			if (firebaseToken == "xxx") {
-				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Firebase token coulnd't get authenticated.");
-			}
-			
 			try {
 				FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(firebaseToken);				
 				uid = decodedToken.getUid();
 			} catch (FirebaseAuthException e) {
-				throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Coud't authenticate firebase token.");
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Firebase token coulnd't be authenticated.");
 			}
 
 			return uid;
 		} else {
 			return firebaseToken;
+		}
+	}
+	
+	public void authenticateFirebaseToken(String firebaseToken) {
+		try {
+			FirebaseAuth.getInstance().verifyIdToken(firebaseToken);
+		} catch (FirebaseAuthException e) {
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Firebase token coulnd't be authenticated.");
 		}
 	}
 }

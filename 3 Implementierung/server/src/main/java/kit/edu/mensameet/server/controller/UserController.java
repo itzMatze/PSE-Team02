@@ -27,8 +27,7 @@ public class UserController {
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
-	public User getUser(String token) {
-		String userToken = fbAuth.encryptToUserToken(token);
+	public User getUser(String userToken) {
 		User user = repository.getUserByToken(userToken);
 		
 		if (user == null) {
@@ -38,8 +37,12 @@ public class UserController {
 		return user; 
 	}
 	
-	public void addUserWithToken(String fbToken) {
-		String userToken = fbAuth.encryptToUserToken(fbToken);
+	public void addUserWithToken(String userToken) {
+		User user = repository.getUserByToken(userToken);
+		
+		if (user != null) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT, "User with token " + userToken + " already exists.");
+		}
 		
 		repository.save(new User(userToken));
 	}
@@ -66,7 +69,6 @@ public class UserController {
 		} catch (FirebaseAuthException e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found in firebase database.");			
 		}
-		
 	}
 	
     
