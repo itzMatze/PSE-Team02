@@ -23,6 +23,7 @@ public class User {
 	private Subject subject;
 	private Status status;
 	private int profilePictureId;
+	private boolean isAdmin = false;
 	
 	/*
 	 * This constructor only contains the unique token, because a user first register himself with an e-mail and
@@ -33,6 +34,26 @@ public class User {
 	}
 	
 	public User() {}
+	
+	public User(String token, 
+				String name, 
+				String motto, 
+				Date birthdate, 
+				Gender gender, 
+				Subject subject, 
+				Status status, 
+				int profilePictureId,
+				boolean isAdmin) {
+		this.token = token;
+		this.name = name;
+		this.motto = motto;
+		this.birthdate = birthdate;
+		this.gender = gender;
+		this.subject = subject;
+		this.status = status;
+		this.profilePictureId = profilePictureId;
+		this.isAdmin = isAdmin;
+	}
 	
 	/*
 	 * default getter for the name
@@ -128,5 +149,9 @@ public class User {
 	 */
 	public void setProfilePictureId(int profilePictureId) {
 		this.profilePictureId = profilePictureId;
+	}
+	
+	public boolean getIsAdmin() {
+		return isAdmin;
 	}
 }

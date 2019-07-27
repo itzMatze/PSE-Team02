@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 
 import kit.edu.mensameet.server.controller.FirebaseAuthentifcator;
 import kit.edu.mensameet.server.controller.GroupController;
+import kit.edu.mensameet.server.controller.UserController;
 import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.MealLine;
 import kit.edu.mensameet.server.model.Preference;
@@ -25,6 +26,8 @@ public class GroupService {
 	@Autowired
 	private GroupController groupController;
 	
+	@Autowired
+	private UserController userController;
 	
 	@Autowired
 	private FirebaseAuthentifcator fbAuthentificator;
@@ -55,7 +58,10 @@ public class GroupService {
     public void deleteGroup(@RequestHeader(value="token") String token, @RequestParam(value="groupToken") String groupToken) {
     	String userToken = fbAuthentificator.encryptToUserToken(token);
     	
-    	//check if user with @userToken has admin permissions.
+		//if the user has no administration permissions the task will canceled.
+		if (!userController.getUser(userToken).getIsAdmin()) {
+			return;
+		}
     	
     	groupController.removeGroup(groupToken);
     }

@@ -16,6 +16,7 @@ import com.google.firebase.auth.FirebaseAuthException;
 import com.google.firebase.auth.UserRecord.CreateRequest;
 
 import javassist.NotFoundException;
+import kit.edu.mensameet.server.controller.FirebaseAuthentifcator;
 import kit.edu.mensameet.server.controller.UserController;
 import kit.edu.mensameet.server.model.User;
 
@@ -25,22 +26,21 @@ public class UserService {
 	@Autowired
 	private UserController userController;
 
-	/*------------ this is only for testing purposes.
-    @RequestMapping("/getAllUser")
-    public User[] user(@RequestParam(value="name", defaultValue="Alice") String name) {
-        return userController.getAllUser();
-    }
-    */
-
+	@Autowired
+	private FirebaseAuthentifcator fbAuth;
 	
 	@RequestMapping("/user") 
-	public User	getUserByToken(@RequestHeader(value="token") String token) {
-		return userController.getUser(token);
+	public User	getUserByToken(@RequestHeader(value = "firebaseToken")String firebaseToken, 
+							   @RequestHeader(value="userToken") String userToken) {
+		//it only gets checked wether the request comes from an logged in user
+		fbAuth.encryptToUserToken(firebaseToken);
+		return userController.getUser(userToken);
 	}
 	
     @PostMapping("/user")
-    void createUser(@RequestHeader(value="token") String token) throws FirebaseAuthException {
-    	userController.addUserWithToken(token);
+    void createUser(@RequestHeader(value="firebaseToken") String firebaseToken) {
+    	String userToken = fbAuth.encryptToUserToken(firebaseToken);
+    	userController.addUserWithToken(userToken);
     }
     
     @PutMapping("/user") 

@@ -7,7 +7,8 @@ import java.io.InputStream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,11 +29,19 @@ import kit.edu.mensameet.server.controller.UserRepository;
 import kit.edu.mensameet.server.model.User;
 
 @SpringBootApplication
-public class Application extends SpringBootServletInitializer{
-
+public class Application extends SpringBootServletInitializer {
+	
+	private static UserController userController;
+	
+	@Autowired
+    public void setUserController(UserController userController){
+        this.userController = userController;
+    }
+	
     public static void main(String[] args) throws IOException {
         SpringApplication.run(Application.class, args);
         initializeFirebase();
+        userController.initializeAdminUser();
     }
 
     @Override
@@ -49,7 +58,9 @@ public class Application extends SpringBootServletInitializer{
     	
         FirebaseOptions options =  FirebaseOptions.builder()
         		.setCredentials(GoogleCredentials.fromStream(credentialsStream))
-        		.build();		
+        		.setDatabaseUrl("https://mensameet-33fe5.firebaseio.com")
+        		.build();
+		
  
         FirebaseApp.initializeApp(options);
     }
