@@ -10,6 +10,7 @@
 \usepackage{lscape} % querformat
 \usepackage{tabu}
 \usepackage{hyperref}
+\usepackage{xcolor}
 \usepackage{glossaries}
 
 \makeglossaries
@@ -36,6 +37,36 @@
 Bei diesem Dokument handelt es sich um den Implementierungsbericht, welcher zeitgleich zur eigentlichen Implementierung verfasst wurde. Die Implementierungsphase knüpft an die Entwurfsphase an und es wird versucht, die in dieser Phase definierten Entwurfsziele umzusetzen. Da dies aber nicht immer geglückt ist, verweist dieses Dokument unter anderem auch auf Änderungen bzw. Abweichungen am Entwurf. Auf diese Änderungen wird im Folgenden noch genauer eingegangen. Des Weiteren wird darüber aufgeklärt, ob alle Pflichtkriterien implementiert wurden und ob sogar Wunschkriterien realisiert werden konnten. Es wird aber auch auf Probleme innerhalb der Implementierungsphase verwiesen und welche Funktionen besonders viel Zeit gekostet haben.
 
 \chapter{Änderungen am Entwurf}
+\section{Server}
+\subsection{Model}
+\subsubsection{Änderung der internen Darstellung der Mensadaten}
+Ursprünglich war geplant, die vom Studentenwerk bezogenen Mensadaten, also das tagesaktuelle Menü aller Linien, aufzuteilen. Also die Linien in ihre jeweiligen Mahlzeiten und die Mahlzeiten in ihren Namen, Preis, ihre Inhaltsstoffe und um welche Art Essen es sich dabei handelt. Diese Aufteilung wurde deshalb so gewählt, da man für zukünftige Funktionen geplant hat. Beispielweiße das Anzeigen eines Symbols als Indikator des Essenstyp(Normal, vegan, etc.). Diese Aufteilung wurde nun verworfen und die Mensadaten sind nun unterteilt in die Linien und diese Linien in ihre Mahlzeiten. Die Mahlzeiten werden also nicht mehr unterteilt. Die Begründung liegt darin, dass die bezogenen Daten inkonsistent sind. Beispielweiße verfügen manche Mahlzeiten über keinen Preis oder es fehlt die Angabe des Essenstyp. Außerdem werden nur die Preise für Studenten angezeigt, zu mindest bei der alternativen Ansicht, von der die Daten bezogen wurden.
+
+
+\begin{itemize}
+
+\item{Line.java}
+
+\textcolor{red}{- enum Meal} \\
+\textcolor{red}{- enum Ingredient} \\
+\textcolor{red}{- enum FoodType} \\
+\textcolor{green}{+ String name} \\
+\textcolor{green}{+ String[] meals}\\
+
+
+
+
+\end{itemize}
+
+\subsection{View}
+\subsection{Controller}
+
+
+
+
+
+\section{Client}
+
 
 
 
