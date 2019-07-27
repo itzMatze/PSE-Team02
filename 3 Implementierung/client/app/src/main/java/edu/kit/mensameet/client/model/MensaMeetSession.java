@@ -11,6 +11,8 @@ public class MensaMeetSession {
     private List<Line> chosenLines;
     private MensaMeetTime chosenTime;
     private Group chosenGroup;
+    private Group createdGroup;
+    private String userToken;
 
     private MensaMeetSession() {
     }
@@ -73,5 +75,21 @@ public class MensaMeetSession {
 
     public Group getChosenGroup() {
         return chosenGroup;
+    }
+
+    public Group getCreatedGroup() {
+        return createdGroup;
+    }
+
+    public void setCreatedGroup(Group createdGroup) {
+        this.createdGroup = createdGroup;
+    }
+
+    public String getUserToken() {
+        return userToken;
+    }
+
+    public void setUserToken(String userToken) {
+        this.userToken = userToken;
     }
 }

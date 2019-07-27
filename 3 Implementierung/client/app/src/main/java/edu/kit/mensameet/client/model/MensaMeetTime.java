@@ -1,25 +1,45 @@
 package edu.kit.mensameet.client.model;
 
-import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MensaMeetTime {
-    private Time startTime;
-    private Time endTime;
+    private Date startTime;
 
-    public MensaMeetTime(Time time) {
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        if (startTime.compareTo(endTime) <= 0) {
+            this.endTime = endTime;
+        } else {
+            this.endTime = startTime;
+        }
+    }
+
+    private Date endTime;
+
+    public MensaMeetTime(Date time) {
         startTime = time;
     }
 
-    public MensaMeetTime(Time startTime, Time endTime) {
-
+    public MensaMeetTime(Date startTime, Date endTime) {
+       setStartTime(startTime);
+       setEndTime(endTime);
     }
 
     public boolean isInterval() {
-        return endTime != null;
-    }
-
-    public Time getStartTime() {
-        return startTime;
+        return !(startTime.compareTo(endTime) == 0);
     }
 
     /*
@@ -36,5 +56,22 @@ public class MensaMeetTime {
             return startTime.toString() + " - " + endTime.toString();
         }
         return startTime.toString();
+    }
+
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+
+    public static Date stringToDate(String timeString) {
+        if (timeString == null) return null;
+        try {
+            return simpleDateFormat.parse(timeString);
+        } catch (ParseException e){
+            // TODO: Fehlerbehandlung
+            return null;
+        }
+    }
+
+    public static String dateToString(Date date) {
+        if (date == null) return null;
+        return simpleDateFormat.format(date);
     }
 }

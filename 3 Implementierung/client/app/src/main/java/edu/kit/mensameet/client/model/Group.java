@@ -4,6 +4,11 @@ import java.util.Date;
 import java.util.List;
 
 public class Group {
+
+    public Group() {
+
+    }
+
     public String getId() {
         return id;
     }
@@ -60,11 +65,11 @@ public class Group {
         this.users = users;
     }
 
-    private String id;
-    private String name;
-    private String motto;
-    private int maxMembers;
-    private String line;
-    private Date meetingDate;
-    private List<User> users;
+    private String id = "";
+    private String name = "";
+    private String motto = "";
+    private int maxMembers = 0;
+    private String line = "";
+    private Date meetingDate = null;
+    private List<User> users = null;
 }

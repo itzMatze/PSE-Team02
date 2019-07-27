@@ -1,9 +1,9 @@
 package edu.kit.mensameet.client.viewmodel;
 
+import android.util.Pair;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-
-import android.util.Pair;
 
 import java.sql.Time;
 
@@ -89,4 +89,5 @@ public class SetTimeViewModel extends MensaMeetViewModel {
         }
         return uiEventLiveData;
     }
+
 }

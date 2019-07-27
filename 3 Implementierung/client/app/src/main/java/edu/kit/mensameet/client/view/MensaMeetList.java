@@ -12,11 +12,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class MensaMeetList<Object> implements MensaMeetListAdapter.ItemClickListener {
+import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
+
+public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClickListener {
 
     protected Context context;
-    protected List<Object> data;
-    protected Boolean checkBoxes;
+    protected List<T> data;
+    protected DisplayMode displayMode;
+    protected Boolean dividers;
     protected LinearLayout view;
     protected RecyclerView recyclerView;
     protected MensaMeetListAdapter adapter;
@@ -24,12 +27,13 @@ public abstract class MensaMeetList<Object> implements MensaMeetListAdapter.Item
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-    public MensaMeetList(Context context, List<Object> data, Boolean checkBoxes) {
+    public MensaMeetList(Context context, List<T> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
 
         this.context = context;
-        if (data == null) data = new ArrayList<Object>();
+        if (data == null) data = new ArrayList<T>();
         this.data = data;
-        this.checkBoxes = checkBoxes;
+        this.displayMode = displayMode;
+        this.dividers = dividers;
         this.view = new LinearLayout(context);
         this.view.setLayoutParams(WIDTH_MATCH_PARENT);
         this.view.setOrientation(LinearLayout.VERTICAL);
@@ -38,29 +42,53 @@ public abstract class MensaMeetList<Object> implements MensaMeetListAdapter.Item
         this.recyclerView = new RecyclerView(context);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        layoutManager.setOrientation(RecyclerView.VERTICAL);
         this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
+        this.recyclerView.setItemAnimator(null);
 
-        List<MensaMeetItem> items = createItems();
-        adapter = new MensaMeetListAdapter(context, items);
+        List<MensaMeetItem<T>> items = createItems();
+        adapter = new MensaMeetListAdapter<T>(context, items, displayMode);
         adapter.setClickListener(this);
         recyclerView.setAdapter(adapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                layoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        if (dividers) {
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                    layoutManager.getOrientation());
+            recyclerView.addItemDecoration(dividerItemDecoration);
+        }
 
         this.view.addView(recyclerView);
     }
 
-    protected abstract List<MensaMeetItem> createItems();
+    public MensaMeetItem<T> getItem(int id) {
+        return adapter.getItem(id);
+    }
+
+    public int getItemCount() {
+        return adapter.getItemCount();
+    }
+
+    protected abstract List<MensaMeetItem<T>> createItems();
 
     public View getView() {
         return view;
     }
 
+    public List<T> getSelectedObjects() {
+        return (List<T>) adapter.getSelectedObjects();
+    }
+
+    public void setSelectedObjects(List<T> objectList) {
+
+        adapter.setSelectedObjects(objectList);
+    }
+
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(context, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+    }
+
+    public static enum DisplayMode {
+        NO_SELECT, SINGLE_SELECT, MULTIPLE_SELECT
     }
 }

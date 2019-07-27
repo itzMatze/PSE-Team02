@@ -9,23 +9,16 @@ import edu.kit.mensameet.client.model.User;
 
 public class UserList extends MensaMeetList<User> {
 
-    public UserList(Context context, List<User> data, Boolean checkBoxes) {
-        super(context, data, checkBoxes);
+    public UserList(Context context, List<User> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
+        super(context, data, displayMode, false);
     }
 
     @Override
-    protected List<MensaMeetItem> createItems() {
-        List<MensaMeetItem> items = new ArrayList<MensaMeetItem>();
-        MensaMeetDisplayMode displayMode;
-
-        if (super.checkBoxes) {
-            displayMode = MensaMeetDisplayMode.SMALL_CHECKBOXES;
-        } else {
-            displayMode = MensaMeetDisplayMode.SMALL;
-        }
+    protected List<MensaMeetItem<User>> createItems() {
+        List<MensaMeetItem<User>> items = new ArrayList<>();
 
         for (User user : super.data) {
-            UserItem item = new UserItem(super.context, displayMode, user);
+            UserItem item = new UserItem(super.context, MensaMeetDisplayMode.SMALL, user);
             items.add(item);
         }
 

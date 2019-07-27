@@ -8,7 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.kit.mensameet.client.model.FoodType;
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.Meal;
+import edu.kit.mensameet.client.model.MensaData;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 
 public class TestActivity extends AppCompatActivity {
@@ -19,6 +24,10 @@ public class TestActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.test_layout);
+
+        Meal[] linie1Meals = new Meal[]{new Meal("Schnitzel", (float) 2.60, new FoodType[]{FoodType.VEGAN})};
+        Line linie1 = new Line("Linie 1", linie1Meals);
+        MensaMeetSession.getInstance().setMensaData(new MensaData(new Line[]{linie1}));
 
         LinearLayout container = findViewById(R.id.container);
 
@@ -49,8 +58,8 @@ public class TestActivity extends AppCompatActivity {
         g3.setMotto("Motto3");
         dataList.add(g3);
 
-        GroupList groupList = new GroupList(this, dataList, true);
-        container.addView(groupList.getView());
+        //GroupList groupList = new GroupList(this, dataList, MensaMeetList.DisplayMode.SINGLE_SELECT, true);
+        //container.addView(groupList.getView());
     }
 }
 

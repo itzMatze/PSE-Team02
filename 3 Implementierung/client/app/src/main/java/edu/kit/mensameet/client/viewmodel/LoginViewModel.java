@@ -1,11 +1,10 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
-
 import android.content.Context;
 import android.util.Pair;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -14,7 +13,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.kit.mensameet.client.util.SingleLiveEvent;
-import edu.kit.mensameet.client.view.R;
 
 public class LoginViewModel extends MensaMeetViewModel {
     //todo: move this later to MensaMeetViewModel

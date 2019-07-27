@@ -1,72 +1,89 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
+import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public class CreateGroupActivity extends MensaMeetActivity {
-
-    private ActivityCreateGroupBinding binding;
     private CreateGroupViewModel viewModel;
-    //todo: move to MensaMeetActivity
-    private static final int SAVE_TIME_REQUEST = 5;
-    private static final int HOME_MENU_REQUEST = 6;
-    private static final String SAVE_TIME_ID = "saveTime";
+    private ActivityCreateGroupBinding binding;
+    private GroupItem groupItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //data binding
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
+
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
+        super.viewModel = viewModel;
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        /*
-        decide which activity to start
-         */
-        final CreateGroupActivity context = this;
-        final Intent backToHome = new Intent(this, HomeActivity.class);
-        final Intent chooseTime = new Intent(this, SetTimeActivity.class);
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<CreateGroupViewModel, String>>() {
-            @Override
-            public void onChanged(@Nullable Pair<CreateGroupViewModel, String> it) {
-                switch (it.second) {
-                    case CreateGroupViewModel.CREATE_GROUP_ID:
-                        context.startActivityForResult(backToHome, HOME_MENU_REQUEST);
-                        break;
-                    case CreateGroupViewModel.CREATE_GROUP_ADD_TIME_ID:
-                        context.startActivityForResult(chooseTime, SAVE_TIME_REQUEST);
-                        break;
-                    case CreateGroupViewModel.CREATE_GROUP_TO_SELECT_GROUP_ID:
-                        //TODO: add context.startActivityForResult(chooseTime, TO_SELECT_LINES_REQUEST);
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+        LinearLayout container = findViewById(R.id.container);
+
+        groupItem = new GroupItem(this, MensaMeetDisplayMode.BIG_EDITABLE, new Group());
+        container.addView(groupItem.getView());
+
+        reloadData();
+
+        super.onCreate(savedInstanceState);
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case SAVE_TIME_REQUEST:
-                String time = data.getStringExtra(SAVE_TIME_ID);
-                if (time != null) {
-                    viewModel.addTime(time);
-                }
-                break;
-            default:
-                break;
+    protected void reloadData() {
+
+        Group sessionGroup = MensaMeetSession.getInstance().getCreatedGroup();
+
+        if (sessionGroup != null) {
+
+            //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
+
+            groupItem.setObjectData(sessionGroup);
+            groupItem.fillObjectData();
+
+            //lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
+
+
         }
+    }
+
+    @Override
+    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+        if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
+            Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
+        } else if (it.second ==  CreateGroupViewModel.State.BACK) {
+            gotoActivity(SelectGroupActivity.class);
+        } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
+            Toast.makeText(this, R.string.error_saving_group, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onClickNext() {
+        groupItem.saveEditedObjectData();
+        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
+        viewModel.setGroup(groupItem.getObjectData());
+        viewModel.saveGroupAndNext();
+    }
+
+    @Override
+    protected void onClickBack() {
+        groupItem.saveEditedObjectData();
+        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
+        viewModel.setGroup(groupItem.getObjectData());
+        Toast.makeText(this, R.string.group_data_locally_saved, Toast.LENGTH_SHORT).show();
+        gotoActivity(SelectGroupActivity.class);
     }
 }

@@ -18,7 +18,7 @@ public class HomeActivity extends MensaMeetActivity {
     }
 
     public void onGoEatClick(View v) {
-        //gotoActivity(LineActivity.class);
+        gotoActivity(SelectLinesActivity.class);
     }
 
     public void onProfileClick(View v) {

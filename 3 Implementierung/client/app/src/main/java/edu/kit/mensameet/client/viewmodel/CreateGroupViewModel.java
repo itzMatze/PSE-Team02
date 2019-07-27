@@ -1,151 +1,58 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-
 import android.util.Pair;
 
-import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
-import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
+import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 
-/**
- * Class {@code CreateGroupViewModel} is responsible for preparing and managing the data for {@code CreateGroup} Activity.
- * It also handles the communication of the Activity with the rest of the application
- */
 public class CreateGroupViewModel extends MensaMeetViewModel {
-    //todo: move this later to MensaMeetViewModel
-    public static final String CREATE_GROUP_ID = "createGroup";
-    public static final String CREATE_GROUP_ADD_TIME_ID = "createGroupAddTime";
-    public static final String CREATE_GROUP_TO_SELECT_GROUP_ID = "createGroupToSelectGroup";
 
-    private MutableLiveData<Group> group;
-    private MutableLiveData<String> groupName;
-    private MutableLiveData<String> motto;
-    private MutableLiveData<MensaMeetTime> time;
-    private MutableLiveData<String> timeString;// this.time to string in format hh:mm:ss
-    private MutableLiveData<Integer> number;// number of maximal members in the group
-    /*
-    SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
-    use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
-     */
-    private SingleLiveEvent<Pair<CreateGroupViewModel, String>> uiEventLiveData;
+    private Group group;
 
-    /*
-    TODO: edit in order to save group
-     */
-    public void saveGroups(LiveData<Group> group) {
-
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
-    /**
-     * onClick method for create Group Button
-     *
-     * @param item CreateGroupViewModel
-     */
-    public void onCreateGroupClick(CreateGroupViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, CREATE_GROUP_ID));
-    }
+    public void saveGroupAndNext()
+    {
+        if (group != null) {
+            MensaMeetSession.getInstance().setCreatedGroup(group);
+            //HttpUtil.createGroup(group);
+            /*if (http success){
+                MensaMeetSession.getInstance().setChosenGroup(group);
+            }*/
 
-    /**
-     * onClick method for add time Button
-     *
-     * @param item CreateGroupViewModel
-     */
-    public void onAddTimeClick(CreateGroupViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, CREATE_GROUP_ADD_TIME_ID));
-    }
-
-    /**
-     * onClick method for select Group Button
-     *
-     * @param item CreateGroupViewModel
-     */
-
-    public void onSelectGroupClick(CreateGroupViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, CREATE_GROUP_TO_SELECT_GROUP_ID));
-    }
-
-    /**
-     * set time and timeString from a given String
-     *
-     * @param time a string in JDBC time in format "hh:mm:ss"
-     */
-    public void addTime(String time) {
-        if (this.time == null) {
-            this.time = new MutableLiveData<MensaMeetTime>();
-        }
-        this.time.setValue(new MensaMeetTime(Time.valueOf(time)));
-        timeString.setValue("gewählte Zeit:" + "\n" + this.time.getValue().getStartTime());
-    }
-
-
-    /*
-    following getter methods are used for data-binding
-    the if case is used to avoid NullPointerException
-     */
-
-    /**
-     * @return MensaMeet group name
-     */
-    public MutableLiveData<String> getGroupName() {
-        if (groupName == null) {
-            groupName = new MutableLiveData<>();
-            groupName.setValue("");
-        }
-        return groupName;
-    }
-
-    /**
-     * @return MensaMeet group motto
-     */
-    public MutableLiveData<String> getMotto() {
-        if (motto == null) {
-            motto = new MutableLiveData<>();
-            motto.setValue("");
-        }
-        return motto;
-    }
-
-    /**
-     * @return start time of MensaMeet group.
-     * if it's not set, return "Zeitpunkt noch nicht gewählt"
-     */
-    public MutableLiveData<MensaMeetTime> getTime() {
-        return time;
-    }
-
-    public MutableLiveData<String> getTimeString() {
-        if (timeString == null) {
-            timeString = new MutableLiveData<>();
-            timeString.setValue("Zeitpunkt noch nicht gewählt");
-            return timeString;
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_SAVED_NEXT));
         } else {
-            return timeString;
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_GROUP));
         }
+
     }
 
-    /**
-     * @return maximal number of group members
-     */
-    public MutableLiveData<Integer> getNumber() {
-        if (number == null) {
-            number = new MutableLiveData<>();
-            number.setValue(0);
+    public void saveGroupLocallyAndBack()
+    {
+        if (group != null) {
+            MensaMeetSession.getInstance().setCreatedGroup(group);
+            //HttpUtil.createGroup(group);
+            /*if (http success){
+                MensaMeetSession.getInstance().setChosenGroup(group);
+            }*/
+
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_SAVED_NEXT));
         }
-        return number;
+
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.BACK));
+
     }
 
-    /**
-     * @return A lifecycle-aware observable that sends only new updates after subscription
-     */
-    public SingleLiveEvent<Pair<CreateGroupViewModel, String>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<CreateGroupViewModel, String>(null, "default"));
-        }
-        return uiEventLiveData;
+
+
+    public enum State implements StateInterface {
+        GROUP_SAVED_NEXT, BACK, ERROR_SAVING_GROUP, DEFAULT
     }
+
 }

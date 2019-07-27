@@ -9,23 +9,16 @@ import edu.kit.mensameet.client.model.Group;
 
 public class GroupList extends MensaMeetList<Group> {
 
-    public GroupList(Context context, List<Group> data, Boolean checkBoxes) {
-        super(context, data, checkBoxes);
+    public GroupList(Context context, List<Group> data, DisplayMode displayMode, Boolean dividers) {
+        super(context, data, displayMode, dividers);
     }
 
     @Override
-    protected List<MensaMeetItem> createItems() {
-        List<MensaMeetItem> items = new ArrayList<MensaMeetItem>();
-        MensaMeetDisplayMode displayMode;
-
-        if (super.checkBoxes) {
-            displayMode = MensaMeetDisplayMode.SMALL_CHECKBOXES;
-        } else {
-            displayMode = MensaMeetDisplayMode.SMALL;
-        }
+    protected List<MensaMeetItem<Group>> createItems() {
+        List<MensaMeetItem<Group>> items = new ArrayList<>();
 
         for (Group group : super.data) {
-            GroupItem item = new GroupItem(super.context, displayMode, group);
+            GroupItem item = new GroupItem(super.context, MensaMeetDisplayMode.SMALL, group);
             items.add(item);
         }
 

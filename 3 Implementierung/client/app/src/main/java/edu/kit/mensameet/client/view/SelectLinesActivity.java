@@ -1,64 +1,98 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
-import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import edu.kit.mensameet.client.model.FoodType;
+import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.Meal;
+import edu.kit.mensameet.client.model.MensaData;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivitySelectLinesBinding;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
+import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public class SelectLinesActivity extends MensaMeetActivity {
 
-    private ActivitySelectLinesBinding binding;
     private SelectLinesViewModel viewModel;
-    private RecyclerView recyclerView;
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private List<String> dataset;
+    private ActivitySelectLinesBinding binding;
+    private LineList lineList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //fragment: binding = ActivitySelectLinesBinding.inflate(inflater,container,false);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_select_lines);
+
         viewModel = ViewModelProviders.of(this).get(SelectLinesViewModel.class);
+        super.viewModel = viewModel;
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_select_lines);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        adapter = new SelectLinesAdapter(dataset);
-        //tood: necessary?
-        recyclerView.setAdapter(adapter);
+        LinearLayout container = findViewById(R.id.container);
 
-        /*
-        TODO: eddit it after get MMItem and MMList
-        viewModel.lineList.observe(this, new Observer{
-            adapter.setLines(it)
+        Meal[] linie1Meals = new Meal[]{new Meal("Schnitzel", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie1 = new Line("Linie 1", linie1Meals);
+        Meal[] linie2Meals = new Meal[]{new Meal("Salat", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie2 = new Line("Linie 2", linie2Meals);
+        Meal[] linie3Meals = new Meal[]{new Meal("Wurst", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie3 = new Line("Linie 3", linie3Meals);
+        MensaMeetSession.getInstance().setMensaData(new MensaData(new Line[]{linie1, linie2, linie3}));
+
+        // TODO: put .getMensaData().getLines() into one method
+        List<Line> linesList = new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaData().getLines()));
+
+        lineList = new LineList(this, linesList,
+                MensaMeetList.DisplayMode.MULTIPLE_SELECT,
+                true);
+
+        container.addView(lineList.getView());
+
+        reloadData();
+
+        super.onCreate(savedInstanceState);
+
+    }
+
+    @Override
+    protected void reloadData() {
+
+        if (MensaMeetSession.getInstance().getChosenLines() != null) {
+
+            //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
+
+            lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
+
+
         }
-         */
+    }
 
-        final SelectLinesActivity context = this;
-        final Intent backToHome = new Intent(this, HomeActivity.class);
-        final Intent chooseTime = new Intent(this, SetTimeActivity.class);
-        /*
-        todo edit it later when other relevant activity
-        decide which activity to start
-         */
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<SelectLinesViewModel, String>>() {
-            @Override
-            public void onChanged(@Nullable Pair<SelectLinesViewModel, String> it) {
-                switch (it.second) {
-                    default:
-                        break;
-                }
-            }
-        });
+    @Override
+    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+        if (it.second == SelectLinesViewModel.State.LINES_SAVED) {
+            gotoActivity(SetTimeActivity2.class);
+        } else if (it.second == SelectLinesViewModel.State.NO_LINES_SELECTED) {
+            Toast.makeText(this, getString(R.string.selectLine), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onClickNext() {
+        viewModel.setSelectedLines(lineList.getSelectedObjects());
+        viewModel.saveLinesAndNext();
+    }
+
+    @Override
+    protected void onClickBack() {
+
     }
 }

@@ -50,7 +50,7 @@ public class BeginActivity extends MensaMeetActivity {
                         editor.commit();
                         break;
                     case BeginViewModel.TEST_LIST_CLASSES_ID:
-                        gotoActivity(TestActivity.class);
+                        gotoActivity(HomeActivity.class);
                         break;
                     default:
                         break;
