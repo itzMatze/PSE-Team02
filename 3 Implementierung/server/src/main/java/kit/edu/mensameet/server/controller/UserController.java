@@ -57,19 +57,8 @@ public class UserController {
 		
 		userRepository.save(new User(userToken));
 		
-		if (!productionMode) {
-			//While testing user have to be added manually to the firebase database.
-			CreateRequest request = new CreateRequest();
-			request
-				.setEmail(userToken + "@testmail.com")
-				.setPassword("s3cret");
-			
-			try {
-				FirebaseAuth.getInstance().createUser(request);
-			} catch (FirebaseAuthException e) {
-				e.printStackTrace();
-			}
-		}
+		
+		
 	}
 	
 	public void updateUser(User user, String userToken) {

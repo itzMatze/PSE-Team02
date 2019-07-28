@@ -56,7 +56,6 @@ public class MembershipControllerTest {
 	@Test
 	public void addUserWhenGroupEmpty() {
 		controller.addUserToGroup(users[0], group);
-		//assertEquals(group.getMembers().indexOf(users[0]), 0);
 		assertEquals(group.getMembers().get(0).getToken(), users[0].getToken());
 	}
 	
@@ -94,6 +93,6 @@ public class MembershipControllerTest {
 	public void tearDown() {
 		users = null;
 		group = null;
-		controller = null;
+		repository.deleteAll();
 	}
 }

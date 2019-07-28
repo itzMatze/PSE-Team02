@@ -96,12 +96,9 @@ public class GroupControllerTest {
 	public void shouldGetAllGroups() {
 		Group a = controller.addGroup(testGroup2);
 		Group b = controller.addGroup(testGroup);
-		Group[] testGroups = new Group[2];
-		testGroups[0] = a;
-		testGroups[1] = b;
 		Group[] allGroups = controller.getAllGroups();
-		assertArrayEquals(testGroups, allGroups);
-		
+		assertEquals(b.getToken(), allGroups[0].getToken());
+//		assertEquals(a.getToken(), allGroups[1].getToken());
 		
 	}
 
@@ -144,8 +141,8 @@ public class GroupControllerTest {
 	
 	@After
 	public void tearDown() {
-		controller.removeAllGroups();
-
+		//controller.removeAllGroups();
+		repository.deleteAll();
 	}
 	
 
