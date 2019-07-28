@@ -216,7 +216,7 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         // Field: Delete button
 
-        if (MensaMeetSession.getInstance().getUser().isAdmin()) {
+        if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
 
             if (displayMode == DisplayMode.SMALL) {
 

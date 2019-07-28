@@ -50,31 +50,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
         }
     }
 
-    /*
-    private int offlineRegister(String username, String password, String passwordConfirm, Context context) {
-        //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig,
-        //3 heißt Passwörter stimmen nicht überein
-        if (username.length() == 0) {
-            return 1;
-        } else if (password.length() == 0) {
-            return 2;
-        } else if (!password.equals(passwordConfirm)) {
-            return 3;
-        } else {
-            //speichert die login Daten, Context muss übergeben werden,
-            //weil SharedPreferences nur auf einem Context Objekt funktioniert und eine Activity ein solches Objekt ist
-            SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPrefs.edit();
-            editor.putString(context.getString(R.string.username_file_id), username);
-            //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
-            editor.putString(context.getString(R.string.password_file_id), password);
-            editor.commit();
-            User.getInstance().setName(username);
-            return 0;
-        }
-    }
-    */
-
     /**
      * @return email
      */

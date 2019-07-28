@@ -12,12 +12,12 @@
         app:layout_constraintRight_toRightOf="parent">
 
         <Button
-            android:layout_marginLeft="2dp"
             android:id="@+id/navigation_back"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawableTop="@drawable/arrow_left"
+            android:layout_marginLeft="2dp"
             android:layout_weight="1"
+            android:drawableTop="@drawable/arrow_left"
             android:text="@string/title_back" />
 
         <Button

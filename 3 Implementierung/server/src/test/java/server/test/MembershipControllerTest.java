@@ -44,6 +44,9 @@ public class MembershipControllerTest {
 	@Autowired
 	MembershipController controller;
 	
+	@Autowired
+	GroupRepository repository;
+	
 	private LocalTime meetingTime = LocalTime.of(12, 30);
 	
 	@Before
@@ -60,7 +63,6 @@ public class MembershipControllerTest {
 	@Test
 	public void addUserWhenGroupEmpty() {
 		controller.addUserToGroup(users[0], group);
-		//assertEquals(group.getMembers().indexOf(users[0]), 0);
 		assertEquals(group.getMembers().get(0).getToken(), users[0].getToken());
 	}
 	
@@ -97,9 +99,7 @@ public class MembershipControllerTest {
 	@After
 	public void tearDown() {
 		users = null;
-		//userController.deleteAllUser();
 		group = null;
-		//groupController.removeAllGroups();
-		controller = null;
+		repository.deleteAll();
 	}
 }

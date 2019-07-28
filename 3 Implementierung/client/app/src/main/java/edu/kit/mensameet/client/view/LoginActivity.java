@@ -38,7 +38,7 @@ public class LoginActivity extends MensaMeetActivity {
                 switch (it.second) {
                     case LoginViewModel.LOG_IN_SUCCESS_ID:
                         // log in success, update UI with the logged-in user's information
-                        Toast.makeText(context, "create acount succeed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "Log in succeed", Toast.LENGTH_LONG).show();
                         Intent toHome = new Intent(context, HomeActivity.class);
                         toHome.putExtra(UID_ID, viewModel.getUid());
                         startActivity(toHome);
