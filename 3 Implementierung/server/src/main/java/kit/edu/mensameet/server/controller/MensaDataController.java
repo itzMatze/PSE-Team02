@@ -17,14 +17,23 @@ import java.time.temporal.IsoFields;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-
+/**
+ * This class represents the Mensa Data Controller, it handles the mensa data
+ * @author leo
+ *
+ */
 @Component
 public class MensaDataController {
 
 	private MensaData mensaData;
 	private LocalDate today = LocalDate.now();
 	
-	
+	/**
+	 * This method checks if the current meal plan is already saved on the server. If not it 
+	 * will be loaded from an extern URL
+	 * @return the current mensa data of the day
+	 * @throws IOException
+	 */
 	public MensaData getMensaData() throws IOException {
 		if (!(today.getDayOfWeek() == DayOfWeek.SATURDAY ||	today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
 			if (mensaData == null) {
@@ -34,7 +43,10 @@ public class MensaDataController {
 		
 		return mensaData;
 	}
-	
+	/**
+	 * this method gets the new meal plan from the Studentenwerk of the current day
+	 * @throws IOException
+	 */
 	public void updateMensaData() throws IOException {
 		
 		int weekNumber = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);
@@ -42,7 +54,7 @@ public class MensaDataController {
 		//System.out.println(weekNumber);
 		// get the current mealplan
 		Document doc = Jsoup.connect(
-				"https://www.sw-ka.de/de/essen/?view=ok&STYLE=popup_plain&c=adenauerring&p=1&kw=" + (weekNumber + 1)).get();
+				"https://www.sw-ka.de/de/essen/?view=ok&STYLE=popup_plain&c=adenauerring&p=1&kw=" + (weekNumber)).get();
 
 		String pageText = doc.body().text();
 
