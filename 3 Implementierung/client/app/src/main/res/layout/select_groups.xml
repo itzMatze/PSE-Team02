@@ -8,7 +8,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/selectGroup"
+            android:token="@+token/selectGroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -21,7 +21,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/groups"
+            android:token="@+token/groups"
             android:layout_width="363dp"
             android:layout_height="583dp"
             android:layout_marginTop="8dp"
@@ -30,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.333"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/selectGroup"
+            app:layout_constraintTop_toBottomOf="@+token/selectGroup"
             app:layout_constraintVertical_bias="0.0"
             tools:itemCount="20">
             <!--TODO:(add LineItem)tools:listitem="@layout/item_lines-->

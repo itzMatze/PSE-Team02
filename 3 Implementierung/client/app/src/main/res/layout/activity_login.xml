@@ -16,7 +16,7 @@
         tools:context=".LoginActivity">
         <!--TODO: ADD SetError Method to EditText -->
         <EditText
-            android:id="@+id/usernameTextInput"
+            android:token="@+token/usernameTextInput"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
             app:layout_constraintVertical_bias="0.1" />
 
         <Button
-            android:id="@+id/login"
+            android:token="@+token/login"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="50dp"
@@ -44,11 +44,11 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/password"
+            app:layout_constraintTop_toBottomOf="@+token/password"
             app:layout_constraintVertical_bias="0.2" />
 
         <EditText
-            android:id="@+id/password"
+            android:token="@+token/password"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="8dp"

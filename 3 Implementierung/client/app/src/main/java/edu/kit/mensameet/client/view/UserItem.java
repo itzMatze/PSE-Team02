@@ -215,7 +215,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         // Field: Delete button
 
-        if (MensaMeetSession.getInstance().getUser().isAdmin()) {
+        if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
 
             if (displayMode == DisplayMode.SMALL) {
 
@@ -245,7 +245,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         fillTextField(R.string.field_motto, objectData.getMotto());
 
-        Date birthDate = objectData.getBirthDate();
+        Date birthDate = objectData.getBirthdate();
         if (birthDate != null) {
             fillTextField(R.string.field_birth_date, MensaMeetTime.timeToString(birthDate));
         }
@@ -284,7 +284,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         objectData.setMotto(super.extractTextField(R.string.field_motto));
 
-        objectData.setBirthDate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_birth_date)));
+        objectData.setBirthdate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_birth_date)));
 
         objectData.setGender(Gender.valueOf(extractSpinnerField(R.string.field_gender)));
 

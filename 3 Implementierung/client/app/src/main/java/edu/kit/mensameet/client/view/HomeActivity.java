@@ -17,7 +17,7 @@ public class HomeActivity extends MensaMeetActivity {
 
         // Initialize MensaMeetSession, TODO: normally at login or registration
         User me = new User();
-        me.setAdmin(true);
+        me.setIsAdmin(true);
         MensaMeetSession.getInstance().setUser(me);
 
         super.onCreate(savedInstanceState);
