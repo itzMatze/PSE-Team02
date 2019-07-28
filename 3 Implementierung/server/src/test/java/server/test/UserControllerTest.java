@@ -50,6 +50,6 @@ public class UserControllerTest {
 
 	@After
 	public void tearDown() {
-		controller.deleteUser("token1");
+		repository.deleteAll();
 	}
 }
