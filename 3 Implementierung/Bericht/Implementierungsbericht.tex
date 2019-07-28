@@ -11,7 +11,7 @@
 \usepackage{tabu}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\usepackage{glossaries}
+\usepackage[toc]{glossaries}
 
 \makeglossaries
 
@@ -105,6 +105,7 @@ Bei diesem Dokument handelt es sich um den Implementierungsbericht, welcher zeit
 
 \chapter{Änderungen am Entwurf}
 \section{Server}
+Ein grobe Änderung an der Form des Servers entstand dadurch, dass während des Entwurfs nicht klar war, dass der Server selbst keine Login- und Registrierungsfunktionen von der Firebase Admin SDK zur Verfügung gestellt bekommen wird. Dadurch wurden diese Funktionalitäten auf den Client ausgelagert und der Server verlor diese Funktionen. Es wurde in der View die AccountService Klasse gelöscht und bei den Controllern der AuthenticationController. Die Logik zum Anlegen von Usern wird jetzt vom UserController übernommen.
 \subsection{Model}
 
 \subsubsection{Änderung der internen Darstellung der Mensadaten}
@@ -133,7 +134,7 @@ Zusätzlich zu den bereits im Entwurfsdokument aufgezählten Attributen der User
 \subsection{View}
 
 \subsubsection{Änderung der User Service Klasse}
-In der Klasse User Service wurde lediglich die Methode zum Erstellen eines Users hinzugefügt. Auch hier handelt es sich um keine neue Funktion oder tatsächliche Änderung. Es wurde lediglich vergessen diese im Entwurfsdokument aufzuführen. 
+In der Klasse User Service wurde lediglich die Methode zum Erstellen eines Users hinzugefügt. Diese Änderung ist aufgrund der FireBase SDK notwendig, da unter anderem die Authentification Controller Klasse wegfällt und somit auch die Methode zum Registrieren. Die create User Methode ersetz demnach die register Methode.
 
 \begin{itemize}
 \item{UserService.java}
