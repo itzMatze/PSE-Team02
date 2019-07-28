@@ -32,13 +32,12 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
         LinearLayout container = findViewById(R.id.container);
 
-        groupItem = new GroupItem(this, MensaMeetDisplayMode.BIG_EDITABLE, new Group());
+        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, new Group());
         container.addView(groupItem.getView());
 
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -55,7 +54,6 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             //lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
 
-
         }
     }
 
@@ -63,23 +61,24 @@ public class CreateGroupActivity extends MensaMeetActivity {
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
         if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
             Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
-        } else if (it.second ==  CreateGroupViewModel.State.BACK) {
+            gotoActivity(GroupJoinedActivity.class);
+        } else if (it.second == CreateGroupViewModel.State.BACK) {
             gotoActivity(SelectGroupActivity.class);
-        } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
+        } else if (it.second == CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
             Toast.makeText(this, R.string.error_saving_group, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         groupItem.saveEditedObjectData();
-        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.setGroup(groupItem.getObjectData());
+        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.saveGroupAndNext();
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         groupItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.setGroup(groupItem.getObjectData());

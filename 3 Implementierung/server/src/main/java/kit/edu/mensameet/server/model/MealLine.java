@@ -1,6 +1,7 @@
 package kit.edu.mensameet.server.model;
-/*
- * This enum represents the given meal Lines
+/**
+ * This enum represents all lines of the mensa where you can eat
+ *
  */
 public enum MealLine {
 	LINE_ONE("Linie 1 "),
@@ -20,14 +21,15 @@ public enum MealLine {
 	
 	
 private String name;
-	/*
-	 * With this constructor we can add a String containing the name, in particular the german translation
+	/**
+	 * 
+	 * @param name is the name of each meal line as a string
 	 */
 	private MealLine(String name) {
 		this.name = name;
 	}
-	/*
-	 * This method returns the name of the line
+	/**
+	 * this method returns the name of a meal line as a string
 	 */
 	public String toString(){
         return name;

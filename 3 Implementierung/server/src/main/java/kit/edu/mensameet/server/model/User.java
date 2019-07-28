@@ -9,13 +9,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.util.Date;
-/*
- * This class represents a user which is part of the server Model
+
+/**
+ * This class represents a user of the app
+ *
  */
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-	
+
 	@Id
 	private String token;
 	private String name;
@@ -27,25 +29,24 @@ public class User {
 	private int profilePictureId;
 	private boolean isAdmin = false;
 	private String groupToken;
-	/*
-	 * This constructor only contains the unique token, because a user first register himself with an e-mail and
-	 * password which already creates a user. The necessary profile parameters are added later
+
+	public User() {
+	}
+
+	/**
+	 * This constructor only contains the unique token, because a user first
+	 * register himself with an e-mail and password which already creates a user.
+	 * The necessary profile parameters are added later
+	 * 
+	 * @param token is the user token
 	 */
+
 	public User(String token) {
 		this.token = token;
 	}
-	
-	public User() {}
-	
-	public User(String token, 
-				String name, 
-				String motto, 
-				Date birthdate, 
-				Gender gender, 
-				Subject subject, 
-				Status status, 
-				int profilePictureId,
-				boolean isAdmin) {
+
+	public User(String token, String name, String motto, Date birthdate, Gender gender, Subject subject, Status status,
+			int profilePictureId, boolean isAdmin) {
 		this.token = token;
 		this.name = name;
 		this.motto = motto;
@@ -56,103 +57,140 @@ public class User {
 		this.profilePictureId = profilePictureId;
 		this.isAdmin = isAdmin;
 	}
-	
-	/*
-	 * default getter for the name
+
+	/**
+	 * 
+	 * @return the name of the user
 	 */
 	public String getName() {
 		return name;
 	}
-	/*
-	 * default setter for the name
+
+	/**
+	 * 
+	 * @param name is the name of a user as a string
 	 */
 	public void setname(String name) {
 		this.name = name;
 	}
-	/*
-	 * default getter for the token
+
+	/**
+	 * 
+	 * @return the unique token of an user
 	 */
 	public String getToken() {
 		return token;
 	}
-	
+
+	/**
+	 * 
+	 * @param token is the unique token of a user as a string
+	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
-	
-	/*
-	 * default getter for the motto
+
+	/**
+	 * 
+	 * @return the motto of an user
 	 */
 	public String getMotto() {
 		return motto;
 	}
-	/*
-	 * default setter for the motto
+
+	/**
+	 * 
+	 * @param motto is the motto of a user as a string
 	 */
 	public void setMotto(String motto) {
 		this.motto = motto;
 	}
-	/*
-	 * default getter for the birthdate
+
+	/**
+	 * 
+	 * @return the birthdate of a user
 	 */
 	public Date getBirthdate() {
 		return birthdate;
 	}
-	/*
-	 * default setter for the birthdate 
+
+	/**
+	 * 
+	 * @param birthdate is the birthdate of an user
 	 */
 	public void setDate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-	/*
-	 * default getter for the gender
+
+	/**
+	 * 
+	 * @return the gender of a user
 	 */
 	public Gender getGender() {
 		return gender;
 	}
-	/*
-	 * default setter for the gender 
+
+	/**
+	 * 
+	 * @param gender is the gender of a user from an enum class
 	 */
 	public void setGender(Gender gender) {
 		this.gender = gender;
 	}
-	/*
-	 * default getter for the subject
+
+	/**
+	 * 
+	 * @return the subject of an user
 	 */
 	public Subject getSubject() {
 		return subject;
 	}
-	/*
-	 * default setter for the subject
+
+	/**
+	 * 
+	 * @param subject is the subject of a user with the status prof or college
+	 *                student
 	 */
 	public void setSubject(Subject subject) {
 		this.subject = subject;
 	}
-	/*
-	 * default getter for the status
+
+	/**
+	 * 
+	 * @return the status of a user
 	 */
 	public Status getStatus() {
 		return status;
 	}
-	/*
-	 * default setter for the status
+
+	/**
+	 * 
+	 * @param status is the status of an user from the enum class status
 	 */
 	public void setStatus(Status status) {
 		this.status = status;
 	}
-	/*
-	 * default getter for the profile picture id
+
+	/**
+	 * 
+	 * @return the id of a profilepicture the user choosed
 	 */
 	public int getProfilePictureId() {
 		return profilePictureId;
 	}
-	/*
-	 * default setter for the profile picture id
+
+	/**
+	 * 
+	 * @param profilePictureId is an integer of the id of a profile picture
 	 */
 	public void setProfilePictureId(int profilePictureId) {
 		this.profilePictureId = profilePictureId;
 	}
-	
+
+	/**
+	 * 
+	 * @return a boolean wether an user is an administrator or not
+	 */
 	public boolean getIsAdmin() {
 		return isAdmin;
 	}

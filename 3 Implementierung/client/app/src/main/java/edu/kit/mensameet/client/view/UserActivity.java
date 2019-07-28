@@ -36,13 +36,26 @@ public class UserActivity extends MensaMeetActivity {
         if (user == null) {
             user = new User();
         }
-        userItem = new UserItem(this, MensaMeetDisplayMode.BIG_EDITABLE, user);
+        userItem = new UserItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, user);
         container.addView(userItem.getView());
 
         reloadData();
 
+        Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_SHORT).show();
+
         super.onCreate(savedInstanceState);
 
+        // If it is not the very first login
+        if (MensaMeetSession.getInstance().getUser() != null) {
+
+            if (buttonNext != null) {
+                buttonNext.setText(R.string.save);
+            }
+
+            if (buttonBack != null) {
+                buttonBack.setText(R.string.discard);
+            }
+        }
     }
 
     @Override
@@ -56,7 +69,6 @@ public class UserActivity extends MensaMeetActivity {
 
             userItem.setObjectData(user);
             userItem.fillObjectData();
-
         }
     }
 
@@ -66,13 +78,13 @@ public class UserActivity extends MensaMeetActivity {
             Toast.makeText(this, R.string.user_saved, Toast.LENGTH_SHORT).show();
         } else if (it.second == UserViewModel.State.BACK) {
             super.onBackPressed();
-        } else if (it.second ==  UserViewModel.State.ERROR_SAVING_USER) {
+        } else if (it.second == UserViewModel.State.ERROR_SAVING_USER) {
             Toast.makeText(this, R.string.error_saving_user, Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         userItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setUser(userItem.getObjectData());
         viewModel.setUser(userItem.getObjectData());
@@ -80,12 +92,11 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         userItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setUser(userItem.getObjectData());
         viewModel.setUser(userItem.getObjectData());
         Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_SHORT).show();
         gotoActivity(SelectGroupActivity.class);
     }
-
 }

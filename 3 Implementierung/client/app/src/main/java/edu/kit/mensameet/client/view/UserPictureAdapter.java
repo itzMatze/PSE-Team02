@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
@@ -25,15 +24,19 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         this.context = context;
 
         setItems(items);
-
     }
 
     // inflates the row layout from xml when needed
     @Override
     public UserPictureAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        LinearLayout view = new LinearLayout(parent.getContext());
-        view.setLayoutParams(WIDTH_MATCH_PARENT);
+        LinearLayout view = new LinearLayout(context);
+        view.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
+        view.setPadding(50, 50, 50, 50);
+
+        ImageView pictureView = new ImageView(context);
+        pictureView.setId(0);
+        view.addView(pictureView);
 
         return new UserPictureAdapter.ViewHolder(view);
     }
@@ -42,23 +45,15 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
     @Override
     public void onBindViewHolder(UserPictureAdapter.ViewHolder holder, int position) {
 
-        LinearLayout container = (LinearLayout)holder.itemView;
-        ImageView pictureView = new ImageView(context);
+        LinearLayout container = (LinearLayout) holder.itemView;
+        ImageView pictureView = container.findViewById(0);
+        pictureView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
         pictureView.setImageResource(items[position].getResourceId());
-        container.addView(pictureView);
-
-        if (selectedId == position) {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.selection_background));
-        } else {
-            holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.deselection_background));
-        }
-
     }
 
     public MensaMeetUserPicture getSelectedPicture() {
 
         return items[selectedId];
-
     }
 
     public void setSelectedPicture(MensaMeetUserPicture userPicture) {
@@ -109,7 +104,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         }
     }
 
-     // allows clicks events to be caught
+    // allows clicks events to be caught
     void setClickListener(UserPictureAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }

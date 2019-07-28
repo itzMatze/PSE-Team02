@@ -3,9 +3,9 @@
     <string name="cancel">Abbrechen</string>
     <string name="app_name">MensaMeet</string>
     <string name="title_home">Home</string>
-    <string name="title_back">Back</string>
-    <string name="title_next">Next</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_back">Zurück</string>
+    <string name="title_next">Weiter</string>
+    <string name="title_activity_home">Willkommen bei MensaMeet!</string>
     <string name="title_activity_user">UserActivity</string>
     <string name="title_activity_administer_groups">AdministerGroupsActivity</string>
     <string name="title_activity_administer_users">AdministerUsersActivity</string>
@@ -55,7 +55,7 @@
     <string name="gender_male">männlich</string>
     <string name="gender_female">weiblich</string>
     <string name="gender_other">divers</string>
-    <string name="status_meat">Fleisch essend</string>
+    <string name="status_meat">alles</string>
     <string name="status_vegetarian">vegetarisch</string>
     <string name="status_vegan">vegan</string>
     <string name="status_pescetarian">pescetarisch</string>
@@ -78,4 +78,23 @@
     <string name="email_title">E-Mail Adresse</string>
     <string name="password_title">Passwort</string>
     <string name="confirm_password_title">Passwort bestätigen</string>
+    <string name="selectALine">Wähle eine Linie aus</string>
+    <string name="your_gender">Du bist</string>
+    <string name="you_eat">Du isst</string>
+    <string name="your_subject">Deine Fachrichtung ist</string>
+    <string name="field_meals">Mahlzeiten</string>
+    <string name="title_select_lines">Wähle deine Mensalinie(n)</string>
+    <string name="title_set_time">Wann möchtest du essen gehen?</string>
+    <string name="title_select_group">Deine Gruppenvorschläge</string>
+    <string name="title_create_group">Lege eine neue Gruppe an</string>
+    <string name="title_user_profile">Dein Benutzerprofil</string>
+    <string name="change_picture_by_click">Klicke auf das Profilbild, um es zu verändern!</string>
+    <string name="discard">Verwerfen</string>
+    <string name="members">Mitglieder</string>
+    <string name="delete_group">Gruppe löschen</string>
+    <string name="delete_user">Benutzer löschen</string>
+    <string name="leave_group">Gruppe verlassen</string>
+    <string name="title_group_joined">Glückwunsch! Du isst mit</string>
+    <string name="title_general_user_profile">Details zum Benutzer</string>
+    <string name="create_button_description">Mit dem Button rechts kannst du auch eine eigene Gruppe anlegen!</string>
 </resources>

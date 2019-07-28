@@ -60,7 +60,6 @@ public class SelectLinesActivity extends MensaMeetActivity {
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -71,8 +70,6 @@ public class SelectLinesActivity extends MensaMeetActivity {
             //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
 
             lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
-
-
         }
     }
 
@@ -81,18 +78,18 @@ public class SelectLinesActivity extends MensaMeetActivity {
         if (it.second == SelectLinesViewModel.State.LINES_SAVED) {
             gotoActivity(SetTimeActivity2.class);
         } else if (it.second == SelectLinesViewModel.State.NO_LINES_SELECTED) {
-            Toast.makeText(this, getString(R.string.selectLine), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.selectALine), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         viewModel.setSelectedLines(lineList.getSelectedObjects());
         viewModel.saveLinesAndNext();
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
 
     }
 }

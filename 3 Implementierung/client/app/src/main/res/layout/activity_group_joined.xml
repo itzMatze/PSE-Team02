@@ -5,7 +5,7 @@
 
         <variable
             name="vm"
-            type="edu.kit.mensameet.client.viewmodel.UserViewModel" />
+            type="edu.kit.mensameet.client.viewmodel.GroupJoinedViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

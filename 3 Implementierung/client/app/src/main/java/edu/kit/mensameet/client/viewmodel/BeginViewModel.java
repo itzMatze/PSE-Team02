@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 
-import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.R;
 
@@ -23,7 +23,7 @@ public class BeginViewModel extends MensaMeetViewModel {
     public boolean isLoggedIn(Context context) {
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         String savedUsername = sharedPrefs.getString(context.getString(R.string.username_file_id), "");
-        User.getInstance().setUsername(savedUsername);
+        MensaMeetSession.getInstance().getUser().setName(savedUsername);
         return !savedUsername.equals("");
     }
 

@@ -19,15 +19,13 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
         this.selectedLines = selectedLines;
     }
 
-    public void saveLinesAndNext()
-    {
+    public void saveLinesAndNext() {
         if (selectedLines.size() > 0) {
             MensaMeetSession.getInstance().setChosenLines(selectedLines);
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.LINES_SAVED));
         } else {
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.NO_LINES_SELECTED));
         }
-
     }
 
     public enum State implements StateInterface {

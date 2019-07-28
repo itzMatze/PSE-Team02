@@ -1,11 +1,9 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +23,8 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
     private List<Boolean> selectionArray;
     private int selectedId;
 
+    private List<Boolean> expandedArray;
+
     // data is passed into the constructor
     MensaMeetListAdapter(Context context, List<MensaMeetItem<T>> items, MensaMeetList.DisplayMode displayMode) {
         this.context = context;
@@ -34,12 +34,17 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         this.displayMode = displayMode;
 
         if (displayMode == MensaMeetList.DisplayMode.MULTIPLE_SELECT) {
-            this.selectionArray = new ArrayList<Boolean>();
+            selectionArray = new ArrayList<Boolean>();
             for (int i = 0; i < items.size(); i++) {
-                this.selectionArray.add(i, false);
+                selectionArray.add(i, false);
             }
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
             selectedId = -1;
+        }
+
+        expandedArray = new ArrayList<Boolean>();
+        for (int i = 0; i < items.size(); i++) {
+            this.expandedArray.add(i, false);
         }
     }
 
@@ -48,7 +53,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
             selectionArray.set(i, false);
         }
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -88,6 +92,12 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.deselection_background));
             }
         }
+
+        View expandArea = items.get(position).getView().findViewById(R.id.expand_area);
+
+        if (expandArea != null) {
+            expandArea.setVisibility(expandedArray.get(position) ? View.VISIBLE : View.GONE);
+        }
     }
 
     public List<T> getSelectedObjects() {
@@ -107,7 +117,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
     }
 
     public void setSelectedObjects(List<T> objectList) {
-
 
         List<T> selectCandidates = new ArrayList<>();
 
@@ -135,8 +144,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                     }
                 }
             }
-
-
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
 
             if (selectCandidates.size() == 1) {
@@ -148,9 +155,7 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                     }
                 }
             }
-
         }
-
     }
 
     // total number of rows
@@ -174,13 +179,18 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         @Override
         public void onClick(View view) {
 
+            int position = getAdapterPosition();
+
             if (displayMode == MensaMeetList.DisplayMode.MULTIPLE_SELECT) {
-                selectionArray.set(getAdapterPosition(), !selectionArray.get(getAdapterPosition()));
-                notifyItemChanged(getAdapterPosition());
+                selectionArray.set(position, !selectionArray.get(position));
+                notifyItemChanged(position);
             } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
-                selectedId = getAdapterPosition();
+                selectedId = position;
                 notifyItemRangeChanged(0, items.size());
             }
+
+            expandedArray.set(position, !expandedArray.get(position));
+            notifyItemChanged(position);
 
             if (mClickListener != null) mClickListener.onItemClick(view, getAdapterPosition());
         }

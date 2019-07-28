@@ -18,7 +18,7 @@ public class GroupList extends MensaMeetList<Group> {
         List<MensaMeetItem<Group>> items = new ArrayList<>();
 
         for (Group group : super.data) {
-            GroupItem item = new GroupItem(super.context, MensaMeetDisplayMode.SMALL, group);
+            GroupItem item = new GroupItem(super.context, MensaMeetItem.DisplayMode.SMALL, group);
             items.add(item);
         }
 

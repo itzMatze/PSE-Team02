@@ -34,8 +34,8 @@ public class MensaMeetTime {
     }
 
     public MensaMeetTime(Date startTime, Date endTime) {
-       setStartTime(startTime);
-       setEndTime(endTime);
+        setStartTime(startTime);
+        setEndTime(endTime);
     }
 
     public boolean isInterval() {
@@ -58,20 +58,37 @@ public class MensaMeetTime {
         return startTime.toString();
     }
 
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+    private static SimpleDateFormat simpleTimeFormat = new SimpleDateFormat("HH:mm");
 
-    public static Date stringToDate(String timeString) {
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:mm:yyyy");
+
+    public static Date stringToTime(String timeString) {
         if (timeString == null) return null;
         try {
-            return simpleDateFormat.parse(timeString);
-        } catch (ParseException e){
-            // TODO: Fehlerbehandlung
+            return simpleTimeFormat.parse(timeString);
+        } catch (ParseException e) {
+
             return null;
         }
     }
 
-    public static String dateToString(Date date) {
-        if (date == null) return null;
-        return simpleDateFormat.format(date);
+    public static String timeToString(Date time) {
+        if (time == null) return null;
+        return simpleTimeFormat.format(time);
+    }
+
+    public static Date stringToDate(String dateString) {
+        if (dateString == null) return null;
+        try {
+            return simpleDateFormat.parse(dateString);
+        } catch (ParseException e) {
+
+            return null;
+        }
+    }
+
+    public static String dateToString(Date time) {
+        if (time == null) return null;
+        return simpleDateFormat.format(time);
     }
 }

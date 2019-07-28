@@ -23,12 +23,13 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
-/*
- * This class represents a group, which is part of the server Model
+/**
+ * This class represents a group.
+ *
  */
 
 @Entity
-@Table (name = "mm_groups")
+@Table(name = "mm_groups")
 public class Group {
 	@Id
 	private String token;
@@ -36,7 +37,7 @@ public class Group {
 	private String motto;
 	private int maxMembers;
 	private LocalTime meetingTime;
-	
+
 	@Enumerated(EnumType.STRING)
 	private MealLine line;
 
@@ -45,7 +46,7 @@ public class Group {
 	@OrderColumn
 	@NotFound(action = NotFoundAction.IGNORE)
 	private List<User> members;
-	
+
 	public Group() {
 		this.token = UUID.randomUUID().toString();
 	}
@@ -58,84 +59,119 @@ public class Group {
 		this.meetingTime = time;
 		this.token = UUID.randomUUID().toString();
 	}
-	
-	
-	/*
-	 * default setter for token
+
+	/**
+	 * 
+	 * @param token is a unique identification for each group
 	 */
 	public void setToken(String token) {
 		this.token = token;
 	}
-	/*
-	 * default getter for token
+
+	/**
+	 * 
+	 * @return the unique token
 	 */
 	public String getToken() {
 		return token;
 	}
-	/*
-	 * default getter for name
+
+	/**
+	 * 
+	 * @return the name of a group
 	 */
 	public String getName() {
 		return name;
 	}
-	/*
-	 * default setter for name
+
+	/**
+	 * 
+	 * @param name is the name of group
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	/*
-	 * default getter for motto
+
+	/**
+	 * 
+	 * @return the motto of a group as a string
 	 */
 	public String getMotto() {
 		return motto;
 	}
-	/*
-	 * default setter for motto
+
+	/**
+	 * 
+	 * @param motto is the motto of a group
 	 */
 	public void setMotto(String motto) {
 		this.motto = motto;
 	}
-	/*
-	 * default getter for the maximal member count
+
+	/**
+	 * 
+	 * @return an integer of the maximal number of members allowed in this group
 	 */
 	public int getMaxMembers() {
 		return maxMembers;
 	}
 
-	/*
-	 * default getter for Line
+	/**
+	 * 
+	 * @return the mealline choosed in this group
 	 */
 	public MealLine getLine() {
 		return line;
 	}
-	/*
-	 * default setter for Line
+
+	/**
+	 * 
+	 * @param line is the mealline were the group will eat
 	 */
 	public void setMealLine(MealLine line) {
 		this.line = line;
 	}
-	/*
-	 * default getter for the group members
+
+	/**
+	 * 
+	 * @return a list of the users who joined the group
 	 */
 	public List<User> getMembers() {
 		return members;
 	}
-	/*
-	 * adds a user to the group and increments the current member count 
+
+	/**
+	 * 
+	 * @param user is a user who wants to join the group
 	 */
 	public void addMembers(User user) {
-		if (members.size() < maxMembers) {			
+		if (members.size() < maxMembers) {
 			members.add(user);
 		}
 	}
-	
+
+	/**
+	 * 
+	 * @return the current number of memebrs of this group
+	 */
+	public int getMemberCount() {
+		return members.size();
+	}
+
+	/**
+	 * 
+	 * @return the time this group wants to eat
+	 */
 	public LocalTime getMeetingTime() {
 		return meetingTime;
 	}
-	
+
+	/**
+	 * 
+	 * @param meetingTime is the time this group wants to go to eat
+	 */
 	public void setMeetingTime(LocalTime meetingTime) {
 		this.meetingTime = meetingTime;
-		//LocalTime meetingTime = LocalTime.parse( "20:11:13" ); falls String
+		// LocalTime meetingTime = LocalTime.parse( "20:11:13" ); falls String
 	}
 }

@@ -19,6 +19,7 @@ public class BeginActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);

@@ -11,7 +11,10 @@ public class MensaMeetUserPictureList {
     private MensaMeetUserPictureList() {
         pictures = new MensaMeetUserPicture[]{
                 new MensaMeetUserPicture(0, R.drawable.arrow_left),
-                new MensaMeetUserPicture(1, R.drawable.arrow_left),
+                new MensaMeetUserPicture(1, R.drawable.arrow_right),
+                new MensaMeetUserPicture(2, R.drawable.common_google_signin_btn_text_light_normal),
+                new MensaMeetUserPicture(3, R.drawable.burger),
+                new MensaMeetUserPicture(4, R.drawable.common_full_open_on_phone),
         };
     }
 
@@ -21,7 +24,7 @@ public class MensaMeetUserPictureList {
 
     public MensaMeetUserPicture getPictureById(int id) {
 
-        for(MensaMeetUserPicture picture : pictures) {
+        for (MensaMeetUserPicture picture : pictures) {
             if (picture.getPictureId() == id) {
                 return picture;
             }
@@ -37,6 +40,4 @@ public class MensaMeetUserPictureList {
     public MensaMeetUserPicture[] getPictures() {
         return pictures;
     }
-
-
 }

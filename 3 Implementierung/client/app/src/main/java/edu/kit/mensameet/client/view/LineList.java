@@ -20,7 +20,7 @@ public class LineList extends MensaMeetList<Line> {
         List<MensaMeetItem<Line>> items = new ArrayList<>();
 
         for (Line line : super.data) {
-            LineItem item = new LineItem(super.context, MensaMeetDisplayMode.SMALL, line);
+            LineItem item = new LineItem(super.context, MensaMeetItem.DisplayMode.SMALL, line);
             items.add(item);
         }
 

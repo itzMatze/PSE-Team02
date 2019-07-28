@@ -39,11 +39,11 @@ public class TestActivity extends AppCompatActivity {
 
         List<User> userList1 = new ArrayList<User>();
         User u1 = new User();
-        u1.setUsername("User1");
+        u1.setName("User1");
         u1.setMotto("Motto1");
         userList1.add(u1);
         User u2 = new User();
-        u2.setUsername("User2");
+        u2.setName("User2");
         u2.setMotto("Motto2");
         userList1.add(u2);
         g1.setUsers(userList1);

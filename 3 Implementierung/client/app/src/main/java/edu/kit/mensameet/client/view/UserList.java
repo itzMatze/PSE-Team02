@@ -1,6 +1,7 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,15 @@ public class UserList extends MensaMeetList<User> {
         List<MensaMeetItem<User>> items = new ArrayList<>();
 
         for (User user : super.data) {
-            UserItem item = new UserItem(super.context, MensaMeetDisplayMode.SMALL, user);
+            UserItem item = new UserItem(context, MensaMeetItem.DisplayMode.SMALL, user);
             items.add(item);
         }
 
         return items;
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        ((UserItem) adapter.getItem(position)).getHandler().showUser();
     }
 }

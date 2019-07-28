@@ -2,7 +2,6 @@ package edu.kit.mensameet.client.view;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -10,18 +9,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.view.databinding.ActivitySetTime2Binding;
-import edu.kit.mensameet.client.view.databinding.ActivitySetTimeBinding;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
-import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
-import edu.kit.mensameet.client.viewmodel.SetTimeViewModel;
 import edu.kit.mensameet.client.viewmodel.SetTimeViewModel2;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -47,10 +42,11 @@ public class SetTimeActivity2 extends MensaMeetActivity {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        startTime = findViewById(R.id.startTime);
-        startTime.setTextAppearance(this, R.style.link_text);
-        endTime = findViewById(R.id.endTime);
-        endTime.setTextAppearance(this, R.style.link_text);
+        startTime = findViewById(R.id.startTimeText);
+        MensaMeetUtil.applyStyle(startTime, R.style.link_text);
+
+        endTime = findViewById(R.id.endTimeText);
+        MensaMeetUtil.applyStyle(endTime, R.style.link_text);
 
         startTime.setOnClickListener(new View.OnClickListener() {
             private int chosenHour = 12;
@@ -75,7 +71,6 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
                 timePickerDialogStart.show();
             }
-
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
@@ -101,13 +96,11 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
                 timePickerDialogEnd.show();
             }
-
         });
 
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     protected void reloadData() {
@@ -116,9 +109,8 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
         if (savedTime != null) {
 
-            startTime.setText(MensaMeetTime.dateToString(savedTime.getStartTime()));
-            endTime.setText(MensaMeetTime.dateToString(savedTime.getEndTime()));
-
+            startTime.setText(MensaMeetTime.timeToString(savedTime.getStartTime()));
+            endTime.setText(MensaMeetTime.timeToString(savedTime.getEndTime()));
         }
     }
 
@@ -132,12 +124,12 @@ public class SetTimeActivity2 extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         viewModel.saveTimeAndNext();
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         viewModel.saveTimeAndBack();
     }
 }
