@@ -4,6 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import java.util.Date;
@@ -24,7 +26,7 @@ public class User {
 	private Status status;
 	private int profilePictureId;
 	private boolean isAdmin = false;
-	
+	private String groupToken;
 	/*
 	 * This constructor only contains the unique token, because a user first register himself with an e-mail and
 	 * password which already creates a user. The necessary profile parameters are added later
@@ -153,5 +155,13 @@ public class User {
 	
 	public boolean getIsAdmin() {
 		return isAdmin;
+	}
+	
+	public String getGroupToken() {
+		return groupToken;
+	}
+	
+	public void setGroupToken(String groupToken) {
+		this.groupToken = groupToken;
 	}
 }

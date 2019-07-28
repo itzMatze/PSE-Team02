@@ -12,7 +12,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import org.hibernate.annotations.CascadeType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -37,6 +39,7 @@ public class Group {
 	
 	@Enumerated(EnumType.STRING)
 	private MealLine line;
+
 
 	@OneToMany
 	@OrderColumn
@@ -125,12 +128,6 @@ public class Group {
 		if (members.size() < maxMembers) {			
 			members.add(user);
 		}
-	}
-	/*
-	 * default getter for current member count
-	 */
-	public int getMemberCount() {
-		return members.size();
 	}
 	
 	public LocalTime getMeetingTime() {
