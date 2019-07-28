@@ -15,6 +15,12 @@ public class FirebaseAuthentifcator {
 	@Value("${production.mode}")
 	private boolean productionMode; 
 	
+	/**
+	 * Authenticates a firebase token and encrypts it to the user token.
+	 * 
+	 * @param firebaseToken  for verifying the request and to be encrypted to the user token.
+	 * @return the userToken.
+	 */
 	public String authenticateAndEncryptFirebaseTokenToUserToken(String firebaseToken) {
 		String userToken;
 		
@@ -32,6 +38,11 @@ public class FirebaseAuthentifcator {
 		}
 	}
 	
+	/**
+	 * Authenticates a firebaseToken.
+	 * 
+	 * @param firebaseToken to be authenticated.
+	 */
 	public void authenticateFirebaseToken(String firebaseToken) {
 		if (productionMode) {
 			try {

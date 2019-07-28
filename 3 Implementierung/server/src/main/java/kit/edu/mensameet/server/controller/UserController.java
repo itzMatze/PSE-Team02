@@ -38,6 +38,12 @@ public class UserController {
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
+	/**
+	 * Returns the user identified by the userToken.
+	 * 
+	 * @param userToken the token the user is identified with.
+	 * @return the user identified by the userToken.
+	 */
 	public User getUser(String userToken) {
 		User user = userRepository.getUserByToken(userToken);
 		
@@ -48,6 +54,11 @@ public class UserController {
 		return user; 
 	}
 	
+	/**
+	 * Adds a user to the database.
+	 * 
+	 * @param userToken the token the user that gets added should have.
+	 */
 	public void addUserWithToken(String userToken) {
 		User user = userRepository.getUserByToken(userToken);
 		
@@ -56,22 +67,14 @@ public class UserController {
 		}
 		
 		userRepository.save(new User(userToken));
-		
-		if (!productionMode) {
-			//While testing user have to be added manually to the firebase database.
-			CreateRequest request = new CreateRequest();
-			request
-				.setEmail(userToken + "@testmail.com")
-				.setPassword("s3cret");
-			
-			try {
-				FirebaseAuth.getInstance().createUser(request);
-			} catch (FirebaseAuthException e) {
-				e.printStackTrace();
-			}
-		}
 	}
 	
+	/**
+	 * Updates a user in the database.
+	 * 
+	 * @param user the user data that the updated user should have.
+	 * @param userToken the token the user is idnetified with.
+	 */
 	public void updateUser(User user, String userToken) {
 		//used to check wether user exists, if not an exception is thrown.
 		getUser(userToken);
@@ -80,6 +83,11 @@ public class UserController {
 		userRepository.save(user);
 	}
 	
+	/**
+	 * Deletes a user from the databas.
+	 * 
+	 * @param userToken the token the user is identified with.
+	 */
 	public void deleteUser(String userToken) {		
 		User userToDelete = getUser(userToken);
 		
@@ -103,7 +111,9 @@ public class UserController {
 		}
 	}
 	
-    
+    /**
+     * Initializes the admin user.
+     */
     public void initializeAdminUser() {
     	User adminUser = userRepository.getUserByToken(adminToken);
     	
@@ -113,5 +123,12 @@ public class UserController {
     	}
     	
     	System.out.println("admin user was added.");
+    }
+    
+    /**
+     * Deletes all user and is for testing purposes only.
+     */
+    public void deleteAllUser() {
+    	userRepository.deleteAll();
     }
 }

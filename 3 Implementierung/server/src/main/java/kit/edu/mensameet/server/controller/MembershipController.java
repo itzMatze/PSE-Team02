@@ -19,6 +19,12 @@ public class MembershipController {
 	@Autowired
 	private GroupRepository groupRepository;
 	
+	/**
+	 * Adss a user to a group.
+	 * 
+	 * @param user the user to be added.
+	 * @param group the group the user should get added to.
+	 */
 	public void addUserToGroup(User user, Group group) {
 		if (group.getMembers().size() + 1 > group.getMaxMembers()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Group is already full.");
@@ -30,6 +36,12 @@ public class MembershipController {
 		}
 	}
 	
+	/**
+	 * Removes a user from a group.
+	 * 
+	 * @param user the user that should get removed.
+	 * @param group the group the user should get removed from.
+	 */
 	public void removeUserFromGroup(User user, Group group) {
 		Iterator<User> iterator = group.getMembers().iterator();
 		

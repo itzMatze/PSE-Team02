@@ -31,25 +31,50 @@ public class UserService {
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
+	/**
+	 * This method returns a user identified by the userToken.
+	 * 
+	 * @param firebaseToken the token of the session to verify the request.
+	 * @param userToken the token of the requested user
+	 * @return returns the user indetified by the userToken
+	 */
 	@RequestMapping("/user") 
 	public User	getUserByToken(@RequestHeader(value = "firebaseToken")String firebaseToken, 
 							   @RequestHeader(value="userToken") String userToken) {
 		fbAuth.authenticateFirebaseToken(firebaseToken);
 		return userController.getUser(userToken);
 	}
-	
+
+	/**
+	 * Creates a user with the id encrypted from the firebaseToken.
+	 * 
+	 * @param firebaseToken firebaseToken the token of the session to verify the request.
+	 * 		  Also the user is encrypted from the token.
+	 */
     @PostMapping("/user")
     void createUser(@RequestHeader(value="firebaseToken") String firebaseToken) {
     	String userToken = fbAuth.authenticateAndEncryptFirebaseTokenToUserToken(firebaseToken);
     	userController.addUserWithToken(userToken);
     }
     
+    /**
+     * Updates a user in the database.
+     * 
+     * @param user the user information that should be saved.
+     * @param firebaseToken for verifying the request and to be encrypted to the user token.
+     */
     @PutMapping("/user") 
     public void updateUser(@RequestBody User user, @RequestHeader(value = "firebaseToken") String firebaseToken) {
     	String userToken = fbAuth.authenticateAndEncryptFirebaseTokenToUserToken(firebaseToken);
     	userController.updateUser(user, userToken);
     }
     
+    /**
+     * Deletes a user from the database.
+     * 
+     * @param firebaseToken for verifying the request.
+     * @param userToken of the user that should be deleted.
+     */
     @DeleteMapping("/user")
     public void deleteUser(@RequestParam(value="firebaseToken") String firebaseToken,
     					   @RequestParam(value="userToken") String userToken) {

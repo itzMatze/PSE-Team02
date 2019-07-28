@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
 import kit.edu.mensameet.server.Application;
+import kit.edu.mensameet.server.controller.GroupController;
 import kit.edu.mensameet.server.controller.GroupRepository;
 import kit.edu.mensameet.server.controller.MembershipController;
 import kit.edu.mensameet.server.controller.UserController;
@@ -35,10 +36,13 @@ public class MembershipControllerTest {
 	Group group;
 
 	@Autowired
-	MembershipController controller;
+	UserController userController;
+
+	@Autowired
+	GroupController groupController;
 	
 	@Autowired
-	GroupRepository repository;
+	MembershipController controller;
 	
 	private LocalTime meetingTime = LocalTime.of(12, 30);
 	
@@ -93,7 +97,9 @@ public class MembershipControllerTest {
 	@After
 	public void tearDown() {
 		users = null;
+		//userController.deleteAllUser();
 		group = null;
+		//groupController.removeAllGroups();
 		controller = null;
 	}
 }

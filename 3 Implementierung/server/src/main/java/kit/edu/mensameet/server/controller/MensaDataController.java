@@ -26,20 +26,15 @@ public class MensaDataController {
 	
 	
 	public MensaData getMensaData() throws IOException {
-//		if (!(today.getDayOfWeek() == DayOfWeek.SATURDAY ||	today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+		if (!(today.getDayOfWeek() == DayOfWeek.SATURDAY ||	today.getDayOfWeek() == DayOfWeek.SUNDAY)) {
 			if (mensaData == null) {
 				updateMensaData() ;
 			}
-//		}
-//		System.out.println("Wochenende :o");
+		}
 		
 		return mensaData;
 	}
 	
-	
-	
-	
-
 	public void updateMensaData() throws IOException {
 		
 		int weekNumber = today.get(IsoFields.WEEK_OF_WEEK_BASED_YEAR);

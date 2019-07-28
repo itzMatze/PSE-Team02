@@ -30,6 +30,12 @@ public class GroupController {
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
+	/**
+	 * Returns a group identified by the token.
+	 * 
+	 * @param token of the group.
+	 * @return the group identified by the token.
+	 */
 	public Group getGroup(String token) {
 		Group group = groupRepository.getGroupByToken(token);
 		
@@ -40,15 +46,26 @@ public class GroupController {
 		return group;
 	}
 	
+	/**
+	 * Adds a group to the database.
+	 * 
+	 * @param group the group to be added.
+	 * @return the just added group.
+	 */
 	public Group addGroup(Group group) {
 		return groupRepository.save(group);
 	}
 	
+	/**
+	 * Removes a group from the database.
+	 * 
+	 * @param groupToken the token of the group that should be deleted.
+	 */
 	public void removeGroup(String groupToken) {
 		Group group = groupRepository.getGroupByToken(groupToken);
 		
 		if(group != null) {
-			group.getMembers().forEach(member ->{
+			group.getMembers().forEach(member -> {
 				member.setGroupToken(null);
 				userRepository.save(member);
 			});
@@ -59,6 +76,9 @@ public class GroupController {
 		}
 	}
 	
+	/**
+	 * Removes all groups from the repository.
+	 */
 	public void removeAllGroups() {
 		groupRepository.deleteAll();
 		userRepository.findAll().forEach(member -> {
@@ -66,11 +86,21 @@ public class GroupController {
 		});
 	}
 	
+	/**
+	 * Returns all groups. Is only supposed to be used for testing purposes.
+	 * @return all groups in the databse.
+	 */
 	public Group[] getAllGroups() {
 		Group[] groups = StreamSupport.stream(groupRepository.findAll().spliterator(), false).toArray(Group[]::new);
 		return groups;
 	}
 	
+	/**
+	 * Returns all groups fitting to the preferences.
+	 * 
+	 * @param pref the preferences that should be searched with.
+	 * @return all groups fitting to the preferences.
+	 */
 	public Group[] getGroupByPreferences(Preference pref) {
 		Group[] allGroups = getAllGroups();
 		List<Group> fittingGroups = new ArrayList<Group>();
