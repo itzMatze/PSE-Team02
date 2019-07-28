@@ -10,6 +10,10 @@ import static org.junit.Assert.assertEquals;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 public class MensaMeetSessionTest {
+
+    /*
+    tests the functionality of the singleton object MensaMeetSession
+     */
     @Test
     public void singleton_test() {
         MensaMeetSession mensaMeetSession = MensaMeetSession.getInstance();
