@@ -28,6 +28,7 @@ import kit.edu.mensameet.server.model.User;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
+@AutoConfigureMockMvc
 public class MembershipControllerTest {
 
 	User[] users;
@@ -55,7 +56,8 @@ public class MembershipControllerTest {
 	@Test
 	public void addUserWhenGroupEmpty() {
 		controller.addUserToGroup(users[0], group);
-		assertEquals(group.getMembers().indexOf(0), users[0]);
+		//assertEquals(group.getMembers().indexOf(users[0]), 0);
+		assertEquals(group.getMembers().get(0).getToken(), users[0].getToken());
 	}
 	
 	@Test(expected = ResponseStatusException.class)
@@ -70,6 +72,7 @@ public class MembershipControllerTest {
 	public void removeLastUserFromGroup() {
 		controller.addUserToGroup(users[0], group);
 		controller.removeUserFromGroup(users[0], group);
+		assertEquals(group.getMembers().size(), 0);
 	}
 	
 //	@Test

@@ -18,6 +18,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import com.google.api.client.util.DateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -42,7 +43,7 @@ public class Group {
 	@OneToMany
 	@OrderColumn
 	@NotFound(action = NotFoundAction.IGNORE)
-	private List<User> members;
+	private List<User> members = new ArrayList<User>();
 
 	public Group() {
 		this.token = UUID.randomUUID().toString();
@@ -115,7 +116,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @return the mealline choosed in this group
+	 * @return the MealLine chosen in this group
 	 */
 	public MealLine getLine() {
 		return line;
@@ -123,7 +124,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @param line is the mealline were the group will eat
+	 * @param line is the MealLine were the group will eat
 	 */
 	public void setMealLine(MealLine line) {
 		this.line = line;
@@ -149,7 +150,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @return the current number of memebrs of this group
+	 * @return the current number of members of this group
 	 */
 	public int getMemberCount() {
 		return members.size();
