@@ -42,13 +42,11 @@ public class SetTimeActivity2 extends MensaMeetActivity {
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        startTime = findViewById(R.id.startTime);
+        startTime = findViewById(R.id.startTimeText);
         MensaMeetUtil.applyStyle(startTime, R.style.link_text);
-        startTime.setBackgroundColor(getResources().getColor(R.color.text_select));
 
-        endTime = findViewById(R.id.endTime);
+        endTime = findViewById(R.id.endTimeText);
         MensaMeetUtil.applyStyle(endTime, R.style.link_text);
-        endTime.setBackgroundColor(getResources().getColor(R.color.text_select));
 
         startTime.setOnClickListener(new View.OnClickListener() {
             private int chosenHour = 12;
@@ -114,8 +112,8 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
         if (savedTime != null) {
 
-            startTime.setText(MensaMeetTime.dateToString(savedTime.getStartTime()));
-            endTime.setText(MensaMeetTime.dateToString(savedTime.getEndTime()));
+            startTime.setText(MensaMeetTime.timeToString(savedTime.getStartTime()));
+            endTime.setText(MensaMeetTime.timeToString(savedTime.getEndTime()));
 
         }
     }

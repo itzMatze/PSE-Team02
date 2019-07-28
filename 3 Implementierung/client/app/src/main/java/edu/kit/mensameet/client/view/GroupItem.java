@@ -11,15 +11,20 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.StringRes;
+
 import java.util.Date;
 import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public class GroupItem extends MensaMeetItem<Group> {
@@ -170,7 +175,7 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         if (displayMode == DisplayMode.SMALL || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
-            view.addView(createTextField(R.string.field_max_members, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+            view.addView(createTextField(R.string.members, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
 
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
@@ -197,8 +202,14 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         }
 
+        LinearLayout expandArea = new LinearLayout(context);
+        expandArea.setOrientation(LinearLayout.VERTICAL);
+        //expandArea.setLayoutParams(WIDTH_MATCH_PARENT);
+        expandArea.setId(R.id.expand_area);
+        expandArea.setPadding(0,0,0,0);
+        MensaMeetUtil.applyStyle(expandArea, R.style.expand_area);
 
-            // Field: Join button
+        // Field: Join button
         if (displayMode == DisplayMode.SMALL) {
 
             final Button joinButton = new Button(context);
@@ -206,13 +217,37 @@ public class GroupItem extends MensaMeetItem<Group> {
             joinButton.setText(R.string.join_group);
             joinButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
+
+                    handler.setGroup(objectData);
+                    MensaMeetSession.getInstance().setCreatedGroup(objectData);
                     handler.joinGroup();
                 }
             });
             joinButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
 
-            view.addView(joinButton);
+            expandArea.addView(joinButton);
         }
+
+        // Field: Delete button
+
+        if (MensaMeetSession.getInstance().getUser().isAdmin()) {
+
+            if (displayMode == DisplayMode.SMALL) {
+
+                final Button deleteButton = new Button(context);
+                deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                deleteButton.setText(R.string.delete_group);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        handler.deleteGroup();
+                    }
+                });
+                deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
+
+                expandArea.addView(deleteButton);
+            }
+        }
+
 
         // Field: User list
         if (displayMode != DisplayMode.BIG_EDITABLE) {
@@ -222,8 +257,10 @@ public class GroupItem extends MensaMeetItem<Group> {
             userListContainer.setLayoutParams(WIDTH_MATCH_PARENT);
             userListContainer.setId((int)R.string.field_member_list);
 
-            view.addView(userListContainer);
+            expandArea.addView(userListContainer);
         }
+
+        view.addView(expandArea);
 
 
         return view;
@@ -237,7 +274,7 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         Date time = objectData.getMeetingDate();
         if (time != null) {
-            fillTextField(R.string.field_time, MensaMeetTime.dateToString(time));
+            fillTextField(R.string.field_time, MensaMeetTime.timeToString(time));
         }
 
         String line = objectData.getLine();
@@ -246,10 +283,24 @@ public class GroupItem extends MensaMeetItem<Group> {
         }
 
         View maxMembersField = view.findViewById((int)R.string.field_max_members);
-        if (maxMembersField.getClass() == Spinner.class) {
+        if (maxMembersField != null && maxMembersField.getClass() == Spinner.class) {
             ((Spinner)maxMembersField).setSelection(objectData.getMaxMembers());
-        } else {
-            fillTextField(R.string.field_max_members, Integer.toString(objectData.getMaxMembers()));
+        }
+
+        View membersField = view.findViewById((int)R.string.members);
+        if (membersField != null) {
+
+            int userNumber;
+            if (objectData.getUsers() != null) {
+                userNumber = objectData.getUsers().size();
+            } else {
+                userNumber = 0;
+            }
+
+            String occupation = userNumber + "/" +
+                    objectData.getMaxMembers();
+
+            fillTextField(R.string.members, occupation);
         }
 
         fillSublist(R.string.field_member_list, userList);
@@ -261,22 +312,21 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         objectData.setName(super.extractTextField(R.string.field_name));
         objectData.setMotto(super.extractTextField(R.string.field_motto));
-        objectData.setMeetingDate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_time)));
+        objectData.setMeetingDate(MensaMeetTime.stringToTime(super.extractTextField(R.string.field_time)));
         objectData.setLine(super.extractTextField(R.string.field_line));
 
-        if (view.findViewById((int)R.string.field_max_members).getClass() == Spinner.class) {
-            objectData.setMaxMembers(((Spinner)view.findViewById((int)R.string.field_max_members)).getSelectedItemPosition());
-        } else {
-            String maxMembers = super.extractTextField(R.string.field_max_members);
-            if (maxMembers == null) {
-                objectData.setMaxMembers(0);
-            } else {
-                objectData.setMaxMembers(Integer.parseInt(super.extractTextField(R.string.field_max_members)));
-            }
+        String maxMembers = extractSpinnerField(R.string.field_max_members);
 
+        if (maxMembers == null) {
+            objectData.setMaxMembers(0);
+        } else {
+            objectData.setMaxMembers(Integer.parseInt(maxMembers));
         }
 
+    }
 
+    public UserList getUserList() {
+        return userList;
     }
 
 }

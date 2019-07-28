@@ -63,6 +63,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
         if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
             Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
+            gotoActivity(GroupJoinedActivity.class);
         } else if (it.second ==  CreateGroupViewModel.State.BACK) {
             gotoActivity(SelectGroupActivity.class);
         } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
@@ -73,8 +74,8 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     public void onClickNext() {
         groupItem.saveEditedObjectData();
-        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.setGroup(groupItem.getObjectData());
+        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.saveGroupAndNext();
     }
 

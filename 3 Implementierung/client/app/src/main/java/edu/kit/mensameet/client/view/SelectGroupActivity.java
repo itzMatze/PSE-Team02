@@ -21,14 +21,28 @@ import java.util.List;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.databinding.ActivitySelectGroupBinding;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SelectGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
+import edu.kit.mensameet.client.viewmodel.UserItemHandler;
 
 public class SelectGroupActivity extends MensaMeetActivity {
+
+    protected SingleLiveEvent<StateInterface> activityEventLiveData;
+
+    public SingleLiveEvent<StateInterface> getActivityEventLiveData() {
+        if (activityEventLiveData == null) {
+            activityEventLiveData = new SingleLiveEvent<>();
+            activityEventLiveData.setValue(State.DEFAULT);
+        }
+        return activityEventLiveData;
+    }
+
+    public enum State implements StateInterface { DEFAULT, NEXT }
 
     private SelectGroupViewModel viewModel;
     private ActivitySelectGroupBinding binding;
@@ -39,6 +53,15 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        getActivityEventLiveData().observe(this, new Observer<StateInterface>() {
+            @Override
+            public void onChanged(StateInterface stateInterface) {
+                if (stateInterface == State.NEXT) {
+                    gotoActivity(GroupJoinedActivity.class);
+                }
+            }
+        });
 
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.viewModel = viewModel;
@@ -63,13 +86,14 @@ public class SelectGroupActivity extends MensaMeetActivity {
         Group g1 = new Group();
         g1.setName("Gruppe1");
         g1.setMotto("Motto1");
-        g1.setMeetingDate(MensaMeetTime.stringToDate("12:00"));
+        g1.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
         g1.setLine("Linie 1");
 
         List<User> userList1 = new ArrayList<User>();
         User u1 = new User();
         u1.setName("User1");
         u1.setMotto("Motto1");
+        u1.setProfilePictureId(2);
         userList1.add(u1);
         User u2 = new User();
         u2.setName("User2");
@@ -81,21 +105,21 @@ public class SelectGroupActivity extends MensaMeetActivity {
         Group g2 = new Group();
         g2.setName("Gruppe2");
         g2.setMotto("Motto2");
-        g2.setMeetingDate(MensaMeetTime.stringToDate("12:00"));
+        g2.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
         g2.setLine("Linie 1");
         dataList.add(g2);
 
         Group g3 = new Group();
         g3.setName("Gruppe3");
         g3.setMotto("Motto3");
-        g3.setMeetingDate(MensaMeetTime.stringToDate("12:00"));
+        g3.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
         g3.setLine("Linie 1");
         dataList.add(g3);
 
         Group g4 = new Group();
         g4.setName("Gruppe3");
         g4.setMotto("Motto3");
-        g4.setMeetingDate(MensaMeetTime.stringToDate("12:00"));
+        g4.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
         g4.setLine("Linie 1");
         dataList.add(g4);
 
@@ -107,9 +131,12 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         container.addView(groupList.getView());
 
+        GroupItem item;
+
+
         for (int i = 0; i < groupList.getItemCount(); i++) {
 
-            GroupItem item = (GroupItem)groupList.getItem(i);
+            item = (GroupItem)groupList.getItem(i);
 
             if (item != null) {
                 GroupItemHandler handler = item.getHandler();
@@ -122,25 +149,58 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
                         if (it.second == GroupItemHandler.State.GROUP_JOINED) {
                             Toast.makeText(me, "changed2", Toast.LENGTH_SHORT).show();
-                            //gotoActivity(GroupJoinedActivity.class);
-                        } else if (it.second == SelectGroupViewModel.State.BACK) {
-                            gotoActivity(SetTimeActivity2.class);
+
+
+                            gotoActivity(GroupJoinedActivity.class);
+                        } else if (it.second == GroupItemHandler.State.GROUP_DELETED) {
+                            //new group by preferences request to refresh session data and restart activity
+
+                            //getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
+                            finish();
+                            startActivity(getIntent());
+
                         }
                     }
                 });
+
             }
+
+            for (int j = 0; j < item.getUserList().getItemCount(); j++) {
+
+                UserItem userItem = (UserItem)item.getUserList().getItem(j);
+
+                if (userItem != null) {
+
+                    UserItemHandler userItemHandler = (UserItemHandler)userItem.getHandler();
+
+                    userItemHandler.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+                        @Override
+                        public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+
+                            if (it.second == UserItemHandler.State.SHOW_USER) {
+                                gotoActivity(ShowUserActivity.class);
+                            }
+                        }
+                    });
+
+                }
+
+
+            }
+
         }
 
         super.onCreate(savedInstanceState);
 
-        /*
         if (buttonNext != null) {
             if (buttonHome != null) {
                 buttonHome.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
 
             }
             buttonNext.setVisibility(View.GONE);
-        }*/
+        }
+
+        Toast.makeText(me, R.string.create_button_description, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -155,11 +215,6 @@ public class SelectGroupActivity extends MensaMeetActivity {
         } else if (it.second == SelectGroupViewModel.State.BACK) {
             gotoActivity(SetTimeActivity2.class);
         }
-    }
-
-    @Override
-    public void onClickNext() {
-        // nothing
     }
 
     @Override

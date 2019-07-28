@@ -84,10 +84,17 @@
     <string name="your_subject">Deine Fachrichtung ist</string>
     <string name="field_meals">Mahlzeiten</string>
     <string name="title_select_lines">Wähle deine Mensalinie(n)</string>
-    <string name="title_set_time">Wann möchtest du essen?</string>
-    <string name="title_select_group">Das sind deine Gruppenvorschläge!</string>
+    <string name="title_set_time">Wann möchtest du essen gehen?</string>
+    <string name="title_select_group">Deine Gruppenvorschläge</string>
     <string name="title_create_group">Lege eine neue Gruppe an</string>
     <string name="title_user_profile">Dein Benutzerprofil</string>
     <string name="change_picture_by_click">Klicke auf das Profilbild, um es zu verändern!</string>
     <string name="discard">Verwerfen</string>
+    <string name="members">Mitglieder</string>
+    <string name="delete_group">Gruppe löschen</string>
+    <string name="delete_user">Benutzer löschen</string>
+    <string name="leave_group">Gruppe verlassen</string>
+    <string name="title_group_joined">Glückwunsch! Du isst mit</string>
+    <string name="title_general_user_profile">Details zum Benutzer</string>
+    <string name="create_button_description">Mit dem Button rechts kannst du auch eine eigene Gruppe anlegen!</string>
 </resources>

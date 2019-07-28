@@ -12,6 +12,7 @@ public class User {
     private Subject subject;
     private Status status;
     private int profilePictureId;
+    private Boolean isAdmin;
 
     public void setToken(String token) {
         this.token = token;
@@ -76,5 +77,14 @@ public class User {
     public int getProfilePictureId() {
         return profilePictureId;
     }
+
+    public Boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(Boolean isAdmin) {
+        this.isAdmin = isAdmin;
+    }
+
 
 }

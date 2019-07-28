@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +45,9 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
-        this.recyclerView.setItemAnimator(null);
+        //this.recyclerView.setItemAnimator(null);
+        ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
 
         List<MensaMeetItem<T>> items = createItems();
         adapter = new MensaMeetListAdapter<T>(context, items, displayMode);
@@ -85,7 +88,7 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
 
     @Override
     public void onItemClick(View view, int position) {
-        Toast.makeText(context, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(context, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
 
     public static enum DisplayMode {

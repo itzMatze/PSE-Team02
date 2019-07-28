@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 public class MensaMeetUtil {
@@ -61,6 +62,16 @@ public class MensaMeetUtil {
         } finally {
             arr.recycle();
         }
+    }
+
+    public static int getIndexInSpinner(Spinner spinner, String string){
+        for (int i = 0; i < spinner.getCount(); i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(string)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 
 }

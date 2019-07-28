@@ -1,8 +1,7 @@
 package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 
 import edu.kit.mensameet.client.model.MensaMeetSession;
@@ -33,8 +32,8 @@ public class SetTimeViewModel2 extends MensaMeetViewModel {
         Date startTime;
         Date endTime;
 
-        startTime = MensaMeetTime.stringToDate(startTimeString);
-        endTime = MensaMeetTime.stringToDate(endTimeString);
+        startTime = MensaMeetTime.stringToTime(startTimeString);
+        endTime = MensaMeetTime.stringToTime(endTimeString);
 
         MensaMeetSession.getInstance().setChosenTime(new MensaMeetTime(startTime, endTime));
     }
@@ -42,6 +41,7 @@ public class SetTimeViewModel2 extends MensaMeetViewModel {
     public void saveTimeAndNext() {
 
         saveTime();
+        //getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
         uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_NEXT));
     }
 

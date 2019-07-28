@@ -5,24 +5,34 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.util.Date;
+
 import edu.kit.mensameet.client.model.Gender;
+import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 import edu.kit.mensameet.client.model.MensaMeetUserPictureList;
 import edu.kit.mensameet.client.model.Status;
 import edu.kit.mensameet.client.model.Subject;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
+import edu.kit.mensameet.client.viewmodel.UserItemHandler;
 
 public class UserItem extends MensaMeetItem<User> {
+
+    private UserItemHandler handler;
 
     public UserItem(Context context, DisplayMode displayMode, User objectData) {
         //TODO: Put displayMode into MensaMeetItem as static subclass
         super(context, displayMode, objectData);
+
+        handler = new UserItemHandler(objectData, displayMode);
     }
 
     @Override
@@ -82,6 +92,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         view.addView(itemView);
 
+
         LinearLayout descriptionArea = new LinearLayout(context);
         descriptionArea.setOrientation(LinearLayout.VERTICAL);
 
@@ -91,7 +102,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         } else {
 
-            descriptionArea.setLayoutParams(WIDTH_MATCH_PARENT);
+            descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         }
 
@@ -220,6 +231,26 @@ public class UserItem extends MensaMeetItem<User> {
 
         }
 
+        // Field: Delete button
+
+        if (MensaMeetSession.getInstance().getUser().isAdmin()) {
+
+            if (displayMode == DisplayMode.SMALL) {
+
+                final Button deleteButton = new Button(context);
+                deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                deleteButton.setText(R.string.delete_user);
+                deleteButton.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        handler.deleteUser();
+                    }
+                });
+                deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
+
+                descriptionArea.addView(deleteButton);
+            }
+        }
+
         view.addView(descriptionArea);
 
         return view;
@@ -228,31 +259,62 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void fillObjectData() {
 
-        super.fillTextField(R.string.field_name, super.objectData.getName());
-        super.fillTextField(R.string.field_motto, super.objectData.getMotto());
+        fillTextField(R.string.field_name, objectData.getName());
+
+        fillTextField(R.string.field_motto, objectData.getMotto());
+
+        Date birthDate = objectData.getBirthDate();
+        if (birthDate != null) {
+            fillTextField(R.string.field_birth_date, MensaMeetTime.timeToString(birthDate));
+        }
+
+        String argument;
+
+        Gender gender = objectData.getGender();
+        if (gender != null) {
+            argument = gender.toString();
+        } else {
+            argument = null;
+        }
+        setSpinnerField(R.string.field_gender, argument);
+
+        Status status = objectData.getStatus();
+        if (status != null) {
+            argument = status.toString();
+        } else {
+            argument = null;
+        }
+        setSpinnerField(R.string.field_status, argument);
+
+        Subject subject = objectData.getSubject();
+        if (subject != null) {
+            argument = subject.toString();
+        } else {
+            argument = null;
+        }
+        setSpinnerField(R.string.field_subject, argument);
 
     }
 
     @Override
     public void saveEditedObjectData() {
 
-        /*
         objectData.setName(super.extractTextField(R.string.field_name));
+
         objectData.setMotto(super.extractTextField(R.string.field_motto));
-        objectData.setMeetingDate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_time)));
-        objectData.setLine(super.extractTextField(R.string.field_line));
 
-        if (view.findViewById((int)R.string.field_max_members).getClass() == Spinner.class) {
-            objectData.setMaxMembers(((Spinner)view.findViewById((int)R.string.field_max_members)).getSelectedItemPosition());
-        } else {
-            String maxMembers = super.extractTextField(R.string.field_max_members);
-            if (maxMembers == null) {
-                objectData.setMaxMembers(0);
-            } else {
-                objectData.setMaxMembers(Integer.parseInt(super.extractTextField(R.string.field_max_members)));
-            }
+        objectData.setBirthDate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_birth_date)));
 
-        }*/
+        objectData.setGender(Gender.valueOf(extractSpinnerField(R.string.field_gender)));
 
+        objectData.setStatus(Status.valueOf(extractSpinnerField(R.string.field_status)));
+
+        objectData.setSubject(Subject.valueOf(extractSpinnerField(R.string.field_subject)));
+
+    }
+
+    @Override
+    public UserItemHandler getHandler() {
+       return handler;
     }
 }

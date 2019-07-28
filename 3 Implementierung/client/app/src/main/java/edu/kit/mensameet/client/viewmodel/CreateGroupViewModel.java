@@ -21,7 +21,9 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
-            //HttpUtil.createGroup(group);
+            //createGroup(group);
+            //addUserToGroup(MensaMeetSession.getInstance().getUser();
+
             /*if (http success){
                 MensaMeetSession.getInstance().setChosenGroup(group);
             }*/

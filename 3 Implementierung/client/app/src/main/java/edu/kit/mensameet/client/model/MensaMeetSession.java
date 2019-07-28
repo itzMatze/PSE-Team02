@@ -13,6 +13,7 @@ public class MensaMeetSession {
     private Group chosenGroup;
     private Group createdGroup;
     private String userToken;
+    private User userToShow;
 
     private MensaMeetSession() {
     }
@@ -94,5 +95,13 @@ public class MensaMeetSession {
 
     public void setUserToken(String userToken) {
         this.userToken = userToken;
+    }
+
+    public User getUserToShow() {
+        return userToShow;
+    }
+
+    public void setUserToShow(User userToShow) {
+        this.userToShow = userToShow;
     }
 }

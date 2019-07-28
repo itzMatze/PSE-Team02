@@ -17,7 +17,10 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
     private Group selectedGroup = null;
 
     public void setSelectedGroup(Group selectedGroup) {
+
         this.selectedGroup = selectedGroup;
+
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_JOINED));
     }
 
     public enum State implements StateInterface {
