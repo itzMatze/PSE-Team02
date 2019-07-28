@@ -1,5 +1,7 @@
 package edu.kit.mensameet.client.util;
 
+import android.util.Log;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -35,7 +37,7 @@ public class RequestUtil {
     /**
      * create user
      * @param firebaseToken
-     * @return
+     * @return not null if success
      */
     public static String createUser(final String firebaseToken) {
         final String[] str = {""};
@@ -49,6 +51,7 @@ public class RequestUtil {
                     //Log.i("create user success", str[0]);
                 }catch (Exception e){
                     //Log.e("create user failed", e.getClass().toString() + e.getMessage());
+                    str[0] = null;
                 }
 
             }
@@ -57,7 +60,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            str[0] = null;
         }
         return str[0];
     }
@@ -132,13 +135,14 @@ public class RequestUtil {
      * @param firebaseToken
      * @return
      */
-    public static String deleteUser(final String firebaseToken) {
+    public static String deleteUser(final String firebaseToken, final String userToken) {
         final String[] str = {""};
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?token" + firebaseToken);
+                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?firebaseToken"
+                            + firebaseToken + "&userToken=" + userToken);
                 }catch (Exception e){
                     //Log.e("delete user failed", e.getMessage());
                 }
@@ -332,6 +336,7 @@ public class RequestUtil {
                     null, null);
                 }catch (Exception e){
                     //Log.e("preferences failed", e.getMessage());
+                    str[0] = null;
                 }
             }
         });
@@ -339,6 +344,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
+            str[0] = null;
             //Log.e("join error", e.getMessage());
         }
         return str[0];
@@ -360,6 +366,7 @@ public class RequestUtil {
                                     + firebaseToken + "&groupToken=" + groupToken,
                             null, null);
                 }catch (Exception e){
+                    str[0] = null;
                     //Log.e("create user failed", e.getClass().toString() + e.getMessage());
                 }
 
@@ -369,6 +376,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
+            str[0] = null;
             //Log.e("join error", e.getMessage());
         }
         return str[0];

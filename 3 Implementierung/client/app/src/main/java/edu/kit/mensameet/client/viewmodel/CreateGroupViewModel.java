@@ -8,6 +8,7 @@ import java.util.List;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.util.RequestUtil;
 
 public class CreateGroupViewModel extends MensaMeetViewModel {
 
@@ -20,6 +21,13 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     public void saveGroupAndNext() {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
+
+            Group groupWithToken = RequestUtil.createGroup(group, group.getToken());
+            if(groupWithToken!= null) {
+                if (RequestUtil.addUserToGroup(groupWithToken.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null){
+                    MensaMeetSession.getInstance().setChosenGroup(groupWithToken);
+                }
+            }
             //createGroup(group);
             //addUserToGroup(MensaMeetSession.getInstance().getUser();
 

@@ -4,6 +4,7 @@ import android.util.Pair;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.util.RequestUtil;
 
 public class GroupJoinedViewModel extends MensaMeetViewModel {
 
@@ -15,6 +16,10 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
 
     public void leaveGroup() {
         if (group != null) {
+
+            if (RequestUtil.removeUserFromGroup(MensaMeetSession.getInstance().getUser().getToken(), group.getToken()) != null) {
+                MensaMeetSession.getInstance().setChosenGroup(null);
+            }
 
             //removeUserFromGroup(MensaMeetSession.getInstance().getUser(), group);
             /*if (http success){

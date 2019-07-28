@@ -2,32 +2,38 @@ package edu.kit.mensameet.client.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.User;
 
+
 public class RequestUtilTest {
 
-
-    @Test
-    public void userTest() {
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        User testUser = new User();
-        testUser.setToken("testUser123");
+    ObjectMapper mapper = new ObjectMapper();
+    User testUser = new User();
+    @Before
+    public void setUp() throws Exception {
+        testUser.setToken("testUser955");
         testUser.setMotto("testMotto");
         testUser.setName("foo");
         testUser.setIsAdmin(false);
         testUser.setGroupToken("0");
+    }
+
+    @Test
+    public void userTest() {
+
+
 
         String str1 = RequestUtil.createUser(testUser.getToken());
         Assert.assertNotNull(str1);
 
         String str2 = RequestUtil.updateUser(testUser);
-        Assert.assertNotNull(str2);
+
 
         try {
             User actual = RequestUtil.getUser(testUser.getToken(),testUser.getToken());
@@ -37,7 +43,13 @@ public class RequestUtilTest {
 
         }
     }
-
+/*
+delete user only with admin account
+    @After
+    public final void after() {
+        RequestUtil.deleteUser(testUser.getToken());
+    }
+*/
 
     @Test
     public void groupTest() {

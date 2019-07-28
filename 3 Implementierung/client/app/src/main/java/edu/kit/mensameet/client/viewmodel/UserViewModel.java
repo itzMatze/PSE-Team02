@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.RequestUtil;
 
 public class UserViewModel extends MensaMeetViewModel {
 
@@ -19,10 +20,11 @@ public class UserViewModel extends MensaMeetViewModel {
     public void saveUserAndNext() {
         if (user != null) {
 
-            //HttpUtil.createUser(user);
-            /*if (http success){
-               MensaMeetSession.getInstance().setUser(user);
-            }*/
+            if(RequestUtil.createUser(user.getToken()) != null) {
+                RequestUtil.updateUser(user);
+                MensaMeetSession.getInstance().setUser(user);
+            }
+
 
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.USER_SAVED_NEXT));
         } else {
