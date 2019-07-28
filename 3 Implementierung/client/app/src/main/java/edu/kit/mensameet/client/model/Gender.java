@@ -9,7 +9,8 @@ public enum Gender {
     FEMALE(R.string.gender_female),
     OTHER(R.string.gender_other);
 
-    public final @StringRes int id;
+    public final @StringRes
+    int id;
 
     private Gender(@StringRes int id) {
         this.id = id;

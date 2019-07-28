@@ -12,16 +12,21 @@ import org.springframework.web.server.ResponseStatusException;
 
 @Component
 public class MembershipController {
-	
+
+	@Autowired
+	private UserRepository userRepository;
+
 	@Autowired
 	private GroupRepository groupRepository;
 	
 	public void addUserToGroup(User user, Group group) {
-		if (group.getMemberCount() + 1 > group.getMaxMembers()) {
+		if (group.getMembers().size() + 1 > group.getMaxMembers()) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "Group is already full.");
 		} else {
 			group.addMembers(user);
 			groupRepository.save(group);
+			user.setGroupToken(group.getToken());
+			userRepository.save(user);
 		}
 	}
 	
@@ -34,11 +39,15 @@ public class MembershipController {
 			if (iteratedUser.getToken() == user.getToken()) {
 				group.getMembers().remove(iteratedUser);
 				
-				if (group.getMemberCount() == 0) {
+				if (group.getMembers().size() == 0) {
+					groupRepository.save(group);
 					groupRepository.delete(group);
 				} else {
 					groupRepository.save(group);					
 				}
+				
+				user.setGroupToken(null);
+				userRepository.save(user);
 				
 				return;
 			}

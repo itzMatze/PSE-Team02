@@ -38,7 +38,6 @@ public class CreateGroupActivity extends MensaMeetActivity {
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -55,7 +54,6 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             //lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
 
-
         }
     }
 
@@ -64,9 +62,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
         if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
             Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
             gotoActivity(GroupJoinedActivity.class);
-        } else if (it.second ==  CreateGroupViewModel.State.BACK) {
+        } else if (it.second == CreateGroupViewModel.State.BACK) {
             gotoActivity(SelectGroupActivity.class);
-        } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
+        } else if (it.second == CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
             Toast.makeText(this, R.string.error_saving_group, Toast.LENGTH_SHORT).show();
         }
     }

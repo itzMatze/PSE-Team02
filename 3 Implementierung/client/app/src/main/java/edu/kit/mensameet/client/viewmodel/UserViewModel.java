@@ -16,8 +16,7 @@ public class UserViewModel extends MensaMeetViewModel {
         this.user = user;
     }
 
-    public void saveUserAndNext()
-    {
+    public void saveUserAndNext() {
         if (user != null) {
 
             //HttpUtil.createUser(user);
@@ -29,11 +28,9 @@ public class UserViewModel extends MensaMeetViewModel {
         } else {
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_USER));
         }
-
     }
 
     public enum State implements StateInterface {
         USER_SAVED_NEXT, BACK, ERROR_SAVING_USER, DEFAULT
     }
-
 }

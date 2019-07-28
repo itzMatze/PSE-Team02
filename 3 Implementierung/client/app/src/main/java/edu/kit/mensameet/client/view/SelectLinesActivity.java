@@ -60,7 +60,6 @@ public class SelectLinesActivity extends MensaMeetActivity {
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -71,8 +70,6 @@ public class SelectLinesActivity extends MensaMeetActivity {
             //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
 
             lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
-
-
         }
     }
 

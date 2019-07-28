@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+<<<<<<< HEAD
     xmlns:tools="http://schemas.android.com/tools"
     android:token="@+token/layout">
+=======
+    android:id="@+id/layout">
+>>>>>>> 7be1db09fe9eed8c3293aaf8b123c427268d28ac
 
     <data>
 

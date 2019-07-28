@@ -1,11 +1,9 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,7 +24,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
     private int selectedId;
 
     private List<Boolean> expandedArray;
-
 
     // data is passed into the constructor
     MensaMeetListAdapter(Context context, List<MensaMeetItem<T>> items, MensaMeetList.DisplayMode displayMode) {
@@ -49,7 +46,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         for (int i = 0; i < items.size(); i++) {
             this.expandedArray.add(i, false);
         }
-
     }
 
     protected void flushSelectionArray() {
@@ -57,7 +53,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
             selectionArray.set(i, false);
         }
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -103,7 +98,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         if (expandArea != null) {
             expandArea.setVisibility(expandedArray.get(position) ? View.VISIBLE : View.GONE);
         }
-
     }
 
     public List<T> getSelectedObjects() {
@@ -123,7 +117,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
     }
 
     public void setSelectedObjects(List<T> objectList) {
-
 
         List<T> selectCandidates = new ArrayList<>();
 
@@ -151,8 +144,6 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                     }
                 }
             }
-
-
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
 
             if (selectCandidates.size() == 1) {
@@ -164,9 +155,7 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                     }
                 }
             }
-
         }
-
     }
 
     // total number of rows

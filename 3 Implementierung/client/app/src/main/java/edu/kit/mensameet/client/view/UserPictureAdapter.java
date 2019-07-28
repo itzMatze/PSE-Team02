@@ -1,15 +1,11 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
@@ -28,7 +24,6 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         this.context = context;
 
         setItems(items);
-
     }
 
     // inflates the row layout from xml when needed
@@ -37,7 +32,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
 
         LinearLayout view = new LinearLayout(context);
         view.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
-        view.setPadding(50, 50,50, 50);
+        view.setPadding(50, 50, 50, 50);
 
         ImageView pictureView = new ImageView(context);
         pictureView.setId(0);
@@ -50,17 +45,15 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
     @Override
     public void onBindViewHolder(UserPictureAdapter.ViewHolder holder, int position) {
 
-        LinearLayout container = (LinearLayout)holder.itemView;
+        LinearLayout container = (LinearLayout) holder.itemView;
         ImageView pictureView = container.findViewById(0);
         pictureView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
         pictureView.setImageResource(items[position].getResourceId());
-
     }
 
     public MensaMeetUserPicture getSelectedPicture() {
 
         return items[selectedId];
-
     }
 
     public void setSelectedPicture(MensaMeetUserPicture userPicture) {
@@ -111,7 +104,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         }
     }
 
-     // allows clicks events to be caught
+    // allows clicks events to be caught
     void setClickListener(UserPictureAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }

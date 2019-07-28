@@ -17,8 +17,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
         this.group = group;
     }
 
-    public void saveGroupAndNext()
-    {
+    public void saveGroupAndNext() {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
             //createGroup(group);
@@ -32,11 +31,9 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
         } else {
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_GROUP));
         }
-
     }
 
-    public void saveGroupLocallyAndBack()
-    {
+    public void saveGroupLocallyAndBack() {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
             //HttpUtil.createGroup(group);
@@ -48,13 +45,9 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
         }
 
         uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.BACK));
-
     }
-
-
 
     public enum State implements StateInterface {
         GROUP_SAVED_NEXT, BACK, ERROR_SAVING_GROUP, DEFAULT
     }
-
 }

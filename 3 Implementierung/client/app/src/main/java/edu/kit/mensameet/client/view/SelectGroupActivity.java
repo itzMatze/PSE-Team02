@@ -42,7 +42,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
         return activityEventLiveData;
     }
 
-    public enum State implements StateInterface { DEFAULT, NEXT }
+    public enum State implements StateInterface {DEFAULT, NEXT}
 
     private SelectGroupViewModel viewModel;
     private ActivitySelectGroupBinding binding;
@@ -133,10 +133,9 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         GroupItem item;
 
-
         for (int i = 0; i < groupList.getItemCount(); i++) {
 
-            item = (GroupItem)groupList.getItem(i);
+            item = (GroupItem) groupList.getItem(i);
 
             if (item != null) {
                 GroupItemHandler handler = item.getHandler();
@@ -150,7 +149,6 @@ public class SelectGroupActivity extends MensaMeetActivity {
                         if (it.second == GroupItemHandler.State.GROUP_JOINED) {
                             Toast.makeText(me, "changed2", Toast.LENGTH_SHORT).show();
 
-
                             gotoActivity(GroupJoinedActivity.class);
                         } else if (it.second == GroupItemHandler.State.GROUP_DELETED) {
                             //new group by preferences request to refresh session data and restart activity
@@ -158,20 +156,18 @@ public class SelectGroupActivity extends MensaMeetActivity {
                             //getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
                             finish();
                             startActivity(getIntent());
-
                         }
                     }
                 });
-
             }
 
             for (int j = 0; j < item.getUserList().getItemCount(); j++) {
 
-                UserItem userItem = (UserItem)item.getUserList().getItem(j);
+                UserItem userItem = (UserItem) item.getUserList().getItem(j);
 
                 if (userItem != null) {
 
-                    UserItemHandler userItemHandler = (UserItemHandler)userItem.getHandler();
+                    UserItemHandler userItemHandler = (UserItemHandler) userItem.getHandler();
 
                     userItemHandler.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
                         @Override
@@ -182,12 +178,8 @@ public class SelectGroupActivity extends MensaMeetActivity {
                             }
                         }
                     });
-
                 }
-
-
             }
-
         }
 
         super.onCreate(savedInstanceState);
@@ -195,7 +187,6 @@ public class SelectGroupActivity extends MensaMeetActivity {
         if (buttonNext != null) {
             if (buttonHome != null) {
                 buttonHome.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
             }
             buttonNext.setVisibility(View.GONE);
         }
@@ -221,5 +212,4 @@ public class SelectGroupActivity extends MensaMeetActivity {
     public void onClickBack() {
         gotoActivity(SetTimeActivity2.class);
     }
-
 }

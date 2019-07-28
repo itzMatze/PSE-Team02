@@ -13,5 +13,4 @@ public class TextViewWrapper {
     public void setText(CharSequence text) {
         textView.setText(text);
     }
-
 }

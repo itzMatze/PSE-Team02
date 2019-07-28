@@ -30,5 +30,4 @@ public abstract class MensaMeetItemHandler {
     public enum State implements StateInterface {
         DEFAULT
     }
-
 }

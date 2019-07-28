@@ -9,7 +9,6 @@ import android.widget.LinearLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivityGroupJoinedBinding;
 import edu.kit.mensameet.client.viewmodel.GroupJoinedViewModel;
@@ -43,7 +42,6 @@ public class GroupJoinedActivity extends MensaMeetActivity {
         if (buttonNext != null) {
             if (buttonHome != null) {
                 buttonHome.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
             }
             buttonNext.setVisibility(View.GONE);
         }
@@ -51,12 +49,10 @@ public class GroupJoinedActivity extends MensaMeetActivity {
         if (buttonBack != null) {
             buttonBack.setText(R.string.leave_group);
         }
-
     }
 
     @Override
     protected void reloadData() {
-
 
     }
 
@@ -71,6 +67,5 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     public void onClickBack() {
 
         viewModel.leaveGroup();
-
     }
 }

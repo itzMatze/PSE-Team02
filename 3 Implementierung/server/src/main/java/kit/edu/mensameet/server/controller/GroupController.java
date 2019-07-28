@@ -22,13 +22,16 @@ import kit.edu.mensameet.server.model.User;;
 public class GroupController {
 	
 	@Autowired
-	private GroupRepository repository;
+	private UserRepository userRepository;
+	
+	@Autowired
+	private GroupRepository groupRepository;
 	
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
 	public Group getGroup(String token) {
-		Group group = repository.getGroupByToken(token);
+		Group group = groupRepository.getGroupByToken(token);
 		
 		if (group == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with token " + token + " coulnd't be found.");
@@ -38,25 +41,33 @@ public class GroupController {
 	}
 	
 	public Group addGroup(Group group) {
-		return repository.save(group);
+		return groupRepository.save(group);
 	}
 	
 	public void removeGroup(String groupToken) {
-		Group group = repository.getGroupByToken(groupToken);
+		Group group = groupRepository.getGroupByToken(groupToken);
 		
 		if(group != null) {
-			repository.delete(group);
+			group.getMembers().forEach(member ->{
+				member.setGroupToken(null);
+				userRepository.save(member);
+			});
+			
+			groupRepository.delete(group);
 		} else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with token " + groupToken + " coulnd't be found.");
 		}
 	}
 	
 	public void removeAllGroups() {
-		repository.deleteAll();
+		groupRepository.deleteAll();
+		userRepository.findAll().forEach(member -> {
+			member.setGroupToken(null);
+		});
 	}
 	
 	public Group[] getAllGroups() {
-		Group[] groups = StreamSupport.stream(repository.findAll().spliterator(), false).toArray(Group[]::new);
+		Group[] groups = StreamSupport.stream(groupRepository.findAll().spliterator(), false).toArray(Group[]::new);
 		return groups;
 	}
 	

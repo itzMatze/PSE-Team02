@@ -71,7 +71,6 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
                 timePickerDialogStart.show();
             }
-
         });
 
         endTime.setOnClickListener(new View.OnClickListener() {
@@ -97,13 +96,11 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
                 timePickerDialogEnd.show();
             }
-
         });
 
         reloadData();
 
         super.onCreate(savedInstanceState);
-
     }
 
     protected void reloadData() {
@@ -114,7 +111,6 @@ public class SetTimeActivity2 extends MensaMeetActivity {
 
             startTime.setText(MensaMeetTime.timeToString(savedTime.getStartTime()));
             endTime.setText(MensaMeetTime.timeToString(savedTime.getEndTime()));
-
         }
     }
 

@@ -12,12 +12,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import org.hibernate.annotations.CascadeType;
 
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import com.google.api.client.util.DateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -39,10 +42,11 @@ public class Group {
 	@Enumerated(EnumType.STRING)
 	private MealLine line;
 
+
 	@OneToMany
 	@OrderColumn
 	@NotFound(action = NotFoundAction.IGNORE)
-	private List<User> members;
+	private List<User> members = new ArrayList<User>();
 
 	public Group() {
 		this.token = UUID.randomUUID().toString();
@@ -115,7 +119,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @return the mealline choosed in this group
+	 * @return the MealLine chosen in this group
 	 */
 	public MealLine getLine() {
 		return line;
@@ -123,7 +127,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @param line is the mealline were the group will eat
+	 * @param line is the MealLine were the group will eat
 	 */
 	public void setMealLine(MealLine line) {
 		this.line = line;
@@ -149,7 +153,7 @@ public class Group {
 
 	/**
 	 * 
-	 * @return the current number of memebrs of this group
+	 * @return the current number of members of this group
 	 */
 	public int getMemberCount() {
 		return members.size();

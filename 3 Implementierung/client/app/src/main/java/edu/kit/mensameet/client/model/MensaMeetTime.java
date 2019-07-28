@@ -34,8 +34,8 @@ public class MensaMeetTime {
     }
 
     public MensaMeetTime(Date startTime, Date endTime) {
-       setStartTime(startTime);
-       setEndTime(endTime);
+        setStartTime(startTime);
+        setEndTime(endTime);
     }
 
     public boolean isInterval() {
@@ -62,12 +62,11 @@ public class MensaMeetTime {
 
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:mm:yyyy");
 
-
     public static Date stringToTime(String timeString) {
         if (timeString == null) return null;
         try {
             return simpleTimeFormat.parse(timeString);
-        } catch (ParseException e){
+        } catch (ParseException e) {
 
             return null;
         }
@@ -82,7 +81,7 @@ public class MensaMeetTime {
         if (dateString == null) return null;
         try {
             return simpleDateFormat.parse(dateString);
-        } catch (ParseException e){
+        } catch (ParseException e) {
 
             return null;
         }

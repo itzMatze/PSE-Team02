@@ -20,7 +20,6 @@ public abstract class MensaMeetViewModel extends ViewModel {
 
     }
 
-
     /**
      * @return UI event
      */
@@ -32,5 +31,5 @@ public abstract class MensaMeetViewModel extends ViewModel {
         return uiEventLiveData;
     }
 
-    public enum State implements StateInterface { DEFAULT }
+    public enum State implements StateInterface {DEFAULT}
 }
