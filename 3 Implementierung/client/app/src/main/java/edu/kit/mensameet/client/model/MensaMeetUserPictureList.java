@@ -11,7 +11,10 @@ public class MensaMeetUserPictureList {
     private MensaMeetUserPictureList() {
         pictures = new MensaMeetUserPicture[]{
                 new MensaMeetUserPicture(0, R.drawable.arrow_left),
-                new MensaMeetUserPicture(1, R.drawable.arrow_left),
+                new MensaMeetUserPicture(1, R.drawable.arrow_right),
+                new MensaMeetUserPicture(1, R.drawable.common_google_signin_btn_text_light_normal),
+                new MensaMeetUserPicture(1, R.drawable.burger),
+                new MensaMeetUserPicture(1, R.drawable.common_full_open_on_phone),
         };
     }
 

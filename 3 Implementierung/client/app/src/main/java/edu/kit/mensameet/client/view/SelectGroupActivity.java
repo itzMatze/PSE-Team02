@@ -3,6 +3,7 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -67,11 +68,11 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         List<User> userList1 = new ArrayList<User>();
         User u1 = new User();
-        u1.setUsername("User1");
+        u1.setName("User1");
         u1.setMotto("Motto1");
         userList1.add(u1);
         User u2 = new User();
-        u2.setUsername("User2");
+        u2.setName("User2");
         u2.setMotto("Motto2");
         userList1.add(u2);
         g1.setUsers(userList1);
@@ -131,6 +132,15 @@ public class SelectGroupActivity extends MensaMeetActivity {
         }
 
         super.onCreate(savedInstanceState);
+
+        /*
+        if (buttonNext != null) {
+            if (buttonHome != null) {
+                buttonHome.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+
+            }
+            buttonNext.setVisibility(View.GONE);
+        }*/
     }
 
     @Override
@@ -148,12 +158,12 @@ public class SelectGroupActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         // nothing
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         gotoActivity(SetTimeActivity2.class);
     }
 

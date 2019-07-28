@@ -69,7 +69,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
             //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
             editor.putString(context.getString(R.string.password_file_id), password);
             editor.commit();
-            User.getInstance().setUsername(username);
+            User.getInstance().setName(username);
             return 0;
         }
     }

@@ -14,16 +14,16 @@
             android:label="TestActivity"></activity>
         <activity
             android:name=".SelectLinesActivity"
-            android:label="SelectLinesActivity"></activity>
+            android:label="@string/title_select_lines"></activity>
         <activity
             android:name=".SetTimeActivity2"
-            android:label="SetTimeActivity2"></activity>
+            android:label="@string/title_set_time"></activity>
         <activity
             android:name=".SelectGroupActivity"
-            android:label="SelectGroupActivity"></activity>
+            android:label="@string/title_select_group"></activity>
         <activity
             android:name=".CreateGroupActivity"
-            android:label="CreateGroupActivity"></activity>
+            android:label="@string/title_create_group"></activity>
         <activity
             android:name=".AdministerUsersActivity"
             android:label="@string/title_activity_administer_users" />
@@ -32,10 +32,17 @@
             android:label="@string/title_activity_administer_groups" />
         <activity
             android:name=".UserActivity"
-            android:label="@string/title_activity_user" />
+            android:label="@string/title_user_profile" />
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" />
+            android:label="@string/title_activity_home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".BeginActivity"
@@ -49,15 +56,6 @@
         <!--only for testing, todo: edit it later-->
         <activity
             android:name=".RegisterActivity"
-            android:label="@string/app_name">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".CreateGroupActivity_old"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

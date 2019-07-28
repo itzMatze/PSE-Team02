@@ -3,9 +3,9 @@ package edu.kit.mensameet.client.model;
 import java.util.Date;
 
 public class User {
-    private static User instance = new User();
+
     private String token = "";
-    private String username = "";
+    private String name = "";
     private String motto = "";
     private Date birthDate;
     private Gender gender;
@@ -13,16 +13,12 @@ public class User {
     private Status status;
     private int profilePictureId;
 
-    public static User getInstance() {
-        return instance;
-    }
-
     public void setToken(String token) {
         this.token = token;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setMotto(String motto) {
@@ -53,8 +49,8 @@ public class User {
         return token;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public String getMotto() {
@@ -81,7 +77,4 @@ public class User {
         return profilePictureId;
     }
 
-    public void clear() {
-        instance = new User();
-    }
 }

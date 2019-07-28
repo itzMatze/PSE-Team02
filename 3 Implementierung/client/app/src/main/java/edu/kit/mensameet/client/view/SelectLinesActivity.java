@@ -81,18 +81,18 @@ public class SelectLinesActivity extends MensaMeetActivity {
         if (it.second == SelectLinesViewModel.State.LINES_SAVED) {
             gotoActivity(SetTimeActivity2.class);
         } else if (it.second == SelectLinesViewModel.State.NO_LINES_SELECTED) {
-            Toast.makeText(this, getString(R.string.selectLine), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, getString(R.string.selectALine), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         viewModel.setSelectedLines(lineList.getSelectedObjects());
         viewModel.saveLinesAndNext();
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
 
     }
 }

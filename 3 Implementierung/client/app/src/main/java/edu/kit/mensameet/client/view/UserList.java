@@ -18,7 +18,7 @@ public class UserList extends MensaMeetList<User> {
         List<MensaMeetItem<User>> items = new ArrayList<>();
 
         for (User user : super.data) {
-            UserItem item = new UserItem(super.context, MensaMeetDisplayMode.SMALL, user);
+            UserItem item = new UserItem(super.context, MensaMeetItem.DisplayMode.SMALL, user);
             items.add(item);
         }
 

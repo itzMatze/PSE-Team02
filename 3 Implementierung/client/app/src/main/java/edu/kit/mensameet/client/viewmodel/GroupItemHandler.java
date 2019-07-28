@@ -1,17 +1,16 @@
 package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 
 import edu.kit.mensameet.client.model.Group;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
-import edu.kit.mensameet.client.view.MensaMeetDisplayMode;
+import edu.kit.mensameet.client.view.GroupItem;
+import edu.kit.mensameet.client.view.MensaMeetItem;
 
 public class GroupItemHandler extends MensaMeetItemHandler {
-    public GroupItemHandler(Group group, MensaMeetDisplayMode displayMode) {
+    public GroupItemHandler(Group group, MensaMeetItem.DisplayMode displayMode) {
         super();
     }
 

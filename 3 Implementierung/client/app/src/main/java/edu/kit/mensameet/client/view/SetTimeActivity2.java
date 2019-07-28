@@ -2,7 +2,6 @@ package edu.kit.mensameet.client.view;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -10,18 +9,14 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.view.databinding.ActivitySetTime2Binding;
-import edu.kit.mensameet.client.view.databinding.ActivitySetTimeBinding;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
-import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
-import edu.kit.mensameet.client.viewmodel.SetTimeViewModel;
 import edu.kit.mensameet.client.viewmodel.SetTimeViewModel2;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -48,9 +43,12 @@ public class SetTimeActivity2 extends MensaMeetActivity {
         binding.setLifecycleOwner(this);
 
         startTime = findViewById(R.id.startTime);
-        startTime.setTextAppearance(this, R.style.link_text);
+        MensaMeetUtil.applyStyle(startTime, R.style.link_text);
+        startTime.setBackgroundColor(getResources().getColor(R.color.text_select));
+
         endTime = findViewById(R.id.endTime);
-        endTime.setTextAppearance(this, R.style.link_text);
+        MensaMeetUtil.applyStyle(endTime, R.style.link_text);
+        endTime.setBackgroundColor(getResources().getColor(R.color.text_select));
 
         startTime.setOnClickListener(new View.OnClickListener() {
             private int chosenHour = 12;
@@ -132,12 +130,12 @@ public class SetTimeActivity2 extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         viewModel.saveTimeAndNext();
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         viewModel.saveTimeAndBack();
     }
 }

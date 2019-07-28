@@ -2,6 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -36,12 +38,27 @@ public class UserActivity extends MensaMeetActivity {
         if (user == null) {
             user = new User();
         }
-        userItem = new UserItem(this, MensaMeetDisplayMode.BIG_EDITABLE, user);
+        userItem = new UserItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, user);
         container.addView(userItem.getView());
 
         reloadData();
 
+        Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_SHORT).show();
+
         super.onCreate(savedInstanceState);
+
+        // If it is not the very first login
+        if (MensaMeetSession.getInstance().getUser() != null) {
+
+            if (buttonNext != null) {
+                buttonNext.setText(R.string.save);
+            }
+
+            if (buttonBack != null) {
+                buttonBack.setText(R.string.discard);
+            }
+
+        }
 
     }
 
@@ -72,7 +89,7 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         userItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setUser(userItem.getObjectData());
         viewModel.setUser(userItem.getObjectData());
@@ -80,7 +97,7 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         userItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setUser(userItem.getObjectData());
         viewModel.setUser(userItem.getObjectData());

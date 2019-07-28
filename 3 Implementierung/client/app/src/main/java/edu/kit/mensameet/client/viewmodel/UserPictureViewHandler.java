@@ -6,10 +6,10 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 import edu.kit.mensameet.client.model.User;
-import edu.kit.mensameet.client.view.MensaMeetDisplayMode;
+import edu.kit.mensameet.client.view.MensaMeetItem;
 
 public class UserPictureViewHandler {
-    public UserPictureViewHandler(LiveData<User> user, int profilePictureId, MensaMeetDisplayMode viewMode) {
+    public UserPictureViewHandler(LiveData<User> user, int profilePictureId, MensaMeetItem.DisplayMode viewMode) {
 
     }
 

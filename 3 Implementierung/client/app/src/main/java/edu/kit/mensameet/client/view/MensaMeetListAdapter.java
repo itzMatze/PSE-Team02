@@ -23,7 +23,9 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
 
     private MensaMeetListAdapter.ItemClickListener mClickListener;
     private List<Boolean> selectionArray;
+
     private int selectedId;
+
 
     // data is passed into the constructor
     MensaMeetListAdapter(Context context, List<MensaMeetItem<T>> items, MensaMeetList.DisplayMode displayMode) {
@@ -41,6 +43,7 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
             selectedId = -1;
         }
+
     }
 
     protected void flushSelectionArray() {
@@ -88,6 +91,7 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                 holder.itemView.setBackgroundColor(ContextCompat.getColor(context, R.color.deselection_background));
             }
         }
+
     }
 
     public List<T> getSelectedObjects() {

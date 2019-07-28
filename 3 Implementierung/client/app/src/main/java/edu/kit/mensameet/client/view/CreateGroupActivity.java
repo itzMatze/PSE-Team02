@@ -32,7 +32,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
         LinearLayout container = findViewById(R.id.container);
 
-        groupItem = new GroupItem(this, MensaMeetDisplayMode.BIG_EDITABLE, new Group());
+        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, new Group());
         container.addView(groupItem.getView());
 
         reloadData();
@@ -71,7 +71,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickNext() {
+    public void onClickNext() {
         groupItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.setGroup(groupItem.getObjectData());
@@ -79,7 +79,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void onClickBack() {
+    public void onClickBack() {
         groupItem.saveEditedObjectData();
         MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
         viewModel.setGroup(groupItem.getObjectData());

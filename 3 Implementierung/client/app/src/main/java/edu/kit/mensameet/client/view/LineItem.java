@@ -11,8 +11,8 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public class LineItem extends MensaMeetItem<Line> {
 
-    public LineItem(Context context, MensaMeetDisplayMode displayMode, Line objectData) {
-        //TODO: Put displayMode into MensaMeetItem as static subclass
+    public LineItem(Context context, DisplayMode displayMode, Line objectData) {
+       
         super(context, displayMode, objectData);
     }
 
@@ -21,24 +21,28 @@ public class LineItem extends MensaMeetItem<Line> {
 
     }
 
-    public class ItemElements {
-        static final int NAME = 1;
-        static final int MEALS = 2;
-    }
-
     @Override
     public View createView() {
 
+        final int BIGGER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_medium);
+        final int SMALLER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_small);
+
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.VERTICAL);
-        view.setLayoutParams(super.WIDTH_MATCH_PARENT);
-        view.setPadding(30, 20, 30, 20);
+        view.setLayoutParams(WIDTH_MATCH_PARENT);
+
+        int leftPadding = context.getResources().getInteger(R.integer.item_standard_padding_left_px);
+        int topPadding = context.getResources().getInteger(R.integer.item_standard_padding_top_px);
+        int rightPadding = context.getResources().getInteger(R.integer.item_standard_padding_right_px);
+        int bottomPadding = context.getResources().getInteger(R.integer.item_standard_padding_bottom_px);
+
+        view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         // Element: name
-        view.addView(super.createTextField(ItemElements.NAME, super.WIDTH_MATCH_PARENT, super.BIG_TEXT_SIZE));
+        view.addView(createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE));
 
         // Element: meals
-        view.addView(super.createTextField(ItemElements.MEALS, super.WIDTH_MATCH_PARENT, super.SMALL_TEXT_SIZE));
+        view.addView(createTextField(R.string.field_meals, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
 
         return view;
     }
@@ -46,14 +50,14 @@ public class LineItem extends MensaMeetItem<Line> {
     @Override
     public void fillObjectData() {
         //TODO: since fillData is data-related, outsource it to viewmodel/handler
-        super.fillTextField(ItemElements.NAME, super.objectData.getName());
+        fillTextField(R.string.field_name, objectData.getName());
 
         String mealsText = "";
         for (int i = 0; i < objectData.getMeals().length; i++) {
             mealsText += objectData.getMeals()[i].getName() + "\n";
         }
 
-        super.fillTextField(ItemElements.MEALS, mealsText);
+        fillTextField(R.string.field_meals, mealsText);
     }
 
 }

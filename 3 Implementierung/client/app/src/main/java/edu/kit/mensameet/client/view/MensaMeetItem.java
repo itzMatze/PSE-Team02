@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Pair;
 import android.view.View;
@@ -8,33 +7,30 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
+import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public abstract class MensaMeetItem<T> {
 
-    protected static final LinearLayout.LayoutParams NAME_PARAMS = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
-    protected static final LinearLayout.LayoutParams CHECKBOX_PARAMS = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-    protected static final int BIG_TEXT_SIZE = 20;
-    protected static final int SMALL_TEXT_SIZE = 15;
 
     protected Context context;
     protected T objectData;
-    protected MensaMeetDisplayMode displayMode;
+    protected DisplayMode displayMode;
     protected MensaMeetItemHandler handler;
+
+    protected ViewGroup.LayoutParams layoutParams = WIDTH_MATCH_PARENT;
 
     protected View view;
 
-    public MensaMeetItem(Context context, MensaMeetDisplayMode displayMode, T objectData) {
+    public MensaMeetItem(Context context, DisplayMode displayMode, T objectData) {
         this.context = context;
         this.objectData = objectData;
         this.displayMode = displayMode;
@@ -59,21 +55,72 @@ public abstract class MensaMeetItem<T> {
     protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {};
 
     protected View createTextField(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
-        if (displayMode == MensaMeetDisplayMode.BIG_EDITABLE) {
+        if (displayMode == DisplayMode.BIG_EDITABLE) {
             EditText editText = new EditText(context);
             editText.setId((int)id);
             editText.setHint(id);
+            editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
-            editText.setTextAppearance(context, R.style.normal_text);
+            //MensaMeetUtil.applyStyle(editText, R.style.normal_text);
             return editText;
         } else {
             TextView textView = new TextView(context);
             textView.setId((int)id);
-            //textView.setLayoutParams(layoutParams);
-            textView.setTextAppearance(context, R.style.normal_text);
+            textView.setTextSize(textSize);
+            textView.setLayoutParams(layoutParams);
+            MensaMeetUtil.applyStyle(textView, R.style.normal_text);
             return textView;
         }
     }
+
+    protected LinearLayout createLinkTextField(@StringRes int id, @StringRes int defaultTextId, ViewGroup.LayoutParams layoutParams, int textSize) {
+
+        LinearLayout linearLayout = new LinearLayout(context);
+        linearLayout.setOrientation(LinearLayout.VERTICAL);
+        linearLayout.setLayoutParams(layoutParams);
+
+        int leftPadding = context.getResources().getInteger(R.integer.link_text_padding_left_px);
+        int topPadding = context.getResources().getInteger(R.integer.link_text_padding_top_px);
+        int rightPadding = context.getResources().getInteger(R.integer.link_text_padding_right_px);
+        int bottomPadding = context.getResources().getInteger(R.integer.link_text_padding_bottom_px);
+
+        linearLayout.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
+
+        linearLayout.setBackgroundColor(context.getResources().getColor(R.color.text_select));
+        MensaMeetUtil.applyStyle(linearLayout, R.style.link_text);
+
+        TextView textView = new TextView(context);
+        textView.setId((int)id);
+        textView.setTextSize(textSize);
+        textView.setLayoutParams(WIDTH_MATCH_PARENT);
+        textView.setText(defaultTextId);
+
+        linearLayout.addView(textView);
+
+        return linearLayout;
+
+    }
+
+    protected TextView createLabel(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
+
+        TextView textView = new TextView(context);
+        textView.setText(id);
+        textView.setTextSize(textSize);
+        MensaMeetUtil.applyStyle(textView, R.style.label_text);
+
+        return textView;
+    }
+
+    protected TextView createLabel(String string, ViewGroup.LayoutParams layoutParams, int textSize) {
+
+        TextView textView = new TextView(context);
+        textView.setText(string);
+        textView.setTextSize(textSize);
+        MensaMeetUtil.applyStyle(textView, R.style.label_text);
+
+        return textView;
+    }
+
 
     protected void fillTextField(@StringRes int id, String text) {
         View field = view.findViewById((int)id);
@@ -134,6 +181,14 @@ public abstract class MensaMeetItem<T> {
     public abstract View createView();
 
     public abstract void fillObjectData();
+
+    public void setLayoutParams(ViewGroup.LayoutParams layoutParams) {
+        this.layoutParams = layoutParams;
+    }
+
+    public ViewGroup.LayoutParams getLayoutParams() {
+        return layoutParams;
+    }
 
     public enum DisplayMode {
         BIG_EDITABLE, BIG_NOTEDITABLE, SMALL
