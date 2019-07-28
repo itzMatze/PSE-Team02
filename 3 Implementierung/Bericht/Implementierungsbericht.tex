@@ -39,12 +39,12 @@ Bei diesem Dokument handelt es sich um den Implementierungsbericht, welcher zeit
 \chapter{Änderungen am Entwurf}
 \section{Server}
 \subsection{Model}
+
 \subsubsection{Änderung der internen Darstellung der Mensadaten}
 Ursprünglich war geplant, die vom Studentenwerk bezogenen Mensadaten, also das tagesaktuelle Menü aller Linien, aufzuteilen. Also die Linien in ihre jeweiligen Mahlzeiten und die Mahlzeiten in ihren Namen, Preis, ihre Inhaltsstoffe und um welche Art Essen es sich dabei handelt. Diese Aufteilung wurde deshalb so gewählt, da man für zukünftige Funktionen geplant hat. Beispielweiße das Anzeigen eines Symbols als Indikator des Essenstyp(Normal, vegan, etc.). Diese Aufteilung wurde nun verworfen und die Mensadaten sind nun unterteilt in die Linien und diese Linien in ihre Mahlzeiten. Die Mahlzeiten werden also nicht mehr unterteilt. Die Begründung liegt darin, dass die bezogenen Daten inkonsistent sind. Beispielweiße verfügen manche Mahlzeiten über keinen Preis oder es fehlt die Angabe des Essenstyp. Außerdem werden nur die Preise für Studenten angezeigt, zu mindest bei der alternativen Ansicht, von der die Daten bezogen wurden.
 
 
 \begin{itemize}
-
 \item{Line.java}
 
 \textcolor{red}{- enum Meal} \\
@@ -52,17 +52,89 @@ Ursprünglich war geplant, die vom Studentenwerk bezogenen Mensadaten, also das 
 \textcolor{red}{- enum FoodType} \\
 \textcolor{green}{+ String name} \\
 \textcolor{green}{+ String[] meals}\\
+\end{itemize}
 
+\subsubsection{Änderung der User Klasse}
+Zusätzlich zu den bereits im Entwurfsdokument aufgezählten Attributen der User Klasse, wurde ein boolean hinzugefügt, der darüber aussagt ob ein User Administrationsrechte besitzt. Da diese Funktion bereits geplant war und auch als Pflichtkriterium aufgeführt wurde, handelt es sich hierbei nicht wirklich um eine Änderung. Viel mehr wurde einfach vergessen einen solchen boolean im Klassendiagramm aufzuführen.
 
+\begin{itemize}
+\item{User.java}
 
-
+\textcolor{green}{+ boolean isAdmin}\\
 \end{itemize}
 
 \subsection{View}
+
+\subsubsection{Änderung der User Service Klasse}
+In der Klasse User Service wurde lediglich die Methode zum Erstellen eines Users hinzugefügt. Auch hier handelt es sich um keine neue Funktion oder tatsächliche Änderung. Es wurde lediglich vergessen diese im Entwurfsdokument aufzuführen. 
+
+\begin{itemize}
+\item{UserService.java}
+
+\textcolor{green}{+ void createUser(String token)}\\
+\end{itemize}
+
+\subsubsection{Account Verwaltung}
+Durch neue Erkenntnisse bezüglich der FireBase SDK musste festgestellt werden, dass diese eine direkte Anmeldung an den Server aus Sicherheitsgründen nicht erlaubt. Aus diesem Grund kommuniziert der Client nun direkt mit FireBase, bekommt so durch seinen Token und stellt dann eine Anfrage an den Server. Aus diesem Grund fällt auch die Account Service Klasse komplett weg.
+
+\begin{itemize}
+\item\textcolor{red}{UserService.java}
+
+\textcolor{red}{- login(Credentials credentials)}\\
+\textcolor{red}{- register(Credentials credentials)}
+\end{itemize}
+
 \subsection{Controller}
+\subsubsection{Änderung  des Mensa Data Controllers}
+Die ursprüngliche Benennung dieser Klasse wurde verworfen und in MensaDataController geändert. Ebenso die Methoden getLineData() und updateLineData() zu getMensaData() und updateMensaData(). Wie bereits erwähnt, wurde die Klasse Line.java geändert und die einzelnen Gerichte sind nun einzelne Strings. Dies hat auch Auswirkungen auf diese Klasse, da die Strings an Speisen pro Linie nicht weiter aufgeteilt werden müssen. Um die Übersicht dieser Klasse zu gewährleisten, wurde außerdem eine Converter Methode hinzugefügt, die die abgefangenen Speisepläne in die gewünschte Form formatiert.
 
+\begin{itemize}
+\item{MensaDataController.java}
 
+\textcolor{green}{+ MensaData Converter(String[] LineText)}\\
+\end{itemize}
 
+\subsubsection{Änderung des User Controllers}
+Hier wurde eine Methode hinzugefügt, die sicherstellt, dass beim Hochfahren des Servers ein User mit Administrationsrechten erstellt wird. Mit diesem User können wir uns anmelden um eben die Funktionen eines Administrators auszuführen.
+
+\begin{itemize}
+\item{UserController.java}
+
+\textcolor{green}{+ void initializeAdminUser()}\\
+\end{itemize}
+
+\subsubsection{Änderung des Group Controllers}
+Hier wurden lediglich zwei Methoden hinzugefügt, die die Bedienbarkeit erleichtern. Eine Methode zum Löschen aller Gruppen und eine Methode die alle Gruppen zurückgibt.
+
+\begin{itemize}
+\item{GroupController.java}
+
+\textcolor{green}{+ void removeAllGroups(}\\
+\textcolor{green}{+ Group[] getAllGroups()}\\
+\end{itemize}
+
+\subsubsection{Alternative Authentifizierung}
+Die Authentifizierung war in der Form in der sie definiert wurde aufgrund von FireBase nicht möglich. Deshalb wurde der Authentification Controller gestrichen. Zum Einsatz kommt nun die Klasse FirebaseAuthentifcator, welche sich nun um die Authentifizierung kümmert.
+
+\begin{itemize}
+\item\textcolor{red}{AuthentificationController.java}
+
+\textcolor{red}{- User register(Credentials creds)}\\
+\textcolor{red}{- User login(Credentials creds)}\\
+
+\item\textcolor{green}{FirebaseAuthentifcator.java}
+
+\textcolor{green}{+ String authenticateAndEncryptFirebaseTokenToUserToken(String firebaseToken)}\\
+\textcolor{green}{+ void authenticateFirebaseToken(String firebaseToken)}
+\end{itemize}
+
+\subsubsection{Zusätzliche Repository Klassen}
+Zur besseren Nutzung von Hibernate wurde zwei zusätzliche Repository Klasse realisiert. Das User Repository und das Group Repository
+
+\begin{itemize}
+\item\textcolor{green}{+ UserRepository.java}
+\item\textcolor{green}{+ GroupRepository.java}
+\end{itemize}
 
 
 \section{Client}
