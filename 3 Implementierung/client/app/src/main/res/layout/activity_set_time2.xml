@@ -1,12 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-<<<<<<< HEAD
     xmlns:tools="http://schemas.android.com/tools"
-    android:token="@+token/layout">
-=======
     android:id="@+id/layout">
->>>>>>> 7be1db09fe9eed8c3293aaf8b123c427268d28ac
 
     <data>
 
@@ -20,7 +16,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:token="@+token/between"
+            android:id="@+id/between"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -34,7 +30,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:token="@+token/and"
+            android:id="@+id/and"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -44,10 +40,10 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/startTime" />
+            app:layout_constraintTop_toBottomOf="@+id/startTime" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:token="@+token/guideline"
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -55,14 +51,14 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:token="@+token/guideline2"
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
         <LinearLayout
-            android:token="@+token/startTime"
+            android:id="@+id/startTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -73,10 +69,10 @@
             android:paddingBottom="5px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/between">
+            app:layout_constraintTop_toBottomOf="@+id/between">
 
             <TextView
-                android:token="@+token/startTimeText"
+                android:id="@+id/startTimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -88,7 +84,7 @@
 
 
         <LinearLayout
-            android:token="@+token/endTime"
+            android:id="@+id/endTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -99,10 +95,10 @@
             android:paddingBottom="5px"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/and">
+            app:layout_constraintTop_toBottomOf="@+id/and">
 
             <TextView
-                android:token="@+token/endTimeText"
+                android:id="@+id/endTimeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"

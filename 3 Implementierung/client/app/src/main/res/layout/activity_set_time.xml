@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:tools="http://schemas.android.com/tools"
-        android:token="@+token/ConstraintLayout"
+        android:id="@+id/ConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingLeft="@dimen/activity_horizontal_margin"
@@ -20,7 +20,7 @@
         tools:context=".SetTimeActivity">
 
         <TextView
-            android:token="@+token/time"
+            android:id="@+id/time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -29,7 +29,7 @@
             android:layout_marginBottom="8dp"
             android:text="@string/time"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintBottom_toTopOf="@+token/guideline"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +37,7 @@
             app:layout_constraintVertical_bias="0.131" />
 
         <Button
-            android:token="@+token/saveTime_button"
+            android:id="@+id/saveTime_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -47,14 +47,14 @@
             android:background="@color/button_color_blue"
             android:onClick="@{()->vm.onSaveTimeClick(vm)}"
             android:text="@string/save"
-            app:layout_constraintBottom_toTopOf="@+token/nav_view"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+token/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
             app:layout_constraintVertical_bias="0.192" />
 
         <TimePicker
-            android:token="@+token/timePicker1"
+            android:id="@+id/timePicker1"
             android:layout_width="363dp"
             android:layout_height="210dp"
             android:layout_marginStart="8dp"
@@ -64,16 +64,16 @@
             android:hour="@={vm.hour}"
             android:minute="@={vm.minute}"
             android:timePickerMode="spinner"
-            app:layout_constraintBottom_toTopOf="@+token/guideline"
+            app:layout_constraintBottom_toTopOf="@+id/guideline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.75"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/time"
+            app:layout_constraintTop_toBottomOf="@+id/time"
             app:layout_constraintVertical_bias="0.212"
             tools:targetApi="lollipop" />
 
         <TextView
-            android:token="@+token/choosenTime"
+            android:id="@+id/choosenTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -81,15 +81,15 @@
             android:layout_marginEnd="8dp"
             android:text="@string/selectedTime"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintBottom_toTopOf="@+token/nav_view"
-            app:layout_constraintEnd_toStartOf="@+token/guideline2"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view"
+            app:layout_constraintEnd_toStartOf="@+id/guideline2"
             app:layout_constraintHorizontal_bias="0.468"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+token/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
             app:layout_constraintVertical_bias="0.182" />
 
         <TextView
-            android:token="@+token/showTime"
+            android:id="@+id/showTime"
             android:layout_width="134dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -98,15 +98,15 @@
             android:layout_marginBottom="8dp"
             android:text="@{String.valueOf(vm.time)}"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            app:layout_constraintBottom_toTopOf="@+token/nav_view"
+            app:layout_constraintBottom_toTopOf="@+id/nav_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+token/guideline"
+            app:layout_constraintTop_toTopOf="@+id/guideline"
             app:layout_constraintVertical_bias="0.648" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:token="@+token/nav_view"
+            android:id="@+id/nav_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:background="?android:attr/windowBackground"
@@ -118,7 +118,7 @@
             app:menu="@menu/bottom_nav_menu" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:token="@+token/guideline"
+            android:id="@+id/guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -126,7 +126,7 @@
             app:layout_constraintGuide_percent="0.5" />
 
         <androidx.constraintlayout.widget.Guideline
-            android:token="@+token/guideline2"
+            android:id="@+id/guideline2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"

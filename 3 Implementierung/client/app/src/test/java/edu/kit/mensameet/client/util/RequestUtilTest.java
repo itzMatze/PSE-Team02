@@ -29,19 +29,10 @@ public class RequestUtilTest {
         String str2 = RequestUtil.updateUser(testUser);
         Assert.assertNotNull(str2);
 
-        //see user in JSON String
-        //TODO: change Model.User from Server und
-       String str3 = RequestUtil.getUserString(testUser.getToken(), testUser.getToken());
-        try {
-            String expect = mapper.writeValueAsString(testUser);
-            Assert.assertEquals(expect, str3);
-        }catch (Exception e){
-
-        }
-
         try {
             User actual = RequestUtil.getUser(testUser.getToken(),testUser.getToken());
-            Assert.assertEquals(testUser, actual);
+            Assert.assertEquals(testUser.getMotto(), actual.getMotto());
+            Assert.assertEquals(testUser.getIsAdmin(), actual.getIsAdmin());
         }catch (Exception e){
 
         }
@@ -49,7 +40,7 @@ public class RequestUtilTest {
 
 
     @Test
-    public void grouTest() {
+    public void groupTest() {
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -57,15 +48,14 @@ public class RequestUtilTest {
         testGroup.setToken("testGroup");
         testGroup.setMotto("testMotto");
 
-        String str1 = RequestUtil.createGroup(testGroup, testGroup.getToken());
-        Assert.assertNotNull(str1);
+        Group expect = RequestUtil.createGroup(testGroup, testGroup.getToken());
 
-
-        //see group in JSON String
-        String str3 = RequestUtil.getGroupString(testGroup.getToken());
+        // create group and get group
         try {
-            String expect = mapper.writeValueAsString(testGroup);
-            Assert.assertEquals(expect, str3);
+            Group actual = RequestUtil.getGroup(expect.getToken());
+            Assert.assertNotNull(expect.getToken());
+            Assert.assertEquals(expect.getToken(), actual.getToken());
+            Assert.assertEquals("testMotto", actual.getMotto());
         }catch (Exception e){
 
         }

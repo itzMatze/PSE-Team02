@@ -95,31 +95,6 @@ public class RequestUtil {
         }
         return user[0];
     }
-    //todo : test only
-    public static String getUserString(final String firebaseToken, final String userToken) {
-        final String[] str = new String[1];
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try{
-                    Map<String, String> params = new HashMap<>();
-                    params.put("firebaseToken", firebaseToken);
-                    params.put("userToken", userToken);
-                    str[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
-                }catch (Exception e){
-                    //Log.e("get user failed", e.getMessage());
-                }
-
-            }
-        });
-        thread.start();
-        try{
-            thread.join();
-        }catch (Exception e){
-            //Log.e("join error", e.getMessage());
-        }
-        return str[0];
-    }
 
     /**
      *
@@ -182,10 +157,10 @@ public class RequestUtil {
      *
      * @param group
      * @param firebaseToken
-     * @return
+     * @return group with new groupToken
      */
-    public static String createGroup(final Group group, final String firebaseToken) {
-        final String[] str = {""};
+    public static Group createGroup(final Group group, final String firebaseToken) {
+        final Group[] newGroup = new Group[1];
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -194,7 +169,9 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", firebaseToken);
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
+                    String str = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
+                    GroupForRequest returnedGroup = mapper.readValue(str, GroupForRequest.class);
+                    newGroup[0] = returnedGroup.parseToGroup();
                 }catch (Exception e){
                     //Log.e("create group failed", e.getMessage());
                 }
@@ -207,7 +184,7 @@ public class RequestUtil {
         }catch (Exception e){
             //Log.e("join error", e.getMessage());
         }
-        return str[0];
+        return newGroup[0];
     }
 
     /**

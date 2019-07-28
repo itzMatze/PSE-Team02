@@ -15,7 +15,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:token="@+token/textView"
+            android:id="@+id/textView"
             android:text="@{item}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

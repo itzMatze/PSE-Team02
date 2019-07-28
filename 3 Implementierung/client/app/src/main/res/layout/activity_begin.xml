@@ -15,7 +15,7 @@
         android:layout_height="match_parent">
 
         <Button
-            android:token="@+token/register"
+            android:id="@+id/register"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="50dp"
@@ -29,12 +29,12 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/login"
+            app:layout_constraintTop_toBottomOf="@+id/login"
             app:layout_constraintVertical_bias="0.0"
             tools:visibility="visible" />
 
         <Button
-            android:token="@+token/login"
+            android:id="@+id/login"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="50dp"
@@ -48,12 +48,12 @@
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.0"
             tools:visibility="visible" />
 
         <TextView
-            android:token="@+token/textView2"
+            android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -71,21 +71,21 @@
             app:layout_constraintVertical_bias="0.0" />
 
         <ImageView
-            android:token="@+token/imageView2"
+            android:id="@+id/imageView2"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="20dp"
-            app:layout_constraintBottom_toTopOf="@+token/login"
+            app:layout_constraintBottom_toTopOf="@+id/login"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/textView2"
+            app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.0"
             app:srcCompat="@drawable/burger" />
 
         <ImageView
-            android:token="@+token/imageView3"
+            android:id="@+id/imageView3"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="20dp"
@@ -93,7 +93,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+token/register"
+            app:layout_constraintTop_toBottomOf="@+id/register"
             app:srcCompat="@drawable/salad" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

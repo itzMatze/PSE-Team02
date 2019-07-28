@@ -14,14 +14,14 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
-            android:token="@+token/container"
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingBottom="?android:attr/actionBarSize">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:token="@+token/fab"
+                android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"

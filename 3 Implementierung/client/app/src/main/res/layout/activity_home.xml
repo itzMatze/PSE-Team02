@@ -2,13 +2,13 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:token="@+token/container"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
     <Button
-        android:token="@+token/profile"
+        android:id="@+id/profile"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
@@ -27,7 +27,7 @@
         tools:visibility="visible" />
 
     <Button
-        android:token="@+token/goEat"
+        android:id="@+id/goEat"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
@@ -46,7 +46,7 @@
         tools:visibility="visible" />
 
     <Button
-        android:token="@+token/logout"
+        android:id="@+id/logout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
@@ -66,7 +66,7 @@
         tools:visibility="visible" />
 
     <Button
-        android:token="@+token/editGroups"
+        android:id="@+id/editGroups"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="50dp"
@@ -86,7 +86,7 @@
         tools:visibility="visible" />
 
     <Button
-        android:token="@+token/editUsers"
+        android:id="@+id/editUsers"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="250dp"
@@ -106,7 +106,7 @@
         tools:visibility="visible" />
 
     <ImageView
-        android:token="@+token/imageView4"
+        android:id="@+id/imageView4"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
