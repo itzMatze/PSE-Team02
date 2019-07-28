@@ -15,11 +15,78 @@
 
 \makeglossaries
 
-\newglossaryentry{Token}
+\newglossaryentry{MK10}
 {
-  name=Token,
-  description={Komponente die zur Identifizierung und Authentifizierung von Benutzern und Gruppen dient}
+  name=MK10,
+  description={Erstellen und Bearbeiten eines persönlichen Profils, bestehend aus: Einem eindeutigen Nutzernamen, Alter, Geschlecht, Motto,Profilbild (aus vorgegebener Auswahl), Status (Student, Professor, Auszubildende, Schüler, Sonstige)}
 }
+
+\newglossaryentry{MK20}
+{
+  name=MK20,
+  description={Einsehen des Mensaplans des aktuellen Tages}
+}
+
+\newglossaryentry{MK30}
+{
+  name=MK30,
+  description={Auswählen der Mensalinien/Mensawerke}
+}
+
+\newglossaryentry{MK40}
+{
+  name=MK40,
+  description={Einsehen der Gruppen, mit übereinstimmenden Mensalinien/ -werken}
+}
+
+\newglossaryentry{MK50}
+{
+  name=MK50,
+  description={Einstellen eines Zeitintervalls für das essen Gehen}
+}
+
+\newglossaryentry{MK60}
+{
+  name=MK60,
+  description={Erstellen einer Gruppe}
+}
+
+\newglossaryentry{MK70}
+{
+  name=MK70,
+  description={Beitreten einer Gruppe}
+}
+
+\newglossaryentry{MK80}
+{
+  name=MK80,
+  description={Verlassen einer Gruppe}
+}
+
+\newglossaryentry{MK90}
+{
+  name=MK90,
+  description={Anschauen der Profile der Gruppenmitglieder}
+}
+
+\newglossaryentry{MK100}
+{
+  name=MK100,
+  description={Automatisches Löschen der Gruppe am Ende des Tages, oder wenn letztes Mitglied austritt}
+}
+
+\newglossaryentry{MK110}
+{
+  name=MK100,
+  description={Administratorensicht: Administratoren sollen Gruppen und Nutzer löschen können}
+}
+
+\newglossaryentry{WK100}
+{
+  name=WK100,
+  description={E-Mail Verifizierung für die Registrierung}
+}
+
 
 
 \begin{document}
@@ -138,6 +205,10 @@ Zur besseren Nutzung von Hibernate wurde zwei zusätzliche Repository Klasse rea
 
 
 \section{Client}
+
+\chapter{Muss- und Wunschkriterien}
+Die von uns definierten elf Musskriterien wurden alle vollständig implementiert. Das heißt, ein Nutzer kann sich sein persönliches Profil anlegen (\Gls{MK10}). Mit einem angelegten Profil kann er nun den tagesaktuellen Mensaplan einsehen(\Gls{MK20}). Hat er sich für eine Linie entschieden(\Gls{MK30}), so kann er nach dem festlegen eines Zeitintervalls(\Gls{MK50}) entweder einer vorgeschlagenen Gruppe beitreten(\Gls{MK40} \& \Gls{MK70}), oder selbst eine Gruppe erstellen(\Gls{MK60}). Egal ob er einer Gruppe beigetreten ist oder selbst eine erstellt hat, kann der User aus dieser Gruppe austreten(\Gls{MK80}). Innerhalb einer Gruppe kann er außerdem die Profile betrachten(\Gls{MK90}). Des Weiteren können Administratoren User und Gruppen löschen(\Gls{MK110} und Gruppen werden am Ende des Tages gelöscht(\Gls{MK100}).
+Neben den Musskriterien wurde gezwungenermaßen auch das Wunschkriterium(\Gls{WK100}), also die E-Mail Verifizierung für die Registrierung, realisiert. Dies aufgrund von und durch FireBase. Die Abgrenzungskriterien wurden ebenfalls alle eingehalten.
 
 
 \chapter{Unit tests}
