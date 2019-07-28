@@ -12,7 +12,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public class LineItem extends MensaMeetItem<Line> {
 
     public LineItem(Context context, DisplayMode displayMode, Line objectData) {
-       
+
         super(context, displayMode, objectData);
     }
 
@@ -59,5 +59,4 @@ public class LineItem extends MensaMeetItem<Line> {
 
         fillTextField(R.string.field_meals, mealsText);
     }
-
 }

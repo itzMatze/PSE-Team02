@@ -144,8 +144,7 @@ public class HttpUtil {
             for (String param : params.keySet()) {
                 if (first) {
                     first = false;
-                }
-                else {
+                } else {
                     body += "&";
                 }
                 String value = params.get(param);
@@ -218,8 +217,7 @@ public class HttpUtil {
                 if (first) {
                     fullUrl += '?';
                     first = false;
-                }
-                else {
+                } else {
                     fullUrl += '&';
                 }
                 String value = params.get(param);
@@ -248,8 +246,7 @@ public class HttpUtil {
             String param = "";
             if (equals != -1) {
                 param = url.substring(start + 1, equals);
-            }
-            else {
+            } else {
                 param = url.substring(start + 1);
             }
 
@@ -259,8 +256,7 @@ public class HttpUtil {
                 start = url.indexOf('&', equals);
                 if (start != -1) {
                     value = url.substring(equals + 1, start);
-                }
-                else {
+                } else {
                     value = url.substring(equals + 1);
                 }
             }
@@ -283,8 +279,7 @@ public class HttpUtil {
         int q = url.indexOf('?');
         if (q != -1) {
             return url.substring(0, q);
-        }
-        else {
+        } else {
             return url;
         }
     }
@@ -302,7 +297,7 @@ public class HttpUtil {
                                Map<String, String> headers) throws IOException {
         // connection
         URL u = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection)u.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) u.openConnection();
         conn.setConnectTimeout(10000);
         conn.setReadTimeout(10000);
 
@@ -313,7 +308,7 @@ public class HttpUtil {
 
         // headers
         if (headers != null) {
-            for(String key : headers.keySet()) {
+            for (String key : headers.keySet()) {
                 conn.addRequestProperty(key, headers.get(key));
             }
         }
@@ -350,7 +345,7 @@ public class HttpUtil {
     static public String streamToString(InputStream in) throws IOException {
         StringBuffer out = new StringBuffer();
         byte[] b = new byte[4096];
-        for (int n; (n = in.read(b)) != -1;) {
+        for (int n; (n = in.read(b)) != -1; ) {
             out.append(new String(b, 0, n));
         }
         return out.toString();

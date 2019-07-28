@@ -9,13 +9,11 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
 
-import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -45,22 +43,24 @@ public abstract class MensaMeetItem<T> {
                 public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
 
                     processStateChange(it);
-
                 }
             });
         }
-
     }
 
     public MensaMeetItemHandler getHandler() {
         return handler;
     }
-    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {};
+
+    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {
+    }
+
+    ;
 
     protected View createTextField(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
         if (displayMode == DisplayMode.BIG_EDITABLE) {
             EditText editText = new EditText(context);
-            editText.setId((int)id);
+            editText.setId((int) id);
             editText.setHint(id);
             editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
@@ -68,7 +68,7 @@ public abstract class MensaMeetItem<T> {
             return editText;
         } else {
             TextView textView = new TextView(context);
-            textView.setId((int)id);
+            textView.setId((int) id);
             textView.setTextSize(textSize);
             textView.setLayoutParams(layoutParams);
             MensaMeetUtil.applyStyle(textView, R.style.normal_text);
@@ -93,7 +93,7 @@ public abstract class MensaMeetItem<T> {
         MensaMeetUtil.applyStyle(linearLayout, R.style.link_text);
 
         TextView textView = new TextView(context);
-        textView.setId((int)id);
+        textView.setId((int) id);
         textView.setTextSize(textSize);
         textView.setLayoutParams(WIDTH_MATCH_PARENT);
         textView.setText(defaultTextId);
@@ -101,7 +101,6 @@ public abstract class MensaMeetItem<T> {
         linearLayout.addView(textView);
 
         return linearLayout;
-
     }
 
     protected TextView createLabel(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
@@ -126,9 +125,8 @@ public abstract class MensaMeetItem<T> {
         return textView;
     }
 
-
     protected void fillTextField(@StringRes int id, String text) {
-        View field = view.findViewById((int)id);
+        View field = view.findViewById((int) id);
 
         if (field != null) {
             if (field.getClass() == EditText.class) {
@@ -139,12 +137,11 @@ public abstract class MensaMeetItem<T> {
                 textView.setText(text);
             }
         }
-
     }
 
     protected void setSpinnerField(@StringRes int id, String string) {
 
-        View field = view.findViewById((int)id);
+        View field = view.findViewById((int) id);
         if (field != null) {
             if (field.getClass() == Spinner.class) {
                 ((Spinner) field).setSelection(
@@ -156,7 +153,7 @@ public abstract class MensaMeetItem<T> {
     }
 
     protected String extractTextField(@StringRes int id) {
-        View field = view.findViewById((int)id);
+        View field = view.findViewById((int) id);
         String text = null;
 
         if (field != null) {
@@ -173,22 +170,21 @@ public abstract class MensaMeetItem<T> {
     }
 
     protected String extractSpinnerField(@StringRes int id) {
-        View field = view.findViewById((int)id);
+        View field = view.findViewById((int) id);
 
         if (field != null) {
             if (field.getClass() == Spinner.class) {
-                return Integer.toString(((Spinner)field).getSelectedItemPosition());
-            } else if (field.getClass() == TextView.class){
+                return Integer.toString(((Spinner) field).getSelectedItemPosition());
+            } else if (field.getClass() == TextView.class) {
                 return extractTextField(id);
             }
         }
-
 
         return null;
     }
 
     protected void fillSublist(@StringRes int id, MensaMeetList sublist) {
-        View sublistContainer = view.findViewById((int)id);
+        View sublistContainer = view.findViewById((int) id);
 
         if (sublistContainer != null && sublistContainer.getClass() == LinearLayout.class) {
             LinearLayout linearLayout = (LinearLayout) sublistContainer;
@@ -200,7 +196,6 @@ public abstract class MensaMeetItem<T> {
     public PopupWindow getPopUp() {
 
         return new PopupWindow(view);
-
     }
 
     public void setObjectData(T objectData) {
@@ -211,11 +206,16 @@ public abstract class MensaMeetItem<T> {
         return objectData;
     }
 
-    public void saveEditedObjectData() {};
+    public void saveEditedObjectData() {
+    }
+
+    ;
 
     public View getView() {
         return view;
-    };
+    }
+
+    ;
 
     public abstract View createView();
 

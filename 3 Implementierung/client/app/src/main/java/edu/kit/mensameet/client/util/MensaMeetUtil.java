@@ -2,10 +2,8 @@ package edu.kit.mensameet.client.util;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -15,16 +13,14 @@ public class MensaMeetUtil {
 
     public static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-    public static void applyStyle(View v, int styleResId)
-    {
+    public static void applyStyle(View v, int styleResId) {
         Context context = v.getContext();
 
         if (v.getClass() == TextView.class || v.getClass() == EditText.class) {
-            ((TextView)v).setTextAppearance(context, styleResId);
+            ((TextView) v).setTextAppearance(context, styleResId);
         }
 
-
-        int[] attrs = new int[] {
+        int[] attrs = new int[]{
                 android.R.attr.layout_marginLeft,     // 0
                 android.R.attr.layout_marginTop,    // 1
                 android.R.attr.layout_marginRight,   // 2
@@ -58,20 +54,18 @@ public class MensaMeetUtil {
                     arr.getInt(7, 0)); // Bottom
 
             v.requestLayout();
-
         } finally {
             arr.recycle();
         }
     }
 
-    public static int getIndexInSpinner(Spinner spinner, String string){
-        for (int i = 0; i < spinner.getCount(); i++){
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(string)){
+    public static int getIndexInSpinner(Spinner spinner, String string) {
+        for (int i = 0; i < spinner.getCount(); i++) {
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(string)) {
                 return i;
             }
         }
 
         return 0;
     }
-
 }

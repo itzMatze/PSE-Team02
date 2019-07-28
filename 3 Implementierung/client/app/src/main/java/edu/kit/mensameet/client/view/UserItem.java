@@ -41,16 +41,14 @@ public class UserItem extends MensaMeetItem<User> {
         final int BIGGER_FONT_SIZE;
         final int SMALLER_FONT_SIZE;
 
-        if (displayMode == DisplayMode.BIG_EDITABLE || displayMode == DisplayMode.BIG_NOTEDITABLE)  {
+        if (displayMode == DisplayMode.BIG_EDITABLE || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             BIGGER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_big);
             SMALLER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_medium);
-
         } else {
 
             BIGGER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_medium);
             SMALLER_FONT_SIZE = context.getResources().getInteger(R.integer.font_size_small);
-
         }
 
         LinearLayout view = new LinearLayout(context);
@@ -66,11 +64,9 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             view.setOrientation(LinearLayout.HORIZONTAL);
-
         } else {
 
             view.setOrientation(LinearLayout.VERTICAL);
-
         }
 
         // Field: user picture
@@ -83,15 +79,12 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             itemView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
-
         } else {
 
             itemView.setLayoutParams(WIDTH_MATCH_PARENT);
-
         }
 
         view.addView(itemView);
-
 
         LinearLayout descriptionArea = new LinearLayout(context);
         descriptionArea.setOrientation(LinearLayout.VERTICAL);
@@ -99,11 +92,9 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
         } else {
 
             descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
         }
 
         // Field: name
@@ -132,7 +123,7 @@ public class UserItem extends MensaMeetItem<User> {
                     DatePickerDialog timePickerDialog = new DatePickerDialog(context, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker datePicker, int year, int month, int dayOfMonth) {
-                            ((TextView)chooseDate.findViewById((int)R.string.field_birth_date))
+                            ((TextView) chooseDate.findViewById((int) R.string.field_birth_date))
                                     .setText(String.format("%02d.%02d.%04d", dayOfMonth, month + 1, year));
                             chosenDay = dayOfMonth;
                             chosenMonth = month + 1;
@@ -142,28 +133,24 @@ public class UserItem extends MensaMeetItem<User> {
 
                     timePickerDialog.show();
                 }
-
             });
 
             descriptionArea.addView(chooseDate);
-
         } else if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(createTextField(R.string.field_birth_date, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
-
         }
 
         // Field: gender
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(createTextField(R.string.field_gender, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
-
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             descriptionArea.addView(createLabel(R.string.your_gender, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             Spinner dropdown = new Spinner(context);
-            dropdown.setId((int)R.string.field_gender);
+            dropdown.setId((int) R.string.field_gender);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
             String[] items = new String[Gender.values().length];
@@ -176,20 +163,18 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setAdapter(adapter);
 
             descriptionArea.addView(dropdown);
-
         }
 
         // Field: status
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(super.createTextField(R.string.field_status, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
-
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             descriptionArea.addView(createLabel(R.string.you_eat, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             Spinner dropdown = new Spinner(context);
-            dropdown.setId((int)R.string.field_status);
+            dropdown.setId((int) R.string.field_status);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
             String[] items = new String[Status.values().length];
@@ -202,20 +187,18 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setAdapter(adapter);
 
             descriptionArea.addView(dropdown);
-
         }
 
         // Field: subject
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(super.createTextField(R.string.field_subject, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
-
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             descriptionArea.addView(createLabel(R.string.your_subject, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             Spinner dropdown = new Spinner(context);
-            dropdown.setId((int)R.string.field_subject);
+            dropdown.setId((int) R.string.field_subject);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
             String[] items = new String[Subject.values().length];
@@ -228,7 +211,6 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setAdapter(adapter);
 
             descriptionArea.addView(dropdown);
-
         }
 
         // Field: Delete button
@@ -293,7 +275,6 @@ public class UserItem extends MensaMeetItem<User> {
             argument = null;
         }
         setSpinnerField(R.string.field_subject, argument);
-
     }
 
     @Override
@@ -310,11 +291,10 @@ public class UserItem extends MensaMeetItem<User> {
         objectData.setStatus(Status.valueOf(extractSpinnerField(R.string.field_status)));
 
         objectData.setSubject(Subject.valueOf(extractSpinnerField(R.string.field_subject)));
-
     }
 
     @Override
     public UserItemHandler getHandler() {
-       return handler;
+        return handler;
     }
 }

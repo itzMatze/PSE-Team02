@@ -6,7 +6,8 @@ import android.media.Image;
 import androidx.annotation.DrawableRes;
 
 public class MensaMeetUserPicture {
-    private @DrawableRes int resourceId;
+    private @DrawableRes
+    int resourceId;
     private int pictureId;
 
     public MensaMeetUserPicture(int pictureId, @DrawableRes int resourceId) {
@@ -18,7 +19,8 @@ public class MensaMeetUserPicture {
         return pictureId;
     }
 
-    public @DrawableRes int getResourceId() {
+    public @DrawableRes
+    int getResourceId() {
         return resourceId;
     }
 

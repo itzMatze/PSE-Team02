@@ -2,8 +2,6 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -57,9 +55,7 @@ public class UserActivity extends MensaMeetActivity {
             if (buttonBack != null) {
                 buttonBack.setText(R.string.discard);
             }
-
         }
-
     }
 
     @Override
@@ -73,7 +69,6 @@ public class UserActivity extends MensaMeetActivity {
 
             userItem.setObjectData(user);
             userItem.fillObjectData();
-
         }
     }
 
@@ -83,7 +78,7 @@ public class UserActivity extends MensaMeetActivity {
             Toast.makeText(this, R.string.user_saved, Toast.LENGTH_SHORT).show();
         } else if (it.second == UserViewModel.State.BACK) {
             super.onBackPressed();
-        } else if (it.second ==  UserViewModel.State.ERROR_SAVING_USER) {
+        } else if (it.second == UserViewModel.State.ERROR_SAVING_USER) {
             Toast.makeText(this, R.string.error_saving_user, Toast.LENGTH_SHORT).show();
         }
     }
@@ -104,5 +99,4 @@ public class UserActivity extends MensaMeetActivity {
         Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_SHORT).show();
         gotoActivity(SelectGroupActivity.class);
     }
-
 }

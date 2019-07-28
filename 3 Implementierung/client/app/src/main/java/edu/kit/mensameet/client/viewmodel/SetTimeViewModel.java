@@ -89,5 +89,4 @@ public class SetTimeViewModel extends MensaMeetViewModel {
         }
         return uiEventLiveData;
     }
-
 }

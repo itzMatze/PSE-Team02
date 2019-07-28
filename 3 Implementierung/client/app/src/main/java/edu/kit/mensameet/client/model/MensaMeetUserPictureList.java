@@ -24,7 +24,7 @@ public class MensaMeetUserPictureList {
 
     public MensaMeetUserPicture getPictureById(int id) {
 
-        for(MensaMeetUserPicture picture : pictures) {
+        for (MensaMeetUserPicture picture : pictures) {
             if (picture.getPictureId() == id) {
                 return picture;
             }
@@ -40,6 +40,4 @@ public class MensaMeetUserPictureList {
     public MensaMeetUserPicture[] getPictures() {
         return pictures;
     }
-
-
 }

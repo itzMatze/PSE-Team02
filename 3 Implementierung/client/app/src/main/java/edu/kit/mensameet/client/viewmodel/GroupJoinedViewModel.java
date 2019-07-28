@@ -13,8 +13,7 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
         this.group = group;
     }
 
-    public void leaveGroup()
-    {
+    public void leaveGroup() {
         if (group != null) {
 
             //removeUserFromGroup(MensaMeetSession.getInstance().getUser(), group);
@@ -24,13 +23,9 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
 
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_LEFT));
         }
-
-
-
     }
 
     public enum State implements StateInterface {
         GROUP_LEFT, DEFAULT
     }
-
 }

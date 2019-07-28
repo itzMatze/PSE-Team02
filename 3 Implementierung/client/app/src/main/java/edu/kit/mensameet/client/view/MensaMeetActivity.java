@@ -1,27 +1,19 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
-import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public abstract class MensaMeetActivity extends AppCompatActivity {
@@ -64,7 +56,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             }
         };*/
 
-        buttonHome = (Button)findViewById(R.id.navigation_home);
+        buttonHome = (Button) findViewById(R.id.navigation_home);
         if (buttonHome != null) {
             buttonHome.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,7 +66,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             });
         }
 
-        buttonBack = (Button)findViewById(R.id.navigation_back);
+        buttonBack = (Button) findViewById(R.id.navigation_back);
         if (buttonBack != null) {
             buttonBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,7 +75,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
                 }
             });
         }
-        buttonNext = (Button)findViewById(R.id.navigation_next);
+        buttonNext = (Button) findViewById(R.id.navigation_next);
         if (buttonNext != null) {
             buttonNext.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,13 +97,9 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
                 public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
 
                     processStateChange(it);
-
                 }
             });
         }
-
-
-
     }
 
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
@@ -127,12 +115,21 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         gotoHome();
     }
 
-    public void onClickNext() {};
+    public void onClickNext() {
+    }
+
+    ;
     // TODO: Set stub methods to abstract once all activities are changed
 
-    public void onClickBack() {};
+    public void onClickBack() {
+    }
 
-    protected void reloadData() {};
+    ;
+
+    protected void reloadData() {
+    }
+
+    ;
 
     @Override
     protected void onResume() {
@@ -141,7 +138,6 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         reloadData();
 
         super.onResume();
-
     }
 
     protected void gotoHome() {

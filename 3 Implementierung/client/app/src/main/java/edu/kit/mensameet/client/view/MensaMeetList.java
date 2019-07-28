@@ -3,7 +3,6 @@ package edu.kit.mensameet.client.view;
 import android.content.Context;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,8 +11,6 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 
 public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClickListener {
 
@@ -47,7 +44,6 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
         this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
         //this.recyclerView.setItemAnimator(null);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
-
 
         List<MensaMeetItem<T>> items = createItems();
         adapter = new MensaMeetListAdapter<T>(context, items, displayMode);

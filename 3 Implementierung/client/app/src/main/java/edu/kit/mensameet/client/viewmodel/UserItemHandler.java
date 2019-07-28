@@ -19,7 +19,6 @@ public class UserItemHandler extends MensaMeetItemHandler {
     public UserItemHandler(User user, MensaMeetItem.DisplayMode displayMode) {
         this.user = user;
         this.displayMode = displayMode;
-
     }
 
     public void showUser() {

@@ -18,7 +18,6 @@ public class GroupItemHandler extends MensaMeetItemHandler {
     public GroupItemHandler(Group group, MensaMeetItem.DisplayMode displayMode) {
         this.group = group;
         this.displayMode = displayMode;
-
     }
 
     public LiveData<Group> loadGroup() {
@@ -34,7 +33,6 @@ public class GroupItemHandler extends MensaMeetItemHandler {
 
         MensaMeetSession.getInstance().setChosenGroup(group);
         uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOINED));
-
     }
 
     public void deleteGroup() {

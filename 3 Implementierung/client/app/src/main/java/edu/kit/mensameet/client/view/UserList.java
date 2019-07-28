@@ -1,15 +1,11 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.PopupWindow;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 
 public class UserList extends MensaMeetList<User> {
@@ -32,6 +28,6 @@ public class UserList extends MensaMeetList<User> {
 
     @Override
     public void onItemClick(View view, int position) {
-        ((UserItem)adapter.getItem(position)).getHandler().showUser();
+        ((UserItem) adapter.getItem(position)).getHandler().showUser();
     }
 }
