@@ -140,7 +140,42 @@ Zur besseren Nutzung von Hibernate wurde zwei zusätzliche Repository Klasse rea
 \section{Client}
 
 
+\chapter{Unit tests}
+\subsection{Server}
 
+\subsubsection{Model}
+Die Model-Klassen bedurften keinen Tests, da sie nur zur Datenhaltung dienen und lediglich aus gettern, settern und Konstruktoren bestehen.
+
+\subsubsection{View}
+
+
+\subsubsection{Controller}
+\begin{itemize}
+	\item \b getestete Funktionalitäten des Groupcontroller
+	\begin{itemize}
+		\item {Gültige Gruppe ins Repository hinzufügen: \\
+		Eine Testgruppe wurde mit der Methode Group addGroup (Group group) ins Repository eingefügt. Die Methode gibt die gerade eingefügte Gruppe zurück.
+Da jede Gruppe beim erstellen eine eindeutiges Token(UUID, durch die sie eindeutig identifziert werden kann) erhält, haben wir das Token der Testgruppe mit dem Token der Gruppe, die addGroup zurückgegeben hat, verglichen.		
+		}
+		
+		\item {Gruppe aus dem Repository holen: \\
+		Erster Test: Eine Testgruppe wurde mit der Methode Group addGroup(Group group)dem Repository hinzugefügt. Mit der Methode Group getGroup(Token token) wurde die eingefügte Gruppe aus dem Repository geholt. Es wurde überprüft, dass das Token der geholten Gruppe wirklich dem Token der Testgruppe entspricht und somit das holen der Gruppe korrekt funktioniert. \\
+		\\ Zweiter Test: Die Testgruppe wurde nicht ins Repository eingefügt. Die Methode Group getGroup(Token token) wurde mit dem Token der Testgruppe aufgerufen. Da die Gruppe nicht im Repository ist, wird wie erwartet eine ResponseStatusException geworfen. }
+		
+		\item {(Alle) Gruppe(n) aus dem Repository entfernen: \\
+		Erster Test: Eine Testgruppe wurde mit der Methode Group addGroup(Group group)dem Repository hinzugefügt und mit removeGroup(String groupToken) wieder aus dem Repository entfernt. Danach wurde Group[] getAllGroups() aufgerufen und überprüft ob das zurückgegebene Array die Länge null hat. \\
+		\\ Zweiter Test: Zwei Testgruppen wurden jeweils mit der Methode Group addGroup(Group group)dem Repository hinzugefügt. Danach wurde die Methode removeAllGroups(), die alle Gruppen aus dem Repository löschen soll. Das wurde überprüft indem geprüft wurde, ob die Länge des Arrays, das von der Methode Group[] getAllGroups() zurückgegeben wird, gleich 0 ist.
+		}
+		
+		\item {Nicht bestehende Gruppe aus dem Repository holen: \\
+		
+		}
+		
+	\end{itemize}
+\end{itemize}
+
+
+\subsection{Client}
 
 
 \printglossaries
