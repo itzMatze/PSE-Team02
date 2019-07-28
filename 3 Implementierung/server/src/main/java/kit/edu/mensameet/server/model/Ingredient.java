@@ -1,6 +1,7 @@
 package kit.edu.mensameet.server.model;
-/*
+/**
  * This enum represents all ingredients which can be used within the food
+ *
  */
 public enum Ingredient {
 	WITH_DYE("(1) mit Farbstoff"),
@@ -62,14 +63,15 @@ public enum Ingredient {
 	
 	
 private String name;
-	/*
-	 * With this constructor we can add a String containing the name, in particular the german translation of the ingredient
+	/**
+	 * 
+	 * @param name is the name of each ingredient as a string
 	 */
 	private Ingredient(String name) {
 		this.name = name;
 	}
-	/*
-	 * This method returns the name of the ingredient
+	/**
+	 * This method returns the name of an ingredient as a string
 	 */
 	public String toString(){
         return name;

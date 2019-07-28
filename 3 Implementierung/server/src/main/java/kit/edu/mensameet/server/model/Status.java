@@ -1,6 +1,7 @@
 package kit.edu.mensameet.server.model;
-/*
- * This enum represents the different status an user can choose
+/**
+ * This enum represents each status a user of the app can choose
+ *
  */
 public enum Status {
 	PROFESSOR("Professor"),
@@ -10,14 +11,15 @@ public enum Status {
 	OTHER("Andere");
 	
 	private String name;
-	/*
-	 * With this constructor we can add a String containg the name of a status, in particular the german translation
+	/**
+	 * 
+	 * @param name is the name of the status
 	 */
 	private Status(String name) {
 		this.name = name;
 	}
-	/*
-	 * This method returns the name of a status
+	/**
+	 * return a status as a string
 	 */
 	public String toString(){
         return name;

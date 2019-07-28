@@ -24,6 +24,9 @@ public class GroupController {
 	@Autowired
 	private GroupRepository repository;
 	
+	@Autowired
+	private FirebaseAuthentifcator fbAuth;
+	
 	public Group getGroup(String token) {
 		Group group = repository.getGroupByToken(token);
 		
@@ -43,6 +46,8 @@ public class GroupController {
 		
 		if(group != null) {
 			repository.delete(group);
+		} else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Group with token " + groupToken + " coulnd't be found.");
 		}
 	}
 	

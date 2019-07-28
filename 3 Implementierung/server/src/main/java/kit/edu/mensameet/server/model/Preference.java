@@ -1,56 +1,70 @@
 package kit.edu.mensameet.server.model;
 
 import java.time.*;
-/*
- * This class represents the chosen preferences of a user, based on time and meal lines
+
+/**
+ * This class represents the chosen preferences of a user, based on time and
+ * meal lines
+ *
  */
 public class Preference {
-	
+
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private MealLine[] mealLines;
-	
-	
+
 	public Preference(LocalTime startTime, LocalTime endTime, MealLine[] lines) {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.mealLines = lines;
 	}
-	
-	public Preference() {}
-	
-	/*
-	 * default getter for the starting time of an interval in which the user wants to eat
+
+	public Preference() {
+	}
+
+	/**
+	 * 
+	 * @return the starttime
 	 */
 	public LocalTime getStartTime() {
 		return startTime;
 	}
-	/*
-	 * default setter for the starting time of an interval in which the user wants to eat
+
+	/**
+	 * 
+	 * @param startTime is the start time of an interval a user wants to go to eat
 	 */
 	public void setStartTime(LocalTime startTime) {
 		this.startTime = startTime;
 	}
-	/*
-	 * default getter for the ending time of an interval in which the user wants to eat
+
+	/**
+	 * 
+	 * @return the endtime of the intervall
 	 */
 	public LocalTime getEndTime() {
 		return endTime;
 	}
-	/*
-	 * default getter for the ending time of an interval in which the user wants to eat
+
+	/**
+	 * 
+	 * @param endTime is the end time of the interval a user wants to go to eat
 	 */
 	public void setEndTime(LocalTime endTime) {
 		this.endTime = endTime;
 	}
-	/*
-	 * default getter for the chosen meal lines
+
+	/**
+	 * 
+	 * @return an array of all meal lines the user wants to go to eat
 	 */
 	public MealLine[] getMealLines() {
 		return mealLines;
 	}
-	/*
-	 * default setter for the chosen meal lines
+
+	/**
+	 * 
+	 * @param mealLines is an array of all meal lines
 	 */
 	public void setMealLines(MealLine[] mealLines) {
 		this.mealLines = mealLines;

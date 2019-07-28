@@ -1,23 +1,26 @@
 package kit.edu.mensameet.server.model;
-/*
+
+/**
  * This enum represents the genders which are part of the user profile
+ *
  */
 public enum Gender {
-	MALE("Männlich"),
-	FEMALE("Weiblich"),
-	OTHER("Divers");
-	
+	MALE("Männlich"), FEMALE("Weiblich"), OTHER("Divers");
+
 	private String name;
-	/*
-	 * With the constructor we can give our enums a String containing their name, in particular their german translation
+
+	/**
+	 * 
+	 * @param name is the name of each gender
 	 */
 	private Gender(String name) {
 		this.name = name;
 	}
-	/*
-	 * This method returns the name of an enum
+
+	/**
+	 * this method returns the name of a gender
 	 */
-	public String toString(){
-        return name;
-    }
+	public String toString() {
+		return name;
+	}
 }
