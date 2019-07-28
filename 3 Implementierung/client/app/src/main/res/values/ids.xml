@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="expand_area" type="id" />
+    <item name="expand_area" type="token" />
 </resources>

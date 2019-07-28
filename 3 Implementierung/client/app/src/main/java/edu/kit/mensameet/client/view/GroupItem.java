@@ -11,8 +11,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import androidx.annotation.StringRes;
-
 import java.util.Date;
 import java.util.List;
 
@@ -21,10 +19,8 @@ import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 public class GroupItem extends MensaMeetItem<Group> {
@@ -230,7 +226,7 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         // Field: Delete button
 
-        if (MensaMeetSession.getInstance().getUser().isAdmin()) {
+        if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
 
             if (displayMode == DisplayMode.SMALL) {
 

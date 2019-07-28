@@ -1,26 +1,39 @@
 package edu.kit.mensameet.client.util;
 
-import android.util.Log;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
 
+/*
+in case return JSON File or JSON URL
+    //JSON file to Java object
+    Staff obj = mapper.readValue(new File("c:\\test\\staff.json"), Staff.class);
+
+    //JSON URL to Java object
+    Staff obj = mapper.readValue(new URL("http://some-domains/api/name.json"), Staff.class);
+ */
 /**
- * this class contains
+ * this class contains static methods responsible for send request to server
  */
 public class RequestUtil {
 
-    private static ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+    //for convert a java object to json string and vise versa
+    private static ObjectMapper mapper = new ObjectMapper();
+
+    //for convert a java object to json string
+    private static ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 
     /**
-     *
+     * create user
      * @param firebaseToken
      * @return
      */
@@ -33,9 +46,9 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("firebaseToken", firebaseToken);
                     str[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
-                    Log.i("create user success", str[0]);
+                    //Log.i("create user success", str[0]);
                 }catch (Exception e){
-                    Log.e("create user failed", e.getClass().toString() + e.getMessage());
+                    //Log.e("create user failed", e.getClass().toString() + e.getMessage());
                 }
 
             }
@@ -44,27 +57,57 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
 
     /**
      *
-     * @param token
+     * @param firebaseToken
+     * @param userToken
      * @return
      */
-    public static String getUser(final String token) {
-        final String[] str = {""};
+    public static User getUser(final String firebaseToken, final String userToken) {
+        final User[] user = {new User()};
+        final String[] str = new String[1];
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> params = new HashMap<>();
-                    params.put("firebaseToken", token);
+                    params.put("firebaseToken", firebaseToken);
+                    params.put("userToken", userToken);
+                    str[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
+                    user[0] = mapper.readValue(str[0], User.class);
+                }catch (Exception e){
+                    //Log.e("get user failed", e.getMessage());
+                }
+
+            }
+        });
+        thread.start();
+        try{
+            thread.join();
+
+        }catch (Exception e){
+            //Log.e("join error", e.getMessage());
+        }
+        return user[0];
+    }
+    //todo : test only
+    public static String getUserString(final String firebaseToken, final String userToken) {
+        final String[] str = new String[1];
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    Map<String, String> params = new HashMap<>();
+                    params.put("firebaseToken", firebaseToken);
+                    params.put("userToken", userToken);
                     str[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
                 }catch (Exception e){
-                    Log.e("get user failed", e.getMessage());
+                    //Log.e("get user failed", e.getMessage());
                 }
 
             }
@@ -73,7 +116,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
@@ -95,7 +138,7 @@ public class RequestUtil {
                     params.put("firebaseToken", user.getToken());
                     str[0] = HttpUtil.put("http://193.196.38.98:8080/server/user", json, params);
                 }catch (Exception e){
-                    Log.e("update user failed", e.getMessage());
+                    //Log.e("update user failed", e.getMessage());
                 }
 
             }
@@ -104,7 +147,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
@@ -120,11 +163,9 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    Map<String, String> params = new HashMap<>();
-                    params.put("firebaseToken", firebaseToken);
-                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user", params);
+                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?token" + firebaseToken);
                 }catch (Exception e){
-                    Log.e("delete user failed", e.getMessage());
+                    //Log.e("delete user failed", e.getMessage());
                 }
             }
         });
@@ -132,7 +173,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
@@ -140,10 +181,10 @@ public class RequestUtil {
     /**
      *
      * @param group
-     * @param token
+     * @param firebaseToken
      * @return
      */
-    public static String createGroup(final Group group, final String token) {
+    public static String createGroup(final Group group, final String firebaseToken) {
         final String[] str = {""};
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -152,11 +193,10 @@ public class RequestUtil {
                     String json = ow.writeValueAsString(new GroupForRequest(group));
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
-                    //todo: add attribute token to Model.Group or ...
-                    params.put("token", token);
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/create-group", json, params);
+                    params.put("firebaseToken", firebaseToken);
+                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
                 }catch (Exception e){
-                    Log.e("create group failed", e.getMessage());
+                    //Log.e("create group failed", e.getMessage());
                 }
 
             }
@@ -165,7 +205,7 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
@@ -175,17 +215,20 @@ public class RequestUtil {
      * @param groupToken
      * @return
      */
-    public static String getGroup(final String groupToken) {
-        final String[] str = {""};
+    public static Group getGroup(final String groupToken) {
+        final Group[] group = new Group[1];
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> params = new HashMap<>();
                     params.put("groupToken",groupToken);
-                    str[0] = HttpUtil.get("http://193.196.38.98:8080/create-group", params);
+                    String str = HttpUtil.get(
+                            "http://193.196.38.98:8080/server/create-group?groupToken="+ groupToken, params);
+                    GroupForRequest returnGroup = mapper.readValue(str, GroupForRequest.class);
+                    group[0] = returnGroup.parseToGroup();
                 }catch (Exception e){
-                    Log.e("get group failed", e.getMessage());
+                    //Log.e("get group failed", e.getMessage());
                 }
 
             }
@@ -194,36 +237,43 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
-        return str[0];
+        return group[0];
     }
 
-
-    public static String getGroupByPrefferences(final MensaMeetTime time, final String[] lines) {
-        final String[] str = {""};
+    /*
+     *
+     *
+     * @param groupToken
+     * @return
+     *
+    public static String getGroupString(final String groupToken) {
+        final String[] str = new String[1];
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    String json = ow.writeValueAsString(new GroupByPrefferences(time, lines));
                     Map<String, String> params = new HashMap<>();
-                    params.put("token","1");
-                    params.put("Content-Type","application/json");
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/group-prefferences", json, params);
+                    params.put("groupToken",groupToken);
+                    str[0] = HttpUtil.get(
+                            "http://193.196.38.98:8080/server/create-group?groupToken=" + groupToken, params);
+
                 }catch (Exception e){
-                    Log.e("preferences failed", e.getMessage());
+                    //Log.e("get group failed", e.getMessage());
                 }
+
             }
         });
         thread.start();
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
+    */
 
     /**
      *
@@ -231,8 +281,9 @@ public class RequestUtil {
      * @param lines
      * @return
      */
-    public static String addUserToGroup(final MensaMeetTime time, final String[] lines) {
+    public static List<Group> getGroupByPrefferences(final MensaMeetTime time, final String[] lines) {
         final String[] str = {""};
+        final List<Group> groups = new ArrayList<>();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -241,9 +292,16 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("token","1");
                     params.put("Content-Type","application/json");
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/group-prefferences", json, params);
+                    str[0] = HttpUtil.post
+                            ("http://193.196.38.98:8080/server/group-prefferences", json, params);
+                    List<GroupForRequest> groupForRequests = new ArrayList<>();
+                    groupForRequests = mapper.readValue
+                            (str[0], mapper.getTypeFactory().constructCollectionType(List.class, GroupForRequest.class));
+                    for(GroupForRequest i: groupForRequests){
+                        groups.add(i.parseToGroup());
+                    }
                 }catch (Exception e){
-                    Log.e("preferences failed", e.getMessage());
+                    //Log.e("preferences failed", e.getMessage());
                 }
             }
         });
@@ -251,44 +309,63 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("error", e.getMessage());
         }
-        return str[0];
+        return groups;
     }
 
     /**
      *
      * @param firebaseToken
-     * @param groupToken
      * @return
      */
-    public static String addUserToGroup(final String firebaseToken, final String groupToken) {
+    public static String deleteGroup(final String groupToken, final String firebaseToken) {
         final String[] str = {""};
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    Map<String, String> params = new HashMap<String, String>();
+                    Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
-                    params.put("groupToken", groupToken);
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/add-user-to-group",null, params);
-                    Log.i("add user success", str[0]);
+                    str[0] = HttpUtil.delete(
+                            "http://193.196.38.98:8080/server/group?groupToken=" + groupToken, params);
                 }catch (Exception e){
-                    Log.e("create user failed", e.getClass().toString() + e.getMessage());
+                    //Log.e("delete user failed", e.getMessage());
                 }
-
             }
         });
         thread.start();
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
 
-    //todo: why user token
+
+    public static String addUserToGroup(final String groupToken, final String firebaseToken) {
+        final String[] str = {""};
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/add-user-to-group?firebaseToken="
+                            + firebaseToken + "&groupToken=" + groupToken,
+                    null, null);
+                }catch (Exception e){
+                    //Log.e("preferences failed", e.getMessage());
+                }
+            }
+        });
+        thread.start();
+        try{
+            thread.join();
+        }catch (Exception e){
+            //Log.e("join error", e.getMessage());
+        }
+        return str[0];
+    }
 
     /**
      *
@@ -302,13 +379,11 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("firebaseToken", firebaseToken);
-                    params.put("groupToken", groupToken);
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/remove-user-from-group",null, params);
-                    Log.i("create user success", str[0]);
+                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/remove-user-from-group?firebaseToken="
+                                    + firebaseToken + "&groupToken=" + groupToken,
+                            null, null);
                 }catch (Exception e){
-                    Log.e("remove user failed", e.getClass().toString() + e.getMessage());
+                    //Log.e("create user failed", e.getClass().toString() + e.getMessage());
                 }
 
             }
@@ -317,10 +392,11 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
+
 
 
     /**
@@ -335,7 +411,7 @@ public class RequestUtil {
                 try{
                     str[0] = HttpUtil.get("http://193.196.38.98:8080/server/mensadata");
                 }catch (Exception e){
-                    Log.e("get mensa data failed", e.getMessage());
+                    //Log.e("get mensa data failed", e.getMessage());
                 }
             }
         });
@@ -343,34 +419,52 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            Log.e("join error", e.getMessage());
+            //Log.e("join error", e.getMessage());
         }
         return str[0];
     }
 
     /**
-     * this class is used for sending json string as body
+     * this class is used for convert group to a json String
+     * and send json string as body
      */
     private static class GroupForRequest{
+        String token;
         String name;
         String motto;
         int maxMember;
         String line;
-        int[] meetingTime = new int[4];
+        int[] meetingTime = new int[2];
 
+        //constructor with group
         public GroupForRequest(Group group) {
+            token = group.getToken();
             name = group.getName();
             motto = group.getMotto();
             maxMember = group.getMaxMembers();
             line = group.getLine();
             meetingTime[0] = group.getMeetingDate().getHours();
             meetingTime[1] = group.getMeetingDate().getMinutes();
-            meetingTime[2] = 0;
-            meetingTime[3] = 0;
+        }
 
+        public Group parseToGroup() {
+            Group group = new Group();
+            group.setToken(this.token);
+            group.setName(this.name);
+            group.setMotto(this.motto);
+            group.setMaxMembers(this.maxMember);
+            Date meetingDate = new Date();
+            meetingDate.setHours(this.meetingTime[0]);
+            meetingDate.setMinutes(this.meetingTime[1]);
+            group.setMeetingDate(meetingDate);
+            group.setLine(this.line);
+            return group;
         }
     }
 
+    /**
+     *
+     */
     private static class GroupByPrefferences{
         int[] startTime = new int[2];
         int[] endTime = new int[2];

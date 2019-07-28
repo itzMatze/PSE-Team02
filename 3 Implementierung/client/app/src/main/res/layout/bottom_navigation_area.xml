@@ -6,13 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:id="@+id/nav_view"
+    android:token="@+token/nav_view"
     app:layout_constraintBottom_toBottomOf="parent"
     app:layout_constraintLeft_toLeftOf="parent"
     app:layout_constraintRight_toRightOf="parent">
     <Button
         android:layout_marginLeft="2dp"
-        android:id="@+id/navigation_back"
+        android:token="@+token/navigation_back"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/arrow_left"
@@ -20,7 +20,7 @@
         android:text="@string/title_back" />
 
     <Button
-        android:id="@+id/navigation_home"
+        android:token="@+token/navigation_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0"
@@ -29,7 +29,7 @@
 
     <Button
         android:layout_marginRight="2dp"
-        android:id="@+id/navigation_next"
+        android:token="@+token/navigation_next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:drawableTop="@drawable/arrow_right"
@@ -37,7 +37,7 @@
         android:text="@string/title_next" />
 </LinearLayout>
 <!--<com.google.android.material.bottomnavigation.BottomNavigationView
-    android:id="@+id/nav_view"
+    android:token="@+token/nav_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_weight="0"

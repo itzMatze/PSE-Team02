@@ -7,12 +7,13 @@ public class User {
     private String token = "";
     private String name = "";
     private String motto = "";
-    private Date birthDate;
+    private Date birthdate;
     private Gender gender;
     private Subject subject;
     private Status status;
     private int profilePictureId;
     private Boolean isAdmin;
+    private String groupToken;
 
     public void setToken(String token) {
         this.token = token;
@@ -26,8 +27,8 @@ public class User {
         this.motto = motto;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setBirthdate(Date birthdate) {
+        this.birthdate = birthdate;
     }
 
     public void setGender(Gender gender) {
@@ -58,8 +59,8 @@ public class User {
         return motto;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getBirthdate() {
+        return birthdate;
     }
 
     public Gender getGender() {
@@ -78,13 +79,19 @@ public class User {
         return profilePictureId;
     }
 
-    public Boolean isAdmin() {
+    public Boolean getIsAdmin() {
         return isAdmin;
     }
 
-    public void setAdmin(Boolean isAdmin) {
+    public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }
 
+    public String getGroupToken() {
+        return groupToken;
+    }
 
+    public void setGroupToken(String groupToken) {
+        this.groupToken = groupToken;
+    }
 }
