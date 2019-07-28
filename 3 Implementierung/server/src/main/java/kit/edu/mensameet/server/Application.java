@@ -17,6 +17,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.ResourceLoader;
 
 import com.google.api.gax.core.GoogleCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -31,7 +32,19 @@ import kit.edu.mensameet.server.model.User;
 @SpringBootApplication
 public class Application extends SpringBootServletInitializer {
 	
+	private static String serviceAccountFilePath;
 	private static UserController userController;
+	private static ResourceLoader resourceLoader; 
+	
+	@Value("${path.to.service.account.file}")
+    public void setServiceAccountFilePath(String serviceAccountFilePath) {
+        this.serviceAccountFilePath = serviceAccountFilePath;
+    }
+	
+	@Autowired
+	public void setResourceLoader(ResourceLoader resourceLoader) {
+		this.resourceLoader = resourceLoader;
+	}
 	
 	@Autowired
     public void setUserController(UserController userController){
@@ -52,9 +65,11 @@ public class Application extends SpringBootServletInitializer {
 
     private static void initializeFirebase() throws IOException {
     	String relativePath = new File("").getAbsolutePath();
+ 
+    	resourceLoader.getResource("classpath:service-account-file.json").getURL();
     	
     	//To load the configurations via an explicit address isn't recommended and insecure and should be changed in the future.
-    	FileInputStream  credentialsStream = new FileInputStream(relativePath + "/src/main/resources/service-account-file.json");
+    	FileInputStream  credentialsStream = new FileInputStream(relativePath + serviceAccountFilePath);
     	
         FirebaseOptions options =  FirebaseOptions.builder()
         		.setCredentials(GoogleCredentials.fromStream(credentialsStream))

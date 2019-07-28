@@ -12,7 +12,9 @@ import org.springframework.web.server.ResponseStatusException;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthException;
+import com.google.firebase.auth.UserRecord.CreateRequest;
 
+import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.User;
 
 @Component
@@ -21,14 +23,23 @@ public class UserController {
 	@Value("${admin.token}")
 	private String adminToken;
 
+	@Value("${production.mode}")
+	private boolean productionMode;
+	
 	@Autowired
-	private UserRepository repository;
+	private UserRepository userRepository;
+
+	@Autowired
+	private GroupRepository groupRepository;
+
+	@Autowired
+	private MembershipController membershipController;
 	
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
 	public User getUser(String userToken) {
-		User user = repository.getUserByToken(userToken);
+		User user = userRepository.getUserByToken(userToken);
 		
 		if (user == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found.");			
@@ -38,13 +49,27 @@ public class UserController {
 	}
 	
 	public void addUserWithToken(String userToken) {
-		User user = repository.getUserByToken(userToken);
+		User user = userRepository.getUserByToken(userToken);
 		
 		if (user != null) {
 			throw new ResponseStatusException(HttpStatus.CONFLICT, "User with token " + userToken + " already exists.");
 		}
 		
-		repository.save(new User(userToken));
+		userRepository.save(new User(userToken));
+		
+		if (!productionMode) {
+			//While testing user have to be added manually to the firebase database.
+			CreateRequest request = new CreateRequest();
+			request
+				.setEmail(userToken + "@testmail.com")
+				.setPassword("s3cret");
+			
+			try {
+				FirebaseAuth.getInstance().createUser(request);
+			} catch (FirebaseAuthException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public void updateUser(User user, String userToken) {
@@ -52,7 +77,7 @@ public class UserController {
 		getUser(userToken);
 		user.setToken(userToken);
 		
-		repository.save(user);
+		userRepository.save(user);
 	}
 	
 	public void deleteUser(String userToken) {		
@@ -61,24 +86,32 @@ public class UserController {
 		if (userToDelete == null) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found.");
 		} 
-
-		repository.delete(userToDelete);
 		
-		try {
-			FirebaseAuth.getInstance().deleteUser(userToken);
-		} catch (FirebaseAuthException e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found in firebase database.");			
+		//remove user from group to avoid hibernate, mysql conflicts.
+		if (userToDelete.getGroupToken() != null) {			
+			membershipController.removeUserFromGroup(userToDelete, groupRepository.getGroupByToken(userToDelete.getGroupToken()));
+		}
+		
+		userRepository.delete(userToDelete);
+		
+		if (productionMode) {			
+			try {
+				FirebaseAuth.getInstance().deleteUser(userToken);
+			} catch (FirebaseAuthException e) {
+				throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found in firebase database.");			
+			}
 		}
 	}
 	
     
     public void initializeAdminUser() {
-    	User adminUser = repository.getUserByToken(adminToken);
+    	User adminUser = userRepository.getUserByToken(adminToken);
     	
     	if (adminUser == null) {
     		adminUser = new User(adminToken, null, null, null, null, null, null, 0, true);
+    		userRepository.save(adminUser);
     	}
     	
-    	repository.save(adminUser);
+    	System.out.println("admin user was added.");
     }
 }

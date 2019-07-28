@@ -55,8 +55,9 @@ public class GroupService {
     }
     
     @DeleteMapping("/group")
-    public void deleteGroup(@RequestHeader(value="token") String token, @RequestParam(value="groupToken") String groupToken) {
-    	String userToken = fbAuth.authenticateAndEncryptFirebaseTokenToUserToken(token);
+    public void deleteGroup(@RequestHeader(value="firebaseToken") String firebaseToken, 
+    						@RequestParam(value="groupToken") String groupToken) {
+    	String userToken = fbAuth.authenticateAndEncryptFirebaseTokenToUserToken(firebaseToken);
     	
 		if (!userController.getUser(userToken).getIsAdmin()) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User with token " + userToken + " has no permission to do this action."); 
