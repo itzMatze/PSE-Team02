@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 
+/**
+ * RecyclerView-Adapter for the UserPicture carousel in UserPictureItem.
+ *
+ */
 public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.ViewHolder> {
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
@@ -24,6 +28,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         this.context = context;
 
         setItems(items);
+
     }
 
     // inflates the row layout from xml when needed
@@ -32,7 +37,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
 
         LinearLayout view = new LinearLayout(context);
         view.setLayoutParams(new LinearLayout.LayoutParams(400, 400));
-        view.setPadding(50, 50, 50, 50);
+        view.setPadding(50, 50,50, 50);
 
         ImageView pictureView = new ImageView(context);
         pictureView.setId(0);
@@ -45,17 +50,29 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
     @Override
     public void onBindViewHolder(UserPictureAdapter.ViewHolder holder, int position) {
 
-        LinearLayout container = (LinearLayout) holder.itemView;
+        LinearLayout container = (LinearLayout)holder.itemView;
         ImageView pictureView = container.findViewById(0);
         pictureView.setLayoutParams(new LinearLayout.LayoutParams(300, 300));
         pictureView.setImageResource(items[position].getResourceId());
+
     }
 
+    /**
+     * Gets the selected picture.
+     *
+     * @return Selected picture.
+     */
     public MensaMeetUserPicture getSelectedPicture() {
 
         return items[selectedId];
+
     }
 
+    /**
+     * Sets the picture to be selected.
+     *
+     * @param userPicture Picture to be selected.
+     */
     public void setSelectedPicture(MensaMeetUserPicture userPicture) {
 
         for (int i = 0; i < items.length; i++) {
@@ -104,7 +121,7 @@ public class UserPictureAdapter extends RecyclerView.Adapter<UserPictureAdapter.
         }
     }
 
-    // allows clicks events to be caught
+     // allows clicks events to be caught
     void setClickListener(UserPictureAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }

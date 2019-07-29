@@ -10,6 +10,9 @@ import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.view.databinding.ActivityUserBinding;
 import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
+/**
+ * The activity to show a user's profile. The user is transmitted
+ * */
 public class ShowUserActivity extends MensaMeetActivity {
 
     private UserViewModel viewModel;

@@ -15,6 +15,9 @@ import edu.kit.mensameet.client.viewmodel.GroupJoinedViewModel;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * Activity shown when the user has joined a group. Then it replaces SelectLinesActivity until the meeting is over or when the user leaves the group.
+ */
 public class GroupJoinedActivity extends MensaMeetActivity {
 
     private GroupJoinedViewModel viewModel;
@@ -59,7 +62,9 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     @Override
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
         if (it.second == GroupJoinedViewModel.State.GROUP_LEFT) {
+ 
             this.gotoActivity(HomeActivity.class);
+ 
         }
     }
 

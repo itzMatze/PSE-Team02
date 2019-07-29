@@ -10,20 +10,29 @@ import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.GroupItem;
 import edu.kit.mensameet.client.view.MensaMeetItem;
 
+/**
+ * Handler for a GroupItem.
+ */
 public class GroupItemHandler extends MensaMeetItemHandler {
 
     private Group group;
     private MensaMeetItem.DisplayMode displayMode;
 
+    /**
+     * Constructor.
+     *
+     * @param group The Group object.
+     * @param displayMode Item display mode.
+     */
     public GroupItemHandler(Group group, MensaMeetItem.DisplayMode displayMode) {
         this.group = group;
         this.displayMode = displayMode;
+
     }
 
-    public LiveData<Group> loadGroup() {
-        return null;
-    }
-
+    /**
+     * Method to send a join request to the server for the group.
+     */
     public void joinGroup() {
 
         //int error = addUserToGroup(MensaMeetSession.getInstance().getUser(), group);
@@ -33,8 +42,12 @@ public class GroupItemHandler extends MensaMeetItemHandler {
 
         MensaMeetSession.getInstance().setChosenGroup(group);
         uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOINED));
+
     }
 
+    /**
+     * Method for deleting a group on the server.
+     */
     public void deleteGroup() {
 
         //int error = deleteGroup(group);

@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
 import kit.edu.mensameet.server.Application;
+import kit.edu.mensameet.server.controller.GroupController;
 import kit.edu.mensameet.server.controller.GroupRepository;
 import kit.edu.mensameet.server.controller.MembershipController;
 import kit.edu.mensameet.server.controller.UserController;
@@ -34,6 +35,12 @@ public class MembershipControllerTest {
 	User[] users;
 	Group group;
 
+	@Autowired
+	UserController userController;
+
+	@Autowired
+	GroupController groupController;
+	
 	@Autowired
 	MembershipController controller;
 	

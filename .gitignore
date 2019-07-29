@@ -29,6 +29,13 @@
 *.ear
 *.class
 
+#gradle
+*.gradle
+.gradle/
+**/.gradle/
+
+
+
 # eclipse specific git ignore
 *.pydevproject
 .project

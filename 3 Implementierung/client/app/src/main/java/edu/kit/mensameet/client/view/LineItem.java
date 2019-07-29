@@ -9,8 +9,18 @@ import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * The representation of a single line.
+ */
 public class LineItem extends MensaMeetItem<Line> {
 
+    /**
+     * Constructor.
+     *
+     * @param context   Context of the parent.
+     * @param displayMode   Item display mode.
+     * @param objectData The Line.
+     */
     public LineItem(Context context, DisplayMode displayMode, Line objectData) {
 
         super(context, displayMode, objectData);

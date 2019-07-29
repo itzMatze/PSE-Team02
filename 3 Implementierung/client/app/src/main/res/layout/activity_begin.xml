@@ -19,7 +19,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="50dp"
             android:background="@color/button_color_blue"
             android:onClick="@{() -> vm.onRegisterClick(vm)}"
@@ -28,6 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/login"
             app:layout_constraintVertical_bias="0.0"
@@ -38,7 +39,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="150dp"
+            android:layout_marginTop="180dp"
             android:layout_marginEnd="50dp"
             android:background="@color/button_color_blue"
             android:onClick="@{() -> vm.onLoginClick(vm)}"
@@ -47,9 +48,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="5:1"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
-            app:layout_constraintVertical_bias="0.0"
+            app:layout_constraintVertical_bias="0.066"
             tools:visibility="visible" />
 
         <TextView

@@ -13,21 +13,34 @@ import androidx.recyclerview.widget.RecyclerView;
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 import edu.kit.mensameet.client.model.MensaMeetUserPictureList;
 
+/**
+ * Separate Class to create the view for displaying and selecting the user picture.
+ *
+ */
 public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> implements UserPictureAdapter.ItemClickListener {
 
     private ImageView pictureView;
     private RecyclerView recyclerView;
     private UserPictureAdapter adapter;
-    private int halfDisplayWidth;
     private MensaMeetUserPicture selectedPicture;
 
+    /**
+     * Constructor.
+     *
+     * @param context Context of parent.
+     * @param displayMode   Item display mode.
+     * @param objectData User.
+     */
     public UserPictureItem(Context context, DisplayMode displayMode, MensaMeetUserPicture objectData) {
         //TODO: Put displayMode into MensaMeetItem as static subclass
         super(context, displayMode, objectData);
 
-        halfDisplayWidth = Resources.getSystem().getDisplayMetrics().widthPixels / 2;
     }
 
+    /**
+     * Creates the view.
+     * @return The view.
+     */
     @Override
     public View createView() {
 
@@ -47,9 +60,11 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
         if (displayMode == DisplayMode.SMALL) {
 
             pictureView.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
+
         } else {
 
             pictureView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
+
         }
 
         pictureView.setImageResource(selectedPicture.getResourceId());
@@ -87,6 +102,7 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
             recyclerView.setVisibility(View.GONE);
 
             view.addView(recyclerView);
+
         }
 
         return view;
@@ -94,19 +110,20 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
 
     @Override
     public void fillObjectData() {
-        ((UserPictureAdapter) recyclerView.getAdapter()).setSelectedPicture(objectData);
+        ((UserPictureAdapter)recyclerView.getAdapter()).setSelectedPicture(objectData);
     }
 
     @Override
     public void saveEditedObjectData() {
-        objectData = ((UserPictureAdapter) recyclerView.getAdapter()).getSelectedPicture();
+        objectData = ((UserPictureAdapter)recyclerView.getAdapter()).getSelectedPicture();
+
     }
 
     @Override
     public void onItemClick(View view, int position) {
-        selectedPicture = adapter.getItem(position);
-        recyclerView.setVisibility(View.GONE);
-        pictureView.setImageResource(selectedPicture.getResourceId());
-        pictureView.setVisibility(View.VISIBLE);
+       selectedPicture = adapter.getItem(position);
+       recyclerView.setVisibility(View.GONE);
+       pictureView.setImageResource(selectedPicture.getResourceId());
+       pictureView.setVisibility(View.VISIBLE);
     }
 }

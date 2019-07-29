@@ -11,7 +11,7 @@
 \usepackage{tabu}
 \usepackage{hyperref}
 \usepackage{xcolor}
-\usepackage{glossaries}
+\usepackage[toc]{glossaries}
 
 \makeglossaries
 
@@ -105,6 +105,7 @@ Bei diesem Dokument handelt es sich um den Implementierungsbericht, welcher zeit
 
 \chapter{Änderungen am Entwurf}
 \section{Server}
+Ein grobe Änderung an der Form des Servers entstand dadurch, dass während des Entwurfs nicht klar war, dass der Server selbst keine Login- und Registrierungsfunktionen von der Firebase Admin SDK zur Verfügung gestellt bekommen wird. Dadurch wurden diese Funktionalitäten auf den Client ausgelagert und der Server verlor diese Funktionen. Es wurde in der View die AccountService Klasse gelöscht und bei den Controllern der AuthenticationController. Die Logik zum Anlegen von Usern wird jetzt vom UserController übernommen.
 \subsection{Model}
 
 \subsubsection{Änderung der internen Darstellung der Mensadaten}
@@ -133,7 +134,7 @@ Zusätzlich zu den bereits im Entwurfsdokument aufgezählten Attributen der User
 \subsection{View}
 
 \subsubsection{Änderung der User Service Klasse}
-In der Klasse User Service wurde lediglich die Methode zum Erstellen eines Users hinzugefügt. Auch hier handelt es sich um keine neue Funktion oder tatsächliche Änderung. Es wurde lediglich vergessen diese im Entwurfsdokument aufzuführen. 
+In der Klasse User Service wurde lediglich die Methode zum Erstellen eines Users hinzugefügt. Diese Änderung ist aufgrund der FireBase SDK notwendig, da unter anderem die Authentification Controller Klasse wegfällt und somit auch die Methode zum Registrieren. Die create User Methode ersetz demnach die register Methode.
 
 \begin{itemize}
 \item{UserService.java}
@@ -205,6 +206,12 @@ Zur besseren Nutzung von Hibernate wurde zwei zusätzliche Repository Klasse rea
 
 
 \section{Client}
+\subsubsection{Die Konzepte des Entwurfs und ihre Umsetzung in der Implementierung}
+Kernstück des Cliententwurfs ist die modulare Gliederung der Benutzeroberfläche. Dabei galt es, so viel sich Wiederholendes wie nur möglich in abstrahierten Oberklassen zusammenzufassen und die Klassenstruktur möglichst kompakt zu gestalten. Das Zentrum bilden dabei die Item-Klassen, die von MensaMeetItem abgeleitet werden. Diese sind jeweils für die Darstellung eines Elements zuständig, ob User, Group oder Line. Die jeweilige Klasse fasst dabei alle möglichen Darstellungsformen in sich zusammen: Sei es als kleines Listenelement (SMALL), als große, nicht editierbare Einzeldarstellung auf einer Seite (BIGNOTEDITABLE) und als editierbares Formular auf einer Seite (BIGEDITABLE). Dies beruht auf dem Gedanken, dass immer wieder dieselben Datensätze, nur jeweils in anderer Form dargestellt werden. 
+Konkret wurde dies so umgesetzt, dass nacheinander alle Felder einer Klasse vom Namen über Zahlen bis hin zu Auswahllisten abgearbeitet wurden und jeweils für die drei Fälle gegebenenfalls unterschiedliche Darstellungen generiert wurden. Das Profilbild eines Users etwa wird in der Listenelement-Darstellung links vom Text dargestellt, in der Editierdarstellung dagegen als Auswahlkarussell über dem Text. Diese Fallunterscheidung kann jedoch auch in Methoden verlagert werden: so gibt es in der Item-Oberklasse die Methode createTextField, wobei mit TextField je nach Darstellungsform eine Textanzeige oder ein Eingabefeld gemeint sein kann, die jedoch beide dieselben Parameter empfangen. Was genommen wird, wird im Hintergrund entschieden, die Methode bleibt gleich. Dadurch ergibt sich eine übersichtlichere Darstellung. 
+Eine weitere Bündelung von Informationen bestand darin, die Android-Ressourcen-IDs für Strings, die ein Element beschreiben, auch als IDs für diese Elemente genommen werden. Die Herausforderung bei der Implementierung bestand hauptsächlich darin, zu erkennen, welche Befehle gebündelt und verallgemeinert werden können und welche nicht. So musste ergänzend zum Entwurf eine weitere Klasse MensaMeetAdapter hinzugefügt werden, um die Listen und ihre Elemente, realisiert mit Reyclerviews, zusammenzuhalten. Diese Klasse wurde jedoch so gestaltet, dass sie nicht noch für jeden Datentyp (Linien, Gruppen, Benutzer) vererbt werden musste, sondern nur mit einem jeweiligen Typparameter zurechtkommt. Hierdurch hält sich die Anzahl der Klassen in Grenzen.
+Android bietet die Möglichkeit an, Anzeigeelemente (Views) ineinander rekursiv zu verschachteln, sodass das modulare Konzept tatsächlich umgesetzt werden konnte. Allerdings wurde deutlich, dass Android nunmehr eher auf die Gestaltung von Benutzeroberflächen mit xml und grafischen Editoren setzt als auf ihre Generierung per Code. So lassen sich Layoutangaben wie Margin und Padding bequem in das XML schreiben, die programmatische Realisierung ist jedoch viel aufwändiger: Es muss müssen LayoutParams-Objekt abgeleitet werden, die jedoch nicht gleichzeitig Margin und Padding aufnehmen können. Außerdem sind die Folgen der Konfigurationen teilweise unberechenbar. Das hierbei verfolgte Ziel, mit so wenig Dateien wie möglich auszukommen und daher auf zusätzliche XML-Dateien zu verzichten, war daher nur sehr mühsam zu erreichen. 
+Eine weitere Herausforderung war die Aufteilung in Darstellung (View) und Logik (Viewmodel). Nach dem Model-View-Viewmodel-Prinzip dürfen Viewmodels nicht direkt mit der View kommunizieren. Dies wird dadurch gelöst, dass die Views als Beobachter die Veränderung eines Statuswertes beim Viewmodel abonnieren. In der Activity SelectGroupsActivity, wo eine Gruppenliste mit verschachtelten Userlisten dargestellt wird und diese auch noch Buttons enthalten, die Befehle triggern, mussten alle Elemente von der Hauptactivity abonniert werden.
 
 \chapter{Muss- und Wunschkriterien}
 Die von uns definierten elf Musskriterien wurden alle vollständig implementiert. Das heißt, ein Nutzer kann sich sein persönliches Profil anlegen (\Gls{MK10}). Mit einem angelegten Profil kann er nun den tagesaktuellen Mensaplan einsehen(\Gls{MK20}). Hat er sich für eine Linie entschieden(\Gls{MK30}), so kann er nach dem festlegen eines Zeitintervalls(\Gls{MK50}) entweder einer vorgeschlagenen Gruppe beitreten(\Gls{MK40} \& \Gls{MK70}), oder selbst eine Gruppe erstellen(\Gls{MK60}). Egal ob er einer Gruppe beigetreten ist oder selbst eine erstellt hat, kann der User aus dieser Gruppe austreten(\Gls{MK80}). Innerhalb einer Gruppe kann er außerdem die Profile betrachten(\Gls{MK90}). Des Weiteren können Administratoren User und Gruppen löschen(\Gls{MK110} und Gruppen werden am Ende des Tages gelöscht(\Gls{MK100}).

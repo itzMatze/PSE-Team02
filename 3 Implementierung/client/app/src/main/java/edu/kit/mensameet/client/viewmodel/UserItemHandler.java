@@ -11,14 +11,24 @@ import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.GroupItem;
 import edu.kit.mensameet.client.view.MensaMeetItem;
 
+/**
+ * Handler for a UserItem.
+ */
 public class UserItemHandler extends MensaMeetItemHandler {
 
     private User user;
     private MensaMeetItem.DisplayMode displayMode;
 
+    /**
+     * Constructor.
+     *
+     * @param user
+     * @param displayMode
+     */
     public UserItemHandler(User user, MensaMeetItem.DisplayMode displayMode) {
         this.user = user;
         this.displayMode = displayMode;
+
     }
 
     public void showUser() {

@@ -34,6 +34,13 @@ public class GroupService {
 	@Autowired
 	private FirebaseAuthentifcator fbAuth;
 	
+	/**
+	 * Returns the group identified by the groupToken.
+	 * 
+	 * @param firebaseToken for verifying the request.
+	 * @param groupToken The token of the group
+	 * @return the group identified by groupToken.
+	 */
 	@RequestMapping("/group") 
 	public Group getGroupByToken(@RequestHeader(value="firebaseToken") String firebaseToken, 
 								 @RequestParam(value="groupToken") String groupToken) {
@@ -41,6 +48,13 @@ public class GroupService {
 		return groupController.getGroup(groupToken);
 	}
 	
+	/**
+	 * returns all groups fitting to the given prefferences.
+	 * 
+	 * @param firebaseToken  for verifying the request.
+	 * @param prefs the prefferences, that fitting groups are search with.
+	 * @return all group fitting to the prefferences.
+	 */
     @PostMapping("/group-prefferences")
     Group[] getGroupsByPrefferences(@RequestHeader(value="firebaseToken") String firebaseToken, 
     								@RequestBody Preference prefs) {
@@ -48,12 +62,26 @@ public class GroupService {
     	return groupController.getGroupByPreferences(prefs);
     }
     
+    /**
+     * Creates a group in the database.
+     * 
+     * @param firebaseToken  for verifying the request.
+     * @param group the group that should get created.
+     * @return the group that just was created with a created token.
+     */
     @PostMapping("/create-group") 
     public Group createGroup(@RequestHeader(value="firebaseToken") String firebaseToken, @RequestBody Group group) {
     	fbAuth.authenticateFirebaseToken(firebaseToken);
     	return groupController.addGroup(group);
     }
     
+    /**
+     * Deletes a group from the database.
+     * 
+     * @param firebaseToken  for verifying the request and to be encrypted to 
+     * 		  the user token who's corosponding user needs admin priviliges.
+     * @param groupToken the token of the gorup that should get deleted.
+     */
     @DeleteMapping("/group")
     public void deleteGroup(@RequestHeader(value="firebaseToken") String firebaseToken, 
     						@RequestParam(value="groupToken") String groupToken) {

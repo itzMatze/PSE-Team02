@@ -37,6 +37,17 @@ public class UserControllerTest {
 	
 	@Test
 	public void shouldGetUserCorrectly() {
+		assertEquals(repository.save(Ben).getToken(),controller.getUser("token2").getToken());
+	}
+	
+	@Test(expected = ResponseStatusException.class)
+	public void shouldFailToGetUser() {
+		repository.save(Ben);
+		controller.getUser("token1");
+	}
+	
+	@Test
+	public void shouldAddUserCorrectly() {
 		controller.addUserWithToken("token1");
 		assertEquals(controller.getUser("token1").getToken(), Anna.getToken());
 		
@@ -47,7 +58,29 @@ public class UserControllerTest {
 		controller.addUserWithToken("token1");
 		controller.getUser("token2");
 	}
-
+	
+	@Test(expected = ResponseStatusException.class)
+	public void shouldFailToAddUsertwice() {
+		controller.addUserWithToken("token1");
+		controller.addUserWithToken("token1");
+	}
+	
+	@Test 
+	public void shouldUpdateUser() {
+		controller.addUserWithToken("token1");
+		Anna.setname("Anna");
+		controller.updateUser(Anna, "token1");
+		assertEquals(Anna.getName(), controller.getUser("token1").getName());
+	}
+	
+	@Test(expected = ResponseStatusException.class)
+	public void shouldDeleteUser() {
+		controller.addUserWithToken("token1");
+		controller.addUserWithToken("token2");
+		controller.deleteUser("token1");
+		controller.getUser("token1");
+	}
+	
 	@After
 	public void tearDown() {
 		repository.deleteAll();

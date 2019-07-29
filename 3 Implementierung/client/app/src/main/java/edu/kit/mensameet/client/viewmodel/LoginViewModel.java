@@ -14,29 +14,20 @@ import com.google.firebase.auth.FirebaseUser;
 
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
+/**
+ * View model for LoginActivity.
+ */
 public class LoginViewModel extends MensaMeetViewModel {
-    //todo: move this later to MensaMeetViewModel
-    public static final String LOG_IN_SUCCESS_ID = "logInSuccess";
-    public static final String LOG_IN_FAILD_ID = "logInFailed";
 
-    //[START]data binding
     private Context context;
     private MutableLiveData<String> email;
     private MutableLiveData<String> password;
-    //[END]data binding
-    /*
-     SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
-     use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
-      */
-    private SingleLiveEvent<Pair<LoginViewModel, String>> uiEventLiveData;
-
-    //TODO:Pass information to other activity
     private String uid;
 
     /**
-     * onClick method for log in
+     * Method called after pressing login.
      *
-     * @param item LoginViewModel
+     * @param item LoginViewModel.
      */
     public void onLoginClick(LoginViewModel item) {
         if (matchPattern()) {
@@ -45,7 +36,8 @@ public class LoginViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * @return email
+     *
+     * @return The email address of the user.
      */
     public MutableLiveData<String> getEmail() {
         if (email == null) {
@@ -56,7 +48,8 @@ public class LoginViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * @return password
+     *
+     * @return The password of the user.
      */
     public MutableLiveData<String> getPassword() {
         if (password == null) {
@@ -67,28 +60,17 @@ public class LoginViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * @return A lifecycle-aware observable that sends only new updates after subscription
-     */
-    public SingleLiveEvent<Pair<LoginViewModel, String>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<LoginViewModel, String>(null, "default"));
-        }
-        return uiEventLiveData;
-    }
-
-    /**
-     * @return uid, uid is set after create account succeed
+     * @return Uid which is set after account creation succeeded.
      */
     public String getUid() {
         return uid;
     }
 
     /**
-     * help to check format of email and password
+     * Helps to check the format of email and password.
      *
-     * @return true if email and password not null and password equals passwordConfirm
-     * otherwise false
+     * @return True if email and password not null and password equals passwordConfirm,
+     * otherwise false.
      */
     private boolean matchPattern() {
         //todo manage to show errorCode in editText
@@ -100,22 +82,49 @@ public class LoginViewModel extends MensaMeetViewModel {
         return true;
     }
 
+    /**
+     *
+     * @param item
+     */
     private void login(final LoginViewModel item) {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.signInWithEmailAndPassword(email.getValue(), password.getValue())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+
                         if (task.isSuccessful()) {
+
                             // Sign in success, notify uiEventLiveData
-                            uiEventLiveData.setValue(new Pair<>(item, LOG_IN_SUCCESS_ID));
+                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(LoginViewModel.this, State.LOG_IN_SUCCESS_ID));
+
                             FirebaseUser user = mAuth.getCurrentUser();
+
                             uid = user.getUid();
+
                         } else {
-                            uiEventLiveData.setValue(new Pair<>(item, LOG_IN_FAILD_ID));
+
+                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(LoginViewModel.this, State.LOG_IN_FAILED_ID));
+
                         }
                     }
                 });
+    }
+
+    /**
+     *
+     * The states the view model uses to communicate with the view.
+     */
+    public enum State implements StateInterface {
+        /**
+         * If login was successful.
+         */
+        LOG_IN_SUCCESS_ID,
+        /**
+         * If login failed.
+         */
+        LOG_IN_FAILED_ID
     }
 }

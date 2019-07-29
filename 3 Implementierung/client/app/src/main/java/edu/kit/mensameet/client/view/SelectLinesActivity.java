@@ -22,10 +22,16 @@ import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * In this activity, the user can select several mensa lines where he would like to eat.
+ */
 public class SelectLinesActivity extends MensaMeetActivity {
 
     private SelectLinesViewModel viewModel;
     private ActivitySelectLinesBinding binding;
+    /**
+     * List of lines.
+     */
     private LineList lineList;
 
     @Override
@@ -40,16 +46,8 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
         LinearLayout container = findViewById(R.id.container);
 
-        Meal[] linie1Meals = new Meal[]{new Meal("Schnitzel", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
-        Line linie1 = new Line("Linie 1", linie1Meals);
-        Meal[] linie2Meals = new Meal[]{new Meal("Salat", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
-        Line linie2 = new Line("Linie 2", linie2Meals);
-        Meal[] linie3Meals = new Meal[]{new Meal("Wurst", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
-        Line linie3 = new Line("Linie 3", linie3Meals);
-        MensaMeetSession.getInstance().setMensaData(new MensaData(new Line[]{linie1, linie2, linie3}));
-
         // TODO: put .getMensaData().getLines() into one method
-        List<Line> linesList = new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaData().getLines()));
+        List<Line> linesList = new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaLines()));
 
         lineList = new LineList(this, linesList,
                 MensaMeetList.DisplayMode.MULTIPLE_SELECT,
@@ -75,21 +73,30 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
     @Override
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
-        if (it.second == SelectLinesViewModel.State.LINES_SAVED) {
-            gotoActivity(SetTimeActivity2.class);
+        if (it.second == SelectLinesViewModel.State.LINES_SAVED_NEXT) {
+            gotoActivity(SetTimeActivity.class);
+        } else if (it.second == SelectLinesViewModel.State.LINES_SAVED_BACK) {
+            gotoActivity(HomeActivity.class);
         } else if (it.second == SelectLinesViewModel.State.NO_LINES_SELECTED) {
             Toast.makeText(this, getString(R.string.selectALine), Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * When next is clicked, the lines are locally saved before moving on.
+     */
     @Override
     public void onClickNext() {
         viewModel.setSelectedLines(lineList.getSelectedObjects());
         viewModel.saveLinesAndNext();
     }
 
+    /**
+     * When back is clicked, the lines are locally saved before moving back.
+     */
     @Override
     public void onClickBack() {
-
+        viewModel.setSelectedLines(lineList.getSelectedObjects());
+        viewModel.saveLinesAndBack();
     }
 }

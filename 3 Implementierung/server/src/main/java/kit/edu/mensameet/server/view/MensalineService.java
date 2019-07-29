@@ -15,6 +15,12 @@ public class MensalineService {
 	@Autowired
 	private MensaDataController mensaDataController;
 	
+	/**
+	 * Returns current mensadata.
+	 * 
+	 * @return the mensadata of the current day.
+	 * @throws IOException is thrown when the website can't be loaded.
+	 */
 	@RequestMapping("/mensadata")
 	public MensaData getMensaData() throws IOException {
 		return mensaDataController.getMensaData();

@@ -97,4 +97,10 @@
     <string name="title_group_joined">Glückwunsch! Du isst mit</string>
     <string name="title_general_user_profile">Details zum Benutzer</string>
     <string name="create_button_description">Mit dem Button rechts kannst du auch eine eigene Gruppe anlegen!</string>
+    <string name="status_other">anderer</string>
+    <string name="status_student">Schüler</string>
+    <string name="status_apprentice">Auszubildender</string>
+    <string name="status_college_student">Student</string>
+    <string name="status_professor">Professor</string>
+    <string name="you_are">Du bist</string>
 </resources>

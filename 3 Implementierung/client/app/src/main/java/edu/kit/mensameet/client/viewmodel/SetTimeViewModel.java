@@ -2,91 +2,59 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import java.util.Date;
 
-import java.sql.Time;
-
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 
+/**
+ * View model of SetTimeActivity.
+ */
 public class SetTimeViewModel extends MensaMeetViewModel {
 
-    private MutableLiveData<Integer> hour;
-    private MutableLiveData<Integer> minute;
-    private MutableLiveData<MensaMeetTime> time;
-    private SingleLiveEvent<Pair<SetTimeViewModel, String>> uiEventLiveData;
+    private String startTimeString = "12:00";
+    private String endTimeString = "12:00";
 
-    /*
-     this method is for testing saveTime method
-     todo: delete if it's no longer needed or added to changes
-     */
-
-    /**
-     * @return time
-     */
-    public LiveData<MensaMeetTime> getTime() {
-        if (time == null) {
-            time = new MutableLiveData<>();
-            time.setValue(new MensaMeetTime(new Time(0)));
-        }
-        return time;
+    public String getStartTimeString() {
+        return startTimeString;
     }
 
-    /**
-     * @return a string representing start time in format HH:MM:SS
-     */
-    public String getTimeString() {
-        return time.getValue().getStartTime().toString();
+    public void setStartTimeString(String startTimeString) {
+        this.startTimeString = startTimeString;
     }
 
-    /**
-     * @param time
-     */
-    public void setTime(LiveData<MensaMeetTime> time) {
-        this.time = (MutableLiveData) time;
+    public String getEndTimeString() {
+        return endTimeString;
     }
 
-    /**
-     * save time in the given view model using stored hour and minute
-     *
-     * @param item view model
-     */
-    public void onSaveTimeClick(SetTimeViewModel item) {
-        time.setValue(new MensaMeetTime(new Time(hour.getValue(), minute.getValue(), 0)));
-        uiEventLiveData.setValue(new Pair<>(item, "saveTime"));
+    public void setEndTimeString(String endTimeString) {
+        this.endTimeString = endTimeString;
     }
 
-    /**
-     * @return hour
-     */
-    public MutableLiveData<Integer> getHour() {
-        if (hour == null) {
-            hour = new MutableLiveData<>();
-            hour.setValue(0);
-        }
-        return hour;
+    public void saveTime() {
+        Date startTime;
+        Date endTime;
+
+        startTime = MensaMeetTime.stringToTime(startTimeString);
+        endTime = MensaMeetTime.stringToTime(endTimeString);
+
+        MensaMeetSession.getInstance().setChosenTime(new MensaMeetTime(startTime, endTime));
     }
 
-    /**
-     * @return minute
-     */
-    public MutableLiveData<Integer> getMinute() {
-        if (minute == null) {
-            minute = new MutableLiveData<>();
-            minute.setValue(0);
-        }
-        return minute;
+    public void saveTimeAndNext() {
+
+        saveTime();
+        //getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_NEXT));
     }
 
-    /**
-     * @return UI event
-     */
-    public SingleLiveEvent<Pair<SetTimeViewModel, String>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<SetTimeViewModel, String>(null, "default"));
-        }
-        return uiEventLiveData;
+    public void saveTimeAndBack() {
+
+        saveTime();
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_BACK));
+    }
+
+    public enum State implements StateInterface {
+        TIME_SAVED_NEXT, TIME_SAVED_BACK, DEFAULT
     }
 }

@@ -1,21 +1,34 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
+
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * This is the abstract base activity for MensaMeet, summarizing the basic functions as LiveData notification between
+ * activity and view model shared by all activities.
+ *
+ */
 public abstract class MensaMeetActivity extends AppCompatActivity {
 
     protected MensaMeetViewModel viewModel;
@@ -29,34 +42,15 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //reloadData();
-
         super.onCreate(savedInstanceState);
 
-        //this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        // Center title
+        centerTitle();
 
+        // Always keep app in portrait position
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-
-        /*mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
-
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.navigation_home:
-                        onClickHome();
-                        return true;
-                    case R.id.navigation_back:
-                        onClickBack();
-                        return true;
-                    case R.id.navigation_next:
-                        onClickNext();
-                        return true;
-                }
-                return false;
-            }
-        };*/
-
-        buttonHome = (Button) findViewById(R.id.navigation_home);
+        buttonHome = (Button)findViewById(R.id.navigation_home);
         if (buttonHome != null) {
             buttonHome.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -66,7 +60,8 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             });
         }
 
-        buttonBack = (Button) findViewById(R.id.navigation_back);
+        // Click listener for back button
+        buttonBack = (Button)findViewById(R.id.navigation_back);
         if (buttonBack != null) {
             buttonBack.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -75,7 +70,9 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
                 }
             });
         }
-        buttonNext = (Button) findViewById(R.id.navigation_next);
+
+        // Click listener for next button
+        buttonNext = (Button)findViewById(R.id.navigation_next);
         if (buttonNext != null) {
             buttonNext.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,61 +82,70 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             });
         }
 
-        /* if (navView != null) {
-            navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-            //entfernt die grüne Färbung in der BottomNavigation Leiste
-            //navView.setItemIconTintList(null);
-        } */
-
+        // Initializing livedata communication between view model and activity
         if (viewModel != null) {
-            viewModel.getUiEventLiveData2().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
+            viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
                 @Override
                 public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
 
                     processStateChange(it);
+
                 }
             });
         }
+
     }
 
+    /** Hook method for livedata processing
+     *
+     * @param it Message.
+     */
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
 
     }
+
+    /**
+     * Hook method before redirecting to home activity.
+      */
 
     protected void beforeGotoHome() {
 
     }
 
+    /**
+     * Click method for home button.
+      */
     public void onClickHome() {
         beforeGotoHome();
         gotoHome();
     }
 
-    public void onClickNext() {
-    }
-
-    ;
+    /**
+     * Click method for next button.
+     */
+    public void onClickNext() {};
     // TODO: Set stub methods to abstract once all activities are changed
 
-    public void onClickBack() {
-    }
+    /**
+     * Click method for back button.
+     */
+    public void onClickBack() {};
 
-    ;
+    // Hook method for Data reload.
+    protected void reloadData() {};
 
-    protected void reloadData() {
-    }
-
-    ;
-
+    // Called when app is resumed.
     @Override
     protected void onResume() {
-        //Toast.makeText(this, "onresume", Toast.LENGTH_SHORT).show();
 
+        // Data reload needed.
         reloadData();
 
         super.onResume();
+
     }
 
+    // Method for redirecting home.
     protected void gotoHome() {
         // TODO: do not hardcode the name of the home activity instead, fetch homeActivity from MensaMeetSession
 
@@ -147,6 +153,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    // General method for
     protected void gotoActivity(Class<?> activity) {
         if (activity != null) {
             Intent intent = new Intent(this, activity);
@@ -154,8 +161,31 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         }
     }
 
-    protected void deactivateNavigationButton(View v) {
-        v.setAlpha(0.2f);
-        v.setClickable(false);
+    // Centering for the title.
+    private void centerTitle() {
+        ArrayList<View> textViews = new ArrayList<>();
+
+        getWindow().getDecorView().findViewsWithText(textViews, getTitle(), View.FIND_VIEWS_WITH_TEXT);
+
+        if (textViews.size() > 0) {
+            AppCompatTextView appCompatTextView = null;
+            if(textViews.size() == 1) {
+                appCompatTextView = (AppCompatTextView) textViews.get(0);
+            } else {
+                for(View v : textViews) {
+                    if(v.getParent() instanceof Toolbar) {
+                        appCompatTextView = (AppCompatTextView) v;
+                        break;
+                    }
+                }
+            }
+
+            if(appCompatTextView != null) {
+                ViewGroup.LayoutParams params = appCompatTextView.getLayoutParams();
+                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
+                appCompatTextView.setLayoutParams(params);
+                appCompatTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            }
+        }
     }
 }

@@ -1,7 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Pair;
 
@@ -12,8 +10,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.view.databinding.ActivityBeginBinding;
 import edu.kit.mensameet.client.viewmodel.BeginViewModel;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
+import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * The activity at the beginning of a MensaMeet session.
+ */
 public class BeginActivity extends MensaMeetActivity {
+
     private ActivityBeginBinding binding;
     private BeginViewModel viewModel;
 
@@ -34,27 +38,13 @@ public class BeginActivity extends MensaMeetActivity {
         decide which activity to start
          */
         final MensaMeetActivity context = this;
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<BeginViewModel, String>>() {
+        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
             @Override
-            public void onChanged(@Nullable Pair<BeginViewModel, String> it) {
-                switch (it.second) {
-                    case BeginViewModel.LOGIN_ID:
-                        context.gotoActivity(LoginActivity.class);
-                        break;
-                    case BeginViewModel.REGISTER_ID:
-                        context.gotoActivity(RegisterActivity.class);
-                        break;
-                    case BeginViewModel.RESET_LOCAL_DATA_ID:
-                        SharedPreferences sharedPrefs = getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPrefs.edit();
-                        editor.clear();
-                        editor.commit();
-                        break;
-                    case BeginViewModel.TEST_LIST_CLASSES_ID:
-                        gotoActivity(HomeActivity.class);
-                        break;
-                    default:
-                        break;
+            public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
+                if (it.second == BeginViewModel.State.LOGIN_ID) {
+                    context.gotoActivity(LoginActivity.class);
+                } else if (it.second == BeginViewModel.State.REGISTER_ID) {
+                    context.gotoActivity(RegisterActivity.class);
                 }
             }
         });

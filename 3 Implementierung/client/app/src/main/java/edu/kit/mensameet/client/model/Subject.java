@@ -4,6 +4,9 @@ import androidx.annotation.StringRes;
 
 import edu.kit.mensameet.client.view.R;
 
+/**
+ * Enumeration for university subjects.
+ */
 public enum Subject {
     IT(R.string.subject_it),
     ECONOMY(R.string.subject_economy),

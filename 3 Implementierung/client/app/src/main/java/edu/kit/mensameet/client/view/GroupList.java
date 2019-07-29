@@ -7,8 +7,19 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 
+/**
+ * List of groups.
+ */
 public class GroupList extends MensaMeetList<Group> {
 
+    /**
+     *
+     *
+     * @param context
+     * @param data
+     * @param displayMode
+     * @param dividers
+     */
     public GroupList(Context context, List<Group> data, DisplayMode displayMode, Boolean dividers) {
         super(context, data, displayMode, dividers);
     }

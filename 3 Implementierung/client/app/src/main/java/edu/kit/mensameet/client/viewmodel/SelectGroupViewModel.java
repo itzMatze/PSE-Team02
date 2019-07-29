@@ -12,6 +12,9 @@ import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
+/**
+ * View model of SelectGroupActivity.
+ */
 public class SelectGroupViewModel extends MensaMeetViewModel {
 
     private Group selectedGroup = null;

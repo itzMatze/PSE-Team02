@@ -43,7 +43,7 @@ public class Group {
 	private MealLine line;
 
 
-	@OneToMany
+	@OneToMany(fetch = FetchType.EAGER)
 	@OrderColumn
 	@NotFound(action = NotFoundAction.IGNORE)
 	private List<User> members = new ArrayList<User>();
@@ -149,14 +149,6 @@ public class Group {
 		if (members.size() < maxMembers) {
 			members.add(user);
 		}
-	}
-
-	/**
-	 * 
-	 * @return the current number of members of this group
-	 */
-	public int getMemberCount() {
-		return members.size();
 	}
 
 	/**

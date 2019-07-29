@@ -12,6 +12,11 @@ import androidx.recyclerview.widget.SimpleItemAnimator;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * General abstract class of a list of items. Uses an MensaMeetListAdapter.
+ *
+ * @param <T> The type of the represented data, Line, Group, User.
+ */
 public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClickListener {
 
     protected Context context;
@@ -25,6 +30,14 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+    /**
+     * Constructor.
+     *
+     * @param context   Context of the parent.
+     * @param data  List of the data.
+     * @param displayMode   List display mode.
+     * @param dividers  Whether dividers should be displayed.
+     */
     public MensaMeetList(Context context, List<T> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
 
         this.context = context;
@@ -44,6 +57,7 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
         this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
         //this.recyclerView.setItemAnimator(null);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+
 
         List<MensaMeetItem<T>> items = createItems();
         adapter = new MensaMeetListAdapter<T>(context, items, displayMode);

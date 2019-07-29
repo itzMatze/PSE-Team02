@@ -9,15 +9,24 @@ import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
 
+import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
+import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * Abstract basic class for an item of the type T, contains a lot of basic function for data transfer between view and object.
+ *
+ * @param <T>
+ */
 public abstract class MensaMeetItem<T> {
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -31,6 +40,13 @@ public abstract class MensaMeetItem<T> {
 
     protected View view;
 
+    /**
+     * Constructor.
+     *
+     * @param context Context of the parent.
+     * @param displayMode   Item display mode.
+     * @param objectData The data object of type T.
+     */
     public MensaMeetItem(Context context, DisplayMode displayMode, T objectData) {
         this.context = context;
         this.objectData = objectData;
@@ -43,24 +59,32 @@ public abstract class MensaMeetItem<T> {
                 public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
 
                     processStateChange(it);
+
                 }
             });
         }
+
     }
+
+    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {    }
 
     public MensaMeetItemHandler getHandler() {
         return handler;
     }
 
-    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {
-    }
-
-    ;
+    /**
+     * Creates a text field, which can be either an EditText or a TextView, depending on the preference.
+     *
+     * @param id Id of the string resource with a description of the field, at the same time used as id for the field itself.
+     * @param layoutParams Layout parameters.
+     * @param textSize Text size.
+     * @return The text field as view.
+     */
 
     protected View createTextField(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
         if (displayMode == DisplayMode.BIG_EDITABLE) {
             EditText editText = new EditText(context);
-            editText.setId((int) id);
+            editText.setId((int)id);
             editText.setHint(id);
             editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
@@ -68,7 +92,7 @@ public abstract class MensaMeetItem<T> {
             return editText;
         } else {
             TextView textView = new TextView(context);
-            textView.setId((int) id);
+            textView.setId((int)id);
             textView.setTextSize(textSize);
             textView.setLayoutParams(layoutParams);
             MensaMeetUtil.applyStyle(textView, R.style.normal_text);
@@ -76,6 +100,15 @@ public abstract class MensaMeetItem<T> {
         }
     }
 
+    /**
+     * Create a clickable link TextView.
+     *
+     * @param id String resource and element id at the same time.
+     * @param defaultTextId Id of the default text to be displayed.
+     * @param layoutParams Layout parameters.
+     * @param textSize Text size.
+     * @return The text field as view.
+     */
     protected LinearLayout createLinkTextField(@StringRes int id, @StringRes int defaultTextId, ViewGroup.LayoutParams layoutParams, int textSize) {
 
         LinearLayout linearLayout = new LinearLayout(context);
@@ -93,7 +126,7 @@ public abstract class MensaMeetItem<T> {
         MensaMeetUtil.applyStyle(linearLayout, R.style.link_text);
 
         TextView textView = new TextView(context);
-        textView.setId((int) id);
+        textView.setId((int)id);
         textView.setTextSize(textSize);
         textView.setLayoutParams(WIDTH_MATCH_PARENT);
         textView.setText(defaultTextId);
@@ -101,8 +134,17 @@ public abstract class MensaMeetItem<T> {
         linearLayout.addView(textView);
 
         return linearLayout;
+
     }
 
+    /**
+     * Create a description label.
+     *
+     * @param id String id.
+     * @param layoutParams Layout parameters.
+     * @param textSize Text size.
+     * @return Label as view.
+     */
     protected TextView createLabel(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
 
         TextView textView = new TextView(context);
@@ -114,6 +156,14 @@ public abstract class MensaMeetItem<T> {
         return textView;
     }
 
+    /**
+     * Creates a label using a string instead of a string id.
+     *
+     * @param string String to be displayed.
+     * @param layoutParams Layout parameters.
+     * @param textSize Text size.
+     * @returnv Label as view.
+     */
     protected TextView createLabel(String string, ViewGroup.LayoutParams layoutParams, int textSize) {
 
         TextView textView = new TextView(context);
@@ -125,8 +175,14 @@ public abstract class MensaMeetItem<T> {
         return textView;
     }
 
+    /**
+     * Filling method for a text field.
+     *
+     * @param id Id of string description and text field.
+     * @param text Text to be filled in.
+     */
     protected void fillTextField(@StringRes int id, String text) {
-        View field = view.findViewById((int) id);
+        View field = view.findViewById((int)id);
 
         if (field != null) {
             if (field.getClass() == EditText.class) {
@@ -137,11 +193,18 @@ public abstract class MensaMeetItem<T> {
                 textView.setText(text);
             }
         }
+
     }
 
+    /**
+     * Setting method for a spinner data selector or a TextView representation thereof in a read only mode.
+     *
+     * @param id Id of the spinner field and its string description.
+     * @param string String to be filled.
+     */
     protected void setSpinnerField(@StringRes int id, String string) {
 
-        View field = view.findViewById((int) id);
+        View field = view.findViewById((int)id);
         if (field != null) {
             if (field.getClass() == Spinner.class) {
                 ((Spinner) field).setSelection(
@@ -152,8 +215,14 @@ public abstract class MensaMeetItem<T> {
         }
     }
 
+    /**
+     * Extracts a string from a text field.
+     *
+     * @param id Id of the text field and its string description.
+     * @return Text content of the field.
+     */
     protected String extractTextField(@StringRes int id) {
-        View field = view.findViewById((int) id);
+        View field = view.findViewById((int)id);
         String text = null;
 
         if (field != null) {
@@ -169,22 +238,35 @@ public abstract class MensaMeetItem<T> {
         return text;
     }
 
+    /**
+     * Extracts a string from a spinner or its TextView replacement.
+     *
+     * @param id Id of the spinner field and its string description.
+     * @return Text content of the field.
+     */
     protected String extractSpinnerField(@StringRes int id) {
-        View field = view.findViewById((int) id);
+        View field = view.findViewById((int)id);
 
         if (field != null) {
             if (field.getClass() == Spinner.class) {
-                return Integer.toString(((Spinner) field).getSelectedItemPosition());
-            } else if (field.getClass() == TextView.class) {
+                return Integer.toString(((Spinner)field).getSelectedItemPosition());
+            } else if (field.getClass() == TextView.class){
                 return extractTextField(id);
             }
         }
 
+
         return null;
     }
 
+    /**
+     * Method to fill in a sublist by putting in its view.
+     *
+     * @param id Id of the sublist placeholder.
+     * @param sublist The sublist to be put in.
+     */
     protected void fillSublist(@StringRes int id, MensaMeetList sublist) {
-        View sublistContainer = view.findViewById((int) id);
+        View sublistContainer = view.findViewById((int)id);
 
         if (sublistContainer != null && sublistContainer.getClass() == LinearLayout.class) {
             LinearLayout linearLayout = (LinearLayout) sublistContainer;
@@ -193,11 +275,11 @@ public abstract class MensaMeetItem<T> {
         }
     }
 
-    public PopupWindow getPopUp() {
-
-        return new PopupWindow(view);
-    }
-
+    /**
+     *  Sets the object data.
+     *
+     * @param objectData The object data.
+     */
     public void setObjectData(T objectData) {
         this.objectData = objectData;
     }
@@ -206,21 +288,32 @@ public abstract class MensaMeetItem<T> {
         return objectData;
     }
 
-    public void saveEditedObjectData() {
-    }
-
-    ;
+    /**
+     * Hook method for saving the object data from the view.
+     */
+    public void saveEditedObjectData() {};
 
     public View getView() {
         return view;
-    }
+    };
 
-    ;
-
+    /**
+     * Hook method for creating the view representation of the item.
+     *
+     * @return The view.
+     */
     public abstract View createView();
 
+    /**
+     * Hook method for filling the object data into the view.
+     */
     public abstract void fillObjectData();
 
+    /**
+     * Sets the general layout parameters for the view.
+     *
+     * @param layoutParams Layout parameters.
+     */
     public void setLayoutParams(ViewGroup.LayoutParams layoutParams) {
         this.layoutParams = layoutParams;
     }
@@ -229,7 +322,21 @@ public abstract class MensaMeetItem<T> {
         return layoutParams;
     }
 
+    /**
+     * Display modes of Items.
+     */
     public enum DisplayMode {
-        BIG_EDITABLE, BIG_NOTEDITABLE, SMALL
+        /**
+         * Big and editable.
+         */
+        BIG_EDITABLE,
+        /**
+         * Big and not editable.
+         */
+        BIG_NOTEDITABLE,
+        /**
+         * Small and not editable.
+         */
+        SMALL
     }
 }

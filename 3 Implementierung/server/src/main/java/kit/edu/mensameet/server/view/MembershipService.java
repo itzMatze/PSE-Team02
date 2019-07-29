@@ -27,6 +27,12 @@ public class MembershipService {
 	@Autowired
 	private FirebaseAuthentifcator fbAuthentificator;
 	
+	/**
+	 * Adds a user to a group.
+	 * 
+	 * @param firebaseToken for verifying the request and to be encrypted to the user token.
+	 * @param groupToken of the group, that the user should get added to.
+	 */
 	@PostMapping("add-user-to-group")
 	public void addUserToGroup(@RequestParam(value = "firebaseToken") String firebaseToken,
 							   @RequestParam(value = "groupToken") String groupToken) {
@@ -37,6 +43,12 @@ public class MembershipService {
 		membershipController.addUserToGroup(user, group);
 	}
 
+	/**
+	 * Removes a user from a group.
+	 * 
+	 * @param firebaseToken for verifying the request and to be encrypted to the user token.
+	 * @param groupToken groupToken of the group, that the user should get removed from.
+	 */
 	@PostMapping("remove-user-from-group")
 	public void removeUserFromGroup(@RequestParam(value = "firebaseToken") String firebaseToken,
 								    @RequestParam(value = "groupToken") String groupToken) {
