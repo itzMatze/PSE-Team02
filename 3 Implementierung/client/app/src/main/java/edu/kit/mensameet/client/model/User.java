@@ -12,7 +12,7 @@ public class User {
     private Subject subject;
     private Status status;
     private int profilePictureId;
-    private Boolean isAdmin;
+    private Boolean isAdmin = false; // set default values
     private String groupToken;
 
     public void setToken(String token) {

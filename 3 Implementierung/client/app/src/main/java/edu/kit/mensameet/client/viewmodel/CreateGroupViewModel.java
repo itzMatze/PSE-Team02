@@ -21,13 +21,24 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     public void saveGroupAndNext() {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
-
-            Group groupWithToken = RequestUtil.createGroup(group, group.getToken());
+            //todo
+            MensaMeetSession.getInstance().setChosenGroup(group);
+            /*Group groupWithToken = RequestUtil.createGroup(group, group.getToken());
             if(groupWithToken!= null) {
                 if (RequestUtil.addUserToGroup(groupWithToken.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null){
                     MensaMeetSession.getInstance().setChosenGroup(groupWithToken);
                 }
             }
+            */
+
+            setGroup(RequestUtil.createGroup(group, MensaMeetSession.getInstance().getUser().getToken()));
+            if(group != null) {
+                RequestUtil.addUserToGroup(group.getToken(),MensaMeetSession.getInstance().getUser().getToken());
+                //if (http success){
+                MensaMeetSession.getInstance().setChosenGroup(group);
+
+            }
+
             //createGroup(group);
             //addUserToGroup(MensaMeetSession.getInstance().getUser();
 
@@ -44,6 +55,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     public void saveGroupLocallyAndBack() {
         if (group != null) {
             MensaMeetSession.getInstance().setCreatedGroup(group);
+            MensaMeetSession.getInstance().setChosenGroup(group);
             //HttpUtil.createGroup(group);
             /*if (http success){
                 MensaMeetSession.getInstance().setChosenGroup(group);

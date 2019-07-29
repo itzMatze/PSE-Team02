@@ -8,7 +8,7 @@ import edu.kit.mensameet.client.util.RequestUtil;
 
 public class GroupJoinedViewModel extends MensaMeetViewModel {
 
-    private Group group;
+    private Group group = MensaMeetSession.getInstance().getChosenGroup();
 
     public void setGroup(Group group) {
         this.group = group;
@@ -16,17 +16,17 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
 
     public void leaveGroup() {
         if (group != null) {
+            //todo: get group from user
+            RequestUtil.removeUserFromGroup(MensaMeetSession.getInstance().getUser().getToken(), group.getToken());
+            MensaMeetSession.getInstance().setChosenGroup(null);
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_LEFT));
 
-            if (RequestUtil.removeUserFromGroup(MensaMeetSession.getInstance().getUser().getToken(), group.getToken()) != null) {
-                MensaMeetSession.getInstance().setChosenGroup(null);
-            }
 
             //removeUserFromGroup(MensaMeetSession.getInstance().getUser(), group);
             /*if (http success){
                 MensaMeetSession.getInstance().setChosenGroup(null);
             }*/
 
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_LEFT));
         }
     }
 

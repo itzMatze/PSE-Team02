@@ -59,7 +59,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     @Override
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
         if (it.second == GroupJoinedViewModel.State.GROUP_LEFT) {
-            //Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
+            this.gotoActivity(HomeActivity.class);
         }
     }
 

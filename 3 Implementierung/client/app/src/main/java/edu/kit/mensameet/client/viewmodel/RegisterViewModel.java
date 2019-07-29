@@ -12,6 +12,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
@@ -138,6 +140,8 @@ public class RegisterViewModel extends MensaMeetViewModel {
                             FirebaseUser user = mAuth.getCurrentUser();
                             //save uid
                             uid = user.getUid();
+                            RequestUtil.createUser(uid);
+                            MensaMeetSession.getInstance().getUser().setToken(uid);
                         } else {
                             // If sign in fails, notify uiEventLiveData›
                             uiEventLiveData.setValue(new Pair<>(item, CREATE_ACCOUNT_FAILED_ID));
