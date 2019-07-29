@@ -1,5 +1,8 @@
 package edu.kit.mensameet.client.model;
 
+/**
+ * Representation of a meal.
+ */
 public class Meal {
     private String name;
     private float price;

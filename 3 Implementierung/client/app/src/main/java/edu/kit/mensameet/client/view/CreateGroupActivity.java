@@ -15,9 +15,15 @@ import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
+/**
+ * Activity with the form to create a new group.
+ */
 public class CreateGroupActivity extends MensaMeetActivity {
     private CreateGroupViewModel viewModel;
     private ActivityCreateGroupBinding binding;
+    /*
+    Group item containing the form.
+     */
     private GroupItem groupItem;
 
     @Override
@@ -32,14 +38,19 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
         LinearLayout container = findViewById(R.id.container);
 
+        // The item is instantiated as big and editable.
         groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, new Group());
         container.addView(groupItem.getView());
 
         reloadData();
 
         super.onCreate(savedInstanceState);
+
     }
 
+    /**
+     * Hook method implementation to reload data from the session singleton.
+     */
     @Override
     protected void reloadData() {
 
@@ -54,21 +65,30 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             //lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
 
+
         }
     }
 
+    /**
+     * Live data communication with the view model.
+     *
+     * @param it Message.
+     */
     @Override
     protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
         if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
             Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
             gotoActivity(GroupJoinedActivity.class);
-        } else if (it.second == CreateGroupViewModel.State.BACK) {
+        } else if (it.second ==  CreateGroupViewModel.State.BACK) {
             gotoActivity(SelectGroupActivity.class);
-        } else if (it.second == CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
+        } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
             Toast.makeText(this, R.string.error_saving_group, Toast.LENGTH_SHORT).show();
         }
     }
 
+    /**
+     * At next, the data is saved. The view model is asked to submit it to the server.
+     */
     @Override
     public void onClickNext() {
         groupItem.saveEditedObjectData();
@@ -77,6 +97,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
         viewModel.saveGroupAndNext();
     }
 
+    /**
+     * At back, the data is saved locally.
+     */
     @Override
     public void onClickBack() {
         groupItem.saveEditedObjectData();

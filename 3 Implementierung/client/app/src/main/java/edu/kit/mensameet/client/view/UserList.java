@@ -8,6 +8,9 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.User;
 
+/**
+ * A list view of users.
+ */
 public class UserList extends MensaMeetList<User> {
 
     public UserList(Context context, List<User> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {

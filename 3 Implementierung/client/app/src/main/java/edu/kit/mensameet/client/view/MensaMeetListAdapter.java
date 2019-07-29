@@ -11,6 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The adapter is needed to connect a list with its items. The class does not need to be derived for groups, lines and users separatedly,
+ * but can be used with a type parameter only, saving implementation.
+ *
+ * @param <T> Type of the list data elements: Group, Line, User.
+ */
 public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListAdapter.ViewHolder> {
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -25,8 +31,15 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
 
     private List<Boolean> expandedArray;
 
+    /**
+     * Constructor.
+     *
+     * @param context Context of the parent.
+     * @param items List items.
+     * @param displayMode List display mode.
+     */
     // data is passed into the constructor
-    MensaMeetListAdapter(Context context, List<MensaMeetItem<T>> items, MensaMeetList.DisplayMode displayMode) {
+    public MensaMeetListAdapter(Context context, List<MensaMeetItem<T>> items, MensaMeetList.DisplayMode displayMode) {
         this.context = context;
 
         setItems(items);
@@ -100,6 +113,11 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         }
     }
 
+    /**
+     * Gets the selected object in the list.
+     *
+     * @return Selected objects.
+     */
     public List<T> getSelectedObjects() {
         List<T> selectedObjects = new ArrayList<T>();
 
@@ -116,6 +134,11 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
         return selectedObjects;
     }
 
+    /**
+     * Sets the selected objects.
+     *
+     * @param objectList List of objects to be selected.
+     */
     public void setSelectedObjects(List<T> objectList) {
 
         List<T> selectCandidates = new ArrayList<>();
@@ -124,11 +147,10 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
             selectCandidates.add(objectList.get(i));
         }
 
+        // Multiple elements can be selected.
         if (displayMode == MensaMeetList.DisplayMode.MULTIPLE_SELECT) {
 
             flushSelectionArray();
-
-            //Toast.makeText(context, "setselected", Toast.LENGTH_SHORT).show();
 
             for (int i = 0; i < items.size(); i++) {
 
@@ -144,6 +166,9 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                     }
                 }
             }
+
+        // One element can be selected.
+
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
 
             if (selectCandidates.size() == 1) {

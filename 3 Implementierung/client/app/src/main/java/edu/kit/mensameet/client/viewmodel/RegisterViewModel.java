@@ -19,9 +19,6 @@ import edu.kit.mensameet.client.util.SingleLiveEvent;
  * It also handles the communication of the Activity with the rest of the application
  */
 public class RegisterViewModel extends MensaMeetViewModel {
-    //todo
-    public static final String CREATE_ACCOUNT_SUCCESS_ID = "createAccountSuccess";
-    public static final String CREATE_ACCOUNT_FAILED_ID = "createAccountFailed";
 
     //[START]data binding
     private Context context;//todo: for getError
@@ -29,11 +26,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
     private MutableLiveData<String> password;
     private MutableLiveData<String> passwordConfirm;
     //[END]data binding
-    /*
-     SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
-     use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
-      */
-    private SingleLiveEvent<Pair<RegisterViewModel, String>> uiEventLiveData;
 
     //TODO:Pass information to other activity
     private String uid;
@@ -49,6 +41,31 @@ public class RegisterViewModel extends MensaMeetViewModel {
             createAccount(item);
         }
     }
+
+    /*
+    private int offlineRegister(String username, String password, String passwordConfirm, Context context) {
+        //überprüft Gültigkeit der email und des Passworts, 1 heißt email ungültig, 2 heißt Passwort ungültig,
+        //3 heißt Passwörter stimmen nicht überein
+        if (username.length() == 0) {
+            return 1;
+        } else if (password.length() == 0) {
+            return 2;
+        } else if (!password.equals(passwordConfirm)) {
+            return 3;
+        } else {
+            //speichert die login Daten, Context muss übergeben werden,
+            //weil SharedPreferences nur auf einem Context Objekt funktioniert und eine Activity ein solches Objekt ist
+            SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPrefs.edit();
+            editor.putString(context.getString(R.string.username_file_id), username);
+            //das Passwort wird in der finalen Version nicht mehr offline gespeichert sondern immer mit dem Server abgeglichen
+            editor.putString(context.getString(R.string.password_file_id), password);
+            editor.commit();
+            User.getInstance().setName(username);
+            return 0;
+        }
+    }
+    */
 
     /**
      * @return email
@@ -81,17 +98,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
             passwordConfirm.setValue("");
         }
         return passwordConfirm;
-    }
-
-    /**
-     * @return A lifecycle-aware observable that sends only new updates after subscription
-     */
-    public SingleLiveEvent<Pair<RegisterViewModel, String>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<RegisterViewModel, String>(null, "default"));
-        }
-        return uiEventLiveData;
     }
 
     /**
@@ -133,16 +139,20 @@ public class RegisterViewModel extends MensaMeetViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            uiEventLiveData.setValue(new Pair<>(item, CREATE_ACCOUNT_SUCCESS_ID));
+                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
                             // Sign in success, notify uiEventLiveData
                             FirebaseUser user = mAuth.getCurrentUser();
                             //save uid
                             uid = user.getUid();
                         } else {
                             // If sign in fails, notify uiEventLiveData›
-                            uiEventLiveData.setValue(new Pair<>(item, CREATE_ACCOUNT_FAILED_ID));
+                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
                         }
                     }
                 });
+    }
+
+    public enum State implements StateInterface {
+        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID
     }
 }

@@ -12,6 +12,9 @@ import java.util.List;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 
+/**
+ * Dialog for selecting mensa lines, used in group creation form.
+ */
 public class SelectOneLineDialog extends AlertDialog {
 
     SelectOneLineDialog.OnPositiveClickListener listener;

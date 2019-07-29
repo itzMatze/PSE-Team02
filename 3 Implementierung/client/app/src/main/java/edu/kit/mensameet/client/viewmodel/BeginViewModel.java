@@ -8,19 +8,14 @@ import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.R;
 
+/**
+ * View model of BeginActivity.
+ */
 public class BeginViewModel extends MensaMeetViewModel {
-    public static final String RESET_LOCAL_DATA_ID = "resetLocalData";
-    public static final String LOGIN_ID = "login";
-    public static final String REGISTER_ID = "register";
-    public static final String TEST_LIST_CLASSES_ID = "testListClasses";
-    /*
-    SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
-    use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
-     */
-    private SingleLiveEvent<Pair<BeginViewModel, String>> uiEventLiveData;
 
     //checks if there is already an username stored locally to find out, if an user is already logged in at this device
     public boolean isLoggedIn(Context context) {
+
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         String savedUsername = sharedPrefs.getString(context.getString(R.string.username_file_id), "");
         MensaMeetSession.getInstance().getUser().setName(savedUsername);
@@ -33,7 +28,7 @@ public class BeginViewModel extends MensaMeetViewModel {
      * @param item BeginViewModel
      */
     public void onResetClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, RESET_LOCAL_DATA_ID));
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.RESET_LOCAL_DATA_ID));
     }
 
     /**
@@ -42,7 +37,7 @@ public class BeginViewModel extends MensaMeetViewModel {
      * @param item BeginViewModel
      */
     public void onRegisterClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, REGISTER_ID));
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.REGISTER_ID));
     }
 
     /**
@@ -51,7 +46,7 @@ public class BeginViewModel extends MensaMeetViewModel {
      * @param item BeginViewModel
      */
     public void onLoginClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, LOGIN_ID));
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.LOGIN_ID));
     }
 
     /**
@@ -60,17 +55,11 @@ public class BeginViewModel extends MensaMeetViewModel {
      * @param item BeginViewModel
      */
     public void onTestClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<>(item, TEST_LIST_CLASSES_ID));
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_LIST_CLASSES_ID));
     }
 
-    /**
-     * @return A lifecycle-aware observable that sends only new updates after subscription
-     */
-    public SingleLiveEvent<Pair<BeginViewModel, String>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<BeginViewModel, String>(null, "default"));
-        }
-        return uiEventLiveData;
+    public enum State implements StateInterface {
+        TEST_LIST_CLASSES_ID, LOGIN_ID, REGISTER_ID, RESET_LOCAL_DATA_ID
     }
+
 }

@@ -1,5 +1,8 @@
 package edu.kit.mensameet.client.model;
 
+/**
+ * Representation of a mensa line containing several meals.
+ */
 public class Line {
     public String getName() {
         return name;
@@ -26,6 +29,12 @@ public class Line {
         return meals;
     }
 
+    /**
+     * Equality comparison by name.
+     *
+     * @param other Another line.
+     * @return Equality.
+     */
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Line)) {

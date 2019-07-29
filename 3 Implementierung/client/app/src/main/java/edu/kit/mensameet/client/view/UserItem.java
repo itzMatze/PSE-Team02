@@ -24,6 +24,9 @@ import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.UserItemHandler;
 
+/**
+ * The viewer of a single user.
+ */
 public class UserItem extends MensaMeetItem<User> {
 
     private UserItemHandler handler;
@@ -171,7 +174,7 @@ public class UserItem extends MensaMeetItem<User> {
             descriptionArea.addView(super.createTextField(R.string.field_status, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
-            descriptionArea.addView(createLabel(R.string.you_eat, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
+            descriptionArea.addView(createLabel(R.string.you_are, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             Spinner dropdown = new Spinner(context);
             dropdown.setId((int) R.string.field_status);
@@ -238,6 +241,9 @@ public class UserItem extends MensaMeetItem<User> {
         return view;
     }
 
+    /**
+     * Get data from object to view.
+     */
     @Override
     public void fillObjectData() {
 
@@ -277,6 +283,9 @@ public class UserItem extends MensaMeetItem<User> {
         setSpinnerField(R.string.field_subject, argument);
     }
 
+    /**
+     * Save data from view to object
+     * */
     @Override
     public void saveEditedObjectData() {
 

@@ -1,5 +1,8 @@
 package edu.kit.mensameet.client.model;
 
+/**
+ * Credentials for the login, a singleton.
+ */
 public class Credentials {
     private static Credentials instance = new Credentials();
     private String email;

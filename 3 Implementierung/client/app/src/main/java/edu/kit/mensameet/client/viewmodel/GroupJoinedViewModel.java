@@ -6,6 +6,9 @@ import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.RequestUtil;
 
+/**
+ * View model for GroupJoinedActivity
+ */
 public class GroupJoinedViewModel extends MensaMeetViewModel {
 
     private Group group;

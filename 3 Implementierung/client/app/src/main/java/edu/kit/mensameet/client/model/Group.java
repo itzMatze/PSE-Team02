@@ -3,6 +3,9 @@ package edu.kit.mensameet.client.model;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Representation of a mensa meet group.
+ */
 public class Group {
 
     public Group() {

@@ -4,11 +4,15 @@ import androidx.annotation.StringRes;
 
 import edu.kit.mensameet.client.view.R;
 
+/**
+ * Enumeration for the professional status of a user.
+ */
 public enum Status {
-    MEAT(R.string.status_meat),
-    VEGETARIAN(R.string.status_vegetarian),
-    VEGAN(R.string.status_vegan),
-    PESCETARIAN(R.string.status_pescetarian);
+    PROFESSOR(R.string.status_professor),
+    COLLEGE_STUDENT(R.string.status_college_student),
+    APPRENTICE(R.string.status_apprentice),
+    STUDENT(R.string.status_student),
+    OTHER(R.string.status_other);
 
     public final @StringRes
     int id;

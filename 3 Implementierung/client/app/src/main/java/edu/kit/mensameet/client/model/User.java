@@ -2,6 +2,9 @@ package edu.kit.mensameet.client.model;
 
 import java.util.Date;
 
+/**
+ * Representation of an user.
+ */
 public class User {
 
     private String token = "";
@@ -83,6 +86,11 @@ public class User {
         return isAdmin;
     }
 
+    /**
+     * Sets the user to adminstrator status.
+     *
+     * @param isAdmin Whether the user should be administrator.
+     */
     public void setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
     }

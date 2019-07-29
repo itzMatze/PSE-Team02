@@ -10,6 +10,9 @@ import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.RequestUtil;
 
+/**
+ * View model for CreateGroupActivity.
+ */
 public class CreateGroupViewModel extends MensaMeetViewModel {
 
     private Group group;
