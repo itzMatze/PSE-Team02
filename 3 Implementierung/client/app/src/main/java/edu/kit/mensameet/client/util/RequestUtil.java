@@ -2,6 +2,8 @@ package edu.kit.mensameet.client.util;
 
 import android.util.Log;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
@@ -30,8 +32,6 @@ public class RequestUtil {
 
     //for convert a java object to json string and vise versa
     private static ObjectMapper mapper = new ObjectMapper();
-
-    //for convert a java object to json string
     private static ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
 
     /**
@@ -116,7 +116,7 @@ public class RequestUtil {
                     params.put("firebaseToken", user.getToken());
                     str[0] = HttpUtil.put("http://193.196.38.98:8080/server/user", json, params);
                 }catch (Exception e){
-                    //Log.e("update user failed", e.getMessage());
+                    Log.e("update user failed", e.getMessage());
                 }
 
             }
@@ -169,7 +169,8 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    String json = ow.writeValueAsString(new GroupForRequest(group));
+                    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                    String json = mapper.writer().writeValueAsString(new GroupForRequest(group));
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", firebaseToken);
@@ -191,6 +192,35 @@ public class RequestUtil {
         return newGroup[0];
     }
 
+/*
+    public static String createGroupString(final Group group, final String firebaseToken) {
+        final String[] str = new String[1];
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try{
+                    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                    String json = mapper.writer().writeValueAsString(new GroupForRequest(group));
+                    Map<String, String> params = new HashMap<>();
+                    params.put("Content-Type","application/json");
+                    params.put("firebaseToken", firebaseToken);
+                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
+                }catch (Exception e){
+                    //Log.e("create group failed", e.getMessage());
+                }
+
+            }
+        });
+        thread.start();
+        try{
+            thread.join();
+        }catch (Exception e){
+            //Log.e("join error", e.getMessage());
+        }
+        return str[0];
+    }
+    */
+
     /**
      *
      * @param groupToken
@@ -207,7 +237,7 @@ public class RequestUtil {
                     String str = HttpUtil.get(
                             "http://193.196.38.98:8080/server/create-group?groupToken="+ groupToken, params);
                     GroupForRequest returnGroup = mapper.readValue(str, GroupForRequest.class);
-                    group[0] = returnGroup.parseToGroup();
+                    group[0] = null;//todo returnGroup.parseToGroup();
                 }catch (Exception e){
                     //Log.e("get group failed", e.getMessage());
                 }
@@ -279,7 +309,7 @@ public class RequestUtil {
                     groupForRequests = mapper.readValue
                             (str[0], mapper.getTypeFactory().constructCollectionType(List.class, GroupForRequest.class));
                     for(GroupForRequest i: groupForRequests){
-                        groups.add(i.parseToGroup());
+                        //todo groups.add(i.parseToGroup());
                     }
                 }catch (Exception e){
                     //Log.e("preferences failed", e.getMessage());
@@ -413,20 +443,35 @@ public class RequestUtil {
      * this class is used for convert group to a json String
      * and send json string as body
      */
-    private static class GroupForRequest{
+    public static class GroupForRequest{
         String token;
         String name;
         String motto;
-        int maxMember;
-        String line;
+        int maxMembers;
         int[] meetingTime = new int[2];
+        String line;
+        String[] members;
+
+        public GroupForRequest() {
+        }
+
+        public GroupForRequest(String token, String name, String motto, int maxMembers, int[] meetingTime, String line, String[] members) {
+            this.token = token;
+            this.name = name;
+            this.motto = motto;
+            this.maxMembers = maxMembers;
+            this.meetingTime = meetingTime;
+            this.line = line;
+            this.members = members;
+        }
 
         //constructor with group
+        //todo: if token in body then... in server remeins same values
         public GroupForRequest(Group group) {
             token = group.getToken();
             name = group.getName();
             motto = group.getMotto();
-            maxMember = group.getMaxMembers();
+            maxMembers = group.getMaxMembers();
             line = group.getLine();
             meetingTime[0] = group.getMeetingDate().getHours();
             meetingTime[1] = group.getMeetingDate().getMinutes();
@@ -437,14 +482,22 @@ public class RequestUtil {
             group.setToken(this.token);
             group.setName(this.name);
             group.setMotto(this.motto);
-            group.setMaxMembers(this.maxMember);
+            group.setMaxMembers(this.maxMembers);
             Date meetingDate = new Date();
             meetingDate.setHours(this.meetingTime[0]);
             meetingDate.setMinutes(this.meetingTime[1]);
             group.setMeetingDate(meetingDate);
             group.setLine(this.line);
+            List<User> userList = new ArrayList<>();
+            if(members != null) {
+                for (int n = 0; n < members.length; n++){
+                    userList.add(RequestUtil.getUser(members[n], members[n]));
+                }
+            }
+            group.setUsers(userList);
             return group;
         }
+
     }
 
     /**

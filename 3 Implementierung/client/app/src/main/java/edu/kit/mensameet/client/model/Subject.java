@@ -8,7 +8,7 @@ import edu.kit.mensameet.client.view.R;
  * Enumeration for university subjects.
  */
 public enum Subject {
-    IT(R.string.subject_it),
+    INFORMATICS(R.string.subject_it),
     ECONOMY(R.string.subject_economy),
     MATH(R.string.subject_math),
     PHYSICS(R.string.subject_physics),

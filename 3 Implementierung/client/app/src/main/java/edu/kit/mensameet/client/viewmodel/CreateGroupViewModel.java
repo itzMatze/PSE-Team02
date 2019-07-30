@@ -34,6 +34,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
             }
             */
 
+            /* todo
             setGroup(RequestUtil.createGroup(group, MensaMeetSession.getInstance().getUser().getToken()));
             if(group != null) {
                 RequestUtil.addUserToGroup(group.getToken(),MensaMeetSession.getInstance().getUser().getToken());
@@ -41,6 +42,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
                 MensaMeetSession.getInstance().setChosenGroup(group);
 
             }
+            */
 
             //createGroup(group);
             //addUserToGroup(MensaMeetSession.getInstance().getUser();
