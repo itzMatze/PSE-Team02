@@ -11,8 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.kit.mensameet.client.model.Gender;
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.model.Status;
+import edu.kit.mensameet.client.model.Subject;
 import edu.kit.mensameet.client.model.User;
 
 /*
@@ -50,7 +55,7 @@ public class RequestUtil {
                     str[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
                     //Log.i("create user success", str[0]);
                 }catch (Exception e){
-                    //Log.e("create user failed", e.getClass().toString() + e.getMessage());
+                    Log.e("create user failed", e.getClass().toString() + e.getMessage());
                     str[0] = null;
                 }
 
@@ -111,12 +116,13 @@ public class RequestUtil {
             public void run() {
                 try{
                     String json = ow.writeValueAsString(user);
+                    Log.e("json string", json); // TODO: delete after testing
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", user.getToken());
                     str[0] = HttpUtil.put("http://193.196.38.98:8080/server/user", json, params);
                 }catch (Exception e){
-                    //Log.e("update user failed", e.getMessage());
+                    Log.e("update user failed", e.getMessage());
                 }
 
             }
@@ -388,15 +394,19 @@ public class RequestUtil {
      *
      * @return
      */
-    public static String getMensaData() {
+    public static MensaData getMensaData() {
+        final MensaData[] mensaData = {new MensaData(null)};
+        final List<Line> lines = new ArrayList<>();
         final String[] str = {""};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     str[0] = HttpUtil.get("http://193.196.38.98:8080/server/mensadata");
+                    mensaData[0] = mapper.readValue(str[0], MensaData.class);
                 }catch (Exception e){
-                    //Log.e("get mensa data failed", e.getMessage());
+                    Log.e("get mensa data failed", e.getMessage());
                 }
             }
         });
@@ -406,7 +416,7 @@ public class RequestUtil {
         }catch (Exception e){
             //Log.e("join error", e.getMessage());
         }
-        return str[0];
+        return mensaData[0];
     }
 
     /**

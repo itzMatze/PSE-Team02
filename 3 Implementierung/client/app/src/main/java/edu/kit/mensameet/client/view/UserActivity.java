@@ -59,8 +59,6 @@ public class UserActivity extends MensaMeetActivity {
         // The user item is added to the container.
         container.addView(userItem.getView());
 
-        userDataIncomplete = MensaMeetSession.getInstance().userDataIncomplete();
-
         Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_SHORT).show();
 
         super.onCreate(savedInstanceState);
@@ -69,10 +67,32 @@ public class UserActivity extends MensaMeetActivity {
             next button with caption 'save' is provided.
          */
 
+        reloadData();
+
+    }
+
+    /**
+     * Reloads the user data from MensaMeetSession.
+     */
+    @Override
+    protected void reloadData() {
+
+        User user = MensaMeetSession.getInstance().getUser();
+
+        Toast.makeText(this, "Data reloaded.", Toast.LENGTH_SHORT).show();
+        if (user != null) {
+
+            userItem.setObjectData(user);
+            userItem.fillObjectData();
+
+        }
+
         // Rename next button.
         if (buttonNext != null) {
             buttonNext.setText(R.string.save);
         }
+
+        userDataIncomplete = MensaMeetSession.getInstance().userDataIncomplete();
 
         if (userDataIncomplete) {
 
@@ -97,22 +117,6 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     /**
-     * Reloads the user data from MensaMeetSession.
-     */
-    @Override
-    protected void reloadData() {
-
-        User user = MensaMeetSession.getInstance().getUser();
-
-        if (user != null) {
-
-            userItem.setObjectData(user);
-            userItem.fillObjectData();
-
-        }
-    }
-
-    /**
      * How the activity reacts on the state changes of the view model.
      *
      * @param it The state data.
@@ -122,23 +126,11 @@ public class UserActivity extends MensaMeetActivity {
 
         if (it.second == UserViewModel.State.USER_SAVED_NEXT) {
             Toast.makeText(this, R.string.user_saved, Toast.LENGTH_SHORT).show();
-            next();
+            gotoActivity(HomeActivity.class);
         } else if (it.second == UserViewModel.State.BACK) {
             onBackPressed();
         } else if (it.second ==  UserViewModel.State.ERROR_SAVING_USER) {
             Toast.makeText(this, R.string.error_saving_user, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Routing to the next page, depending on mode.
-     */
-    private void next() {
-
-        if (userDataIncomplete) {
-            gotoActivity(HomeActivity.class);
-        } else {
-            onBackPressed();
         }
     }
 
@@ -161,7 +153,7 @@ public class UserActivity extends MensaMeetActivity {
     public void onClickBack() {
 
         Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_SHORT).show();
-        onBackPressed();
+        gotoActivity(HomeActivity.class);
 
     }
 

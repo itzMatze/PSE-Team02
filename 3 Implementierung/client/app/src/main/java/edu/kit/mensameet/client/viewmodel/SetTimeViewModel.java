@@ -3,9 +3,13 @@ package edu.kit.mensameet.client.viewmodel;
 import android.util.Pair;
 
 import java.util.Date;
+import java.util.List;
 
+import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.util.RequestUtil;
 
 /**
  * View model of SetTimeActivity.
@@ -44,6 +48,22 @@ public class SetTimeViewModel extends MensaMeetViewModel {
     public void saveTimeAndNext() {
 
         saveTime();
+
+        // prepare chosen list for server request
+        List<Line> chosenLines = MensaMeetSession.getInstance().getChosenLines();
+        String[] chosenMealLines = new String[chosenLines.size()];
+
+        for (int i = 0; i < chosenLines.size(); i++) {
+
+            chosenMealLines[0] = chosenLines.get(i).getMealLine();
+
+        }
+
+        // send query to get groups by preferences
+        List<Group> receivedGroups = RequestUtil.getGroupByPrefferences(MensaMeetSession.getInstance().getChosenTime(), chosenMealLines);
+
+        MensaMeetSession.getInstance().setReceivedGroups(receivedGroups);
+
         //getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
         uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_NEXT));
     }

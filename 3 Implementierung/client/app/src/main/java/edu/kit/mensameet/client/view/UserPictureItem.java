@@ -53,8 +53,6 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
             objectData = MensaMeetUserPictureList.getInstance().getDefaultPicture();
         }
 
-        selectedPicture = objectData;
-
         pictureView = new ImageView(context);
 
         if (displayMode == DisplayMode.SMALL) {
@@ -66,8 +64,6 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
             pictureView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
 
         }
-
-        pictureView.setImageResource(selectedPicture.getResourceId());
 
         view.addView(pictureView);
 
@@ -110,7 +106,10 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
 
     @Override
     public void fillObjectData() {
-        ((UserPictureAdapter)recyclerView.getAdapter()).setSelectedPicture(objectData);
+
+        // ((UserPictureAdapter)recyclerView.getAdapter()).setSelectedPicture(objectData);
+        pictureView.setImageResource(objectData.getResourceId());
+
     }
 
     @Override

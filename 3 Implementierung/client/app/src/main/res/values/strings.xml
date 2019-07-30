@@ -78,7 +78,7 @@
     <string name="email_title">E-Mail Adresse</string>
     <string name="password_title">Passwort</string>
     <string name="confirm_password_title">Passwort bestätigen</string>
-    <string name="selectALine">Wähle eine Linie aus</string>
+    <string name="selectALine">Wähle eine oder mehrere Linie(n) aus!</string>
     <string name="your_gender">Du bist</string>
     <string name="you_eat">Du isst</string>
     <string name="your_subject">Deine Fachrichtung ist</string>
@@ -103,4 +103,17 @@
     <string name="status_college_student">Student</string>
     <string name="status_professor">Professor</string>
     <string name="you_are">Du bist</string>
+    <string name="line_one">Linie 1</string>
+    <string name="line_two">Linie 2</string>
+    <string name="line_three">Linie 3</string>
+    <string name="line_four_five">Linie 4/5</string>
+    <string name="line_cutlet_bar">Schnitzelbar</string>
+    <string name="line_six">Linie 6</string>
+    <string name="line_late_line">Spätausgabe</string>
+    <string name="line_curry_line">Koeriwerk</string>
+    <string name="line_cafeteria">Cafeteria</string>
+    <string name="line_cafetaria_late">Abendmensa</string>
+    <string name="line_pizza_line">Pizzawerk</string>
+    <string name="line_pizza_line_pasta">Pastawerk</string>
+    <string name="line_salad">Pizzawerk Salat</string>
 </resources>

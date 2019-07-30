@@ -47,7 +47,12 @@ public class SelectLinesActivity extends MensaMeetActivity {
         LinearLayout container = findViewById(R.id.container);
 
         // TODO: put .getMensaData().getLines() into one method
-        List<Line> linesList = new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaLines()));
+
+        List<Line> linesList = null;
+        Line[] lines = MensaMeetSession.getInstance().getMensaLines();
+        if (lines != null) {
+            linesList = new ArrayList<Line>(Arrays.asList(lines));
+        }
 
         lineList = new LineList(this, linesList,
                 MensaMeetList.DisplayMode.MULTIPLE_SELECT,

@@ -1,5 +1,7 @@
 package edu.kit.mensameet.client.model;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
 
 import edu.kit.mensameet.client.view.R;
@@ -8,7 +10,7 @@ import edu.kit.mensameet.client.view.R;
  * Enumeration for university subjects.
  */
 public enum Subject {
-    IT(R.string.subject_it),
+    INFORMATICS(R.string.subject_it),
     ECONOMY(R.string.subject_economy),
     MATH(R.string.subject_math),
     PHYSICS(R.string.subject_physics),
@@ -26,6 +28,15 @@ public enum Subject {
     public static Subject valueOfId(@StringRes int id) {
         for (Subject e : values()) {
             if (e.id == id) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public static Subject valueOfString(Context context, String string) {
+        for (Subject e : values()) {
+            if (context.getResources().getString(e.id) == string) {
                 return e;
             }
         }

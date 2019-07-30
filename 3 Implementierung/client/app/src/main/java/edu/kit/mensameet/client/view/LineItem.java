@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MealLines;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -60,13 +61,20 @@ public class LineItem extends MensaMeetItem<Line> {
     @Override
     public void fillObjectData() {
         //TODO: since fillData is data-related, outsource it to viewmodel/handler
-        fillTextField(R.string.field_name, objectData.getName());
+
+        if(objectData == null) {
+            return;
+        }
+
+        fillTextField(R.string.field_name, context.getResources().getString(MealLines.valueOf(objectData.getMealLine()).id));
 
         String mealsText = "";
         for (int i = 0; i < objectData.getMeals().length; i++) {
-            mealsText += objectData.getMeals()[i].getName() + "\n";
+            mealsText += objectData.getMeals()[i] + "\n\n";
         }
 
         fillTextField(R.string.field_meals, mealsText);
+
+
     }
 }

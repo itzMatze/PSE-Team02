@@ -32,11 +32,17 @@
         <activity
             android:screenOrientation="portrait"
             android:name=".UserActivity"
-            android:label="@string/title_user_profile" />
+            android:label="@string/title_user_profile">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:screenOrientation="portrait"
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home">
+            android:label="">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

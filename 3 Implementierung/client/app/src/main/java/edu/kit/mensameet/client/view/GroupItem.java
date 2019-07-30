@@ -16,6 +16,7 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MealLines;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
@@ -164,7 +165,7 @@ public class GroupItem extends MensaMeetItem<Group> {
                             List<Line> selectedLines = dialog.getSelectedLines();
                             if (selectedLines.size() > 0) {
                                 ((TextView)chooseLine.findViewById((int)R.string.field_line))
-                                        .setText(selectedLines.get(0).getName());
+                                        .setText(context.getResources().getString(MealLines.valueOf(selectedLines.get(0).getMealLine()).id));
                             }
                         }
                     });
@@ -278,6 +279,10 @@ public class GroupItem extends MensaMeetItem<Group> {
     @Override
     public void fillObjectData() {
 
+        if (objectData == null) {
+            return;
+        }
+
         fillTextField(R.string.field_name, objectData.getName());
         fillTextField(R.string.field_motto, objectData.getMotto());
 
@@ -287,8 +292,8 @@ public class GroupItem extends MensaMeetItem<Group> {
         }
 
         String line = objectData.getLine();
-        if (line != null) {
-            fillTextField(R.string.field_line, line);
+        if (line != null && MealLines.valueOf(line) != null) {
+            fillTextField(R.string.field_line, context.getResources().getString(MealLines.valueOf(line).id));
         }
 
         View maxMembersField = view.findViewById((int)R.string.field_max_members);
@@ -322,10 +327,14 @@ public class GroupItem extends MensaMeetItem<Group> {
     @Override
     public void saveEditedObjectData() {
 
+        if (objectData == null) {
+            return;
+        }
+
         objectData.setName(super.extractTextField(R.string.field_name));
         objectData.setMotto(super.extractTextField(R.string.field_motto));
         objectData.setMeetingDate(MensaMeetTime.stringToTime(super.extractTextField(R.string.field_time)));
-        objectData.setLine(super.extractTextField(R.string.field_line));
+        objectData.setLine(MealLines.valueOfString(context, super.extractTextField(R.string.field_line)).toString());
 
         String maxMembers = extractSpinnerField(R.string.field_max_members);
 

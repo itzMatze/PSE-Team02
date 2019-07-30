@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,6 +31,8 @@ import edu.kit.mensameet.client.viewmodel.UserItemHandler;
 public class UserItem extends MensaMeetItem<User> {
 
     private UserItemHandler handler;
+
+    private UserPictureItem userPictureItem;
 
     public UserItem(Context context, DisplayMode displayMode, User objectData) {
         //TODO: Put displayMode into MensaMeetItem as static subclass
@@ -67,6 +70,7 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             view.setOrientation(LinearLayout.HORIZONTAL);
+
         } else {
 
             view.setOrientation(LinearLayout.VERTICAL);
@@ -74,9 +78,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         // Field: user picture
 
-        MensaMeetUserPicture profilePicture = MensaMeetUserPictureList.getInstance().getPictureById(objectData.getProfilePictureId());
-
-        UserPictureItem userPictureItem = new UserPictureItem(context, displayMode, profilePicture);
+        userPictureItem = new UserPictureItem(context, displayMode, null);
         View itemView = userPictureItem.getView();
 
         if (displayMode == DisplayMode.SMALL) {
@@ -218,23 +220,26 @@ public class UserItem extends MensaMeetItem<User> {
 
         // Field: Delete button
 
-        if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
+               if (MensaMeetSession.getInstance().getUser() != null && MensaMeetSession.getInstance().getUser().getIsAdmin()) {
 
-            if (displayMode == DisplayMode.SMALL) {
+                if (displayMode == DisplayMode.SMALL && !objectData.equals(MensaMeetSession.getInstance().getUser())) {
 
-                final Button deleteButton = new Button(context);
-                deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
-                deleteButton.setText(R.string.delete_user);
-                deleteButton.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        handler.deleteUser();
-                    }
-                });
-                deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
+                    final Button deleteButton = new Button(context);
+                    deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                    deleteButton.setText(R.string.delete_user);
+                    deleteButton.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View v) {
+                            handler.deleteUser();
+                        }
+                    });
+                    deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
 
-                descriptionArea.addView(deleteButton);
+                    descriptionArea.addView(deleteButton);
+                }
             }
-        }
+
+
+
 
         view.addView(descriptionArea);
 
@@ -247,20 +252,29 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void fillObjectData() {
 
+        if(objectData == null) {
+            return;
+        }
+
+        userPictureItem.setObjectData(
+            MensaMeetUserPictureList.getInstance().getPictureById(objectData.getProfilePictureId())
+        );
+        userPictureItem.fillObjectData();
+
         fillTextField(R.string.field_name, objectData.getName());
 
         fillTextField(R.string.field_motto, objectData.getMotto());
 
         Date birthDate = objectData.getBirthdate();
         if (birthDate != null) {
-            fillTextField(R.string.field_birth_date, MensaMeetTime.timeToString(birthDate));
+            fillTextField(R.string.field_birth_date, MensaMeetTime.dateToString(birthDate));
         }
 
         String argument;
 
         Gender gender = objectData.getGender();
         if (gender != null) {
-            argument = gender.toString();
+            argument = context.getResources().getString(gender.id);
         } else {
             argument = null;
         }
@@ -268,7 +282,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         Status status = objectData.getStatus();
         if (status != null) {
-            argument = status.toString();
+            argument = context.getResources().getString(status.id);
         } else {
             argument = null;
         }
@@ -276,7 +290,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         Subject subject = objectData.getSubject();
         if (subject != null) {
-            argument = subject.toString();
+            argument = context.getResources().getString(subject.id);
         } else {
             argument = null;
         }
@@ -289,17 +303,26 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void saveEditedObjectData() {
 
+        if(objectData == null) {
+            return;
+        }
+
+        userPictureItem.saveEditedObjectData();
+        objectData.setProfilePictureId(userPictureItem.getObjectData().getPictureId());
+
         objectData.setName(super.extractTextField(R.string.field_name));
 
         objectData.setMotto(super.extractTextField(R.string.field_motto));
 
-        objectData.setBirthdate(MensaMeetTime.stringToDate(super.extractTextField(R.string.field_birth_date)));
+        Date d = MensaMeetTime.stringToDate(super.extractTextField(R.string.field_birth_date));
 
-        objectData.setGender(Gender.valueOf(extractSpinnerField(R.string.field_gender)));
+        objectData.setBirthdate(d);
 
-        objectData.setStatus(Status.valueOf(extractSpinnerField(R.string.field_status)));
+        objectData.setGender(Gender.valueOfString(context, extractSpinnerField(R.string.field_gender)));
 
-        objectData.setSubject(Subject.valueOf(extractSpinnerField(R.string.field_subject)));
+        objectData.setStatus(Status.valueOfString(context, extractSpinnerField(R.string.field_status)));
+
+        objectData.setSubject(Subject.valueOfString(context, extractSpinnerField(R.string.field_subject)));
     }
 
     @Override

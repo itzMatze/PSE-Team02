@@ -15,7 +15,7 @@ public class User {
     private Subject subject;
     private Status status;
     private int profilePictureId;
-    private Boolean isAdmin = false; // set default values
+    private Boolean isAdmin = false;
     private String groupToken;
 
     public void setToken(String token) {
