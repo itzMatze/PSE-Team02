@@ -34,8 +34,6 @@ public class HomeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         super.viewModel = viewModel;
 
-        viewModel.initializeSession();
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);

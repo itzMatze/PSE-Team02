@@ -40,6 +40,8 @@ public class GroupJoinedActivity extends MensaMeetActivity {
                 MensaMeetSession.getInstance().getChosenGroup());
         container.addView(groupItem.getView());
 
+        groupItem.fillObjectData();
+
         super.onCreate(savedInstanceState);
 
         if (buttonNext != null) {
