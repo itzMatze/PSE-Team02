@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
@@ -85,50 +86,82 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         List<Group> dataList = new ArrayList<Group>();
 
+
         // Mock data
         Group g1 = new Group();
-        g1.setName("Gruppe1");
-        g1.setMotto("Motto1");
+        g1.setName("Mensaphilosophen");
+        g1.setMotto("Du bist, was du isst!");
         g1.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
-        g1.setLine("Linie 1");
-
+        g1.setLine("LINE_ONE");
+        g1.setMaxMembers(10);
         List<User> userList1 = new ArrayList<User>();
         User u1 = new User();
-        u1.setName("User1");
-        u1.setMotto("Motto1");
+        u1.setName("Tim");
+        u1.setMotto("isst gerne Fisch");
         u1.setProfilePictureId(2);
         userList1.add(u1);
         User u2 = new User();
-        u2.setName("User2");
-        u2.setMotto("Motto2");
+        u2.setName("Alice");
+        u2.setMotto("seeking for Bob");
         userList1.add(u2);
         g1.setUsers(userList1);
-
         dataList.add(g1);
+
         Group g2 = new Group();
-        g2.setName("Gruppe2");
-        g2.setMotto("Motto2");
-        g2.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
-        g2.setLine("Linie 1");
+        g2.setName("Neu am KIT");
+        g2.setMotto("Hier könnt ihr neue Leute kennenlernen!");
+        g2.setMeetingDate(MensaMeetTime.stringToTime("12:30"));
+        g2.setLine("LINE_FOUR_FIVE");
+        g2.setMaxMembers(15);
+        List<User> userList2 = new ArrayList<User>();
+        User u21 = new User();
+        u21.setName("Petra");
+        u21.setMotto("(^u^)");
+        u21.setProfilePictureId(4);
+        userList2.add(u21);
+        g2.setUsers(userList2);
         dataList.add(g2);
 
         Group g3 = new Group();
-        g3.setName("Gruppe3");
-        g3.setMotto("Motto3");
-        g3.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
-        g3.setLine("Linie 1");
+        g3.setName("Dating");
+        g3.setMotto("Liebe geht durch den Magen.");
+        g3.setMeetingDate(MensaMeetTime.stringToTime("11:30"));
+        g3.setLine("LINE_TWO");
+        g3.setMaxMembers(8);
+        List<User> userList3 = new ArrayList<User>();
+        User u31 = new User();
+        u31.setName("Theo");
+        u31.setMotto("I <3 Linie 2");
+        u31.setProfilePictureId(1);
+        userList3.add(u31);
+        User u32 = new User();
+        u32.setName("Carsten");
+        u32.setMotto("Wo sind hier die ganzen Frauen??");
+        u32.setProfilePictureId(1);
+        userList3.add(u32);
+        g3.setUsers(userList3);
         dataList.add(g3);
 
         Group g4 = new Group();
-        g4.setName("Gruppe3");
-        g4.setMotto("Motto3");
+        g4.setName("Spätes Frühstück");
+        g4.setMotto("Guten Morgen");
         g4.setMeetingDate(MensaMeetTime.stringToTime("12:00"));
-        g4.setLine("Linie 1");
+        g4.setLine("CAFETARIA");
+        g4.setMaxMembers(10);
+        List<User> userList4 = new ArrayList<User>();
+        User u41 = new User();
+        u41.setName("Lena");
+        u41.setMotto("Schlaflose Nächte...");
+        u41.setProfilePictureId(0);
+        userList4.add(u41);
+        g4.setUsers(userList4);
         dataList.add(g4);
+
+        MensaMeetSession.getInstance().setReceivedGroups(dataList);
 
         groupList = new GroupList(
                 this,
-                dataList,
+                MensaMeetSession.getInstance().getReceivedGroups(),
                 MensaMeetList.DisplayMode.SINGLE_SELECT,
                 true);
 

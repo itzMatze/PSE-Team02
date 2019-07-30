@@ -4,31 +4,12 @@ package edu.kit.mensameet.client.model;
  * Representation of a mensa line containing several meals.
  */
 public class Line {
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String mealLine;
 
-    public void setMeals(Meal[] meals) {
-        this.meals = meals;
-    }
+    private String[] meals;
 
-    private String name;
-
-    private Meal[] meals;
-
-    public Line(String name, Meal[] meals) {
-        this.name = name;
-        this.meals = meals;
-    }
-
-    public Meal[] getMeals() {
-        return meals;
-    }
-
+    public Line() {}
     /**
      * Equality comparison by name.
      *
@@ -43,6 +24,22 @@ public class Line {
 
         Line that = (Line) other;
 
-        return this.name.equals(that.name);
+        return this.mealLine.equals(that.mealLine);
+    }
+
+    public String getMealLine() {
+        return mealLine;
+    }
+
+    public void setMealLine(String mealLine) {
+        this.mealLine = mealLine;
+    }
+
+    public String[] getMeals() {
+        return meals;
+    }
+
+    public void setMeals(String[] meals) {
+        this.meals = meals;
     }
 }

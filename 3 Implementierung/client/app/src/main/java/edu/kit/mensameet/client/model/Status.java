@@ -1,5 +1,7 @@
 package edu.kit.mensameet.client.model;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
 
 import edu.kit.mensameet.client.view.R;
@@ -29,4 +31,14 @@ public enum Status {
         }
         return null;
     }
+
+    public static Status valueOfString(Context context, String string) {
+        for (Status e : values()) {
+            if (context.getResources().getString(e.id) == string) {
+                return e;
+            }
+        }
+        return null;
+    }
+
 }

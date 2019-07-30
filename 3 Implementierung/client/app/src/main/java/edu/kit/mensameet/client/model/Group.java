@@ -68,6 +68,16 @@ public class Group {
         this.users = users;
     }
 
+    public void removeUser(User user) {
+
+        for(User u : users) {
+            if (u.equals(user)) {
+                users.remove(u);
+                break;
+            }
+        }
+    }
+
     private String token = "";
     private String name = "";
     private String motto = "";

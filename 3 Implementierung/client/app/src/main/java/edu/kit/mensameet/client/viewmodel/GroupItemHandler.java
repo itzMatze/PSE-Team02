@@ -40,6 +40,7 @@ public class GroupItemHandler extends MensaMeetItemHandler {
         //if (error == 0) {
         // MensaMeetSession.getInstance().setChosenGroup(group);...
 
+        group.getUsers().add(MensaMeetSession.getInstance().getUser());
         MensaMeetSession.getInstance().setChosenGroup(group);
         uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOINED));
 

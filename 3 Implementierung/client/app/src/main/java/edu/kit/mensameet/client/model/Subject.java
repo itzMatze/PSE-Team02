@@ -1,5 +1,7 @@
 package edu.kit.mensameet.client.model;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
 
 import edu.kit.mensameet.client.view.R;
@@ -26,6 +28,15 @@ public enum Subject {
     public static Subject valueOfId(@StringRes int id) {
         for (Subject e : values()) {
             if (e.id == id) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public static Subject valueOfString(Context context, String string) {
+        for (Subject e : values()) {
+            if (context.getResources().getString(e.id) == string) {
                 return e;
             }
         }

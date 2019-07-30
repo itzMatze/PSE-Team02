@@ -13,7 +13,7 @@ public class MensaMeetSession {
     private User user;
     private List<Line> chosenLines;
     private MensaMeetTime chosenTime;
-    private Group receivedGroups;
+    private List<Group> receivedGroups;
     private Group chosenGroup;
     private Group createdGroup;
     private String userToken;
@@ -81,9 +81,7 @@ public class MensaMeetSession {
     }
 
     public User getUser() {
-        if (user == null) {
-            user = new User();
-        }
+
         return user;
     }
 
@@ -139,7 +137,7 @@ public class MensaMeetSession {
         this.userToShow = userToShow;
     }
 
-    public Group getReceivedGroups() {
+    public List<Group> getReceivedGroups() {
         return receivedGroups;
     }
 
@@ -148,7 +146,7 @@ public class MensaMeetSession {
      *
      * @return Received groups.
      */
-    public void setReceivedGroups(Group receivedGroups) {
+    public void setReceivedGroups(List<Group> receivedGroups) {
         this.receivedGroups = receivedGroups;
     }
 

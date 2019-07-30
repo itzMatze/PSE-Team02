@@ -38,11 +38,20 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
         LinearLayout container = findViewById(R.id.container);
 
+        // initialize group with chosen time and line
+        Group createdGroup = MensaMeetSession.getInstance().getCreatedGroup();
+        if (createdGroup == null) {
+            createdGroup = new Group();
+            createdGroup.setMeetingDate(MensaMeetSession.getInstance().getChosenTime().getStartTime());
+            createdGroup.setLine(MensaMeetSession.getInstance().getChosenLines().get(0).getMealLine());
+        }
+        MensaMeetSession.getInstance().setCreatedGroup(createdGroup);
+
         // The item is instantiated as big and editable.
-        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, new Group());
+        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, createdGroup);
         container.addView(groupItem.getView());
 
-        reloadData();
+        //reloadData();
 
         super.onCreate(savedInstanceState);
 

@@ -21,6 +21,7 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
         if (group != null) {
             //todo: get group from user
             RequestUtil.removeUserFromGroup(MensaMeetSession.getInstance().getUser().getToken(), group.getToken());
+            MensaMeetSession.getInstance().getChosenGroup().removeUser(MensaMeetSession.getInstance().getUser());
             MensaMeetSession.getInstance().setChosenGroup(null);
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_LEFT));
 

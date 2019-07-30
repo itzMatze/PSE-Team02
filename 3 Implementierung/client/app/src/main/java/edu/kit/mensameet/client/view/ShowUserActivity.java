@@ -44,6 +44,11 @@ public class ShowUserActivity extends MensaMeetActivity {
     }
 
     @Override
+    protected void reloadData() {
+        userItem.fillObjectData();
+    }
+
+    @Override
     public void onClickBack() {
         onBackPressed();
     }

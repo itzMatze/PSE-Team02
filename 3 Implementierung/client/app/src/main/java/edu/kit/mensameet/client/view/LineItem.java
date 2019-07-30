@@ -1,11 +1,14 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Pair;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MealLines;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -49,7 +52,10 @@ public class LineItem extends MensaMeetItem<Line> {
         view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         // Element: name
-        view.addView(createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE));
+        TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
+        // TextView is the parent class of EditText and includes it
+        nameField.setTypeface(null, Typeface.BOLD);
+        view.addView(nameField);
 
         // Element: meals
         view.addView(createTextField(R.string.field_meals, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
@@ -60,13 +66,20 @@ public class LineItem extends MensaMeetItem<Line> {
     @Override
     public void fillObjectData() {
         //TODO: since fillData is data-related, outsource it to viewmodel/handler
-        fillTextField(R.string.field_name, objectData.getName());
+
+        if(objectData == null) {
+            return;
+        }
+
+        fillTextField(R.string.field_name, context.getResources().getString(MealLines.valueOf(objectData.getMealLine()).id));
 
         String mealsText = "";
         for (int i = 0; i < objectData.getMeals().length; i++) {
-            mealsText += objectData.getMeals()[i].getName() + "\n";
+            mealsText += objectData.getMeals()[i] + "\n\n";
         }
 
         fillTextField(R.string.field_meals, mealsText);
+
+
     }
 }

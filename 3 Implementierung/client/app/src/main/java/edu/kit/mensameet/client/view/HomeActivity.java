@@ -34,13 +34,6 @@ public class HomeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         super.viewModel = viewModel;
 
-        viewModel.initializeSession();
-
-        // Initialize MensaMeetSession, TODO: normally at login or registration
-        User me = new User();
-        me.setIsAdmin(true);
-        MensaMeetSession.getInstance().setUser(me);
-
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_home);

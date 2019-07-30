@@ -15,7 +15,7 @@ public class User {
     private Subject subject;
     private Status status;
     private int profilePictureId;
-    private Boolean isAdmin = false; // set default values
+    private Boolean isAdmin = false;
     private String groupToken;
 
     public void setToken(String token) {
@@ -101,5 +101,22 @@ public class User {
 
     public void setGroupToken(String groupToken) {
         this.groupToken = groupToken;
+    }
+
+    /**
+     * Equality comparison by user token.
+     *
+     * @param other Another user.
+     * @return Equality.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof User)) {
+            return false;
+        }
+
+        User that = (User) other;
+
+        return this.token.equals(that.token);
     }
 }

@@ -1,6 +1,11 @@
 package edu.kit.mensameet.client.model;
 
+import android.content.Context;
+
 import androidx.annotation.StringRes;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import edu.kit.mensameet.client.view.R;
 
@@ -22,6 +27,15 @@ public enum Gender {
     public static Gender valueOfId(@StringRes int id) {
         for (Gender e : values()) {
             if (e.id == id) {
+                return e;
+            }
+        }
+        return null;
+    }
+
+    public static Gender valueOfString(Context context, String string) {
+        for (Gender e : values()) {
+            if (context.getResources().getString(e.id) == string) {
                 return e;
             }
         }

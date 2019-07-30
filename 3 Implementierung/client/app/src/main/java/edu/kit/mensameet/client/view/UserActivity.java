@@ -9,8 +9,10 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.view.databinding.ActivityUserBinding;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -59,8 +61,6 @@ public class UserActivity extends MensaMeetActivity {
         // The user item is added to the container.
         container.addView(userItem.getView());
 
-        userDataIncomplete = MensaMeetSession.getInstance().userDataIncomplete();
-
         Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_SHORT).show();
 
         super.onCreate(savedInstanceState);
@@ -69,10 +69,32 @@ public class UserActivity extends MensaMeetActivity {
             next button with caption 'save' is provided.
          */
 
+        reloadData();
+
+    }
+
+    /**
+     * Reloads the user data from MensaMeetSession.
+     */
+    @Override
+    protected void reloadData() {
+
+        User user = MensaMeetSession.getInstance().getUser();
+
+        Toast.makeText(this, "Data reloaded.", Toast.LENGTH_SHORT).show();
+        if (user != null) {
+
+            userItem.setObjectData(user);
+            userItem.fillObjectData();
+
+        }
+
         // Rename next button.
         if (buttonNext != null) {
             buttonNext.setText(R.string.save);
         }
+
+        userDataIncomplete = MensaMeetSession.getInstance().userDataIncomplete();
 
         if (userDataIncomplete) {
 
@@ -94,22 +116,33 @@ public class UserActivity extends MensaMeetActivity {
 
         }
 
-    }
 
-    /**
-     * Reloads the user data from MensaMeetSession.
-     */
-    @Override
-    protected void reloadData() {
+            // Load the daily menu of the mensa.
 
-        User user = MensaMeetSession.getInstance().getUser();
+            // MensaData mensaData = HttpUtil.getMensaData();
+            // MensaMeetSession.getInstance().setMensaData(mensaData);
 
-        if (user != null) {
+            // Mock data
+        /*Meal[] linie1Meals = new Meal[]{new Meal("Schnitzel", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie1 = new Line("Linie 1", linie1Meals);
+        Meal[] linie2Meals = new Meal[]{new Meal("Salat", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie2 = new Line("Linie 2", linie2Meals);
+        Meal[] linie3Meals = new Meal[]{new Meal("Wurst", (float) 2.60, new FoodType[]{FoodType.VEGAN,})};
+        Line linie3 = new Line("Linie 3", linie3Meals);
+        MensaMeetSession.getInstance().setMensaData(new MensaData(new Line[]{linie1, linie2, linie3}));*/
 
-            userItem.setObjectData(user);
-            userItem.fillObjectData();
+            MensaData mensaData = RequestUtil.getMensaData();
+            MensaMeetSession.getInstance().setMensaData(mensaData);
 
-        }
+            MensaMeetSession.getInstance().setChosenLines(null);
+            MensaMeetSession.getInstance().setChosenTime(null);
+            MensaMeetSession.getInstance().setChosenGroup(null);
+            MensaMeetSession.getInstance().setCreatedGroup(null);
+            MensaMeetSession.getInstance().setUserToken(null);
+            MensaMeetSession.getInstance().setUserToShow(null);
+
+        
+
     }
 
     /**
@@ -122,23 +155,11 @@ public class UserActivity extends MensaMeetActivity {
 
         if (it.second == UserViewModel.State.USER_SAVED_NEXT) {
             Toast.makeText(this, R.string.user_saved, Toast.LENGTH_SHORT).show();
-            next();
+            gotoActivity(HomeActivity.class);
         } else if (it.second == UserViewModel.State.BACK) {
             onBackPressed();
         } else if (it.second ==  UserViewModel.State.ERROR_SAVING_USER) {
             Toast.makeText(this, R.string.error_saving_user, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Routing to the next page, depending on mode.
-     */
-    private void next() {
-
-        if (userDataIncomplete) {
-            gotoActivity(HomeActivity.class);
-        } else {
-            onBackPressed();
         }
     }
 
@@ -161,8 +182,10 @@ public class UserActivity extends MensaMeetActivity {
     public void onClickBack() {
 
         Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_SHORT).show();
-        onBackPressed();
+        gotoActivity(HomeActivity.class);
 
     }
+
+
 
 }

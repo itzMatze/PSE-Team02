@@ -85,7 +85,7 @@ public class MensaMeetTime {
     /**
      * Format string for a date.
      */
-    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd:mm:yyyy");
+    private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.mm.yyyy");
 
     /**
      * Auxiliary method that converts a time string to a Date object.

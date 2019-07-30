@@ -249,7 +249,7 @@ public abstract class MensaMeetItem<T> {
 
         if (field != null) {
             if (field.getClass() == Spinner.class) {
-                return Integer.toString(((Spinner)field).getSelectedItemPosition());
+                return ((Spinner)field).getSelectedItem().toString();
             } else if (field.getClass() == TextView.class){
                 return extractTextField(id);
             }

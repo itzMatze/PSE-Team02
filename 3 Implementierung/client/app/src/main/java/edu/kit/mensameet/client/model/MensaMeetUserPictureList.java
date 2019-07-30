@@ -15,9 +15,9 @@ public class MensaMeetUserPictureList {
         pictures = new MensaMeetUserPicture[]{
                 new MensaMeetUserPicture(0, R.drawable.burger),
                 new MensaMeetUserPicture(1, R.drawable.salad),
-                new MensaMeetUserPicture(2, R.drawable.ic_launcher_foreground),
-                new MensaMeetUserPicture(3, R.drawable.ic_notifications_black_24dp),
-                new MensaMeetUserPicture(4, R.drawable.ic_home_black_24dp),
+                new MensaMeetUserPicture(2, R.drawable.cheese),
+                new MensaMeetUserPicture(3, R.drawable.pizza),
+                new MensaMeetUserPicture(4, R.drawable.carrot),
         };
     }
 
