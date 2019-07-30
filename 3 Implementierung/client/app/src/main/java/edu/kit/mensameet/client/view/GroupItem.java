@@ -2,6 +2,7 @@ package edu.kit.mensameet.client.view;
 
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Pair;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -95,7 +96,10 @@ public class GroupItem extends MensaMeetItem<Group> {
         view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         // Field: name
-        view.addView(createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE));
+        TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
+        // TextView is the parent class of EditText and includes it
+        nameField.setTypeface(null, Typeface.BOLD);
+        view.addView(nameField);
 
         // Field: motto
         view.addView(createTextField(R.string.field_motto, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
