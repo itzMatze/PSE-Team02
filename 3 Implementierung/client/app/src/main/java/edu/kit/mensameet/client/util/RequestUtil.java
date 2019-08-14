@@ -8,18 +8,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import edu.kit.mensameet.client.model.Gender;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.model.Status;
-import edu.kit.mensameet.client.model.Subject;
 import edu.kit.mensameet.client.model.User;
 
 /*
@@ -41,7 +38,7 @@ public class RequestUtil {
 
     /**
      * create user
-     * @param firebaseToken
+     * @param firebaseToken token
      * @return not null if success
      */
     public static String createUser(final String firebaseToken) {
@@ -50,7 +47,7 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    Map<String, String> params = new HashMap<String, String>();
+                    Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
                     str[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
                     //Log.i("create user success", str[0]);
@@ -71,10 +68,9 @@ public class RequestUtil {
     }
 
     /**
-     *
-     * @param firebaseToken
-     * @param userToken
-     * @return
+     * @param firebaseToken firebaseToken
+     * @param userToken userToken
+     * @return user
      */
     public static User getUser(final String firebaseToken, final String userToken) {
         final User[] user = {new User()};
@@ -175,7 +171,7 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+                    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);//to avoid not serializable
                     String json = mapper.writer().writeValueAsString(new GroupForRequest(group));
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
@@ -299,25 +295,29 @@ public class RequestUtil {
      * @return
      */
     public static List<Group> getGroupByPrefferences(final MensaMeetTime time, final String[] lines) {
-        final String[] str = {""};
-        final List<Group> groups = new ArrayList<>();
+        final List<Group> resultGroups = new ArrayList<>();
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    String json = ow.writeValueAsString(new GroupByPrefferences(time, lines));
+                    mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);//to avoid not serializable
+                    String json = mapper.writer().writeValueAsString(new GroupByPrefferences(time, lines));
                     Map<String, String> params = new HashMap<>();
-                    params.put("token","1");
+                    params.put("firebaseToken","1");
                     params.put("Content-Type","application/json");
-                    str[0] = HttpUtil.post
+                    String jsonStringArray = HttpUtil.post
                             ("http://193.196.38.98:8080/server/group-prefferences", json, params);
-                    List<GroupForRequest> groupForRequests = new ArrayList<>();
-                    groupForRequests = mapper.readValue
-                            (str[0], mapper.getTypeFactory().constructCollectionType(List.class, GroupForRequest.class));
-                    for(GroupForRequest i: groupForRequests){
-                        //todo groups.add(i.parseToGroup());
+                    //we split json String from Server, each of them should be converting in a GroupForRequest object
+                    List<GroupForRequest> groupList = Arrays.asList(mapper.readValue(jsonStringArray, GroupForRequest[].class));
+
+                    for(GroupForRequest g : groupList){
+                        resultGroups.add(g.parseToGroup());
                     }
                 }catch (Exception e){
+                    //todo
+                    Group errorMessage = new Group();
+                    errorMessage.setMotto(e.getMessage());
+                    resultGroups.add(errorMessage);
                     //Log.e("preferences failed", e.getMessage());
                 }
             }
@@ -328,7 +328,7 @@ public class RequestUtil {
         }catch (Exception e){
             //Log.e("error", e.getMessage());
         }
-        return groups;
+        return resultGroups;
     }
 
     /**
@@ -453,6 +453,8 @@ public class RequestUtil {
      * this class is used for convert group to a json String
      * and send json string as body
      */
+
+
     public static class GroupForRequest{
         String token;
         String name;
@@ -460,12 +462,12 @@ public class RequestUtil {
         int maxMembers;
         int[] meetingTime = new int[2];
         String line;
-        String[] members;
+        User[] members;
 
         public GroupForRequest() {
         }
 
-        public GroupForRequest(String token, String name, String motto, int maxMembers, int[] meetingTime, String line, String[] members) {
+        public GroupForRequest(String token, String name, String motto, int maxMembers, int[] meetingTime, String line, User[] members) {
             this.token = token;
             this.name = name;
             this.motto = motto;
@@ -475,8 +477,8 @@ public class RequestUtil {
             this.members = members;
         }
 
-        //constructor with group
-        //todo: if token in body then... in server remeins same values
+        //constructor with group todo change after test
+        //todo: if token in body then... in server remains same values
         public GroupForRequest(Group group) {
             token = group.getToken();
             name = group.getName();
@@ -485,6 +487,54 @@ public class RequestUtil {
             line = group.getLine();
             meetingTime[0] = group.getMeetingDate().getHours();
             meetingTime[1] = group.getMeetingDate().getMinutes();
+        }
+
+        public void setLine(String line) {
+            this.line = line;
+        }
+
+        public void setMeetingTime(int[] meetingTime) {
+            this.meetingTime = meetingTime;
+        }
+
+        public void setMaxMembers(int maxMembers) {
+            this.maxMembers = maxMembers;
+        }
+
+        public void setMotto(String motto) {
+            this.motto = motto;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public User[] getMembers() {
+            return members;
+        }
+
+        public String getLine() {
+            return line;
+        }
+
+        public int[] getMeetingTime() {
+            return meetingTime;
+        }
+
+        public int getMaxMembers() {
+            return maxMembers;
+        }
+
+        public String getMotto() {
+            return motto;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getToken() {
+            return token;
         }
 
         public Group parseToGroup() {
@@ -501,19 +551,21 @@ public class RequestUtil {
             List<User> userList = new ArrayList<>();
             if(members != null) {
                 for (int n = 0; n < members.length; n++){
-                    userList.add(RequestUtil.getUser(members[n], members[n]));
+                    userList.add(members[n]);
                 }
             }
             group.setUsers(userList);
             return group;
         }
-
+        public void setToken(String token) {
+            this.token = token;
+        }
     }
 
     /**
      *
      */
-    private static class GroupByPrefferences{
+    public static class GroupByPrefferences{
         int[] startTime = new int[2];
         int[] endTime = new int[2];
         String[] mealLines;
@@ -527,6 +579,18 @@ public class RequestUtil {
         }
     }
 
+    /*
+    public static List<String> extractMessageByRegular(String msg){
+
+        List<String> list=new ArrayList<String>();
+        Pattern pattern = Pattern.compile("(?<=\\{)[^}]*(?=\\})");
+        Matcher m = pattern.matcher(msg);
+        while(m.find()){
+            list.add("{" + m.group() + "}");
+        }
+        return list;
+    }
+*/
 
 
 }
