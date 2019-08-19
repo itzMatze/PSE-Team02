@@ -143,10 +143,10 @@ public class RequestUtil {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?firebaseToken"
+                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?firebaseToken="
                             + firebaseToken + "&userToken=" + userToken);
                 }catch (Exception e){
-                    //Log.e("delete user failed", e.getMessage());
+                    Log.e("delete user failed", e.getMessage());
                 }
             }
         });
@@ -228,20 +228,21 @@ public class RequestUtil {
      * @param groupToken
      * @return
      */
-    public static Group getGroup(final String groupToken) {
+    public static Group getGroup(final String firebaseToken, final String groupToken) {
         final Group[] group = new Group[1];
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
                     Map<String, String> params = new HashMap<>();
+                    params.put("firebaseToken", firebaseToken);
                     params.put("groupToken",groupToken);
                     String str = HttpUtil.get(
-                            "http://193.196.38.98:8080/server/create-group?groupToken="+ groupToken, params);
+                            "http://193.196.38.98:8080/server/group?groupToken="+ groupToken, params);
                     GroupForRequest returnGroup = mapper.readValue(str, GroupForRequest.class);
-                    group[0] = null;//todo returnGroup.parseToGroup();
-                }catch (Exception e){
-                    //Log.e("get group failed", e.getMessage());
+                    group[0] = returnGroup.parseToGroup();
+                } catch (Exception e){
+                    Log.e("get group failed", e.getMessage());
                 }
 
             }

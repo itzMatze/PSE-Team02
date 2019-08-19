@@ -53,6 +53,12 @@ public abstract class MensaMeetItem<T> {
         this.displayMode = displayMode;
         this.view = createView();
 
+    }
+
+    public void observeHandlerLiveData() {
+
+        // TODO: Generally check when observe is called, in item as well as in activity
+
         if (handler != null) {
             handler.getUiEventLiveData().observe((MensaMeetActivity) context, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
                 @Override
@@ -63,7 +69,6 @@ public abstract class MensaMeetItem<T> {
                 }
             });
         }
-
     }
 
     protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {    }

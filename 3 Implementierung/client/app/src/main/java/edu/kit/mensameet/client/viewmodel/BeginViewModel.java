@@ -51,17 +51,8 @@ return false;
         uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.LOGIN_ID));
     }
 
-    /**
-     * onClick method for test list classes button
-     *
-     * @param item BeginViewModel
-     */
-    public void onTestClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_LIST_CLASSES_ID));
-    }
-
     public enum State implements StateInterface {
-        TEST_LIST_CLASSES_ID, LOGIN_ID, REGISTER_ID, RESET_LOCAL_DATA_ID
+        TEST_LIST_CLASSES_ID, LOGIN_ID, REGISTER_ID, RESET_LOCAL_DATA_ID, TEST_ID
     }
 
 }

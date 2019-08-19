@@ -2,6 +2,8 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,36 +24,28 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     }
 
     public void saveGroupAndNext() {
+
         if (group != null) {
-            MensaMeetSession.getInstance().setCreatedGroup(group);
-            //todo
-            MensaMeetSession.getInstance().setChosenGroup(group);
-            /*Group groupWithToken = RequestUtil.createGroup(group, group.getToken());
+
+            // todo: remove after server token is implemented
+            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
+            group.setToken(timeStamp);
+
+            Group groupWithToken = RequestUtil.createGroup(group,  MensaMeetSession.getInstance().getUser().getToken());
             if(groupWithToken!= null) {
-                if (RequestUtil.addUserToGroup(groupWithToken.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null){
-                    MensaMeetSession.getInstance().setChosenGroup(groupWithToken);
+
+                group = groupWithToken;
+                MensaMeetSession.getInstance().setCreatedGroup(group);
+
+                if (RequestUtil.addUserToGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null){
+                    MensaMeetSession.getInstance().getUser().setGroupToken(group.getToken());
+                    group.getUsers().add(MensaMeetSession.getInstance().getUser());
+                    MensaMeetSession.getInstance().setChosenGroup(group);
                 }
             }
-            */
-
-            /* todo
-            setGroup(RequestUtil.createGroup(group, MensaMeetSession.getInstance().getUser().getToken()));
-            if(group != null) {
-                RequestUtil.addUserToGroup(group.getToken(),MensaMeetSession.getInstance().getUser().getToken());
-                //if (http success){
-                MensaMeetSession.getInstance().setChosenGroup(group);
-
-            }
-            */
-
-            //createGroup(group);
-            //addUserToGroup(MensaMeetSession.getInstance().getUser();
-
-            /*if (http success){
-                MensaMeetSession.getInstance().setChosenGroup(group);
-            }*/
 
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_SAVED_NEXT));
+
         } else {
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_GROUP));
         }

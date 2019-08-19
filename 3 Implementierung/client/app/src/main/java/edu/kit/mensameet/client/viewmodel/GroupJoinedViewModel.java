@@ -11,7 +11,7 @@ import edu.kit.mensameet.client.util.RequestUtil;
  */
 public class GroupJoinedViewModel extends MensaMeetViewModel {
 
-    private Group group = MensaMeetSession.getInstance().getChosenGroup();
+    private Group group;
 
     public void setGroup(Group group) {
         this.group = group;
@@ -21,8 +21,9 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
         if (group != null) {
             //todo: get group from user
             RequestUtil.removeUserFromGroup(MensaMeetSession.getInstance().getUser().getToken(), group.getToken());
-            MensaMeetSession.getInstance().getChosenGroup().removeUser(MensaMeetSession.getInstance().getUser());
-            MensaMeetSession.getInstance().setChosenGroup(null);
+            //todo: instead of manipulating local data, reload it from the server after every change
+            MensaMeetSession.getInstance().getUser().setGroupToken(null);
+
             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_LEFT));
 
 

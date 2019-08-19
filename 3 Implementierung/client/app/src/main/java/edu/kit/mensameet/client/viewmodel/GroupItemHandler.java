@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.GroupItem;
 import edu.kit.mensameet.client.view.MensaMeetItem;
@@ -35,14 +36,14 @@ public class GroupItemHandler extends MensaMeetItemHandler {
      */
     public void joinGroup() {
 
-        //int error = addUserToGroup(MensaMeetSession.getInstance().getUser(), group);
-
-        //if (error == 0) {
-        // MensaMeetSession.getInstance().setChosenGroup(group);...
-
-        group.getUsers().add(MensaMeetSession.getInstance().getUser());
-        MensaMeetSession.getInstance().setChosenGroup(group);
-        uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOINED));
+        if (RequestUtil.addUserToGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null) {
+            MensaMeetSession.getInstance().getUser().setGroupToken(group.getToken());
+            group.getUsers().add(MensaMeetSession.getInstance().getUser());
+            MensaMeetSession.getInstance().setChosenGroup(group);
+            uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOINED));
+        } else {
+            uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_JOIN_FAILED));
+        }
 
     }
 
@@ -51,7 +52,15 @@ public class GroupItemHandler extends MensaMeetItemHandler {
      */
     public void deleteGroup() {
 
-        //int error = deleteGroup(group);
+        String response = RequestUtil.deleteGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken());
+        // todo: request util functions should send a success boolean and an error message
+        // supposed deletion was successful:
+        // if the group the current user joined was deleted
+
+        if (MensaMeetSession.getInstance().getUser().getGroupToken().equals(group.getToken())) {
+            MensaMeetSession.getInstance().getUser().setGroupToken(null);
+        }
+        group = null;
 
         uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.GROUP_DELETED));
     }
@@ -65,6 +74,6 @@ public class GroupItemHandler extends MensaMeetItemHandler {
     }
 
     public enum State implements StateInterface {
-        GROUP_JOINED, GROUP_DELETED, DEFAULT
+        GROUP_JOINED, GROUP_JOIN_FAILED, GROUP_DELETED, DEFAULT
     }
 }

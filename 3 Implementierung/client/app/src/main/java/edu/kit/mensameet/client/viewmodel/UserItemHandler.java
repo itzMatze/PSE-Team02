@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.GroupItem;
 import edu.kit.mensameet.client.view.MensaMeetItem;
@@ -38,9 +39,17 @@ public class UserItemHandler extends MensaMeetItemHandler {
 
     public void deleteUser() {
 
-        //int error = deleteUser(user);
+        // the current user cannot delete himself!
+        if (MensaMeetSession.getInstance().getUser().getToken() != user.getToken()) {
+            // todo: exception handling for request
+            // todo: replace first argument with real firebase token
+            String response = RequestUtil.deleteUser(MensaMeetSession.getInstance().getUser().getToken(), user.getToken());
+            // supposed deletion was successful:
 
-        uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.USER_DELETED));
+            user = null;
+
+            uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.USER_DELETED));
+        }
     }
 
     public User getUser() {

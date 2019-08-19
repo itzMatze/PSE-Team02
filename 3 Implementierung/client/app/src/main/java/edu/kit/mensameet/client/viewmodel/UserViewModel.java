@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import java.util.Date;
 
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
@@ -25,30 +26,17 @@ public class UserViewModel extends MensaMeetViewModel {
     public UserViewModel() {
 
         // TODO: Remove everything after testing
+
+        MensaData mensaData = RequestUtil.getMensaData();
+        MensaMeetSession.getInstance().setMensaData(mensaData);
+
         if (MensaMeetSession.getInstance().getUser() == null) {
-
-            // Test group
-            Group receivedGroup = RequestUtil.getGroup("43f501ec-f9d6-4007-9fc7-9e391ba8e94d");
-
-            // if not existing, create it
-            if (receivedGroup == null || receivedGroup.getToken() == "" || receivedGroup.getToken() == null) {
-
-                Group newGroup = new Group();
-                newGroup.setName("Das jüngste Gericht");
-                newGroup.setMotto("Hauptsache alles frisch zubereitet!");
-                newGroup.setMaxMembers(10);
-                newGroup.setMeetingDate(MensaMeetTime.stringToTime("12:15"));
-                newGroup.setToken("aaa");
-
-                Group confirmedGroup = RequestUtil.createGroup(newGroup, "999");
-
-            }
 
             // Test user
             User receivedUser = RequestUtil.getUser("999", "999");
 
             // if user not existing, create him
-            if (receivedUser.getToken() == "" || receivedUser.getToken() == null) {
+            if (receivedUser.getToken().equals("") || receivedUser.getToken() == null) {
 
                 user = new User();
                 user.setIsAdmin(true);
@@ -62,6 +50,11 @@ public class UserViewModel extends MensaMeetViewModel {
             }
 
             MensaMeetSession.getInstance().setUser(user);
+
+            MensaMeetSession.getInstance().setChosenLines(null);
+            MensaMeetSession.getInstance().setChosenTime(null);
+            MensaMeetSession.getInstance().setCreatedGroup(null);
+            MensaMeetSession.getInstance().setUserToShow(null);
         }
 
 

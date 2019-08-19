@@ -1,6 +1,7 @@
 package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,8 +85,10 @@ public class SelectGroupActivity extends MensaMeetActivity {
             }
         });
 
-        List<Group> dataList = new ArrayList<Group>();
 
+        /*
+
+        List<Group> dataList = new ArrayList<Group>();
 
         // Mock data
         Group g1 = new Group();
@@ -157,7 +160,11 @@ public class SelectGroupActivity extends MensaMeetActivity {
         g4.setUsers(userList4);
         dataList.add(g4);
 
-        MensaMeetSession.getInstance().setReceivedGroups(dataList);
+        //MensaMeetSession.getInstance().setReceivedGroups(dataList);
+
+        */
+
+        viewModel.loadGroups();
 
         groupList = new GroupList(
                 this,
@@ -188,11 +195,17 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
                         } else if (it.second == GroupItemHandler.State.GROUP_DELETED) {
 
-                            // TODO: new group by preferences request to refresh session data and restart activity
-                            // TODO: getGroupsByPreferences(MensaMeetSession.getInstance().getChosenTime(), MensaMeetSession.getInstance().getChosenLines());
+                            Toast.makeText(me, R.string.group_deleted, Toast.LENGTH_SHORT).show();
 
-                            finish();
-                            startActivity(getIntent());
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    // Actions to do after 5 seconds
+                                    // restart activity to reload all data
+                                    finish();
+                                    startActivity(getIntent());
+                                }
+                            }, 2000);
 
                         }
                     }
@@ -214,6 +227,20 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
                             if (it.second == UserItemHandler.State.SHOW_USER) {
                                 gotoActivity(ShowUserActivity.class);
+                            } else if (it.second == UserItemHandler.State.USER_DELETED) {
+
+                                Toast.makeText(me, R.string.user_deleted, Toast.LENGTH_SHORT).show();
+
+                                Handler handler = new Handler();
+                                handler.postDelayed(new Runnable() {
+                                    public void run() {
+                                        // Actions to do after 5 seconds
+                                        // restart activity to reload all data
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                }, 2000);
+
                             }
                         }
                     });

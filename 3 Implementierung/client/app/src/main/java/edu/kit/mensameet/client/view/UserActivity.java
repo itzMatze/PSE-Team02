@@ -131,16 +131,6 @@ public class UserActivity extends MensaMeetActivity {
         Line linie3 = new Line("Linie 3", linie3Meals);
         MensaMeetSession.getInstance().setMensaData(new MensaData(new Line[]{linie1, linie2, linie3}));*/
 
-            MensaData mensaData = RequestUtil.getMensaData();
-            MensaMeetSession.getInstance().setMensaData(mensaData);
-
-            MensaMeetSession.getInstance().setChosenLines(null);
-            MensaMeetSession.getInstance().setChosenTime(null);
-            MensaMeetSession.getInstance().setChosenGroup(null);
-            MensaMeetSession.getInstance().setCreatedGroup(null);
-            MensaMeetSession.getInstance().setUserToken(null);
-            MensaMeetSession.getInstance().setUserToShow(null);
-
         
 
     }

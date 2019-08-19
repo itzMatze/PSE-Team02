@@ -35,7 +35,7 @@ public class UserItem extends MensaMeetItem<User> {
     private UserPictureItem userPictureItem;
 
     public UserItem(Context context, DisplayMode displayMode, User objectData) {
-        //TODO: Put displayMode into MensaMeetItem as static subclass
+
         super(context, displayMode, objectData);
 
         handler = new UserItemHandler(objectData, displayMode);

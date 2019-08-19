@@ -45,6 +45,8 @@ public class BeginActivity extends MensaMeetActivity {
                     context.gotoActivity(LoginActivity.class);
                 } else if (it.second == BeginViewModel.State.REGISTER_ID) {
                     context.gotoActivity(RegisterActivity.class);
+                } else if (it.second == BeginViewModel.State.TEST_ID) { // todo: remove after testing
+                    context.gotoActivity(UserActivity.class);
                 }
             }
         });

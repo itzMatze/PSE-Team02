@@ -82,7 +82,8 @@ public class HttpUtil {
      */
     static public String get(String url,
                              Map<String, String> headers) throws IOException {
-        return fetch("GET", url, null, headers);
+        String f = fetch("GET", url, null, headers);
+        return f;
     }
 
     /**

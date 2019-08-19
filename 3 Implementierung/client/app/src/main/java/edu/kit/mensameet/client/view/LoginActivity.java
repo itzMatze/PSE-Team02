@@ -51,7 +51,13 @@ public class LoginActivity extends MensaMeetActivity {
                } else if (it.second == LoginViewModel.State.LOG_IN_FAILED_ID) {
 
                     Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
-                }
+               } else if (it.second == LoginViewModel.State.TEST_ID_HOME) { //todo: remove after testing
+
+                   gotoActivity(HomeActivity.class);
+               } else if (it.second == LoginViewModel.State.TEST_ID_USER) {
+
+                   gotoActivity(UserActivity.class);
+               }
             }
         });
     }

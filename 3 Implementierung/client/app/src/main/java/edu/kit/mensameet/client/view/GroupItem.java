@@ -243,7 +243,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         // Field: Delete button
         if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
 
-            if (displayMode == DisplayMode.SMALL) {
+            if (displayMode == DisplayMode.SMALL || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
                 final Button deleteButton = new Button(context);
                 deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);

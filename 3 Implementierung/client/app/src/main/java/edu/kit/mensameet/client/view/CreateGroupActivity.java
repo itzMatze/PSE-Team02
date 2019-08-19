@@ -103,7 +103,13 @@ public class CreateGroupActivity extends MensaMeetActivity {
         groupItem.saveEditedObjectData();
         viewModel.setGroup(groupItem.getObjectData());
         MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
-        viewModel.saveGroupAndNext();
+
+        if (MensaMeetSession.getInstance().createdGroupDataIncomplete(this)) {
+            Toast.makeText(this, R.string.no_field_empty, Toast.LENGTH_SHORT).show();
+        } else {
+            viewModel.saveGroupAndNext();
+        }
+
     }
 
     /**

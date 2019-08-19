@@ -12,6 +12,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import edu.kit.mensameet.client.model.MensaData;
+import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
@@ -33,6 +37,56 @@ public class LoginViewModel extends MensaMeetViewModel {
         if (matchPattern()) {
             login(item);
         }
+    }
+
+    /**
+     * onClick method for test list classes button
+     *
+     * @param item BeginViewModel
+     */
+    public void onTestClick(LoginViewModel item) {
+
+        // TODO: Remove everything after testing
+
+        MensaData mensaData = RequestUtil.getMensaData();
+        MensaMeetSession.getInstance().setMensaData(mensaData);
+
+        // Test user
+        User user = RequestUtil.getUser("999", email.getValue());
+
+        // if user not existing, create him
+        if (user.getToken().equals("") || user.getToken() == null) {
+
+            user = new User();
+            user.setName(email.getValue());
+            if (password.getValue() != null && !password.getValue().equals("")) {
+                user.setIsAdmin(true);
+            }
+            user.setToken(email.getValue());
+
+            String res = RequestUtil.createUser(email.getValue());
+            res = RequestUtil.updateUser(user);
+
+        }
+
+        MensaMeetSession.getInstance().setUser(user);
+
+        MensaMeetSession.getInstance().setChosenLines(null);
+        MensaMeetSession.getInstance().setChosenTime(null);
+        MensaMeetSession.getInstance().setCreatedGroup(null);
+        MensaMeetSession.getInstance().setUserToShow(null);
+
+        if (MensaMeetSession.getInstance().getUser() == null) {
+
+
+        }
+
+        if (MensaMeetSession.getInstance().userDataIncomplete()) {
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_ID_USER));
+        } else {
+            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_ID_HOME));
+        }
+
     }
 
     /**
@@ -125,6 +179,8 @@ public class LoginViewModel extends MensaMeetViewModel {
         /**
          * If login failed.
          */
-        LOG_IN_FAILED_ID
+        LOG_IN_FAILED_ID,
+        TEST_ID_USER,
+        TEST_ID_HOME
     }
 }

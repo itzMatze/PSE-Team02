@@ -1,6 +1,15 @@
 package edu.kit.mensameet.client.model;
 
+import android.content.Context;
+import android.os.Handler;
+import android.widget.Toast;
+
 import java.util.List;
+
+import edu.kit.mensameet.client.util.RequestUtil;
+import edu.kit.mensameet.client.view.GroupJoinedActivity;
+import edu.kit.mensameet.client.view.HomeActivity;
+import edu.kit.mensameet.client.view.R;
 
 /**
  * Singleton for the data of a mensa meet session.
@@ -16,7 +25,6 @@ public class MensaMeetSession {
     private List<Group> receivedGroups;
     private Group chosenGroup;
     private Group createdGroup;
-    private String userToken;
     private User userToShow;
 
     private MensaMeetSession() {
@@ -93,10 +101,6 @@ public class MensaMeetSession {
         return chosenTime;
     }
 
-    public Group getChosenGroup() {
-        return chosenGroup;
-    }
-
     public Group getCreatedGroup() {
         return createdGroup;
     }
@@ -109,19 +113,6 @@ public class MensaMeetSession {
      */
     public void setCreatedGroup(Group createdGroup) {
         this.createdGroup = createdGroup;
-    }
-
-    public String getUserToken() {
-        return userToken;
-    }
-
-    /**
-     * Sets the user token.
-     *
-     * @param userToken User token.
-     */
-    public void setUserToken(String userToken) {
-        this.userToken = userToken;
     }
 
     public User getUserToShow() {
@@ -151,15 +142,36 @@ public class MensaMeetSession {
     }
 
     /**
-     * Checks whether the user data is complete.
+     * Checks whether the user data is incomplete.
      *
-     * @return Whether the user data is complete.
+     * @return Whether the user data is incomplete.
      */
     public Boolean userDataIncomplete() {
 
         // The user profile is incomplete
 
-        return (user == null || user.getName() == null || user.getName() == "" || user.getStatus() == null);
+        return (user == null || user.getName() == null || user.getName().equals("") || user.getStatus() == null);
+
+    }
+
+    /**
+     * Checks whether the data of the created group is incomplete.
+     *
+     * @return Whether the data of the created group is incomplete.
+     */
+    public Boolean createdGroupDataIncomplete(Context context) {
+
+        // The created group data is incomplete
+
+        return (createdGroup.getName() == null ||
+                createdGroup.getName().equals("") ||
+                createdGroup.getMotto() == null ||
+                createdGroup.getMotto().equals("") ||
+                createdGroup.getMeetingDate() == null ||
+                createdGroup.getLine() == null ||
+                createdGroup.getLine().equals("") ||
+                createdGroup.getMaxMembers() < 1 ||
+                createdGroup.getMaxMembers() > context.getResources().getInteger(R.integer.max_member_max));
 
     }
 

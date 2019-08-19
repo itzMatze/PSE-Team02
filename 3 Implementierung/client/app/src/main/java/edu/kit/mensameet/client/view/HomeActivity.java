@@ -49,7 +49,14 @@ public class HomeActivity extends MensaMeetActivity {
     public void onGoEatClick(View v) {
 
         // If no group is yet chosen,
-        if (MensaMeetSession.getInstance().getChosenGroup() == null) {
+
+        User user = MensaMeetSession.getInstance().getUser();
+
+        if (MensaMeetSession.getInstance().userDataIncomplete()) {
+            gotoActivity(UserActivity.class);
+        }
+
+        if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
 
             gotoActivity(SelectLinesActivity.class);
 
