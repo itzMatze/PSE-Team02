@@ -88,7 +88,7 @@ public class GroupController {
 	
 	/**
 	 * Returns all groups. Is only supposed to be used for testing purposes.
-	 * @return all groups in the databse.
+	 * @return all groups in the database.
 	 */
 	public Group[] getAllGroups() {
 		Group[] groups = StreamSupport.stream(groupRepository.findAll().spliterator(), false).toArray(Group[]::new);

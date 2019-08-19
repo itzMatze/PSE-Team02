@@ -76,7 +76,7 @@ public class UserController {
 	 * @param userToken the token the user is idnetified with.
 	 */
 	public void updateUser(User user, String userToken) {
-		//used to check wether user exists, if not an exception is thrown.
+		//used to check whether user exists, if not an exception is thrown.
 		getUser(userToken);
 		user.setToken(userToken);
 		
@@ -84,7 +84,7 @@ public class UserController {
 	}
 	
 	/**
-	 * Deletes a user from the databas.
+	 * Deletes a user from the database.
 	 * 
 	 * @param userToken the token the user is identified with.
 	 */
