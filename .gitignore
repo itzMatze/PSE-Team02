@@ -33,8 +33,7 @@
 *.gradle
 .gradle/
 **/.gradle/
-
-
+*.lock
 
 # eclipse specific git ignore
 *.pydevproject
