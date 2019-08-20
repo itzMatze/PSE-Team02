@@ -18,6 +18,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.ResourceLoader;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import com.google.api.gax.core.GoogleCredentialsProvider;
 import com.google.auth.oauth2.GoogleCredentials;
@@ -30,6 +31,7 @@ import kit.edu.mensameet.server.controller.UserRepository;
 import kit.edu.mensameet.server.model.User;
 
 @SpringBootApplication
+@EnableScheduling
 public class Application extends SpringBootServletInitializer {
 	
 	private static String serviceAccountFilePath;
