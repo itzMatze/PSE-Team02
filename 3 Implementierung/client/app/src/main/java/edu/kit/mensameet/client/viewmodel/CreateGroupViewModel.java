@@ -27,15 +27,10 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
         if (group != null) {
 
-            // todo: remove after server token is implemented
-            String timeStamp = new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new java.util.Date());
-            group.setToken(timeStamp);
-
             Group groupWithToken = RequestUtil.createGroup(group,  MensaMeetSession.getInstance().getUser().getToken());
-            if(groupWithToken!= null) {
+            if (groupWithToken!= null) {
 
                 group = groupWithToken;
-                MensaMeetSession.getInstance().setCreatedGroup(group);
 
                 if (RequestUtil.addUserToGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken()) != null){
                     MensaMeetSession.getInstance().getUser().setGroupToken(group.getToken());

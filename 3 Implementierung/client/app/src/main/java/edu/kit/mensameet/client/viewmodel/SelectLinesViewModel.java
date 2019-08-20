@@ -39,11 +39,9 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
      */
     public void saveLinesAndBack()
     {
-        if (saveLines()) {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.LINES_SAVED_BACK));
-        } else {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.NO_LINES_SELECTED));
-        }
+        saveLines();
+        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.LINES_SAVED_BACK));
+
     }
 
     /**

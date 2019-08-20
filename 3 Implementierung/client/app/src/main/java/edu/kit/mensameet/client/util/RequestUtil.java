@@ -177,10 +177,10 @@ public class RequestUtil {
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", firebaseToken);
                     String str = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
-                    GroupForRequest returnedGroup = mapper.readValue(str, GroupForRequest.class);
+                    GroupForRequestWithToken returnedGroup = mapper.readValue(str, GroupForRequestWithToken.class);
                     newGroup[0] = returnedGroup.parseToGroup();
                 }catch (Exception e){
-                    //Log.e("create group failed", e.getMessage());
+                    Log.e("create group failed", e.getMessage());
                 }
 
             }
@@ -239,7 +239,7 @@ public class RequestUtil {
                     params.put("groupToken",groupToken);
                     String str = HttpUtil.get(
                             "http://193.196.38.98:8080/server/group?groupToken="+ groupToken, params);
-                    GroupForRequest returnGroup = mapper.readValue(str, GroupForRequest.class);
+                    GroupForRequestWithToken returnGroup = mapper.readValue(str, GroupForRequestWithToken.class);
                     group[0] = returnGroup.parseToGroup();
                 } catch (Exception e){
                     Log.e("get group failed", e.getMessage());
@@ -309,9 +309,9 @@ public class RequestUtil {
                     String jsonStringArray = HttpUtil.post
                             ("http://193.196.38.98:8080/server/group-prefferences", json, params);
                     //we split json String from Server, each of them should be converting in a GroupForRequest object
-                    List<GroupForRequest> groupList = Arrays.asList(mapper.readValue(jsonStringArray, GroupForRequest[].class));
+                    List<GroupForRequestWithToken> groupList = Arrays.asList(mapper.readValue(jsonStringArray, GroupForRequestWithToken[].class));
 
-                    for(GroupForRequest g : groupList){
+                    for(GroupForRequestWithToken g : groupList){
                         resultGroups.add(g.parseToGroup());
                     }
                 }catch (Exception e){
@@ -456,20 +456,21 @@ public class RequestUtil {
      */
 
 
-    public static class GroupForRequest{
-        String token;
+    public static class GroupForRequest {
+
         String name;
         String motto;
         int maxMembers;
         int[] meetingTime = new int[2];
         String line;
         User[] members;
+        // if token in body then... in server remains same values, so here is no token
 
         public GroupForRequest() {
         }
 
-        public GroupForRequest(String token, String name, String motto, int maxMembers, int[] meetingTime, String line, User[] members) {
-            this.token = token;
+        public GroupForRequest(String name, String motto, int maxMembers, int[] meetingTime, String line, User[] members) {
+
             this.name = name;
             this.motto = motto;
             this.maxMembers = maxMembers;
@@ -479,9 +480,8 @@ public class RequestUtil {
         }
 
         //constructor with group todo change after test
-        //todo: if token in body then... in server remains same values
+
         public GroupForRequest(Group group) {
-            token = group.getToken();
             name = group.getName();
             motto = group.getMotto();
             maxMembers = group.getMaxMembers();
@@ -534,13 +534,8 @@ public class RequestUtil {
             return name;
         }
 
-        public String getToken() {
-            return token;
-        }
-
         public Group parseToGroup() {
             Group group = new Group();
-            group.setToken(this.token);
             group.setName(this.name);
             group.setMotto(this.motto);
             group.setMaxMembers(this.maxMembers);
@@ -558,9 +553,36 @@ public class RequestUtil {
             group.setUsers(userList);
             return group;
         }
+    }
+
+    public static class GroupForRequestWithToken extends GroupForRequest {
+
+        String token;
+
+        public GroupForRequestWithToken() {}
+
+        public GroupForRequestWithToken(Group group) {
+            this.token = group.getToken();
+        }
+
+        public String getToken() {
+            return token;
+        }
+
         public void setToken(String token) {
             this.token = token;
         }
+
+        @Override
+        public Group parseToGroup() {
+
+            Group group = super.parseToGroup();
+            group.setToken(this.token);
+
+            return group;
+        }
+
+
     }
 
     /**

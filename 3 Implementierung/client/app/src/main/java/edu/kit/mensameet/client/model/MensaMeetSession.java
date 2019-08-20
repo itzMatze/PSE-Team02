@@ -2,6 +2,7 @@ package edu.kit.mensameet.client.model;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Pair;
 import android.widget.Toast;
 
 import java.util.List;
@@ -10,6 +11,9 @@ import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.view.GroupJoinedActivity;
 import edu.kit.mensameet.client.view.HomeActivity;
 import edu.kit.mensameet.client.view.R;
+import edu.kit.mensameet.client.viewmodel.LoginViewModel;
+import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
+import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
  * Singleton for the data of a mensa meet session.
@@ -26,6 +30,7 @@ public class MensaMeetSession {
     private Group chosenGroup;
     private Group createdGroup;
     private User userToShow;
+    private Boolean loggedIn = false;
 
     private MensaMeetSession() {
     }
@@ -183,4 +188,33 @@ public class MensaMeetSession {
 
         return null;
     }
+
+    public void initialize(User user) {
+
+        MensaData mensaData = RequestUtil.getMensaData();
+        setMensaData(mensaData);
+        setUser(user);
+        setChosenLines(null);
+        setChosenTime(null);
+        setCreatedGroup(null);
+        setUserToShow(null);
+        loggedIn = true;
+
+    }
+
+    public void invalidate() {
+
+        setMensaData(null);
+        setUser(null);
+        setChosenLines(null);
+        setChosenTime(null);
+        setCreatedGroup(null);
+        setUserToShow(null);
+        loggedIn = false;
+    }
+
+    public Boolean isLoggedIn() {
+        return loggedIn;
+    }
+
 }

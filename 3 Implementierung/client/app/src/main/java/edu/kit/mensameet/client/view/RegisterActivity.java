@@ -40,15 +40,16 @@ public class RegisterActivity extends MensaMeetActivity {
             public void onChanged(Pair<MensaMeetViewModel, StateInterface> it) {
                 if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_SUCCESS_ID) {
                     // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(context, "create acount succeed", Toast.LENGTH_LONG).show();
-                    Intent toUserProfile = new Intent(context, UserActivity.class);
+                    Toast.makeText(context, R.string.registration_succeeded, Toast.LENGTH_LONG).show();
+                    /*Intent toUserProfile = new Intent(context, UserActivity.class);
                     toUserProfile.putExtra(UID_ID, viewModel.getUid());
-                    startActivity(toUserProfile);
+                    startActivity(toUserProfile);*/
+                    gotoActivity(UserActivity.class);
                     finish();// todo: apply isLogIn(), that register and login page not visitable
 
                 }   else if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_FAILED_ID) {
 
-                    Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.registration_failed, Toast.LENGTH_LONG).show();
                 }
             }
         });

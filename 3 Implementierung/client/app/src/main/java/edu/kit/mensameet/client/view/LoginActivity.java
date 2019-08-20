@@ -42,15 +42,16 @@ public class LoginActivity extends MensaMeetActivity {
             public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
                if (it.second == LoginViewModel.State.LOG_IN_SUCCESS_ID) {
                    // log in success, update UI with the logged-in user's information
-                   Toast.makeText(context, "create acount succeed", Toast.LENGTH_LONG).show();
-                   Intent toHome = new Intent(context, HomeActivity.class);
+                   Toast.makeText(context, R.string.login_succeeded, Toast.LENGTH_LONG).show();
+                   /*Intent toHome = new Intent(context, HomeActivity.class);
                    toHome.putExtra(UID_ID, viewModel.getUid());
-                   startActivity(toHome);
+                   startActivity(toHome);*/
+                   gotoActivity(HomeActivity.class);
                    finish();// todo: apply isLogIn(), that register and login page not visitable
 
                } else if (it.second == LoginViewModel.State.LOG_IN_FAILED_ID) {
-
-                    Toast.makeText(context, "failed ", Toast.LENGTH_LONG).show();
+                    // Fehlermeldung anzeigen
+                    Toast.makeText(context, R.string.login_failed, Toast.LENGTH_LONG).show();
                } else if (it.second == LoginViewModel.State.TEST_ID_HOME) { //todo: remove after testing
 
                    gotoActivity(HomeActivity.class);
