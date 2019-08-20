@@ -2,9 +2,14 @@ package kit.edu.mensameet.server.controller;
 
 import java.io.IOException;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
 import kit.edu.mensameet.server.controller.GroupController;
+
+@Component
 public class TimeController {
 	
 	@Autowired

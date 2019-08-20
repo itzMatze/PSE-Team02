@@ -63,14 +63,6 @@ public class Group {
 
 	/**
 	 * 
-	 * @param token is a unique identification for each group
-	 */
-	public void setToken(String token) {
-		this.token = token;
-	}
-
-	/**
-	 * 
 	 * @return the unique token
 	 */
 	public String getToken() {
