@@ -7,12 +7,14 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
@@ -141,19 +143,26 @@ public class RegisterViewModel extends MensaMeetViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
                             // Sign in success, notify uiEventLiveData
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             //save uid
-                            uid = user.getUid();
+                            uid = firebaseUser.getUid();
                             RequestUtil.createUser(uid);
-                            MensaMeetSession.getInstance().getUser().setToken(uid);
-                        } else {
-                            // If sign in fails, notify uiEventLiveData›
-                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
+                            User newUser = new User();
+                            newUser.setToken(uid);
+                            MensaMeetSession.getInstance().initialize(newUser);
+                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_SUCCESS_ID));
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // If sign in fails, notify uiEventLiveData›
+                        String error = e.getLocalizedMessage();
+                        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
+
+                    }
+        });
     }
 
     public enum State implements StateInterface {

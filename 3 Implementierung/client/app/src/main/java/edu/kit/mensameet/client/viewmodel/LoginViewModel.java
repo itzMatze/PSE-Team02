@@ -152,11 +152,14 @@ public class LoginViewModel extends MensaMeetViewModel {
                         if (task.isSuccessful()) {
 
                             // Sign in success, notify uiEventLiveData
+                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                            uid = firebaseUser.getUid();
+
+                            User user = RequestUtil.getUser("", uid);
+                            MensaMeetSession.getInstance().initialize(user);
+
                             uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(LoginViewModel.this, State.LOG_IN_SUCCESS_ID));
 
-                            FirebaseUser user = mAuth.getCurrentUser();
-
-                            uid = user.getUid();
 
                         } else {
 

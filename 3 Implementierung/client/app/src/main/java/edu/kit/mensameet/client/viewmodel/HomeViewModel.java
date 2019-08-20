@@ -23,6 +23,7 @@ public class HomeViewModel extends MensaMeetViewModel {
      */
     public void logout(Context context) {
 
+        MensaMeetSession.getInstance().invalidate();
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.clear();

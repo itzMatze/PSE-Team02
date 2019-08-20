@@ -120,4 +120,8 @@
     <string name="user_deleted">Benutzer gelöscht.</string>
     <string name="no_group_joined">Du bist keiner Gruppe beigetreten.</string>
     <string name="no_field_empty">Kein Feld darf leer bleiben.</string>
+    <string name="login_succeeded">Login erfolgreich</string>
+    <string name="login_failed">Login fehlgeschlagen</string>
+    <string name="registration_succeeded">Registrierung erfolgreich</string>
+    <string name="registration_failed">Registrierung fehlgeschlagen</string>
 </resources>
