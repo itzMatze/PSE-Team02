@@ -1,12 +1,7 @@
 package edu.kit.mensameet.client.viewmodel;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Pair;
-
-import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
-import edu.kit.mensameet.client.view.R;
 
 /**
  * View model of BeginActivity.
@@ -30,7 +25,7 @@ return false;
      * @param item BeginViewModel
      */
     public void onResetClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.RESET_LOCAL_DATA_ID));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.RESET_LOCAL_DATA_ID));
     }
 
     /**
@@ -39,7 +34,7 @@ return false;
      * @param item BeginViewModel
      */
     public void onRegisterClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.REGISTER_ID));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.REGISTER_ID));
     }
 
     /**
@@ -48,7 +43,7 @@ return false;
      * @param item BeginViewModel
      */
     public void onLoginClick(BeginViewModel item) {
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.LOGIN_ID));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LOGIN_ID));
     }
 
     public enum State implements StateInterface {

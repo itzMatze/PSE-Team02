@@ -1,19 +1,10 @@
 package edu.kit.mensameet.client.viewmodel;
 
-import android.util.Log;
 import android.util.Pair;
-import android.widget.Toast;
 
-import androidx.lifecycle.ViewModel;
-
-import java.util.Date;
-
-import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
-import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.util.RequestUtil;
 
 /**
@@ -24,41 +15,6 @@ public class UserViewModel extends MensaMeetViewModel {
     private User user;
 
     public UserViewModel() {
-
-        // TODO: Remove everything after testing
-
-        MensaData mensaData = RequestUtil.getMensaData();
-        MensaMeetSession.getInstance().setMensaData(mensaData);
-
-        if (MensaMeetSession.getInstance().getUser() == null) {
-
-            // Test user
-            User receivedUser = RequestUtil.getUser("999", "999");
-
-            // if user not existing, create him
-            if (receivedUser.getToken().equals("") || receivedUser.getToken() == null) {
-
-                user = new User();
-                user.setIsAdmin(true);
-                user.setToken("999");
-
-                String res = RequestUtil.createUser("999");
-                res = RequestUtil.updateUser(user);
-
-            } else {
-                user = receivedUser;
-            }
-
-            MensaMeetSession.getInstance().setUser(user);
-
-            MensaMeetSession.getInstance().setChosenLines(null);
-            MensaMeetSession.getInstance().setChosenTime(null);
-            MensaMeetSession.getInstance().setCreatedGroup(null);
-            MensaMeetSession.getInstance().setUserToShow(null);
-        }
-
-
-
 
     }
 
@@ -81,21 +37,25 @@ public class UserViewModel extends MensaMeetViewModel {
 
         if (user != null) {
 
-            res = RequestUtil.updateUser(user);
-            if (res == null) {
+            try {
 
-                uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_USER));
+                RequestUtil.updateUser(user);
+
+            } catch (RequestUtil.RequestException e) {
+
+                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage()                                  , State.ERROR_SAVING_USER));
                 return;
+
             }
 
             // if everything went well
             MensaMeetSession.getInstance().setUser(user);
 
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.USER_SAVED_NEXT));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.USER_SAVED_NEXT));
 
         } else {
 
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.ERROR_SAVING_USER));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.ERROR_SAVING_USER));
 
         }
 

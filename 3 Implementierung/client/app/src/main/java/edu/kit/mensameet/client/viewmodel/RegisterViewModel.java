@@ -16,7 +16,6 @@ import com.google.firebase.auth.FirebaseUser;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
  * Class {@code RegisterViewModel} is responsible for preparing and managing the data for {@code RegisterActivity} Activity.
@@ -143,29 +142,43 @@ public class RegisterViewModel extends MensaMeetViewModel {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, notify uiEventLiveData
+                            // Sign in success, notify eventLiveData
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             //save uid
                             uid = firebaseUser.getUid();
-                            RequestUtil.createUser(uid);
+                            try {
+
+                                RequestUtil.createUser(uid);
+
+                            } catch (RequestUtil.RequestException e) {
+
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.CREATE_ACCOUNT_FAILED_ID));
+                                return;
+
+                            }
                             User newUser = new User();
                             newUser.setToken(uid);
-                            MensaMeetSession.getInstance().initialize(newUser);
-                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_SUCCESS_ID));
+
+                            if (MensaMeetSession.getInstance().initialize(newUser)) {
+                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.CREATE_ACCOUNT_SUCCESS_ID));
+                            } else {
+                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.INITIALIZATION_FAILED));
+                            }
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        // If sign in fails, notify uiEventLiveData›
-                        String error = e.getLocalizedMessage();
-                        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.CREATE_ACCOUNT_FAILED_ID));
+                        // If sign in fails, notify eventLiveData›
+                        String errorMessage = e.getLocalizedMessage();
+                        eventLiveData.setValue(new Pair<String, StateInterface>(errorMessage, State.CREATE_ACCOUNT_FAILED_ID));
 
                     }
         });
     }
 
     public enum State implements StateInterface {
-        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID
+        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID, INITIALIZATION_FAILED
     }
 }

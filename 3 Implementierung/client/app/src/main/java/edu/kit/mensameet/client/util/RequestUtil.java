@@ -1,12 +1,15 @@
 package edu.kit.mensameet.client.util;
 
+import android.app.DownloadManager;
 import android.util.Log;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -18,6 +21,7 @@ import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
+import edu.kit.mensameet.client.view.R;
 
 /*
 in case return JSON File or JSON URL
@@ -32,39 +36,69 @@ in case return JSON File or JSON URL
  */
 public class RequestUtil {
 
+    private static final String EXCEPTION_MAPPER_IO = "Mapper IO Exception";
+
     //for convert a java object to json string and vise versa
     private static ObjectMapper mapper = new ObjectMapper();
     private static ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+
+    private static void handleException(Exception e, String response) throws RequestException {
+        if (e != null) {
+
+            try {
+
+                JsonNode jsonNode = mapper.readTree(response);
+                throw new RequestException(jsonNode);
+
+            } catch (IOException ioException) {
+
+                throw new RequestException(0, EXCEPTION_MAPPER_IO);
+
+            }
+        }
+    }
 
     /**
      * create user
      * @param firebaseToken token
      * @return not null if success
      */
-    public static String createUser(final String firebaseToken) {
-        final String[] str = {""};
+    public static void createUser(final String firebaseToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
+
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
-                    //Log.i("create user success", str[0]);
-                }catch (Exception e){
-                    Log.e("create user failed", e.getClass().toString() + e.getMessage());
-                    str[0] = null;
+                    response[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
+
+                } catch (Exception e) {
+
+                    exception[0] = e;
+
                 }
 
             }
         });
+
         thread.start();
+
         try{
+
             thread.join();
-        }catch (Exception e){
-            str[0] = null;
+
+        } catch (Exception e) {
+
+            exception[0] = e;
+
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
     /**
@@ -72,9 +106,13 @@ public class RequestUtil {
      * @param userToken userToken
      * @return user
      */
-    public static User getUser(final String firebaseToken, final String userToken) {
-        final User[] user = {new User()};
-        final String[] str = new String[1];
+    public static User getUser(final String firebaseToken, final String userToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
+        final User[] user = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -82,21 +120,31 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
                     params.put("userToken", userToken);
-                    str[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
-                    user[0] = mapper.readValue(str[0], User.class);
-                }catch (Exception e){
-                    //Log.e("get user failed", e.getMessage());
+                    response[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
+                    user[0] = mapper.readValue(response[0], User.class);
+                } catch (Exception e) {
+
+                    exception[0] = e;
+
                 }
 
             }
         });
+
         thread.start();
+
         try{
+
             thread.join();
 
-        }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+        } catch (Exception e) {
+
+            exception[0] = e;
+
         }
+
+        handleException(exception[0], response[0]);
+
         return user[0];
     }
 
@@ -105,8 +153,11 @@ public class RequestUtil {
      * @param user
      * @return
      */
-    public static String updateUser(final User user) {
-        final String[] str = {""};
+    public static void updateUser(final User user) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -116,20 +167,26 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", user.getToken());
-                    str[0] = HttpUtil.put("http://193.196.38.98:8080/server/user", json, params);
+                    response[0] = HttpUtil.put("http://193.196.38.98:8080/server/user", json, params);
                 }catch (Exception e){
-                    Log.e("update user failed", e.getMessage());
+                    exception[0] = e;
                 }
 
             }
         });
         thread.start();
+
         try{
+
             thread.join();
-        }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+
+        } catch (Exception e) {
+
+            exception[0] = e;
+
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
     /**
@@ -137,16 +194,19 @@ public class RequestUtil {
      * @param firebaseToken
      * @return
      */
-    public static String deleteUser(final String firebaseToken, final String userToken) {
-        final String[] str = {""};
+    public static void deleteUser(final String firebaseToken, final String userToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?firebaseToken="
+                    response[0] = HttpUtil.delete("http://193.196.38.98:8080/server/user?firebaseToken="
                             + firebaseToken + "&userToken=" + userToken);
                 }catch (Exception e){
-                    Log.e("delete user failed", e.getMessage());
+                    exception[0] = e;
                 }
             }
         });
@@ -154,9 +214,10 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
     /**
@@ -165,8 +226,13 @@ public class RequestUtil {
      * @param firebaseToken
      * @return group with new groupToken
      */
-    public static Group createGroup(final Group group, final String firebaseToken) {
-        final Group[] newGroup = new Group[1];
+    public static Group createGroup(final Group group, final String firebaseToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
+        final Group[] newGroup = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -176,11 +242,11 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("Content-Type","application/json");
                     params.put("firebaseToken", firebaseToken);
-                    String str = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
-                    GroupForRequestWithToken returnedGroup = mapper.readValue(str, GroupForRequestWithToken.class);
+                    response[0] = HttpUtil.post("http://193.196.38.98:8080/server/create-group", json, params);
+                    GroupForRequestWithToken returnedGroup = mapper.readValue(response[0], GroupForRequestWithToken.class);
                     newGroup[0] = returnedGroup.parseToGroup();
                 }catch (Exception e){
-                    Log.e("create group failed", e.getMessage());
+                    exception[0] = e;
                 }
 
             }
@@ -189,8 +255,11 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
+
+        handleException(exception[0], response[0]);
+
         return newGroup[0];
     }
 
@@ -228,8 +297,13 @@ public class RequestUtil {
      * @param groupToken
      * @return
      */
-    public static Group getGroup(final String firebaseToken, final String groupToken) {
-        final Group[] group = new Group[1];
+    public static Group getGroup(final String firebaseToken, final String groupToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
+        final Group[] group = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -237,12 +311,12 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
                     params.put("groupToken",groupToken);
-                    String str = HttpUtil.get(
+                    response[0] = HttpUtil.get(
                             "http://193.196.38.98:8080/server/group?groupToken="+ groupToken, params);
-                    GroupForRequestWithToken returnGroup = mapper.readValue(str, GroupForRequestWithToken.class);
+                    GroupForRequestWithToken returnGroup = mapper.readValue(response[0], GroupForRequestWithToken.class);
                     group[0] = returnGroup.parseToGroup();
                 } catch (Exception e){
-                    Log.e("get group failed", e.getMessage());
+                    exception[0] = e;
                 }
 
             }
@@ -251,8 +325,11 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
+
+        handleException(exception[0], response[0]);
+
         return group[0];
     }
 
@@ -295,8 +372,13 @@ public class RequestUtil {
      * @param lines
      * @return
      */
-    public static List<Group> getGroupByPrefferences(final MensaMeetTime time, final String[] lines) {
+    public static List<Group> getGroupByPrefferences(final MensaMeetTime time, final String[] lines) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         final List<Group> resultGroups = new ArrayList<>();
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -306,20 +388,16 @@ public class RequestUtil {
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken","1");
                     params.put("Content-Type","application/json");
-                    String jsonStringArray = HttpUtil.post
+                    response[0] = HttpUtil.post
                             ("http://193.196.38.98:8080/server/group-prefferences", json, params);
                     //we split json String from Server, each of them should be converting in a GroupForRequest object
-                    List<GroupForRequestWithToken> groupList = Arrays.asList(mapper.readValue(jsonStringArray, GroupForRequestWithToken[].class));
+                    List<GroupForRequestWithToken> groupList = Arrays.asList(mapper.readValue(response[0], GroupForRequestWithToken[].class));
 
                     for(GroupForRequestWithToken g : groupList){
                         resultGroups.add(g.parseToGroup());
                     }
-                }catch (Exception e){
-                    //todo
-                    Group errorMessage = new Group();
-                    errorMessage.setMotto(e.getMessage());
-                    resultGroups.add(errorMessage);
-                    //Log.e("preferences failed", e.getMessage());
+                } catch (Exception e) {
+                    exception[0] = e;
                 }
             }
         });
@@ -327,8 +405,11 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("error", e.getMessage());
+            exception[0] = e;
         }
+
+        handleException(exception[0], response[0]);
+
         return resultGroups;
     }
 
@@ -337,7 +418,11 @@ public class RequestUtil {
      * @param firebaseToken
      * @return
      */
-    public static String deleteGroup(final String groupToken, final String firebaseToken) {
+    public static void deleteGroup(final String groupToken, final String firebaseToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         final String[] str = {""};
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -345,10 +430,10 @@ public class RequestUtil {
                 try{
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
-                    str[0] = HttpUtil.delete(
+                    response[0] = HttpUtil.delete(
                             "http://193.196.38.98:8080/server/group?groupToken=" + groupToken, params);
-                }catch (Exception e){
-                    //Log.e("delete user failed", e.getMessage());
+                } catch (Exception e) {
+                    exception[0] = e;
                 }
             }
         });
@@ -356,24 +441,27 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
 
-    public static String addUserToGroup(final String groupToken, final String firebaseToken) {
-        final String[] str = {""};
+    public static void addUserToGroup(final String groupToken, final String firebaseToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/add-user-to-group?firebaseToken="
+                    response[0] = HttpUtil.post("http://193.196.38.98:8080/server/add-user-to-group?firebaseToken="
                             + firebaseToken + "&groupToken=" + groupToken,
                     null, null);
                 }catch (Exception e){
-                    //Log.e("preferences failed", e.getMessage());
-                    str[0] = null;
+                    exception[0] = e;
                 }
             }
         });
@@ -381,10 +469,10 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            str[0] = null;
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
     /**
@@ -393,18 +481,20 @@ public class RequestUtil {
      * @param groupToken
      * @return
      */
-    public static String removeUserFromGroup(final String firebaseToken, final String groupToken) {
-        final String[] str = {""};
+    public static void removeUserFromGroup(final String firebaseToken, final String groupToken) throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.post("http://193.196.38.98:8080/server/remove-user-from-group?firebaseToken="
+                    response[0] = HttpUtil.post("http://193.196.38.98:8080/server/remove-user-from-group?firebaseToken="
                                     + firebaseToken + "&groupToken=" + groupToken,
                             null, null);
                 }catch (Exception e){
-                    str[0] = null;
-                    //Log.e("create user failed", e.getClass().toString() + e.getMessage());
+                    exception[0] = e;
                 }
 
             }
@@ -413,10 +503,10 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            str[0] = null;
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
-        return str[0];
+
+        handleException(exception[0], response[0]);
     }
 
 
@@ -425,19 +515,21 @@ public class RequestUtil {
      *
      * @return
      */
-    public static MensaData getMensaData() {
-        final MensaData[] mensaData = {new MensaData(null)};
-        final List<Line> lines = new ArrayList<>();
-        final String[] str = {""};
+    public static MensaData getMensaData() throws RequestException {
+
+        final String[] response = {null};
+        final Exception[] exception = {null};
+
+        final MensaData[] mensaData = {null};
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
-                    str[0] = HttpUtil.get("http://193.196.38.98:8080/server/mensadata");
-                    mensaData[0] = mapper.readValue(str[0], MensaData.class);
+                    response[0] = HttpUtil.get("http://193.196.38.98:8080/server/mensadata");
+                    mensaData[0] = mapper.readValue(response[0], MensaData.class);
                 }catch (Exception e){
-                    Log.e("get mensa data failed", e.getMessage());
+                    exception[0] = e;
                 }
             }
         });
@@ -445,8 +537,11 @@ public class RequestUtil {
         try{
             thread.join();
         }catch (Exception e){
-            //Log.e("join error", e.getMessage());
+            exception[0] = e;
         }
+
+        handleException(exception[0], response[0]);
+
         return mensaData[0];
     }
 
@@ -614,6 +709,37 @@ public class RequestUtil {
         return list;
     }
 */
+
+    public static class RequestException extends Exception {
+
+        private int errorCode = 0;
+        private String errorMessage;
+
+        public RequestException(int errorCode, String errorMessage) {
+            this.errorCode = errorCode;
+            this.errorMessage = errorMessage;
+        }
+
+        public RequestException(JsonNode errorJsonNode) {
+
+            if (errorJsonNode.has("status")) {
+                this.errorCode = errorJsonNode.get("status").asInt();
+            }
+
+            if (errorJsonNode.has("message")) {
+                this.errorMessage = errorJsonNode.get("message").asText();
+            }
+        }
+
+        @Override
+        public String getLocalizedMessage() {
+            return errorMessage;
+        }
+
+        public int getErrorCode() {
+            return errorCode;
+        }
+    }
 
 
 }

@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,7 +17,6 @@ import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
  * View model for LoginActivity.
@@ -45,47 +45,6 @@ public class LoginViewModel extends MensaMeetViewModel {
      * @param item BeginViewModel
      */
     public void onTestClick(LoginViewModel item) {
-
-        // TODO: Remove everything after testing
-
-        MensaData mensaData = RequestUtil.getMensaData();
-        MensaMeetSession.getInstance().setMensaData(mensaData);
-
-        // Test user
-        User user = RequestUtil.getUser("999", email.getValue());
-
-        // if user not existing, create him
-        if (user.getToken().equals("") || user.getToken() == null) {
-
-            user = new User();
-            user.setName(email.getValue());
-            if (password.getValue() != null && !password.getValue().equals("")) {
-                user.setIsAdmin(true);
-            }
-            user.setToken(email.getValue());
-
-            String res = RequestUtil.createUser(email.getValue());
-            res = RequestUtil.updateUser(user);
-
-        }
-
-        MensaMeetSession.getInstance().setUser(user);
-
-        MensaMeetSession.getInstance().setChosenLines(null);
-        MensaMeetSession.getInstance().setChosenTime(null);
-        MensaMeetSession.getInstance().setCreatedGroup(null);
-        MensaMeetSession.getInstance().setUserToShow(null);
-
-        if (MensaMeetSession.getInstance().getUser() == null) {
-
-
-        }
-
-        if (MensaMeetSession.getInstance().userDataIncomplete()) {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_ID_USER));
-        } else {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(item, State.TEST_ID_HOME));
-        }
 
     }
 
@@ -143,6 +102,7 @@ public class LoginViewModel extends MensaMeetViewModel {
     private void login(final LoginViewModel item) {
 
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
         mAuth.signInWithEmailAndPassword(email.getValue(), password.getValue())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
 
@@ -151,22 +111,42 @@ public class LoginViewModel extends MensaMeetViewModel {
 
                         if (task.isSuccessful()) {
 
-                            // Sign in success, notify uiEventLiveData
                             FirebaseUser firebaseUser = mAuth.getCurrentUser();
                             uid = firebaseUser.getUid();
 
-                            User user = RequestUtil.getUser("", uid);
-                            MensaMeetSession.getInstance().initialize(user);
+                            User user = null;
 
-                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(LoginViewModel.this, State.LOG_IN_SUCCESS_ID));
+                            try {
 
+                                user = RequestUtil.getUser("", uid);
 
-                        } else {
+                            } catch (RequestUtil.RequestException e) {
 
-                            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(LoginViewModel.this, State.LOG_IN_FAILED_ID));
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOG_IN_FAILED_ID));
+                                return;
+
+                            }
+
+                            if (MensaMeetSession.getInstance().initialize(user)) {
+                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LOG_IN_SUCCESS_ID));
+                            } else {
+                                //todo: handle it!
+                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.INITIALIZATION_FAILED));
+                            }
+
 
                         }
+
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                        String errorMessage = e.getLocalizedMessage();
+                        eventLiveData.setValue(new Pair<String, StateInterface>(errorMessage, State.LOG_IN_FAILED_ID));
+                    }
+
                 });
     }
 
@@ -184,6 +164,7 @@ public class LoginViewModel extends MensaMeetViewModel {
          */
         LOG_IN_FAILED_ID,
         TEST_ID_USER,
-        TEST_ID_HOME
+        TEST_ID_HOME,
+        INITIALIZATION_FAILED
     }
 }

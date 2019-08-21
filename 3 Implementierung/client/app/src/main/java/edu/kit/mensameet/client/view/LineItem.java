@@ -30,7 +30,7 @@ public class LineItem extends MensaMeetItem<Line> {
     }
 
     @Override
-    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
 
     }
 

@@ -2,10 +2,6 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
-
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
@@ -16,7 +12,7 @@ public abstract class MensaMeetItemHandler {
     /**
      * Livedata object for communication with item
      */
-    protected SingleLiveEvent<Pair<MensaMeetItemHandler, StateInterface>> uiEventLiveData;
+    protected SingleLiveEvent<Pair<String, StateInterface>> eventLiveData;
 
     public MensaMeetItemHandler() { }
 
@@ -25,12 +21,12 @@ public abstract class MensaMeetItemHandler {
      *
      * @return UI event
      */
-    public SingleLiveEvent<Pair<MensaMeetItemHandler, StateInterface>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.DEFAULT));
+    public SingleLiveEvent<Pair<String, StateInterface>> getEventLiveData() {
+        if (eventLiveData == null) {
+            eventLiveData = new SingleLiveEvent<>();
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.DEFAULT));
         }
-        return uiEventLiveData;
+        return eventLiveData;
     }
 
     public enum State implements StateInterface {

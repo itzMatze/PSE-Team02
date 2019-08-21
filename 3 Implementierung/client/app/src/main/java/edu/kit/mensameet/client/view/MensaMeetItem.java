@@ -6,20 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
 
-import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
-import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
@@ -60,9 +55,9 @@ public abstract class MensaMeetItem<T> {
         // TODO: Generally check when observe is called, in item as well as in activity
 
         if (handler != null) {
-            handler.getUiEventLiveData().observe((MensaMeetActivity) context, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+            handler.getEventLiveData().observe((MensaMeetActivity) context, new Observer<Pair<String, StateInterface>>() {
                 @Override
-                public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+                public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                     processStateChange(it);
 
@@ -71,7 +66,7 @@ public abstract class MensaMeetItem<T> {
         }
     }
 
-    protected void processStateChange(Pair<MensaMeetItemHandler, StateInterface> it) {    }
+    protected void processStateChange(Pair<String, StateInterface> it) {    }
 
     public MensaMeetItemHandler getHandler() {
         return handler;

@@ -16,13 +16,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.databinding.ActivitySelectGroupBinding;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
@@ -37,16 +31,6 @@ import edu.kit.mensameet.client.viewmodel.UserItemHandler;
  */
 public class SelectGroupActivity extends MensaMeetActivity {
 
-    protected SingleLiveEvent<StateInterface> activityEventLiveData;
-
-    public SingleLiveEvent<StateInterface> getActivityEventLiveData() {
-        if (activityEventLiveData == null) {
-            activityEventLiveData = new SingleLiveEvent<>();
-            activityEventLiveData.setValue(State.DEFAULT);
-        }
-        return activityEventLiveData;
-    }
-
     private SelectGroupViewModel viewModel;
     private ActivitySelectGroupBinding binding;
 
@@ -56,15 +40,6 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        getActivityEventLiveData().observe(this, new Observer<StateInterface>() {
-            @Override
-            public void onChanged(StateInterface stateInterface) {
-                if (stateInterface == State.NEXT) {
-                    gotoActivity(GroupJoinedActivity.class);
-                }
-            }
-        });
 
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.viewModel = viewModel;
@@ -185,9 +160,9 @@ public class SelectGroupActivity extends MensaMeetActivity {
             if (item != null) {
                 GroupItemHandler handler = item.getHandler();
 
-                handler.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+                handler.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
                     @Override
-                    public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+                    public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                         if (it.second == GroupItemHandler.State.GROUP_JOINED) {
 
@@ -221,9 +196,9 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
                     UserItemHandler userItemHandler = (UserItemHandler)userItem.getHandler();
 
-                    userItemHandler.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+                    userItemHandler.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
                         @Override
-                        public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+                        public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                             if (it.second == UserItemHandler.State.SHOW_USER) {
                                 gotoActivity(ShowUserActivity.class);
@@ -270,7 +245,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
  * Communcation with the view model
  */
     @Override
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == SelectGroupViewModel.State.GROUP_JOINED) {
             gotoActivity(GroupJoinedActivity.class);
         } else if (it.second == SelectGroupViewModel.State.BACK) {

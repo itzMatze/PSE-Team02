@@ -189,9 +189,18 @@ public class MensaMeetSession {
         return null;
     }
 
-    public void initialize(User user) {
+    public Boolean initialize(User user) {
 
-        MensaData mensaData = RequestUtil.getMensaData();
+        MensaData mensaData = null;
+        try {
+
+            mensaData = RequestUtil.getMensaData();
+
+        } catch (RequestUtil.RequestException e) {
+
+            return false;
+
+        }
         setMensaData(mensaData);
         setUser(user);
         setChosenLines(null);
@@ -200,6 +209,7 @@ public class MensaMeetSession {
         setUserToShow(null);
         loggedIn = true;
 
+        return true;
     }
 
     public void invalidate() {

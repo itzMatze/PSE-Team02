@@ -62,10 +62,10 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             }, 2000);
         }
 
-        Group chosenGroup =  RequestUtil.getGroup(MensaMeetSession.getInstance().getUser().getToken(), groupToken);
+        viewModel.setGroupByToken(groupToken);
+        Group joinedGroup = viewModel.getGroup();
 
-        // todo: remove after request error handling is done
-        if (chosenGroup == null) {
+        if (joinedGroup == null) {
             Toast.makeText(GroupJoinedActivity.this, R.string.no_group_joined, Toast.LENGTH_SHORT).show();
 
             Handler handler = new Handler();
@@ -79,17 +79,15 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             }, 2000);
         }
 
-        viewModel.setGroup(chosenGroup);
-
         groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_NOTEDITABLE,
-                chosenGroup);
+                joinedGroup);
         container.addView(groupItem.getView());
 
         groupItem.fillObjectData();
 
-        groupItem.getHandler().getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+        groupItem.getHandler().getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
             @Override
-            public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+            public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                 if (it.second == GroupItemHandler.State.GROUP_JOINED) {
 
@@ -123,9 +121,9 @@ public class GroupJoinedActivity extends MensaMeetActivity {
 
                 UserItemHandler userItemHandler = (UserItemHandler)userItem.getHandler();
 
-                userItemHandler.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetItemHandler, StateInterface>>() {
+                userItemHandler.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
                     @Override
-                    public void onChanged(@Nullable Pair<MensaMeetItemHandler, StateInterface> it) {
+                    public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                         if (it.second == UserItemHandler.State.SHOW_USER) {
                             gotoActivity(ShowUserActivity.class);
@@ -173,7 +171,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == GroupJoinedViewModel.State.GROUP_LEFT) {
  
             this.gotoActivity(HomeActivity.class);

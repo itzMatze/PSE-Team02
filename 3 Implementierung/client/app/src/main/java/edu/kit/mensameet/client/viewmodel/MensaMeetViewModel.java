@@ -2,10 +2,8 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
@@ -15,21 +13,21 @@ public abstract class MensaMeetViewModel extends ViewModel {
 
     /**
      SingleLiveEvent: A lifecycle-aware observable that sends only new updates after subscription
-     use uiEventLiveData to pass a string to relevant activity, and it executes relevant functions
+     use eventLiveData to pass a string to relevant activity, and it executes relevant functions
      */
-    protected SingleLiveEvent<Pair<MensaMeetViewModel, StateInterface>> uiEventLiveData;
+    protected SingleLiveEvent<Pair<String, StateInterface>> eventLiveData;
 
     /**
      * Gets the live data element to observe.
      *
      * @return Live data element.
      */
-    public SingleLiveEvent<Pair<MensaMeetViewModel, StateInterface>> getUiEventLiveData() {
-        if (uiEventLiveData == null) {
-            uiEventLiveData = new SingleLiveEvent<>();
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, MensaMeetViewModel.State.DEFAULT));
+    public SingleLiveEvent<Pair<String, StateInterface>> getEventLiveData() {
+        if (eventLiveData == null) {
+            eventLiveData = new SingleLiveEvent<>();
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, MensaMeetViewModel.State.DEFAULT));
         }
-        return uiEventLiveData;
+        return eventLiveData;
     }
 
     public enum State implements StateInterface { DEFAULT }

@@ -84,7 +84,7 @@ public class CreateGroupActivity extends MensaMeetActivity {
      * @param it Message.
      */
     @Override
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
             Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
             gotoActivity(GroupJoinedActivity.class);

@@ -77,7 +77,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == SelectLinesViewModel.State.LINES_SAVED_NEXT) {
             gotoActivity(SetTimeActivity.class);
         } else if (it.second == SelectLinesViewModel.State.LINES_SAVED_BACK) {

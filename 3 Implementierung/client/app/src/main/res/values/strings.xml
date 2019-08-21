@@ -124,4 +124,5 @@
     <string name="login_failed">Login fehlgeschlagen</string>
     <string name="registration_succeeded">Registrierung erfolgreich</string>
     <string name="registration_failed">Registrierung fehlgeschlagen</string>
+    <string name="exception_mapper_io">IO-Exception beim ObjectMapper</string>
 </resources>

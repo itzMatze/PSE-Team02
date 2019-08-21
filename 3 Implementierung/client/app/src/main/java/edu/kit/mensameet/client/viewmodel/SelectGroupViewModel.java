@@ -2,16 +2,12 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.RequestUtil;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
  * View model of SelectGroupActivity.
@@ -32,7 +28,18 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
         }
 
         // send query to get groups by preferences
-        List<Group> receivedGroups = RequestUtil.getGroupByPrefferences(MensaMeetSession.getInstance().getChosenTime(), chosenMealLines);
+        List<Group> receivedGroups = null;
+        try {
+
+            receivedGroups = RequestUtil.getGroupByPrefferences(MensaMeetSession.getInstance().getChosenTime(), chosenMealLines);
+
+        } catch (RequestUtil.RequestException e) {
+
+            // todo: handle this in activity
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOADING_GROUPS_FAILED));
+            return;
+
+        }
 
         MensaMeetSession.getInstance().setReceivedGroups(receivedGroups);
 
@@ -42,10 +49,10 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
 
         this.selectedGroup = selectedGroup;
 
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.GROUP_JOINED));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_JOINED));
     }
 
     public enum State implements StateInterface {
-        NO_GROUP_SELECTED, GROUP_JOINED, BACK
+        NO_GROUP_SELECTED, GROUP_JOINED, BACK, LOADING_GROUPS_FAILED
     }
 }

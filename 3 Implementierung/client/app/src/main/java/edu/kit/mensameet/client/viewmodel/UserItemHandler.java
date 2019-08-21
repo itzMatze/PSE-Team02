@@ -2,14 +2,9 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.lifecycle.LiveData;
-
-import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
-import edu.kit.mensameet.client.view.GroupItem;
 import edu.kit.mensameet.client.view.MensaMeetItem;
 
 /**
@@ -34,21 +29,29 @@ public class UserItemHandler extends MensaMeetItemHandler {
 
     public void showUser() {
         MensaMeetSession.getInstance().setUserToShow(user);
-        uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.SHOW_USER));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.SHOW_USER));
     }
 
     public void deleteUser() {
 
         // the current user cannot delete himself!
         if (MensaMeetSession.getInstance().getUser().getToken() != user.getToken()) {
-            // todo: exception handling for request
             // todo: replace first argument with real firebase token
-            String response = RequestUtil.deleteUser(MensaMeetSession.getInstance().getUser().getToken(), user.getToken());
-            // supposed deletion was successful:
+            try {
+
+                RequestUtil.deleteUser(MensaMeetSession.getInstance().getUser().getToken(), user.getToken());
+
+            } catch (RequestUtil.RequestException e) {
+
+                // todo: handle this
+                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.USER_DELETION_FAILED));
+                return;
+
+            }
 
             user = null;
 
-            uiEventLiveData.setValue(new Pair<MensaMeetItemHandler, StateInterface>(this, State.USER_DELETED));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.USER_DELETED));
         }
     }
 
@@ -61,6 +64,6 @@ public class UserItemHandler extends MensaMeetItemHandler {
     }
 
     public enum State implements StateInterface {
-        USER_JOINED, USER_DELETED, SHOW_USER, DEFAULT
+        USER_JOINED, USER_DELETED, USER_DELETION_FAILED, SHOW_USER, DEFAULT
     }
 }

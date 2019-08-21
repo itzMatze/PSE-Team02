@@ -3,13 +3,9 @@ package edu.kit.mensameet.client.viewmodel;
 import android.util.Pair;
 
 import java.util.Date;
-import java.util.List;
 
-import edu.kit.mensameet.client.model.Group;
-import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.util.RequestUtil;
 
 /**
  * View model of SetTimeActivity.
@@ -49,13 +45,13 @@ public class SetTimeViewModel extends MensaMeetViewModel {
 
         saveTime();
 
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_NEXT));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TIME_SAVED_NEXT));
     }
 
     public void saveTimeAndBack() {
 
         saveTime();
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.TIME_SAVED_BACK));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TIME_SAVED_BACK));
     }
 
     public enum State implements StateInterface {

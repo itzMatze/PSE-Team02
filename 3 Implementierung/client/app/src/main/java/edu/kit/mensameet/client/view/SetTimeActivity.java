@@ -121,7 +121,7 @@ public class SetTimeActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == SetTimeViewModel.State.TIME_SAVED_NEXT) {
             gotoActivity(SelectGroupActivity.class);
         } else if (it.second == SetTimeViewModel.State.TIME_SAVED_BACK) {

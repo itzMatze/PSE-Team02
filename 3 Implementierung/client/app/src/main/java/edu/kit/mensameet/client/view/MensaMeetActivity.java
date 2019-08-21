@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Pair;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
@@ -82,25 +80,29 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             });
         }
 
+        observeLiveData();
+
+    }
+
+    protected void observeLiveData() {
         // Initializing livedata communication between view model and activity
         if (viewModel != null) {
-            viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
+            viewModel.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
                 @Override
-                public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
+                public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                     processStateChange(it);
 
                 }
             });
         }
-
     }
 
     /** Hook method for livedata processing
      *
      * @param it Message.
      */
-    protected void processStateChange(Pair<MensaMeetViewModel, StateInterface> it) {
+    protected void processStateChange(Pair<String, StateInterface> it) {
 
     }
 
@@ -163,7 +165,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
 
     // Centering for the title.
     private void centerTitle() {
-        ArrayList<View> textViews = new ArrayList<>();
+        /*ArrayList<View> textViews = new ArrayList<>();
 
         getWindow().getDecorView().findViewsWithText(textViews, getTitle(), View.FIND_VIEWS_WITH_TEXT);
 
@@ -186,6 +188,6 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
                 appCompatTextView.setLayoutParams(params);
                 appCompatTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             }
-        }
+        } */
     }
 }

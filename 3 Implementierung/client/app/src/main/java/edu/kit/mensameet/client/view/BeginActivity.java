@@ -27,28 +27,35 @@ public class BeginActivity extends MensaMeetActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
+        super.viewModel = viewModel;
+        observeLiveData();
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+
         //if there is already a user logged in on this device, switch directly to the HomeActivity
         if (viewModel.isLoggedIn(this)) {
             gotoHome();
         }
 
-         /*
-        decide which activity to start
+    }
+
+    /** Hook method for livedata processing
+     *
+     * @param it Message.
+     */
+    @Override
+    protected void processStateChange(Pair<String, StateInterface> it) {
+
+        /*
+            decide which activity to start
          */
-        final MensaMeetActivity context = this;
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
-            @Override
-            public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
-                if (it.second == BeginViewModel.State.LOGIN_ID) {
-                    context.gotoActivity(LoginActivity.class);
-                } else if (it.second == BeginViewModel.State.REGISTER_ID) {
-                    context.gotoActivity(RegisterActivity.class);
-                } else if (it.second == BeginViewModel.State.TEST_ID) { // todo: remove after testing
-                    context.gotoActivity(UserActivity.class);
-                }
-            }
-        });
+
+        if (it.second == BeginViewModel.State.LOGIN_ID) {
+            gotoActivity(LoginActivity.class);
+        } else if (it.second == BeginViewModel.State.REGISTER_ID) {
+            gotoActivity(RegisterActivity.class);
+        } else if (it.second == BeginViewModel.State.TEST_ID) { // todo: remove after testing
+            gotoActivity(UserActivity.class);
+        }
     }
 }

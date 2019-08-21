@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.Toast;
@@ -11,6 +10,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.view.databinding.ActivityLoginBinding;
+import edu.kit.mensameet.client.viewmodel.HomeViewModel;
 import edu.kit.mensameet.client.viewmodel.LoginViewModel;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -26,40 +26,40 @@ public class LoginActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        super.viewModel = viewModel;
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        /*
-        decide which activity to start
-         */
-        final LoginActivity context = this;
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
-            @Override
-            public void onChanged(@Nullable Pair<MensaMeetViewModel, StateInterface> it) {
-               if (it.second == LoginViewModel.State.LOG_IN_SUCCESS_ID) {
-                   // log in success, update UI with the logged-in user's information
-                   Toast.makeText(context, R.string.login_succeeded, Toast.LENGTH_LONG).show();
+        super.onCreate(savedInstanceState);
+
+    }
+
+    /** Hook method for livedata processing
+     *
+     * @param it Message.
+     */
+    protected void processStateChange(Pair<String, StateInterface> it) {
+        if (it.second == LoginViewModel.State.LOG_IN_SUCCESS_ID) {
+            // log in success, update UI with the logged-in user's information
+            Toast.makeText(this, R.string.login_succeeded, Toast.LENGTH_LONG).show();
                    /*Intent toHome = new Intent(context, HomeActivity.class);
                    toHome.putExtra(UID_ID, viewModel.getUid());
                    startActivity(toHome);*/
-                   gotoActivity(HomeActivity.class);
-                   finish();// todo: apply isLogIn(), that register and login page not visitable
+            gotoActivity(HomeActivity.class);
+            finish();// todo: apply isLogIn(), that register and login page not visitable
 
-               } else if (it.second == LoginViewModel.State.LOG_IN_FAILED_ID) {
-                    // Fehlermeldung anzeigen
-                    Toast.makeText(context, R.string.login_failed, Toast.LENGTH_LONG).show();
-               } else if (it.second == LoginViewModel.State.TEST_ID_HOME) { //todo: remove after testing
+        } else if (it.second == LoginViewModel.State.LOG_IN_FAILED_ID) {
+            String errorMessage = getResources().getString(R.string.login_failed) + ": " + it.first;
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        } else if (it.second == LoginViewModel.State.TEST_ID_HOME) { //todo: remove after testing
 
-                   gotoActivity(HomeActivity.class);
-               } else if (it.second == LoginViewModel.State.TEST_ID_USER) {
+            gotoActivity(HomeActivity.class);
+        } else if (it.second == LoginViewModel.State.TEST_ID_USER) {
 
-                   gotoActivity(UserActivity.class);
-               }
-            }
-        });
+            gotoActivity(UserActivity.class);
+        }
     }
 }

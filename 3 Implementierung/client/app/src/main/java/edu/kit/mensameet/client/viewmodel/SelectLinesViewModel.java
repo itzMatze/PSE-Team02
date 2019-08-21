@@ -2,14 +2,11 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 
 /**
  * View model for SelectLinesActivity.
@@ -28,9 +25,9 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
     public void saveLinesAndNext()
     {
         if (saveLines()) {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.LINES_SAVED_NEXT));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LINES_SAVED_NEXT));
         } else {
-            uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.NO_LINES_SELECTED));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.NO_LINES_SELECTED));
         }
     }
 
@@ -40,7 +37,7 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
     public void saveLinesAndBack()
     {
         saveLines();
-        uiEventLiveData.setValue(new Pair<MensaMeetViewModel, StateInterface>(this, State.LINES_SAVED_BACK));
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LINES_SAVED_BACK));
 
     }
 

@@ -3,22 +3,15 @@ package edu.kit.mensameet.client.view;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import java.util.List;
-
-import edu.kit.mensameet.client.model.FoodType;
-import edu.kit.mensameet.client.model.Group;
-import edu.kit.mensameet.client.model.Line;
-import edu.kit.mensameet.client.model.Meal;
-import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.viewmodel.HomeViewModel;
-import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
+import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
  * The central activity of the application, accessible by the home button from almost every other activity.
@@ -48,23 +41,8 @@ public class HomeActivity extends MensaMeetActivity {
      */
     public void onGoEatClick(View v) {
 
-        // If no group is yet chosen,
+        viewModel.goEat();
 
-        User user = MensaMeetSession.getInstance().getUser();
-
-        if (MensaMeetSession.getInstance().userDataIncomplete()) {
-            gotoActivity(UserActivity.class);
-        }
-
-        if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
-
-            gotoActivity(SelectLinesActivity.class);
-
-        } else {
-
-            gotoActivity(GroupJoinedActivity.class);
-
-        }
     }
 
     /**
@@ -86,8 +64,24 @@ public class HomeActivity extends MensaMeetActivity {
     public void onLogoutClick(View v) {
 
         viewModel.logout(this);
-        gotoActivity(BeginActivity.class);
 
     }
+
+    /** Hook method for livedata processing
+     *
+     * @param it Message.
+     */
+    protected void processStateChange(Pair<String, StateInterface> it) {
+        if (it.second == HomeViewModel.State.TO_USER) {
+            gotoActivity(UserActivity.class);
+        } else if (it.second == HomeViewModel.State.TO_SELECT_LINES) {
+            gotoActivity(SelectLinesActivity.class);
+        } else if (it.second == HomeViewModel.State.TO_GROUP_JOINED) {
+            gotoActivity(GroupJoinedActivity.class);
+        } else if (it.second == HomeViewModel.State.TO_BEGIN) {
+            gotoActivity(BeginActivity.class);
+        }
+    }
+
 
 }

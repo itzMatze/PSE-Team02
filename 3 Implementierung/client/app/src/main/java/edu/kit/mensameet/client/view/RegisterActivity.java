@@ -1,6 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.Toast;
@@ -25,34 +24,37 @@ public class RegisterActivity extends MensaMeetActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
         //[start]data binding
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
+        super.viewModel = viewModel;
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
         viewModel.setContext(this);
         //[end]data binding
 
-        final RegisterActivity context = this;
-        viewModel.getUiEventLiveData().observe(this, new Observer<Pair<MensaMeetViewModel, StateInterface>>() {
-            @Override
-            public void onChanged(Pair<MensaMeetViewModel, StateInterface> it) {
-                if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_SUCCESS_ID) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Toast.makeText(context, R.string.registration_succeeded, Toast.LENGTH_LONG).show();
-                    /*Intent toUserProfile = new Intent(context, UserActivity.class);
-                    toUserProfile.putExtra(UID_ID, viewModel.getUid());
-                    startActivity(toUserProfile);*/
-                    gotoActivity(UserActivity.class);
-                    finish();// todo: apply isLogIn(), that register and login page not visitable
+        super.onCreate(savedInstanceState);
 
-                }   else if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_FAILED_ID) {
+    }
 
-                    Toast.makeText(context, R.string.registration_failed, Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+
+    /** Hook method for livedata processing
+     *
+     * @param it Message.
+     */
+    protected void processStateChange(Pair<String, StateInterface> it) {
+        if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_SUCCESS_ID) {
+            // Sign in success, update UI with the signed-in user's information
+            Toast.makeText(this, R.string.registration_succeeded, Toast.LENGTH_LONG).show();
+            gotoActivity(UserActivity.class);
+            finish();// todo: apply isLogIn(), that register and login page not visitable
+
+        }   else if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_FAILED_ID) {
+
+            String errorMessage = getResources().getString(R.string.registration_failed) + ": " + it.first;
+            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        }
     }
 
 }
