@@ -1,0 +1,16 @@
+Testfragen
+
+Der Nutzer wird dazu aufgefordert sich zu regsitrieren, sich darhaufhin ein Profil zu erstllen und
+danach noch einer Gruppe beizutreten, sie zu verlassen und danach eine eigene zu erstellen.
+
+-Wie intuitiv fandest du die Navigation der app? (1-5)
+-Hat die App ausreichend Funktionaitäten?
+-Wie fandest du das Design? (1-5)
+-Wie wahrscheinlich ist es, dass du diese App selbst benutzen würdest? (1-5)
+-Was hat dir gefallen, was hat dir nicht gefallen?
+
+
+Fragen die wir an uns stellen:
+
+-Wie viele Rückfragen musste User an uns stellen, damit er das Testszenario beenden konnte?
+-Wie lange hat der User gebraucht.
