@@ -101,6 +101,16 @@ public class LoginViewModel extends MensaMeetViewModel {
      */
     private void login(final LoginViewModel item) {
 
+        String emailValue = email.getValue();
+        String passwordValue = password.getValue();
+
+        if (emailValue.equals("") || passwordValue.equals("")) {
+
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.CREDENTIALS_INCOMPLETE));
+            return;
+
+        }
+
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email.getValue(), password.getValue())
@@ -165,6 +175,7 @@ public class LoginViewModel extends MensaMeetViewModel {
         LOG_IN_FAILED_ID,
         TEST_ID_USER,
         TEST_ID_HOME,
-        INITIALIZATION_FAILED
+        INITIALIZATION_FAILED,
+        CREDENTIALS_INCOMPLETE
     }
 }

@@ -42,6 +42,8 @@ public class RegisterViewModel extends MensaMeetViewModel {
     public void onRegisterClick(RegisterViewModel item) {
         if (matchPattern()) {
             createAccount(item);
+        } else {
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.PASSWORDS_NOT_MATCHING));
         }
     }
 
@@ -125,9 +127,9 @@ public class RegisterViewModel extends MensaMeetViewModel {
      */
     private boolean matchPattern() {
         //todo manage to show errorCode in editText
-        if (email.getValue() == null) {
+        if (email.getValue().equals("")) {
             return false;
-        } else if (password.getValue() == null) {
+        } else if (password.getValue().equals("")) {
             return false;
         } else if (!passwordConfirm.getValue().equals(password.getValue())) {
             return false;
@@ -136,6 +138,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
     }
 
     private void createAccount(final RegisterViewModel item) {
+
         final FirebaseAuth mAuth = FirebaseAuth.getInstance();
         mAuth.createUserWithEmailAndPassword(email.getValue(), password.getValue())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -179,6 +182,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID, INITIALIZATION_FAILED
+        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID, INITIALIZATION_FAILED, PASSWORDS_NOT_MATCHING
     }
 }
