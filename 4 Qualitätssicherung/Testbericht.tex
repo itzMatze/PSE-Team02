@@ -1,0 +1,60 @@
+\documentclass[a4paper]{scrreprt}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\usepackage[german]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{ae}
+\usepackage{graphicx}
+\usepackage{lscape} % querformat
+\usepackage{tabu}
+\usepackage{hyperref}
+\usepackage{xcolor}
+\usepackage[toc]{glossaries}
+
+\makeglossaries
+
+\newglossaryentry{Unittest}
+{
+  name=Unittest,
+  description={Auch bekannt als Modul- oder Komponententest. Wird in der Softwareentwicklung angewendet, um die funktionalen Einzelteile (Units) von Computerprogrammen zu testen, d. h., sie auf korrekte Funktionalität zu prüfen}
+}
+
+\newglossaryentry{Hallway Usability Test}
+{
+  name=Hallway Usability Test,
+  description={Test, bei dem zufällige Personen zum Testen von Softwareprodukten und -schnittstellen verwendet werden}
+}
+
+\newglossaryentry{Qualitaetssicherung}
+{
+  name=Qualitätssicherung,
+  description={Letzte Phase des Wasserfallmodells}
+}
+
+
+\begin{document}
+\title{Testbericht}
+\author{Fangzhou Bian, Kathrin Blum, Matthias Bruns, \\Leonhard Duda, Tan Grumser, Yuguang Lin}
+\maketitle
+%\Footnote für Fußnoten
+% Platzierung des Inhaltsverzeichnisses
+\tableofcontents
+
+
+
+\chapter{Einleitung}
+
+Dieses Dokument verschafft einen Überblick über die \Gls{Qualitaetssicherung} des Projekts. In dieser Phase wurde die Überdeckung der \Gls{Unittest}s maximiert, die Testszenarien des Pflichtenhefts durchgegangen und gefundene Fehler behoben. Des Weiteren wurde ein \Gls{Hallway Usability Test} durchgeführt. Die dokumentierten Tests wurden wieder unterteilt in einen Server- und Clientteil.
+
+\chapter{Unittests}
+\section{Server}
+\section{Client}
+
+\chapter{Testszenarien}
+
+\chapter{Hallway Usability Testing}
+
+\printglossaries
+\end{document}
