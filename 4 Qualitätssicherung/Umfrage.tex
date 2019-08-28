@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage{enumitem,amssymb}
+\usepackage{multicol}
+\newlist{todolist}{itemize}{2}
+\setlist[todolist]{label=$\square$}
+\usepackage{blindtext}
+\usepackage{graphicx}
+\usepackage[absolute]{textpos}
+\usepackage[utf8]{inputenc}
+\setlength{\TPHorizModule}{2cm}
+\setlength{\TPVertModule}{5cm}
+\textblockorigin{190mm}{10mm} 
+\newenvironment{Ckcol}[1]{\begin{multicols}{#1}%
+        \begin{todolist}}%
+              {\end{todolist}%
+                           \end{multicols}}
+\begin{document}
+\center \section*{Umfrage} 
+Die Navigation der App war intuitiv leicht bedienbar.
+   \begin{Ckcol}{3}
+
+    \item  Trifft voll zu
+    \item  Trifft nicht zu
+    \item  Trifft ehernicht zu
+    \item  Trifft gar nicht zu
+    \item  Neutral
+
+   \end{Ckcol}     
+
+ Ich würde diese App selber benutzen/weiterempfehlen.
+      \begin{Ckcol}{3}
+
+    \item  Trifft voll zu
+    \item  Trifft nicht zu
+    \item  Trifft ehernicht zu
+    \item  Trifft gar nicht zu
+    \item  Neutral
+    
+
+   \end{Ckcol}
+ 
+   
+   
+  Das Design hat mir ... gefallen.
+      \begin{Ckcol}{3}
+
+    \item  Sehr gut
+    \item  Eher gut
+    \item  Mäßig gut
+    \item  Eher nicht
+    \item  Gar nicht
+    
+
+   \end{Ckcol}
+   
+   
+Wünscht du dir noch weitere Funktionalitäten?
+\begin{center}
+ \setlength{\fboxsep}{1pt} 
+ \fbox{\parbox[t][4cm][t]{10cm}{~}}
+\end{center}
+
+Was hat dir gefallen, was hat dir nicht gefallen?
+\begin{center}
+ \setlength{\fboxsep}{1pt} 
+ \fbox{\parbox[t][4cm][t]{10cm}{~}}
+\end{center}
+\end{document}
