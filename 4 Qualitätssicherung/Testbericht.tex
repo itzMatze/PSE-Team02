@@ -48,6 +48,18 @@
 
 Dieses Dokument verschafft einen Überblick über die \Gls{Qualitaetssicherung} des Projekts. In dieser Phase wurde die Überdeckung der \Gls{Unittest}s maximiert, die Testszenarien des Pflichtenhefts durchgegangen und gefundene Fehler behoben. Des Weiteren wurde ein \Gls{Hallway Usability Test} durchgeführt. Die dokumentierten Tests wurden wieder unterteilt in einen Server- und Clientteil.
 
+\chapter{Bug Fixes}
+\section{Server}
+
+\begin{itemize}
+\item Sceduler\\ \\
+Symptom: Die Funktionen die einmal täglich aufgerufen werden sollten, wurden nicht ausgeführt. TimeController.deleteGroups() und TimeController.updateMensaData() wurden nicht aufgerufen.\\ \\
+Ursache: Die Annotationen @Component hat in der Klasse TimeController hat gefehlt, damit hat SpringBoot die Klasse nicht gefunden und den Sceduler nicht Initialisiert.\\ \\
+Behebung:  Die Annotation wurde hinzugefügt.
+\end{itemize}
+
+\section{Client}
+
 \chapter{Unittests}
 \section{Server}
 \section{Client}
