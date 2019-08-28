@@ -25,12 +25,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 @LargeTest
 public class UITest {
     @Rule
-    public ActivityTestRule<BeginActivity> activityRule =
+    public ActivityTestRule<BeginActivity> beginActivityRule =
             new ActivityTestRule<>(BeginActivity.class);
 
     @Test
-    public void espresso() {
-        onView(withId(R.id.goEat)).perform(click());
-        onView(withText("Hello Steve!")).check(matches(isDisplayed()));
+    public void gotoLoginTest() {
+        onView(withId(R.id.login)).perform(click());
+        onView(withId(R.id.usernameTextInput)).check(matches(isDisplayed()));
+        onView(withId(R.id.password)).check(matches(isDisplayed()));
+        onView(withId(R.id.login)).check(matches(isDisplayed()));
     }
 }
