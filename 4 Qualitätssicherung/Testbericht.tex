@@ -105,6 +105,43 @@ Test 2: Die Methode initalizeAdminUser wird zweimal aufgerufen. Beim ersten Aufr
 \section{Client}
 
 \chapter{Testszenarien}
+\section{Server}
+
+Die nachfolgenden Tests laufen ausschließlich auf dem Server und sind dazu da die klassenübergreifende Funktionalitäten zu testen.\\
+
+
+\begin{itemize}
+
+\item Szenario 1 (MK60, MK 80, MK100)\\
+Vorbedingung: Es ist bereits User Alice im UserRepository. Dieser User ist in keiner Gruppe.\\
+Ablauf: Der User erstellt eine Gruppe und verlässt sie anschließend wieder.\\
+Nachbedingung: Der User ist in keiner Gruppe und die erstellte Gruppe hat sich gelöscht, als Alice, als letzter User ausgetreten ist.\\
+
+
+\item Szenario 2 (MK70, MK 80)\\
+Vorbedingung: Es existieren die User A,B und C. Es existiert eine Gruppe X die mit User A und B voll ist. \\
+Ablauf: User B verlässt die Gruppe, sodass Platz für User C frei wird. Dieser tritt dann der Gruppe bei.\\
+Nachbedingung: User A und C sind in Gruppe X und User B ist in keiner Gruppe.\\
+
+
+\item Szenario 3 (MK 100)\\
+Vorbedingung: Es existiert ein User A der in der Gruppe X ist.\\
+Ablauf: Es werden (um Mitternacht) alle Gruppen gelöscht.\\
+Nachbedingung: User A  ist in keiner Gruppe und die Gruppe X existiert nicht mehr.\\
+
+\item Szenario 4 (MK110)\\
+Vorbedingung: Es existiert ein User A der in der Gruppe X ist und ein Admin User.\\
+Ablauf: Die Gruppe X wird von dem Admin User gelöscht.\\
+Nachbedingung: User A  ist in keiner Gruppe und die Gruppe X existiert nicht mehr.\\
+
+
+\end{itemize}
+
+
+
+\section{Client}
+
+
 
 \chapter{Hallway Usability Testing}
 
