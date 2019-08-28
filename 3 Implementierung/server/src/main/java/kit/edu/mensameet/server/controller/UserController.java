@@ -91,9 +91,12 @@ public class UserController {
 	public void deleteUser(String userToken) {		
 		User userToDelete = getUser(userToken);
 		
-		if (userToDelete == null) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found.");
-		} 
+		/*
+		 * This isn't necessary. with getUser it's already checked, if the user is null or not
+		 */
+		//if (userToDelete == null) {
+		//	throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with token " + userToken + " coulnd't be found.");
+		//} 
 		
 		//remove user from group to avoid hibernate, mysql conflicts.
 		if (userToDelete.getGroupToken() != null) {			

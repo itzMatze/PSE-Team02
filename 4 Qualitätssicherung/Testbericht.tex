@@ -61,7 +61,47 @@ Behebung:  Die Annotation wurde hinzugefügt.
 \section{Client}
 
 \chapter{Unittests}
+Für die Unit Tests wurde das Framework JUnit verwendet. Die Testabdeckung am Server wurde mit EclEmma überprüft.
+
 \section{Server}
+\begin{itemize}
+
+\item GroupController - Test
+getestete Funktionalitäten, zusätzlich zu den bisherigen aus letztem Dokument
+\begin{itemize}
+
+
+\item getGroupByPreferecne
+Test: Zwei Testgruppen wurden dem Repository hinzugefügt jeweils mit der selben meetingTime, aber unterschiedlichen Essenslinien
+Dann wurde die Methode getGroupByPreference mit Start und Endzeit, sodass beide Gruppen sie erfüllen und einem Array aus Essenslinien, von denen es nur eine Übereinstimmung mit den Gruppen gibt, aufgerufen.
+Da GetGroupByPreference sowohl die angegebenen Zeiten, als auch die Essenslinien berücksichtigt, dürfte nur eine Gruppe zurückgegeben werden.
+zum überprüfen würde die Länge des zurückgegebenen Arrays überprüft.
+\\ \\
+Test2: Analog zu oben, nur dass keine Gruppe eine übereinstimmende Essenslinie mit den Preferenzen hatte.
+Ziel war es zu sehen, ob ein Array der Länge 0 zurückgegeben wird oder unerwartetes Verhalten auftritt.
+Wie erwartet hatte das zurückgegebene Array die Länge null.
+\\ \\
+Test3: Analog zu oben, gruppen haben passende Essenslinie aber nur eine Gruppe hat eine passende (Rand) Uhrzeit, und wie erwartet wird genau diese Gruppe zurückgegeben.
+\end{itemize}
+
+\item UserController - Test 
+getestete Funkitonalitäten zusätzlich zu denen aus letztem Dokument
+
+\begin{itemize}
+
+\item DeleteUser
+Test 1: Ein User ("User1") wurde anhand seines Tokens ins Repository hinzugefügt. Nun wird versucht einen anderen User ("User2"), der nicht im Repository liegt, aus dem Repository zu löschen. Wie erwartet, wird dabei kein anderer User gelöscht, sondern eine ResponseStatusException geworfen.
+
+\item DeleteAllUser
+Test1: Zwei User werden ins Repository hinzugefügt. Danach wird DeleteAllUser aufgerufen, nun sollte kein User mehr im Repository liegen. Beim Versuch auf einen der User mit der Methode "User getUser(String token)" aus dem Repository zu holen, wird eine ResponseStatusException geworfen. 
+
+\item IntitalizeAdminUser
+Test 1: Die Methode intializeAdminUser wird aufgerufen, da es noch keinen AdminUser gibt, wird einer neu angelegt. Um das zu überprüfen, prüfen wir, dass das angelegte Userobjekt nicht leer ist.
+
+Test 2: Die Methode initalizeAdminUser wird zweimal aufgerufen. Beim ersten Aufruf wird ein Admin User angelegt, beim zweiten Aufruf sollte nichts passieren, da bereits ein Admin User existiert. 
+\end{itemize}
+\end{itemize}
+
 \section{Client}
 
 \chapter{Testszenarien}
