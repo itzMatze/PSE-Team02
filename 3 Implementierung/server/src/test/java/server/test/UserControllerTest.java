@@ -79,7 +79,7 @@ public class UserControllerTest {
 	}
 
 	@Test(expected = ResponseStatusException.class)
-	public void shouldDeleteAUserAndFailToGetIt() {
+	public void shouldDeleteAUserAndFailToGetTheDeletedOne() {
 		controller.addUserWithToken("token1");
 		controller.addUserWithToken("token2");
 		controller.deleteUser("token1");
@@ -109,13 +109,14 @@ public class UserControllerTest {
 	}
 	
 	@Test
-	public void shouldTrytoInitalizeTwoAdminUserAndFail() {
+	public void shouldTrytoInitalizeTwoAdminUser() {
 		controller.initializeAdminUser();
 		controller.initializeAdminUser();
 		User a = controller.getUser(adminToken);
 		assertNotNull(a);
 	}
 	
+		
 	@After
 	public void tearDown() {
 		repository.deleteAll();
