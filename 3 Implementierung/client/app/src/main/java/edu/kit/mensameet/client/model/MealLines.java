@@ -9,7 +9,7 @@ import edu.kit.mensameet.client.view.R;
 /**
  * Enum of mensa lines.
  */
-public enum MealLines {
+public enum MealLines implements IdEnum {
     LINE_ONE(R.string.line_one),
     LINE_TWO(R.string.line_two),
     LINE_THREE(R.string.line_three),
@@ -24,7 +24,7 @@ public enum MealLines {
     PIZZA_LINE_PASTA(R.string.line_pizza_line_pasta),
     PIZZA_LINE_SALAD(R.string.line_salad);
 
-    public final @StringRes
+    private final @StringRes
     int id;
 
     private MealLines(@StringRes int id) {
@@ -47,5 +47,10 @@ public enum MealLines {
             }
         }
         return null;
+    }
+
+    @Override
+    public int getId() {
+        return id;
     }
 }

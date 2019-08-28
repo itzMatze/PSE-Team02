@@ -4,27 +4,22 @@ import android.util.Pair;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.view.MensaMeetItem;
 
 /**
  * Handler for a GroupItem.
  */
-public class GroupItemHandler extends MensaMeetItemHandler {
-
-    private Group group;
-    private MensaMeetItem.DisplayMode displayMode;
+public class GroupItemHandler extends MensaMeetItemHandler<Group> {
 
     /**
      * Constructor.
      *
      * @param group The Group object.
-     * @param displayMode Item display mode.
      */
-    public GroupItemHandler(Group group, MensaMeetItem.DisplayMode displayMode) {
-        this.group = group;
-        this.displayMode = displayMode;
-
+    public GroupItemHandler(Group group) {
+        super(group);
     }
 
     /**
@@ -32,9 +27,11 @@ public class GroupItemHandler extends MensaMeetItemHandler {
      */
     public void joinGroup() {
 
+        // Join group.
+
         try {
 
-            RequestUtil.addUserToGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken());
+            RequestUtil.addUserToGroup(objectData.getToken(), MensaMeetSession.getInstance().getUser().getToken());
 
         } catch (RequestUtil.RequestException e) {
 
@@ -43,9 +40,23 @@ public class GroupItemHandler extends MensaMeetItemHandler {
 
         }
 
-        MensaMeetSession.getInstance().getUser().setGroupToken(group.getToken());
-        group.getUsers().add(MensaMeetSession.getInstance().getUser());
-        MensaMeetSession.getInstance().setChosenGroup(group);
+        // Reload user.
+
+        User userUpdate = null;
+
+        try {
+
+            userUpdate = RequestUtil.getUser(MensaMeetSession.getInstance().getUser().getToken(), MensaMeetSession.getInstance().getUser().getToken());
+
+        } catch (RequestUtil.RequestException e) {
+
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.RELOADING_USER_FAILED));
+            return;
+
+        }
+
+        MensaMeetSession.getInstance().setUser(userUpdate);
+
         eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_JOINED));
 
     }
@@ -57,31 +68,42 @@ public class GroupItemHandler extends MensaMeetItemHandler {
 
         try {
 
-            RequestUtil.deleteGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken());
+            RequestUtil.deleteGroup(objectData.getToken(), MensaMeetSession.getInstance().getUser().getToken());
 
         } catch (RequestUtil.RequestException e) {
 
-            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.GROUP_DELETE_FAILED));
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.GROUP_DELETION_FAILED));
             return;
         }
 
-        if (MensaMeetSession.getInstance().getUser().getGroupToken().equals(group.getToken())) {
-            MensaMeetSession.getInstance().getUser().setGroupToken(null);
+        // If deleted group was the current user's group.
+
+        if (MensaMeetSession.getInstance().getUser().getGroupToken().equals(objectData.getToken())) {
+
+            // Reload user.
+
+            User userUpdate = null;
+
+            try {
+
+                userUpdate = RequestUtil.getUser(MensaMeetSession.getInstance().getUser().getToken(), MensaMeetSession.getInstance().getUser().getToken());
+
+            } catch (RequestUtil.RequestException e) {
+
+                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.RELOADING_USER_FAILED));
+                return;
+
+            }
+
+            MensaMeetSession.getInstance().setUser(userUpdate);
         }
-        group = null;
+
+        objectData = null;
 
         eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_DELETED));
     }
 
-    public Group getGroup() {
-        return group;
-    }
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     public enum State implements StateInterface {
-        GROUP_JOINED, GROUP_JOIN_FAILED, GROUP_DELETED, GROUP_DELETE_FAILED, DEFAULT
+        GROUP_JOINED, GROUP_JOIN_FAILED, GROUP_DELETED, GROUP_DELETION_FAILED, RELOADING_USER_FAILED
     }
 }

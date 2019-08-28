@@ -8,8 +8,6 @@ import android.view.View;
 
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.viewmodel.HomeViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -24,14 +22,22 @@ public class HomeActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
-        super.viewModel = viewModel;
-
         super.onCreate(savedInstanceState);
+
+        viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back.
+        if (viewModel.getUser() == null) {
+            onBackPressed();
+        }
 
         setContentView(R.layout.activity_home);
 
-        SharedPreferences sharedPrefs = getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
+        observeLiveData();
+        initializeButtons();
+
+        //SharedPreferences sharedPrefs = getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
     }
 
     /**

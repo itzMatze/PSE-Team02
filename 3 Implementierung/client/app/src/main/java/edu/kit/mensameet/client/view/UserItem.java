@@ -1,13 +1,14 @@
 package edu.kit.mensameet.client.view;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -15,9 +16,7 @@ import android.widget.TextView;
 import java.util.Date;
 
 import edu.kit.mensameet.client.model.Gender;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
-import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 import edu.kit.mensameet.client.model.MensaMeetUserPictureList;
 import edu.kit.mensameet.client.model.Status;
 import edu.kit.mensameet.client.model.Subject;
@@ -38,7 +37,8 @@ public class UserItem extends MensaMeetItem<User> {
 
         super(context, displayMode, objectData);
 
-        handler = new UserItemHandler(objectData, displayMode);
+        handler = new UserItemHandler(objectData);
+        super.initializeHandler(handler);
     }
 
     @Override
@@ -84,6 +84,7 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             itemView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0));
+
         } else {
 
             itemView.setLayoutParams(WIDTH_MATCH_PARENT);
@@ -158,12 +159,7 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setId((int) R.string.field_gender);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
-            String[] items = new String[Gender.values().length];
-            for (int i = 0; i < Gender.values().length; i++) {
-                items[i] = context.getResources().getString(Gender.values()[i].id);
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
+            ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, SpinnerItem.createSpinnerItemArray(Gender.values(), context));
 
             dropdown.setAdapter(adapter);
 
@@ -174,6 +170,7 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(super.createTextField(R.string.field_status, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             descriptionArea.addView(createLabel(R.string.you_are, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
@@ -182,12 +179,7 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setId((int) R.string.field_status);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
-            String[] items = new String[Status.values().length];
-            for (int i = 0; i < Status.values().length; i++) {
-                items[i] = context.getResources().getString(Status.values()[i].id);
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
+            ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, SpinnerItem.createSpinnerItemArray(Status.values(), context));
 
             dropdown.setAdapter(adapter);
 
@@ -206,12 +198,7 @@ public class UserItem extends MensaMeetItem<User> {
             dropdown.setId((int) R.string.field_subject);
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
-            String[] items = new String[Subject.values().length];
-            for (int i = 0; i < Subject.values().length; i++) {
-                items[i] = context.getResources().getString(Subject.values()[i].id);
-            }
-
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
+            ArrayAdapter<SpinnerItem> adapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_dropdown_item, SpinnerItem.createSpinnerItemArray(Subject.values(), context));
 
             dropdown.setAdapter(adapter);
 
@@ -220,16 +207,34 @@ public class UserItem extends MensaMeetItem<User> {
 
         // Field: Delete button
 
-               if (MensaMeetSession.getInstance().getUser() != null && MensaMeetSession.getInstance().getUser().getIsAdmin()) {
+               if (handler.getCurrentUser() != null && handler.getCurrentUser().getIsAdmin()) {
 
-                if (displayMode == DisplayMode.SMALL && !objectData.equals(MensaMeetSession.getInstance().getUser())) {
+                if (displayMode == DisplayMode.SMALL && !handler.getObjectData().equals(handler.getCurrentUser())) {
 
                     final Button deleteButton = new Button(context);
                     deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
                     deleteButton.setText(R.string.delete_user);
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
-                            handler.deleteUser();
+
+                            new AlertDialog.Builder(context)
+                                    .setTitle(R.string.delete_user)
+                                    .setMessage(R.string.really_delete_user)
+
+                                    // Specifying a listener allows you to take an action before dismissing the dialog.
+                                    // The dialog is automatically dismissed when a dialog button is clicked.
+                                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            handler.deleteUser();
+                                        }
+                                    })
+
+                                    // A null listener allows the button to dismiss the dialog and take no further action.
+                                    .setNegativeButton(R.string.no, null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+
+
                         }
                     });
                     deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
@@ -252,6 +257,8 @@ public class UserItem extends MensaMeetItem<User> {
     @Override
     public void fillObjectData() {
 
+        User objectData = handler.getObjectData();
+
         if(objectData == null) {
             return;
         }
@@ -270,31 +277,12 @@ public class UserItem extends MensaMeetItem<User> {
             fillTextField(R.string.field_birth_date, MensaMeetTime.dateToString(birthDate));
         }
 
-        String argument;
+        setSpinnerOrTextField(R.string.field_gender, objectData.getGender());
 
-        Gender gender = objectData.getGender();
-        if (gender != null) {
-            argument = context.getResources().getString(gender.id);
-        } else {
-            argument = null;
-        }
-        setSpinnerField(R.string.field_gender, argument);
+        setSpinnerOrTextField(R.string.field_status, objectData.getStatus());
 
-        Status status = objectData.getStatus();
-        if (status != null) {
-            argument = context.getResources().getString(status.id);
-        } else {
-            argument = null;
-        }
-        setSpinnerField(R.string.field_status, argument);
+        setSpinnerOrTextField(R.string.field_subject, objectData.getSubject());
 
-        Subject subject = objectData.getSubject();
-        if (subject != null) {
-            argument = context.getResources().getString(subject.id);
-        } else {
-            argument = null;
-        }
-        setSpinnerField(R.string.field_subject, argument);
     }
 
     /**
@@ -302,6 +290,8 @@ public class UserItem extends MensaMeetItem<User> {
      * */
     @Override
     public void saveEditedObjectData() {
+
+        User objectData = handler.getObjectData();
 
         if(objectData == null) {
             return;
@@ -318,11 +308,13 @@ public class UserItem extends MensaMeetItem<User> {
 
         objectData.setBirthdate(d);
 
-        objectData.setGender(Gender.valueOfString(context, extractSpinnerField(R.string.field_gender)));
+        objectData.setGender(Gender.valueOf(extractSpinnerOrTextField(R.string.field_gender)));
 
-        objectData.setStatus(Status.valueOfString(context, extractSpinnerField(R.string.field_status)));
+        objectData.setStatus(Status.valueOf(extractSpinnerOrTextField(R.string.field_status)));
 
-        objectData.setSubject(Subject.valueOfString(context, extractSpinnerField(R.string.field_subject)));
+        objectData.setSubject(Subject.valueOf(extractSpinnerOrTextField(R.string.field_subject)));
+
+        handler.setObjectData(objectData);
     }
 
     @Override

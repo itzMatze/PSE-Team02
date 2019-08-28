@@ -18,23 +18,28 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
  */
 public class RegisterActivity extends MensaMeetActivity {
 
-    public static final String UID_ID = "uid";
     private ActivityRegisterBinding binding;
     private RegisterViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        //[start]data binding
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         super.viewModel = viewModel;
+
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            onBackPressed();
+        }
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
-        viewModel.setContext(this);
-        //[end]data binding
 
-        super.onCreate(savedInstanceState);
+        observeLiveData();
+        initializeButtons();
 
     }
 
@@ -44,16 +49,34 @@ public class RegisterActivity extends MensaMeetActivity {
      * @param it Message.
      */
     protected void processStateChange(Pair<String, StateInterface> it) {
-        if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_SUCCESS_ID) {
-            // Sign in success, update UI with the signed-in user's information
-            Toast.makeText(this, R.string.registration_succeeded, Toast.LENGTH_LONG).show();
+        if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_SUCCESS) {
+
+            showMessage(this, R.string.registration_succeeded, it);
+
+            finish();
             gotoActivity(UserActivity.class);
-            finish();// todo: apply isLogIn(), that register and login page not visitable
 
-        }   else if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_FAILED_ID) {
+        } else if (it.second == RegisterViewModel.State.CREATE_ACCOUNT_FAILED) {
 
-            String errorMessage = getResources().getString(R.string.registration_failed) + ": " + it.first;
-            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+            showMessage(this, R.string.registration_failed, it);
+
+        } else if (it.second == RegisterViewModel.State.INITIALIZATION_FAILED) {
+
+            showMessage(this, R.string.initialization_failed, it);
+
+            // Invalidate created session data.
+            viewModel.invalidateSession();
+
+        } else if (it.second == RegisterViewModel.State.LOADING_NEW_USER_FAILED) {
+
+            showMessage(this, R.string.reloading_user_failed, it);
+            // Invalidate created session data.
+            viewModel.invalidateSession();
+
+        } else if (it.second == RegisterViewModel.State.PASSWORDS_NOT_MATCHING) {
+
+            showMessage(this, R.string.passwords_not_equal_message, it);
+
         }
     }
 

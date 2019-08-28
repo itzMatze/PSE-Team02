@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivityBeginBinding;
 import edu.kit.mensameet.client.viewmodel.BeginViewModel;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
@@ -25,17 +26,28 @@ public class BeginActivity extends MensaMeetActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
+
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
-        super.viewModel = viewModel;
-        observeLiveData();
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            onBackPressed();
+        }
+
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
+        observeLiveData();
+        initializeButtons();
+
+        /*
         //if there is already a user logged in on this device, switch directly to the HomeActivity
         if (viewModel.isLoggedIn(this)) {
             gotoHome();
         }
+        */
 
     }
 
@@ -50,12 +62,10 @@ public class BeginActivity extends MensaMeetActivity {
             decide which activity to start
          */
 
-        if (it.second == BeginViewModel.State.LOGIN_ID) {
+        if (it.second == BeginViewModel.State.LOGIN) {
             gotoActivity(LoginActivity.class);
-        } else if (it.second == BeginViewModel.State.REGISTER_ID) {
+        } else if (it.second == BeginViewModel.State.REGISTER) {
             gotoActivity(RegisterActivity.class);
-        } else if (it.second == BeginViewModel.State.TEST_ID) { // todo: remove after testing
-            gotoActivity(UserActivity.class);
         }
     }
 }

@@ -55,7 +55,6 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
         this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
-        //this.recyclerView.setItemAnimator(null);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
 
 
@@ -98,10 +97,10 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
 
     @Override
     public void onItemClick(View view, int position) {
-        //Toast.makeText(context, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
+
     }
 
-    public static enum DisplayMode {
+    public enum DisplayMode {
         NO_SELECT, SINGLE_SELECT, MULTIPLE_SELECT
     }
 }

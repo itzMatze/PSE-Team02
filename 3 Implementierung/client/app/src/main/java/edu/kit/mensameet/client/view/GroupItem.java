@@ -1,7 +1,9 @@
 package edu.kit.mensameet.client.view;
 
+import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.util.Pair;
 import android.view.View;
@@ -44,7 +46,8 @@ public class GroupItem extends MensaMeetItem<Group> {
         super(context, displayMode, objectData);
 
         // Bind the handler.
-        handler = new GroupItemHandler(objectData, displayMode);
+        handler = new GroupItemHandler(objectData);
+        super.initializeHandler(handler);
 
         if (objectData != null) {
             userList = new UserList(context, objectData.getUsers(), MensaMeetList.DisplayMode.NO_SELECT, false);
@@ -168,8 +171,13 @@ public class GroupItem extends MensaMeetItem<Group> {
                         public void onPositiveClick(SelectOneLineDialog dialog) {
                             List<Line> selectedLines = dialog.getSelectedLines();
                             if (selectedLines.size() > 0) {
+
+                                String mealLine = selectedLines.get(0).getMealLine();
                                 ((TextView)chooseLine.findViewById((int)R.string.field_line))
-                                        .setText(context.getResources().getString(MealLines.valueOf(selectedLines.get(0).getMealLine()).id));
+                                        .setText(MealLines.valueOf(mealLine).getId());
+                                setRepresentedValue(R.string.field_line, mealLine);
+
+
                             }
                         }
                     });
@@ -222,7 +230,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         MensaMeetUtil.applyStyle(expandArea, R.style.expand_area);
 
         // Field: Join button
-        if (displayMode == DisplayMode.SMALL) {
+        if (displayMode == DisplayMode.SMALL && (handler.getObjectData().getMaxMembers() > handler.getObjectData().getUsers().size())) {
 
             final Button joinButton = new Button(context);
             joinButton.setLayoutParams(WIDTH_MATCH_PARENT);
@@ -230,8 +238,6 @@ public class GroupItem extends MensaMeetItem<Group> {
             joinButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
 
-                    handler.setGroup(objectData);
-                    MensaMeetSession.getInstance().setCreatedGroup(objectData);
                     handler.joinGroup();
                 }
             });
@@ -241,7 +247,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         }
 
         // Field: Delete button
-        if (MensaMeetSession.getInstance().getUser().getIsAdmin()) {
+        if (handler.getCurrentUser().getIsAdmin()) {
 
             if (displayMode == DisplayMode.SMALL || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
@@ -250,7 +256,24 @@ public class GroupItem extends MensaMeetItem<Group> {
                 deleteButton.setText(R.string.delete_group);
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
-                        handler.deleteGroup();
+
+                        new AlertDialog.Builder(context)
+                                .setTitle(R.string.delete_group)
+                                .setMessage(R.string.really_delete_group)
+
+                                // Specifying a listener allows you to take an action before dismissing the dialog.
+                                // The dialog is automatically dismissed when a dialog button is clicked.
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        handler.deleteGroup();
+                                    }
+                                })
+
+                                // A null listener allows the button to dismiss the dialog and take no further action.
+                                .setNegativeButton(R.string.no, null)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .show();
+
                     }
                 });
                 deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
@@ -283,6 +306,8 @@ public class GroupItem extends MensaMeetItem<Group> {
     @Override
     public void fillObjectData() {
 
+        Group objectData = handler.getObjectData();
+
         if (objectData == null) {
             return;
         }
@@ -297,12 +322,14 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         String line = objectData.getLine();
         if (line != null && MealLines.valueOf(line) != null) {
-            fillTextField(R.string.field_line, context.getResources().getString(MealLines.valueOf(line).id));
+            fillTextField(R.string.field_line, context.getResources().getString(MealLines.valueOf(line).getId()));
+            setRepresentedValue(R.string.field_line, line);
         }
 
         View maxMembersField = view.findViewById((int)R.string.field_max_members);
-        if (maxMembersField != null && maxMembersField.getClass() == Spinner.class) {
-            ((Spinner)maxMembersField).setSelection(objectData.getMaxMembers());
+        if (maxMembersField != null && maxMembersField instanceof Spinner) {
+            int spinnerIndex = objectData.getMaxMembers() - 1; // value a -> index a-1
+            ((Spinner)maxMembersField).setSelection(spinnerIndex);
         }
 
         View membersField = view.findViewById((int)R.string.members);
@@ -331,6 +358,8 @@ public class GroupItem extends MensaMeetItem<Group> {
     @Override
     public void saveEditedObjectData() {
 
+        Group objectData = handler.getObjectData();
+
         if (objectData == null) {
             return;
         }
@@ -338,15 +367,17 @@ public class GroupItem extends MensaMeetItem<Group> {
         objectData.setName(super.extractTextField(R.string.field_name));
         objectData.setMotto(super.extractTextField(R.string.field_motto));
         objectData.setMeetingDate(MensaMeetTime.stringToTime(super.extractTextField(R.string.field_time)));
-        objectData.setLine(MealLines.valueOfString(context, super.extractTextField(R.string.field_line)).toString());
+        objectData.setLine(getRepresentedValue(R.string.field_line));
 
-        String maxMembers = extractSpinnerField(R.string.field_max_members);
+        String maxMembers = extractSpinnerOrTextField(R.string.field_max_members);
 
         if (maxMembers == null) {
             objectData.setMaxMembers(0);
         } else {
             objectData.setMaxMembers(Integer.parseInt(maxMembers));
         }
+
+        handler.setObjectData(objectData);
 
     }
 

@@ -26,10 +26,12 @@ public class HomeViewModel extends MensaMeetViewModel {
 
         eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_BEGIN));
 
+        /*
         SharedPreferences sharedPrefs = context.getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPrefs.edit();
         editor.clear();
         editor.commit();
+        */
 
     }
 
@@ -46,6 +48,7 @@ public class HomeViewModel extends MensaMeetViewModel {
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_SELECT_LINES));
 
         } else {
+
             // If a group is chosen
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_GROUP_JOINED));
 

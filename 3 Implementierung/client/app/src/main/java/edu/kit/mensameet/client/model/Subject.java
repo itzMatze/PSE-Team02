@@ -9,7 +9,7 @@ import edu.kit.mensameet.client.view.R;
 /**
  * Enumeration for university subjects.
  */
-public enum Subject {
+public enum Subject implements IdEnum {
     INFORMATICS(R.string.subject_it),
     ECONOMY(R.string.subject_economy),
     MATH(R.string.subject_math),
@@ -18,7 +18,7 @@ public enum Subject {
     BIOLOGY(R.string.subject_biolgy),
     LINGUISTIC(R.string.subject_linguistic);
 
-    public final @StringRes
+    private final @StringRes
     int id;
 
     private Subject(@StringRes int id) {
@@ -42,4 +42,10 @@ public enum Subject {
         }
         return null;
     }
+
+    @Override
+    public int getId() {
+        return id;
+    }
+
 }

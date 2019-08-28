@@ -42,4 +42,5 @@ public class Line {
     public void setMeals(String[] meals) {
         this.meals = meals;
     }
+
 }

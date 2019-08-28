@@ -34,17 +34,41 @@ public class LoginViewModel extends MensaMeetViewModel {
      * @param item LoginViewModel.
      */
     public void onLoginClick(LoginViewModel item) {
-        if (matchPattern()) {
-            login(item);
-        }
+        login(item);
     }
 
     /**
      * onClick method for test list classes button
      *
-     * @param item BeginViewModel
+     * @param item LoginViewModel
      */
     public void onTestClick(LoginViewModel item) {
+
+        User user = null;
+
+        try {
+
+            user = RequestUtil.getUser("", "OK9MdvhqfTgHzhb7YHsqrdqPZ1x2");
+
+        } catch (RequestUtil.RequestException e) {
+
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOADING_USER_FAILED));
+            return;
+
+        }
+
+        try {
+
+            MensaMeetSession.getInstance().initialize(user);
+
+        } catch (RequestUtil.RequestException e) {
+
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.INITIALIZATION_FAILED));
+            return;
+
+        }
+
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LOG_IN_SUCCESS));
 
     }
 
@@ -80,22 +104,6 @@ public class LoginViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * Helps to check the format of email and password.
-     *
-     * @return True if email and password not null and password equals passwordConfirm,
-     * otherwise false.
-     */
-    private boolean matchPattern() {
-        //todo manage to show errorCode in editText
-        if (email.getValue() == null) {
-            return false;
-        } else if (password.getValue() == null) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      *
      * @param item
      */
@@ -128,22 +136,27 @@ public class LoginViewModel extends MensaMeetViewModel {
 
                             try {
 
-                                user = RequestUtil.getUser("", uid);
+                                user = RequestUtil.getUser(uid, uid);
 
                             } catch (RequestUtil.RequestException e) {
 
-                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOG_IN_FAILED_ID));
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOADING_USER_FAILED));
                                 return;
 
                             }
 
-                            if (MensaMeetSession.getInstance().initialize(user)) {
-                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LOG_IN_SUCCESS_ID));
-                            } else {
-                                //todo: handle it!
-                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.INITIALIZATION_FAILED));
+                            try {
+
+                                MensaMeetSession.getInstance().initialize(user);
+
+                            } catch (RequestUtil.RequestException e) {
+
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.INITIALIZATION_FAILED));
+                                return;
+
                             }
 
+                            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.LOG_IN_SUCCESS));
 
                         }
 
@@ -153,8 +166,7 @@ public class LoginViewModel extends MensaMeetViewModel {
                     @Override
                     public void onFailure(@NonNull Exception e) {
 
-                        String errorMessage = e.getLocalizedMessage();
-                        eventLiveData.setValue(new Pair<String, StateInterface>(errorMessage, State.LOG_IN_FAILED_ID));
+                        eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOG_IN_FAILED));
                     }
 
                 });
@@ -165,16 +177,10 @@ public class LoginViewModel extends MensaMeetViewModel {
      * The states the view model uses to communicate with the view.
      */
     public enum State implements StateInterface {
-        /**
-         * If login was successful.
-         */
-        LOG_IN_SUCCESS_ID,
-        /**
-         * If login failed.
-         */
-        LOG_IN_FAILED_ID,
-        TEST_ID_USER,
-        TEST_ID_HOME,
+
+        LOADING_USER_FAILED,
+        LOG_IN_SUCCESS,
+        LOG_IN_FAILED,
         INITIALIZATION_FAILED,
         CREDENTIALS_INCOMPLETE
     }

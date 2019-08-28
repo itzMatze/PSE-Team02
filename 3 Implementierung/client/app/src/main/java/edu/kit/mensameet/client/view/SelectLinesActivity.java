@@ -12,13 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import edu.kit.mensameet.client.model.FoodType;
 import edu.kit.mensameet.client.model.Line;
-import edu.kit.mensameet.client.model.Meal;
-import edu.kit.mensameet.client.model.MensaData;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivitySelectLinesBinding;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SelectLinesViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -37,19 +32,29 @@ public class SelectLinesActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(SelectLinesViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            onBackPressed();
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_lines);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+
+        observeLiveData();
+        initializeButtons();
 
         LinearLayout container = findViewById(R.id.container);
 
         // TODO: put .getMensaData().getLines() into one method
 
         List<Line> linesList = null;
-        Line[] lines = MensaMeetSession.getInstance().getMensaLines();
+        Line[] lines = viewModel.getMensaLines();
         if (lines != null) {
             linesList = new ArrayList<Line>(Arrays.asList(lines));
         }
@@ -62,17 +67,17 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
         reloadData();
 
-        super.onCreate(savedInstanceState);
     }
 
     @Override
     protected void reloadData() {
 
-        if (MensaMeetSession.getInstance().getChosenLines() != null) {
+        List<Line> chosenLines = viewModel.getChosenLines();
 
-            //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
+        if (chosenLines != null) {
 
-            lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
+            lineList.setSelectedObjects(chosenLines);
+
         }
     }
 
@@ -83,7 +88,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
         } else if (it.second == SelectLinesViewModel.State.LINES_SAVED_BACK) {
             gotoActivity(HomeActivity.class);
         } else if (it.second == SelectLinesViewModel.State.NO_LINES_SELECTED) {
-            Toast.makeText(this, getString(R.string.selectALine), Toast.LENGTH_SHORT).show();
+            showMessage(this, R.string.selectALine, it);
         }
     }
 

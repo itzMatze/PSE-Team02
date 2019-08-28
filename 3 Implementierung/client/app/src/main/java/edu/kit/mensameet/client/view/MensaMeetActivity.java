@@ -1,5 +1,6 @@
 package edu.kit.mensameet.client.view;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
@@ -8,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
@@ -30,7 +33,6 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public abstract class MensaMeetActivity extends AppCompatActivity {
 
     protected MensaMeetViewModel viewModel;
-    protected LinearLayout navView;
     protected Button buttonHome;
     protected Button buttonBack;
     protected Button buttonNext;
@@ -47,6 +49,10 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
 
         // Always keep app in portrait position
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+    }
+
+    protected void initializeButtons() {
 
         buttonHome = (Button)findViewById(R.id.navigation_home);
         if (buttonHome != null) {
@@ -80,8 +86,10 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             });
         }
 
-        observeLiveData();
+    }
 
+    protected void initializeViewModel(MensaMeetViewModel viewModel) {
+        this.viewModel = viewModel;
     }
 
     protected void observeLiveData() {
@@ -126,7 +134,6 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
      * Click method for next button.
      */
     public void onClickNext() {};
-    // TODO: Set stub methods to abstract once all activities are changed
 
     /**
      * Click method for back button.
@@ -161,6 +168,18 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
             Intent intent = new Intent(this, activity);
             startActivity(intent);
         }
+    }
+
+    protected void showMessage(Context context, @StringRes int id, Pair<String, StateInterface> it) {
+
+        String message = getResources().getString(id);
+
+        if (it.first != null && !it.first.equals("")) {
+            message += ": " + it.first;
+        }
+
+        Toast.makeText(context, message, Toast.LENGTH_LONG).show();
+
     }
 
     // Centering for the title.

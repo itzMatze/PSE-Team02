@@ -54,8 +54,7 @@ public class SelectLinesViewModel extends MensaMeetViewModel {
         }
     }
 
-
     public enum State implements StateInterface {
-        NO_LINES_SELECTED, LINES_SAVED_NEXT, LINES_SAVED_BACK, DEFAULT
+        NO_LINES_SELECTED, LINES_SAVED_NEXT, LINES_SAVED_BACK
     }
 }

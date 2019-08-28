@@ -13,6 +13,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.Observer;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.kit.mensameet.client.model.IdEnum;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -27,9 +31,10 @@ public abstract class MensaMeetItem<T> {
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
     protected Context context;
-    protected T objectData;
     protected DisplayMode displayMode;
-    protected MensaMeetItemHandler handler;
+    protected MensaMeetItemHandler<T> handler;
+
+    protected Map<Integer, String> representedValues = new HashMap<>();
 
     protected ViewGroup.LayoutParams layoutParams = WIDTH_MATCH_PARENT;
 
@@ -44,10 +49,12 @@ public abstract class MensaMeetItem<T> {
      */
     public MensaMeetItem(Context context, DisplayMode displayMode, T objectData) {
         this.context = context;
-        this.objectData = objectData;
         this.displayMode = displayMode;
-        this.view = createView();
 
+    }
+
+    protected void initializeHandler(MensaMeetItemHandler<T> handler) {
+        this.handler = handler;
     }
 
     public void observeHandlerLiveData() {
@@ -185,10 +192,7 @@ public abstract class MensaMeetItem<T> {
         View field = view.findViewById((int)id);
 
         if (field != null) {
-            if (field.getClass() == EditText.class) {
-                EditText editText = (EditText) field;
-                editText.setText(text);
-            } else if (field.getClass() == TextView.class) {
+            if (field instanceof TextView) {
                 TextView textView = (TextView) field;
                 textView.setText(text);
             }
@@ -200,36 +204,69 @@ public abstract class MensaMeetItem<T> {
      * Setting method for a spinner data selector or a TextView representation thereof in a read only mode.
      *
      * @param id Id of the spinner field and its string description.
-     * @param string String to be filled.
+     * @param value String to be filled.
      */
-    protected void setSpinnerField(@StringRes int id, String string) {
+    protected void setSpinnerOrTextField(@StringRes int id, String value) {
 
         View field = view.findViewById((int)id);
         if (field != null) {
-            if (field.getClass() == Spinner.class) {
+            if (field instanceof Spinner) {
                 ((Spinner) field).setSelection(
-                        MensaMeetUtil.getIndexInSpinner((Spinner) field, string));
-            } else if (field.getClass() == TextView.class) {
-                ((TextView) field).setText(string);
+                        MensaMeetUtil.getIndexInSpinner((Spinner) field, value));
+            } else if (field instanceof TextView) {
+                ((TextView) field).setText(value);
             }
         }
     }
 
     /**
-     * Extracts a string from a text field.
+     * Setting method for a spinner data selector or a TextView representation thereof in a read only mode.
+     *
+     * @param id Id of the spinner field and its string description.
+     * @param idEnum IdEnum to get the values from.
+     */
+    protected void setSpinnerOrTextField(@StringRes int id, IdEnum idEnum) {
+
+        String value;
+        String representation;
+
+        if (idEnum != null) {
+            value = idEnum.toString();
+            representation = context.getResources().getString(idEnum.getId());
+        } else {
+            value = null;
+            representation = null;
+        }
+
+        View field = view.findViewById((int)id);
+        if (field != null) {
+            if (field instanceof Spinner) {
+                ((Spinner) field).setSelection(
+                        MensaMeetUtil.getIndexInSpinner((Spinner) field, value));
+            } else if (field instanceof TextView) {
+                // If TextView to be set, put representation there and value as representedValue
+                ((TextView)field).setText(representation);
+                setRepresentedValue(id, value);
+            }
+        }
+
+    }
+
+
+
+    /**
+     * Extracts a string from a text field. If represented value for id is set, return this instead.
      *
      * @param id Id of the text field and its string description.
      * @return Text content of the field.
      */
     protected String extractTextField(@StringRes int id) {
+
         View field = view.findViewById((int)id);
         String text = null;
 
         if (field != null) {
-            if (field.getClass() == EditText.class) {
-                EditText editText = (EditText) field;
-                text = editText.getText().toString();
-            } else if (field.getClass() == TextView.class) {
+            if (field instanceof TextView) {
                 TextView textView = (TextView) field;
                 text = textView.getText().toString();
             }
@@ -244,14 +281,28 @@ public abstract class MensaMeetItem<T> {
      * @param id Id of the spinner field and its string description.
      * @return Text content of the field.
      */
-    protected String extractSpinnerField(@StringRes int id) {
+    protected String extractSpinnerOrTextField(@StringRes int id) {
         View field = view.findViewById((int)id);
 
         if (field != null) {
-            if (field.getClass() == Spinner.class) {
-                return ((Spinner)field).getSelectedItem().toString();
-            } else if (field.getClass() == TextView.class){
-                return extractTextField(id);
+            if (field instanceof Spinner) {
+
+                Object item = ((Spinner)field).getSelectedItem();
+                if (item != null) {
+                    if (item instanceof SpinnerItem) {
+                        return ((SpinnerItem)((Spinner)field).getSelectedItem()).getValue();
+                    } else if (item instanceof String) {
+                        return (String)item;
+                    }
+                }
+
+
+            } else if (field instanceof TextView){
+                if (representedValueSet(id)) {
+                    return getRepresentedValue(id);
+                } else {
+                    return extractTextField(id);
+                }
             }
         }
 
@@ -268,7 +319,7 @@ public abstract class MensaMeetItem<T> {
     protected void fillSublist(@StringRes int id, MensaMeetList sublist) {
         View sublistContainer = view.findViewById((int)id);
 
-        if (sublistContainer != null && sublistContainer.getClass() == LinearLayout.class) {
+        if (sublistContainer != null && sublistContainer instanceof LinearLayout) {
             LinearLayout linearLayout = (LinearLayout) sublistContainer;
             linearLayout.removeAllViews();
             linearLayout.addView(sublist.getView());
@@ -281,11 +332,17 @@ public abstract class MensaMeetItem<T> {
      * @param objectData The object data.
      */
     public void setObjectData(T objectData) {
-        this.objectData = objectData;
+        if (handler != null) {
+            handler.setObjectData(objectData);
+        }
+
     }
 
     public T getObjectData() {
-        return objectData;
+        if (handler != null) {
+            return (T)handler.getObjectData();
+        }
+        return null;
     }
 
     /**
@@ -294,6 +351,9 @@ public abstract class MensaMeetItem<T> {
     public void saveEditedObjectData() {};
 
     public View getView() {
+        if (view == null) {
+            view = createView();
+        }
         return view;
     };
 
@@ -320,6 +380,22 @@ public abstract class MensaMeetItem<T> {
 
     public ViewGroup.LayoutParams getLayoutParams() {
         return layoutParams;
+    }
+
+    protected void setRepresentedValue(@StringRes int id, String value) {
+        representedValues.put(new Integer(id), value);
+    }
+
+    protected String getRepresentedValue(@StringRes int id) {
+        if (representedValueSet(id)) {
+            return representedValues.get(new Integer(id));
+        }
+
+        return null;
+    }
+
+    protected Boolean representedValueSet(@StringRes int id) {
+        return representedValues.containsKey(new Integer(id));
     }
 
     /**

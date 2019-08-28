@@ -1,7 +1,6 @@
 package edu.kit.mensameet.client.view;
 
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -12,11 +11,9 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.util.MensaMeetUtil;
 import edu.kit.mensameet.client.view.databinding.ActivitySetTimeBinding;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SetTimeViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -26,7 +23,6 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public class SetTimeActivity extends MensaMeetActivity {
     private ActivitySetTimeBinding binding;
     private SetTimeViewModel viewModel;
-    private Context activity;
 
     private TextView startTime;
     private TextView endTime;
@@ -34,14 +30,22 @@ public class SetTimeActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        activity = this;
+        super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         super.viewModel = viewModel;
 
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            onBackPressed();
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_set_time);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
+
+        observeLiveData();
+        initializeButtons();
 
         startTime = findViewById(R.id.startTimeText);
         MensaMeetUtil.applyStyle(startTime, R.style.link_text);
@@ -57,7 +61,7 @@ public class SetTimeActivity extends MensaMeetActivity {
             @Override
             public void onClick(View view) {
 
-                TimePickerDialog timePickerDialogStart = new TimePickerDialog(activity, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialogStart = new TimePickerDialog(SetTimeActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                         String newTimeString = String.format("%02d:%02d", hourOfDay, minutes);
@@ -66,7 +70,7 @@ public class SetTimeActivity extends MensaMeetActivity {
                             chosenHour = hourOfDay;
                             chosenMinutes = minutes;
                         } else {
-                            Toast.makeText(activity, getString(R.string.start_before_end), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetTimeActivity.this, getString(R.string.start_before_end), Toast.LENGTH_LONG).show();
                         }
                     }
                 }, chosenHour, chosenMinutes, true);
@@ -83,7 +87,7 @@ public class SetTimeActivity extends MensaMeetActivity {
             @Override
             public void onClick(View view) {
 
-                TimePickerDialog timePickerDialogEnd = new TimePickerDialog(activity, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog timePickerDialogEnd = new TimePickerDialog(SetTimeActivity.this, android.R.style.Theme_Holo_Light_Dialog_NoActionBar, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
                         String newTimeString = String.format("%02d:%02d", hourOfDay, minutes);
@@ -92,7 +96,7 @@ public class SetTimeActivity extends MensaMeetActivity {
                             chosenHour = hourOfDay;
                             chosenMinutes = minutes;
                         } else {
-                            Toast.makeText(activity, getString(R.string.start_before_end), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SetTimeActivity.this, getString(R.string.start_before_end), Toast.LENGTH_LONG).show();
                         }
                     }
                 }, chosenHour, chosenMinutes, true);
@@ -104,13 +108,11 @@ public class SetTimeActivity extends MensaMeetActivity {
 
         reloadData();
 
-        super.onCreate(savedInstanceState);
-
     }
 
     protected void reloadData() {
 
-        MensaMeetTime savedTime = MensaMeetSession.getInstance().getChosenTime();
+        MensaMeetTime savedTime = viewModel.getChosenTime();
 
         if (savedTime != null) {
 

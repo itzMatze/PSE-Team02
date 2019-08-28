@@ -1,7 +1,8 @@
 package edu.kit.mensameet.client.view;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,9 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.model.Group;
-import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.view.databinding.ActivityGroupJoinedBinding;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.GroupJoinedViewModel;
-import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 import edu.kit.mensameet.client.viewmodel.UserItemHandler;
 
@@ -32,125 +29,27 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     private GroupJoinedViewModel viewModel;
     private ActivityGroupJoinedBinding binding;
     private GroupItem groupItem;
+    private LinearLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(GroupJoinedViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            onBackPressed();
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_joined);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        LinearLayout container = findViewById(R.id.container);
-
-        String groupToken = MensaMeetSession.getInstance().getUser().getGroupToken();
-
-        if (groupToken == null || groupToken.equals("")) {
-
-            Toast.makeText(GroupJoinedActivity.this, R.string.no_group_joined, Toast.LENGTH_SHORT).show();
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    // Actions to do after 5 seconds
-                    // restart activity to reload all data
-                    finish();
-                    gotoActivity(HomeActivity.class);
-                }
-            }, 2000);
-        }
-
-        viewModel.setGroupByToken(groupToken);
-        Group joinedGroup = viewModel.getGroup();
-
-        if (joinedGroup == null) {
-            Toast.makeText(GroupJoinedActivity.this, R.string.no_group_joined, Toast.LENGTH_SHORT).show();
-
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-                public void run() {
-                    // Actions to do after 5 seconds
-                    // restart activity to reload all data
-                    finish();
-                    gotoActivity(HomeActivity.class);
-                }
-            }, 2000);
-        }
-
-        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_NOTEDITABLE,
-                joinedGroup);
-        container.addView(groupItem.getView());
-
-        groupItem.fillObjectData();
-
-        groupItem.getHandler().getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
-            @Override
-            public void onChanged(@Nullable Pair<String, StateInterface> it) {
-
-                if (it.second == GroupItemHandler.State.GROUP_JOINED) {
-
-                    gotoActivity(GroupJoinedActivity.class);
-
-                } else if (it.second == GroupItemHandler.State.GROUP_DELETED) {
-
-                    Toast.makeText(GroupJoinedActivity.this, R.string.group_deleted, Toast.LENGTH_SHORT).show();
-
-                    Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        public void run() {
-                            // Actions to do after 5 seconds
-                            // restart activity to reload all data
-                            finish();
-                            gotoActivity(HomeActivity.class);
-                        }
-                    }, 2000);
-
-
-
-                }
-            }
-        });
-
-        for (int j = 0; j < groupItem.getUserList().getItemCount(); j++) {
-
-            UserItem userItem = (UserItem)groupItem.getUserList().getItem(j);
-
-            if (userItem != null) {
-
-                UserItemHandler userItemHandler = (UserItemHandler)userItem.getHandler();
-
-                userItemHandler.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
-                    @Override
-                    public void onChanged(@Nullable Pair<String, StateInterface> it) {
-
-                        if (it.second == UserItemHandler.State.SHOW_USER) {
-                            gotoActivity(ShowUserActivity.class);
-                        } else if (it.second == UserItemHandler.State.USER_DELETED) {
-
-                            Toast.makeText(GroupJoinedActivity.this, R.string.user_deleted, Toast.LENGTH_SHORT).show();
-
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    // Actions to do after 5 seconds
-                                    // restart activity to reload all data
-                                    finish();
-                                    startActivity(getIntent());
-                                }
-                            }, 2000);
-
-                        }
-                    }
-                });
-
-            }
-
-
-        }
-
-        super.onCreate(savedInstanceState);
+        observeLiveData();
+        initializeButtons();
 
         if (buttonNext != null) {
             if (buttonHome != null) {
@@ -163,25 +62,158 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             buttonBack.setText(R.string.leave_group);
         }
 
-    }
+        container = findViewById(R.id.container);
 
-    @Override
-    protected void reloadData() {
+
+        String groupToken = viewModel.getUser().getGroupToken();
+
+        if (groupToken == null || groupToken.equals("")) {
+
+            Toast.makeText(GroupJoinedActivity.this, R.string.no_group_joined, Toast.LENGTH_LONG).show();
+
+            finish();
+            gotoActivity(HomeActivity.class);
+            return;
+        }
+
+        if (viewModel.setGroupByToken(groupToken) == false) {
+            return;
+        }
+
+        Group joinedGroup = viewModel.getGroup();
+
+        if (joinedGroup == null) {
+            Toast.makeText(GroupJoinedActivity.this, R.string.no_group_joined, Toast.LENGTH_LONG).show();
+
+            finish();
+            gotoActivity(HomeActivity.class);
+
+            return;
+        }
+
+        groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_NOTEDITABLE,
+                joinedGroup);
+
+        container.addView(groupItem.getView());
+
+        groupItem.fillObjectData();
+
+        groupItem.getHandler().getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
+            @Override
+            public void onChanged(@Nullable Pair<String, StateInterface> it) {
+
+                if (it.second == GroupItemHandler.State.GROUP_DELETED) {
+
+                    showMessage(GroupJoinedActivity.this, R.string.group_deleted, it);
+
+                    finish();
+                    gotoActivity(HomeActivity.class);
+
+                } else if (it.second == GroupItemHandler.State.GROUP_DELETION_FAILED) {
+
+                    showMessage(GroupJoinedActivity.this, R.string.group_deletion_failed, it);
+
+                } else if (it.second == GroupItemHandler.State.RELOADING_USER_FAILED) {
+
+                    showMessage(GroupJoinedActivity.this, R.string.reloading_user_failed, it);
+
+                    // Logout.
+                    viewModel.invalidateSession();
+                    finish();
+                    gotoActivity(HomeActivity.class);
+                }
+            }
+        });
+
+        for (int j = 0; j < groupItem.getUserList().getItemCount(); j++) {
+
+            UserItem userItem = (UserItem)groupItem.getUserList().getItem(j);
+
+            if (userItem != null) {
+
+                UserItemHandler userItemHandler = userItem.getHandler();
+
+                userItemHandler.getEventLiveData().observe(this, new Observer<Pair<String, StateInterface>>() {
+                    @Override
+                    public void onChanged(@Nullable Pair<String, StateInterface> it) {
+
+                        if (it.second == UserItemHandler.State.SHOW_USER) {
+
+                            gotoActivity(ShowUserActivity.class);
+
+                        } else if (it.second == UserItemHandler.State.USER_DELETED) {
+
+                            showMessage(GroupJoinedActivity.this, R.string.user_deleted, it);
+
+                            finish();
+                            startActivity(getIntent());
+
+                        } else if (it.second == UserItemHandler.State.USER_DELETION_FAILED) {
+
+                            showMessage(GroupJoinedActivity.this, R.string.user_deletion_failed, it);
+
+                        }
+
+                    }
+                });
+
+            }
+
+
+        }
 
     }
 
     @Override
     protected void processStateChange(Pair<String, StateInterface> it) {
         if (it.second == GroupJoinedViewModel.State.GROUP_LEFT) {
+
+            finish();
+            gotoActivity(HomeActivity.class);
  
-            this.gotoActivity(HomeActivity.class);
- 
+        } else if (it.second == GroupJoinedViewModel.State.ERROR_LOADING_GROUP) {
+
+            showMessage(this, R.string.error_loading_group, it);
+
+            finish();
+            gotoActivity(HomeActivity.class);
+
+        } else if (it.second == GroupJoinedViewModel.State.ERROR_LEAVING_GROUP) {
+
+            showMessage(this, R.string.error_leaving_group, it);
+
+        } else if (it.second == GroupItemHandler.State.RELOADING_USER_FAILED) {
+
+            showMessage(this, R.string.reloading_user_failed, it);
+
+            // Logout.
+            viewModel.invalidateSession();
+            finish();
+            gotoActivity(HomeActivity.class);
         }
     }
 
     @Override
     public void onClickBack() {
 
-        viewModel.leaveGroup();
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.leave_group)
+                .setMessage(R.string.really_leave_group)
+
+                // Specifying a listener allows you to take an action before dismissing the dialog.
+                // The dialog is automatically dismissed when a dialog button is clicked.
+                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        viewModel.leaveGroup();
+
+                    }
+                })
+
+                // A null listener allows the button to dismiss the dialog and take no further action.
+                .setNegativeButton(R.string.no, null)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+
     }
 }

@@ -9,13 +9,15 @@ import android.widget.TextView;
 
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MealLines;
-import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
+import edu.kit.mensameet.client.viewmodel.LineItemHandler;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
  * The representation of a single line.
  */
 public class LineItem extends MensaMeetItem<Line> {
+
+    private LineItemHandler handler;
 
     /**
      * Constructor.
@@ -27,11 +29,9 @@ public class LineItem extends MensaMeetItem<Line> {
     public LineItem(Context context, DisplayMode displayMode, Line objectData) {
 
         super(context, displayMode, objectData);
-    }
 
-    @Override
-    protected void processStateChange(Pair<String, StateInterface> it) {
-
+        handler = new LineItemHandler(objectData);
+        super.initializeHandler(handler);
     }
 
     @Override
@@ -65,13 +65,14 @@ public class LineItem extends MensaMeetItem<Line> {
 
     @Override
     public void fillObjectData() {
-        //TODO: since fillData is data-related, outsource it to viewmodel/handler
+
+        Line objectData = handler.getObjectData();
 
         if(objectData == null) {
             return;
         }
 
-        fillTextField(R.string.field_name, context.getResources().getString(MealLines.valueOf(objectData.getMealLine()).id));
+        fillTextField(R.string.field_name, context.getResources().getString(MealLines.valueOf(objectData.getMealLine()).getId()));
 
         String mealsText = "";
         for (int i = 0; i < objectData.getMeals().length; i++) {

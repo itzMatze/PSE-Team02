@@ -1,9 +1,17 @@
 package edu.kit.mensameet.client.viewmodel;
 
+import android.content.Context;
 import android.util.Pair;
 
+import java.util.Date;
+import java.util.List;
+
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.MensaMeetTime;
+import edu.kit.mensameet.client.model.MensaMeetUserPicture;
+import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
 
 /**
@@ -11,17 +19,15 @@ import edu.kit.mensameet.client.util.RequestUtil;
  */
 public class CreateGroupViewModel extends MensaMeetViewModel {
 
-    private Group group;
-
-    public void setGroup(Group group) {
-        this.group = group;
-    }
-
     public void saveGroupAndNext() {
+
+        Group group = MensaMeetSession.getInstance().getCreatedGroup();
 
         if (group != null) {
 
             Group groupWithToken = null;
+
+            // Create group.
 
             try {
 
@@ -36,11 +42,11 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
             if (groupWithToken != null) {
 
-                group = groupWithToken;
+                // Join group.
 
                 try {
 
-                    RequestUtil.addUserToGroup(group.getToken(), MensaMeetSession.getInstance().getUser().getToken());
+                    RequestUtil.addUserToGroup(groupWithToken.getToken(), MensaMeetSession.getInstance().getUser().getToken());
 
                 } catch (RequestUtil.RequestException e) {
 
@@ -49,13 +55,26 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
                 }
 
-                MensaMeetSession.getInstance().getUser().setGroupToken(group.getToken());
-                group.getUsers().add(MensaMeetSession.getInstance().getUser());
-                MensaMeetSession.getInstance().setChosenGroup(group);
+                // Reload user.
+
+                User userUpdate = null;
+
+                try {
+
+                    userUpdate = RequestUtil.getUser(MensaMeetSession.getInstance().getUser().getToken(), MensaMeetSession.getInstance().getUser().getToken());
+
+                } catch (RequestUtil.RequestException e) {
+
+                    eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.RELOADING_USER_FAILED));
+                    return;
+
+                }
+
+                MensaMeetSession.getInstance().setUser(userUpdate);
 
             }
 
-            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_SAVED_NEXT));
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_SAVED));
 
         } else {
 
@@ -64,18 +83,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
         }
     }
 
-    public void saveGroupLocallyAndBack() {
-        if (group != null) {
-            MensaMeetSession.getInstance().setCreatedGroup(group);
-            MensaMeetSession.getInstance().setChosenGroup(group);
-
-            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_SAVED_NEXT));
-        }
-
-        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.BACK));
-    }
-
     public enum State implements StateInterface {
-        GROUP_SAVED_NEXT, BACK, ERROR_SAVING_GROUP, DEFAULT
+        GROUP_SAVED, ERROR_SAVING_GROUP, RELOADING_USER_FAILED
     }
 }

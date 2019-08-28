@@ -8,8 +8,13 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
+import java.util.List;
+
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.Line;
+import edu.kit.mensameet.client.model.MealLines;
 import edu.kit.mensameet.client.model.MensaMeetSession;
+import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
@@ -29,51 +34,72 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            onBackPressed();
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
+        observeLiveData();
+        initializeButtons();
+
         LinearLayout container = findViewById(R.id.container);
 
         // initialize group with chosen time and line
-        Group createdGroup = MensaMeetSession.getInstance().getCreatedGroup();
+        Group createdGroup = viewModel.getCreatedGroup();
+
         if (createdGroup == null) {
             createdGroup = new Group();
-            createdGroup.setMeetingDate(MensaMeetSession.getInstance().getChosenTime().getStartTime());
-            createdGroup.setLine(MensaMeetSession.getInstance().getChosenLines().get(0).getMealLine());
+
+            MensaMeetTime time = viewModel.getChosenTime();
+            if (time == null) {
+                // Default value
+                time = new MensaMeetTime(MensaMeetTime.stringToTime("12:00"));
+            }
+
+            createdGroup.setMeetingDate(time.getStartTime());
+
+            List<Line> lines = viewModel.getChosenLines();
+            String mealLine;
+            if (lines == null) {
+                // Default value
+                mealLine = MealLines.values()[0].toString();
+            } else {
+                mealLine = lines.get(0).getMealLine();
+            }
+
+            createdGroup.setLine(mealLine);
         }
-        MensaMeetSession.getInstance().setCreatedGroup(createdGroup);
+
+        viewModel.setCreatedGroup(createdGroup);
 
         // The item is instantiated as big and editable.
         groupItem = new GroupItem(this, MensaMeetItem.DisplayMode.BIG_EDITABLE, createdGroup);
         container.addView(groupItem.getView());
 
-        //reloadData();
-
-        super.onCreate(savedInstanceState);
-
+        Toast.makeText(this, R.string.delete_created_group_by_leaving, Toast.LENGTH_LONG).show();
     }
 
     /**
-     * Hook method implementation to reload data from the session singleton.
+     * Hook method implementation to reload data.
      */
     @Override
     protected void reloadData() {
 
-        Group sessionGroup = MensaMeetSession.getInstance().getCreatedGroup();
+        Group createdGroup = viewModel.getCreatedGroup();
 
-        if (sessionGroup != null) {
+        if (createdGroup != null) {
 
-            //Toast.makeText(this, MensaMeetSession.getInstance().getChosenLines().size(), Toast.LENGTH_SHORT).show();
-
-            groupItem.setObjectData(sessionGroup);
+            groupItem.setObjectData(createdGroup);
             groupItem.fillObjectData();
-
-            //lineList.setSelectedObjects(MensaMeetSession.getInstance().getChosenLines());
-
 
         }
     }
@@ -85,13 +111,26 @@ public class CreateGroupActivity extends MensaMeetActivity {
      */
     @Override
     protected void processStateChange(Pair<String, StateInterface> it) {
-        if (it.second == CreateGroupViewModel.State.GROUP_SAVED_NEXT) {
-            Toast.makeText(this, R.string.group_saved, Toast.LENGTH_SHORT).show();
+        if (it.second == CreateGroupViewModel.State.GROUP_SAVED) {
+
+            showMessage(this, R.string.group_saved, it);
+
+            finish();
             gotoActivity(GroupJoinedActivity.class);
-        } else if (it.second ==  CreateGroupViewModel.State.BACK) {
-            gotoActivity(SelectGroupActivity.class);
+
         } else if (it.second ==  CreateGroupViewModel.State.ERROR_SAVING_GROUP) {
-            Toast.makeText(this, R.string.error_saving_group, Toast.LENGTH_SHORT).show();
+
+            showMessage(this, R.string.error_saving_group, it);
+
+        } else if (it.second ==  CreateGroupViewModel.State.RELOADING_USER_FAILED) {
+
+            showMessage(this, R.string.reloading_user_failed, it);
+
+            // Logout.
+            viewModel.invalidateSession();
+            finish();
+            gotoActivity(HomeActivity.class);
+
         }
     }
 
@@ -101,11 +140,10 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     public void onClickNext() {
         groupItem.saveEditedObjectData();
-        viewModel.setGroup(groupItem.getObjectData());
-        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
+        viewModel.setCreatedGroup(groupItem.getObjectData());
 
-        if (MensaMeetSession.getInstance().createdGroupDataIncomplete(this)) {
-            Toast.makeText(this, R.string.no_field_empty, Toast.LENGTH_SHORT).show();
+        if (viewModel.createdGroupDataIncomplete(this)) {
+            Toast.makeText(this, R.string.no_field_empty, Toast.LENGTH_LONG).show();
         } else {
             viewModel.saveGroupAndNext();
         }
@@ -118,9 +156,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     public void onClickBack() {
         groupItem.saveEditedObjectData();
-        MensaMeetSession.getInstance().setCreatedGroup(groupItem.getObjectData());
-        viewModel.setGroup(groupItem.getObjectData());
-        Toast.makeText(this, R.string.group_data_locally_saved, Toast.LENGTH_SHORT).show();
+        viewModel.setCreatedGroup(groupItem.getObjectData());
+
+        Toast.makeText(this, R.string.group_data_locally_saved, Toast.LENGTH_LONG).show();
         gotoActivity(SelectGroupActivity.class);
     }
 }

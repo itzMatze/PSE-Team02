@@ -12,7 +12,7 @@ import edu.kit.mensameet.client.view.R;
 /**
  * Genders. Including string ids for android.
  */
-public enum Gender {
+public enum Gender implements IdEnum {
     MALE(R.string.gender_male),
     FEMALE(R.string.gender_female),
     OTHER(R.string.gender_other);
@@ -41,4 +41,8 @@ public enum Gender {
         }
         return null;
     }
-}
+
+    @Override
+    public int getId() {
+        return id;
+    }}

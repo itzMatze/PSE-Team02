@@ -3,18 +3,15 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.MensaData;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
-import edu.kit.mensameet.client.util.RequestUtil;
 import edu.kit.mensameet.client.view.databinding.ActivityUserBinding;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
@@ -39,18 +36,32 @@ public class UserActivity extends MensaMeetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         super.viewModel = viewModel;
+
+        // Illegal state to show activity, go back.
+        if (viewModel.getUser() == null) {
+            onBackPressed();
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
+        observeLiveData();
+        initializeButtons();
+
         // The container to load the view of the user item into.
         LinearLayout container = findViewById(R.id.container);
 
+        if (viewModel.loadUser() == false) {
+            return;
+        }
+
         // The current user object.
-        User user = MensaMeetSession.getInstance().getUser();
+        User user = viewModel.getUser();
         if (user == null) {
             user = new User();
         }
@@ -61,9 +72,7 @@ public class UserActivity extends MensaMeetActivity {
         // The user item is added to the container.
         container.addView(userItem.getView());
 
-        Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_SHORT).show();
-
-        super.onCreate(savedInstanceState);
+        Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_LONG).show();
 
         /* If no or incomplete user data is given, the user should not be able to go back or away, hence only the
             next button with caption 'save' is provided.
@@ -74,14 +83,13 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     /**
-     * Reloads the user data from MensaMeetSession.
+     * Reloads the user data.
      */
     @Override
     protected void reloadData() {
 
-        User user = MensaMeetSession.getInstance().getUser();
+        User user = viewModel.getUser();
 
-        Toast.makeText(this, "Data reloaded.", Toast.LENGTH_SHORT).show();
         if (user != null) {
 
             userItem.setObjectData(user);
@@ -94,7 +102,7 @@ public class UserActivity extends MensaMeetActivity {
             buttonNext.setText(R.string.save);
         }
 
-        userDataIncomplete = MensaMeetSession.getInstance().userDataIncomplete();
+        userDataIncomplete = viewModel.currentUserDataIncomplete();
 
         if (userDataIncomplete) {
 
@@ -104,7 +112,8 @@ public class UserActivity extends MensaMeetActivity {
             }
 
             if (buttonHome != null) {
-                buttonHome.setVisibility(View.GONE);
+                buttonHome.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+
             }
 
         } else {
@@ -127,12 +136,22 @@ public class UserActivity extends MensaMeetActivity {
     protected void processStateChange(Pair<String, StateInterface> it) {
 
         if (it.second == UserViewModel.State.USER_SAVED_NEXT) {
-            Toast.makeText(this, R.string.user_saved, Toast.LENGTH_SHORT).show();
+
+            showMessage(this, R.string.user_saved, it);
             gotoActivity(HomeActivity.class);
-        } else if (it.second == UserViewModel.State.BACK) {
-            onBackPressed();
+
         } else if (it.second ==  UserViewModel.State.ERROR_SAVING_USER) {
-            Toast.makeText(this, R.string.error_saving_user, Toast.LENGTH_SHORT).show();
+
+            showMessage(this, R.string.error_saving_user, it);
+
+        } else if (it.second == UserViewModel.State.RELOADING_USER_FAILED) {
+
+            showMessage(this, R.string.reloading_user_failed, it);
+
+            // Logout.
+            viewModel.invalidateSession();
+            finish();
+            gotoActivity(HomeActivity.class);
         }
     }
 
@@ -154,7 +173,7 @@ public class UserActivity extends MensaMeetActivity {
     @Override
     public void onClickBack() {
 
-        Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.user_data_changes_discarded, Toast.LENGTH_LONG).show();
         gotoActivity(HomeActivity.class);
 
     }

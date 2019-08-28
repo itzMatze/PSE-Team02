@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import edu.kit.mensameet.client.view.SpinnerItem;
+
 public class MensaMeetUtil {
 
     public static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -16,7 +18,7 @@ public class MensaMeetUtil {
     public static void applyStyle(View v, int styleResId) {
         Context context = v.getContext();
 
-        if (v.getClass() == TextView.class || v.getClass() == EditText.class) {
+        if (v instanceof TextView) {
             ((TextView) v).setTextAppearance(context, styleResId);
         }
 
@@ -59,13 +61,22 @@ public class MensaMeetUtil {
         }
     }
 
-    public static int getIndexInSpinner(Spinner spinner, String string) {
+    public static int getIndexInSpinner(Spinner spinner, String value) {
         for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(string)) {
-                return i;
+
+            Object item = spinner.getItemAtPosition(i);
+            if (item != null &&
+                    item instanceof SpinnerItem) {
+
+                if (((SpinnerItem)item).getValue().equals(value)) {
+                    return i;
+                }
+
             }
+
         }
 
         return 0;
     }
+
 }

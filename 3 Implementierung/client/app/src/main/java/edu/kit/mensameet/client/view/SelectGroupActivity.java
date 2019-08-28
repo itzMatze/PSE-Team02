@@ -16,12 +16,8 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.util.SingleLiveEvent;
 import edu.kit.mensameet.client.view.databinding.ActivitySelectGroupBinding;
 import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetItemHandler;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.SelectGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 import edu.kit.mensameet.client.viewmodel.UserItemHandler;
@@ -35,21 +31,38 @@ public class SelectGroupActivity extends MensaMeetActivity {
     private ActivitySelectGroupBinding binding;
 
     private GroupList groupList;
-
-    private SelectGroupActivity me;
+    private RelativeLayout container;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        super.onCreate(savedInstanceState);
+
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
-        super.viewModel = viewModel;
-        me = this;
+        super.initializeViewModel(viewModel);
+
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            onBackPressed();
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_group);
         binding.setVm(viewModel);
         binding.setLifecycleOwner(this);
 
-        RelativeLayout container = findViewById(R.id.container);
+        observeLiveData();
+        initializeButtons();
+
+        if (buttonNext != null) {
+            if (buttonHome != null) {
+                buttonHome.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1));
+
+            }
+            // no next button
+            buttonNext.setVisibility(View.GONE);
+        }
+
+        container = findViewById(R.id.container);
 
         // Floating action button for adding a group
         FloatingActionButton floatingActionButton = findViewById(R.id.fab);
@@ -59,7 +72,6 @@ public class SelectGroupActivity extends MensaMeetActivity {
                 gotoActivity(CreateGroupActivity.class);
             }
         });
-
 
         /*
 
@@ -139,11 +151,13 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         */
 
-        viewModel.loadGroups();
+        if (viewModel.loadGroups() == false) {
+            return;
+        }
 
         groupList = new GroupList(
                 this,
-                MensaMeetSession.getInstance().getReceivedGroups(),
+                viewModel.getReceivedGroups(),
                 MensaMeetList.DisplayMode.SINGLE_SELECT,
                 true);
 
@@ -166,22 +180,32 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
                         if (it.second == GroupItemHandler.State.GROUP_JOINED) {
 
+                            finish();
                             gotoActivity(GroupJoinedActivity.class);
+
+                        } else if (it.second == GroupItemHandler.State.GROUP_JOIN_FAILED) {
+
+                            showMessage(SelectGroupActivity.this, R.string.group_join_failed, it);
 
                         } else if (it.second == GroupItemHandler.State.GROUP_DELETED) {
 
-                            Toast.makeText(me, R.string.group_deleted, Toast.LENGTH_SHORT).show();
+                            showMessage(SelectGroupActivity.this, R.string.group_deleted, it);
 
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    // Actions to do after 5 seconds
-                                    // restart activity to reload all data
-                                    finish();
-                                    startActivity(getIntent());
-                                }
-                            }, 2000);
+                            finish();
+                            startActivity(getIntent());
 
+                        } else if (it.second == GroupItemHandler.State.GROUP_DELETION_FAILED) {
+
+                            showMessage(SelectGroupActivity.this, R.string.group_deletion_failed, it);
+
+                        } else if (it.second == GroupItemHandler.State.RELOADING_USER_FAILED) {
+
+                            showMessage(SelectGroupActivity.this, R.string.reloading_user_failed, it);
+
+                            // Logout.
+                            viewModel.invalidateSession();
+                            finish();
+                            gotoActivity(HomeActivity.class);
                         }
                     }
                 });
@@ -201,20 +225,19 @@ public class SelectGroupActivity extends MensaMeetActivity {
                         public void onChanged(@Nullable Pair<String, StateInterface> it) {
 
                             if (it.second == UserItemHandler.State.SHOW_USER) {
+
                                 gotoActivity(ShowUserActivity.class);
+
                             } else if (it.second == UserItemHandler.State.USER_DELETED) {
 
-                                Toast.makeText(me, R.string.user_deleted, Toast.LENGTH_SHORT).show();
+                                showMessage(SelectGroupActivity.this, R.string.user_deleted, it);
 
-                                Handler handler = new Handler();
-                                handler.postDelayed(new Runnable() {
-                                    public void run() {
-                                        // Actions to do after 5 seconds
-                                        // restart activity to reload all data
-                                        finish();
-                                        startActivity(getIntent());
-                                    }
-                                }, 2000);
+                                finish();
+                                startActivity(getIntent());
+
+                            } else if (it.second == UserItemHandler.State.USER_DELETION_FAILED) {
+
+                                showMessage(SelectGroupActivity.this, R.string.user_deletion_failed, it);
 
                             }
                         }
@@ -227,18 +250,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         }
 
-        super.onCreate(savedInstanceState);
-
-        if (buttonNext != null) {
-            if (buttonHome != null) {
-                buttonHome.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
-
-            }
-            // no next button
-            buttonNext.setVisibility(View.GONE);
-        }
-
-        Toast.makeText(me, R.string.create_button_description, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.create_button_description, Toast.LENGTH_LONG).show();
     }
 
 /**
@@ -246,15 +258,17 @@ public class SelectGroupActivity extends MensaMeetActivity {
  */
     @Override
     protected void processStateChange(Pair<String, StateInterface> it) {
-        if (it.second == SelectGroupViewModel.State.GROUP_JOINED) {
-            gotoActivity(GroupJoinedActivity.class);
-        } else if (it.second == SelectGroupViewModel.State.BACK) {
-            gotoActivity(SetTimeActivity.class);
+        if (it.second == SelectGroupViewModel.State.LOADING_GROUPS_FAILED) {
+
+            showMessage(this, R.string.loading_groups_failed, it);
+
         }
     }
 
+
     @Override
     public void onClickBack() {
+        finish();
         gotoActivity(SetTimeActivity.class);
     }
 

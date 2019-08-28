@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import edu.kit.mensameet.client.model.MensaMeetUserPicture;
 import edu.kit.mensameet.client.model.MensaMeetUserPictureList;
+import edu.kit.mensameet.client.viewmodel.UserPictureItemHandler;
 
 /**
  * Separate Class to create the view for displaying and selecting the user picture.
@@ -23,6 +24,7 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
     private RecyclerView recyclerView;
     private UserPictureAdapter adapter;
     private MensaMeetUserPicture selectedPicture;
+    private UserPictureItemHandler handler;
 
     /**
      * Constructor.
@@ -32,9 +34,10 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
      * @param objectData User.
      */
     public UserPictureItem(Context context, DisplayMode displayMode, MensaMeetUserPicture objectData) {
-        //TODO: Put displayMode into MensaMeetItem as static subclass
-        super(context, displayMode, objectData);
 
+        super(context, displayMode, objectData);
+        handler = new UserPictureItemHandler(objectData);
+        super.initializeHandler(handler);
     }
 
     /**
@@ -47,21 +50,29 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
         LinearLayout view = new LinearLayout(context);
         view.setOrientation(LinearLayout.VERTICAL);
         view.setLayoutParams(WIDTH_MATCH_PARENT);
-        view.setPadding(10, 10, 10, 10);
+        view.setPadding(context.getResources().getInteger(R.integer.picture_standard_padding),
+                context.getResources().getInteger(R.integer.picture_standard_padding),
+                context.getResources().getInteger(R.integer.picture_standard_padding),
+                context.getResources().getInteger(R.integer.picture_standard_padding));
+
+        MensaMeetUserPicture objectData = handler.getObjectData();
 
         if (objectData == null) {
-            objectData = MensaMeetUserPictureList.getInstance().getDefaultPicture();
+            objectData = handler.getDefaultPicture();
         }
 
         pictureView = new ImageView(context);
 
         if (displayMode == DisplayMode.SMALL) {
 
-            pictureView.setLayoutParams(new LinearLayout.LayoutParams(200, 200));
+            pictureView.setLayoutParams(new LinearLayout.LayoutParams(
+                    context.getResources().getInteger(R.integer.small_picture_width),
+                    context.getResources().getInteger(R.integer.small_picture_height)));
 
         } else {
 
-            pictureView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 400));
+            pictureView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    context.getResources().getInteger(R.integer.big_picture_height)));
 
         }
 
@@ -83,7 +94,8 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
             LinearLayoutManager layoutManager = new LinearLayoutManager(context);
             recyclerView.setLayoutManager(layoutManager);
             layoutManager.setOrientation(RecyclerView.HORIZONTAL);
-            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 400));
+            recyclerView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                    context.getResources().getInteger(R.integer.big_picture_height)));
             recyclerView.setItemAnimator(null);
 
             //LinearSnapHelper snapHelper = new LinearSnapHelper();
@@ -107,14 +119,14 @@ public class UserPictureItem extends MensaMeetItem<MensaMeetUserPicture> impleme
     @Override
     public void fillObjectData() {
 
-        // ((UserPictureAdapter)recyclerView.getAdapter()).setSelectedPicture(objectData);
-        pictureView.setImageResource(objectData.getResourceId());
+        pictureView.setImageResource(handler.getObjectData().getResourceId());
 
     }
 
     @Override
     public void saveEditedObjectData() {
-        objectData = ((UserPictureAdapter)recyclerView.getAdapter()).getSelectedPicture();
+
+        handler.setObjectData(((UserPictureAdapter)recyclerView.getAdapter()).getSelectedPicture());
 
     }
 

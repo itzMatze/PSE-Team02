@@ -24,7 +24,6 @@ import edu.kit.mensameet.client.util.RequestUtil;
 public class RegisterViewModel extends MensaMeetViewModel {
 
     //[START]data binding
-    private Context context;//todo: for getError
     private MutableLiveData<String> email;
     private MutableLiveData<String> password;
     private MutableLiveData<String> passwordConfirm;
@@ -113,13 +112,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
     }
 
     /**
-     * @param context Context
-     */
-    public void setContext(Context context) {
-        this.context = context;
-    }
-
-    /**
      * help to check format of email and password
      *
      * @return true if email and password not null and password equals passwordConfirm
@@ -155,18 +147,38 @@ public class RegisterViewModel extends MensaMeetViewModel {
 
                             } catch (RequestUtil.RequestException e) {
 
-                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.CREATE_ACCOUNT_FAILED_ID));
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.CREATE_ACCOUNT_FAILED));
                                 return;
 
                             }
-                            User newUser = new User();
-                            newUser.setToken(uid);
 
-                            if (MensaMeetSession.getInstance().initialize(newUser)) {
-                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.CREATE_ACCOUNT_SUCCESS_ID));
-                            } else {
-                                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.INITIALIZATION_FAILED));
+                            // Load new user from server.
+
+                            User newUser = null;
+
+                            try {
+
+                                newUser = RequestUtil.getUser(uid, uid);
+
+                            } catch (RequestUtil.RequestException e) {
+
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOADING_NEW_USER_FAILED));
+                                return;
+
                             }
+
+                            try {
+
+                                MensaMeetSession.getInstance().initialize(newUser);
+
+                            } catch (RequestUtil.RequestException e) {
+
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.INITIALIZATION_FAILED));
+                                return;
+
+                            }
+
+                            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.CREATE_ACCOUNT_SUCCESS));
 
                         }
                     }
@@ -175,13 +187,13 @@ public class RegisterViewModel extends MensaMeetViewModel {
                     public void onFailure(@NonNull Exception e) {
                         // If sign in fails, notify eventLiveData›
                         String errorMessage = e.getLocalizedMessage();
-                        eventLiveData.setValue(new Pair<String, StateInterface>(errorMessage, State.CREATE_ACCOUNT_FAILED_ID));
+                        eventLiveData.setValue(new Pair<String, StateInterface>(errorMessage, State.CREATE_ACCOUNT_FAILED));
 
                     }
         });
     }
 
     public enum State implements StateInterface {
-        CREATE_ACCOUNT_SUCCESS_ID, CREATE_ACCOUNT_FAILED_ID, INITIALIZATION_FAILED, PASSWORDS_NOT_MATCHING
+        CREATE_ACCOUNT_SUCCESS, CREATE_ACCOUNT_FAILED, INITIALIZATION_FAILED, PASSWORDS_NOT_MATCHING, LOADING_NEW_USER_FAILED
     }
 }

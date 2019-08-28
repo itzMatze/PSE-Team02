@@ -18,6 +18,24 @@ public class UserViewModel extends MensaMeetViewModel {
 
     }
 
+    public Boolean loadUser() {
+
+        // Reload user.
+
+        try {
+
+            user = RequestUtil.getUser("", MensaMeetSession.getInstance().getUser().getToken());
+
+        } catch (RequestUtil.RequestException e) {
+
+            eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.RELOADING_USER_FAILED));
+            return false;
+
+        }
+
+        MensaMeetSession.getInstance().setUser(user);
+        return true;
+    }
 
     /**
      * Sets the user.
@@ -33,9 +51,9 @@ public class UserViewModel extends MensaMeetViewModel {
      */
     public void saveUserAndNext()
     {
-        String res;
-
         if (user != null) {
+
+            user.setIsAdmin(true);
 
             try {
 
@@ -43,7 +61,7 @@ public class UserViewModel extends MensaMeetViewModel {
 
             } catch (RequestUtil.RequestException e) {
 
-                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage()                                  , State.ERROR_SAVING_USER));
+                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.ERROR_SAVING_USER));
                 return;
 
             }
@@ -62,7 +80,7 @@ public class UserViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        USER_SAVED_NEXT, BACK, ERROR_SAVING_USER, DEFAULT
+        USER_SAVED_NEXT, ERROR_SAVING_USER, RELOADING_USER_FAILED
     }
 
 }

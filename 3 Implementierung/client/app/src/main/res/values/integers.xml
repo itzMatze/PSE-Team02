@@ -14,4 +14,8 @@
     <integer name="item_standard_padding_left_px">30</integer>
     <integer name="user_picture_big_width_px">50</integer>
     <integer name="user_picture_big_height_px">50</integer>
+    <integer name="picture_standard_padding">10</integer>
+    <integer name="small_picture_width">200</integer>
+    <integer name="small_picture_height">200</integer>
+    <integer name="big_picture_height">400</integer>
 </resources>

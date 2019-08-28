@@ -9,7 +9,7 @@ import edu.kit.mensameet.client.view.R;
 /**
  * Enumeration for the professional status of a user.
  */
-public enum Status {
+public enum Status implements IdEnum {
     PROFESSOR(R.string.status_professor),
     COLLEGE_STUDENT(R.string.status_college_student),
     APPRENTICE(R.string.status_apprentice),
@@ -41,4 +41,7 @@ public enum Status {
         return null;
     }
 
-}
+    @Override
+    public int getId() {
+        return id;
+    }}

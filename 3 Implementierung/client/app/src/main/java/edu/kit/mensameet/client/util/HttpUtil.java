@@ -82,7 +82,9 @@ public class HttpUtil {
      */
     static public String get(String url,
                              Map<String, String> headers) throws IOException {
-        String f = fetch("GET", url, null, headers);
+        String f = null;
+        f = fetch("GET", url, null, headers);
+
         return f;
     }
 
@@ -324,7 +326,17 @@ public class HttpUtil {
         }
 
         // response
-        InputStream is = conn.getInputStream();
+
+        int status = conn.getResponseCode();
+
+        InputStream is = null;
+
+        if (status > 299) {
+            is = conn.getErrorStream();
+        } else {
+            is = conn.getInputStream();
+        }
+
         String response = streamToString(is);
         is.close();
 

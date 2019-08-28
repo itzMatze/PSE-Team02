@@ -26,7 +26,6 @@ public class MensaMeetSession {
     private User user;
     private List<Line> chosenLines;
     private MensaMeetTime chosenTime;
-    private List<Group> receivedGroups;
     private Group chosenGroup;
     private Group createdGroup;
     private User userToShow;
@@ -80,15 +79,6 @@ public class MensaMeetSession {
         this.chosenTime = chosenTime;
     }
 
-    /**
-     * Sets the group the current user successfully joined.
-     *
-     * @param chosenGroup Joined group.
-     */
-    public void setChosenGroup(Group chosenGroup) {
-        this.chosenGroup = chosenGroup;
-    }
-
     public MensaData getMensaData() {
         return mensaData;
     }
@@ -131,19 +121,6 @@ public class MensaMeetSession {
      */
     public void setUserToShow(User userToShow) {
         this.userToShow = userToShow;
-    }
-
-    public List<Group> getReceivedGroups() {
-        return receivedGroups;
-    }
-
-    /**
-     * Saves the groups received from the server after a query.
-     *
-     * @return Received groups.
-     */
-    public void setReceivedGroups(List<Group> receivedGroups) {
-        this.receivedGroups = receivedGroups;
     }
 
     /**
@@ -189,18 +166,9 @@ public class MensaMeetSession {
         return null;
     }
 
-    public Boolean initialize(User user) {
+    public void initialize(User user) throws RequestUtil.RequestException {
 
-        MensaData mensaData = null;
-        try {
-
-            mensaData = RequestUtil.getMensaData();
-
-        } catch (RequestUtil.RequestException e) {
-
-            return false;
-
-        }
+        MensaData mensaData = RequestUtil.getMensaData();
         setMensaData(mensaData);
         setUser(user);
         setChosenLines(null);
@@ -209,7 +177,6 @@ public class MensaMeetSession {
         setUserToShow(null);
         loggedIn = true;
 
-        return true;
     }
 
     public void invalidate() {

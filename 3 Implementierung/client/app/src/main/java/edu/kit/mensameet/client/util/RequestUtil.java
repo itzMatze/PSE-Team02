@@ -36,27 +36,9 @@ in case return JSON File or JSON URL
  */
 public class RequestUtil {
 
-    private static final String EXCEPTION_MAPPER_IO = "Mapper IO Exception";
-
     //for convert a java object to json string and vise versa
     private static ObjectMapper mapper = new ObjectMapper();
     private static ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
-
-    private static void handleException(Exception e, String response) throws RequestException {
-        if (e != null) {
-
-            try {
-
-                JsonNode jsonNode = mapper.readTree(response);
-                throw new RequestException(jsonNode);
-
-            } catch (IOException ioException) {
-
-                throw new RequestException(0, EXCEPTION_MAPPER_IO);
-
-            }
-        }
-    }
 
     /**
      * create user
@@ -71,16 +53,14 @@ public class RequestUtil {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
 
-                    Map<String, String> params = new HashMap<>();
-                    params.put("firebaseToken", firebaseToken);
+                Map<String, String> params = new HashMap<>();
+                params.put("firebaseToken", firebaseToken);
+
+                try {
                     response[0] = HttpUtil.post("http://193.196.38.98:8080/server/user",null, params);
-
                 } catch (Exception e) {
-
                     exception[0] = e;
-
                 }
 
             }
@@ -95,10 +75,9 @@ public class RequestUtil {
         } catch (Exception e) {
 
             exception[0] = e;
-
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
     /**
@@ -116,10 +95,12 @@ public class RequestUtil {
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                try{
+
                     Map<String, String> params = new HashMap<>();
                     params.put("firebaseToken", firebaseToken);
                     params.put("userToken", userToken);
+
+                try{
                     response[0] = HttpUtil.get("http://193.196.38.98:8080/server/user", params);
                     user[0] = mapper.readValue(response[0], User.class);
                 } catch (Exception e) {
@@ -127,7 +108,6 @@ public class RequestUtil {
                     exception[0] = e;
 
                 }
-
             }
         });
 
@@ -140,10 +120,9 @@ public class RequestUtil {
         } catch (Exception e) {
 
             exception[0] = e;
-
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
 
         return user[0];
     }
@@ -186,7 +165,7 @@ public class RequestUtil {
 
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
     /**
@@ -217,7 +196,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
     /**
@@ -258,7 +237,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
 
         return newGroup[0];
     }
@@ -328,7 +307,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
 
         return group[0];
     }
@@ -372,7 +351,7 @@ public class RequestUtil {
      * @param lines
      * @return
      */
-    public static List<Group> getGroupByPrefferences(final MensaMeetTime time, final String[] lines) throws RequestException {
+    public static List<Group> getGroupByPrefferences(final String firebaseToken, final MensaMeetTime time, final String[] lines) throws RequestException {
 
         final String[] response = {null};
         final Exception[] exception = {null};
@@ -386,7 +365,7 @@ public class RequestUtil {
                     mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);//to avoid not serializable
                     String json = mapper.writer().writeValueAsString(new GroupByPrefferences(time, lines));
                     Map<String, String> params = new HashMap<>();
-                    params.put("firebaseToken","1");
+                    params.put("firebaseToken",firebaseToken);
                     params.put("Content-Type","application/json");
                     response[0] = HttpUtil.post
                             ("http://193.196.38.98:8080/server/group-prefferences", json, params);
@@ -408,7 +387,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
 
         return resultGroups;
     }
@@ -444,7 +423,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
 
@@ -472,7 +451,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
     /**
@@ -506,7 +485,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
     }
 
 
@@ -540,7 +519,7 @@ public class RequestUtil {
             exception[0] = e;
         }
 
-        handleException(exception[0], response[0]);
+        RequestException.handleException(response[0], exception[0]);
 
         return mensaData[0];
     }
@@ -729,6 +708,50 @@ public class RequestUtil {
             if (errorJsonNode.has("message")) {
                 this.errorMessage = errorJsonNode.get("message").asText();
             }
+        }
+
+        public static void handleException(String response, Exception exception) throws RequestException {
+
+            try {
+                JsonNode jsonNode = mapper.readTree(response);
+                if (jsonNode.has("error")) {
+                    // Error response.
+
+                    throw new RequestException(jsonNode);
+
+                }
+            } catch (IOException e) {
+                // readTree error with response can be ignored, thrown eg when response is ""
+            }
+
+            // If there is no exception in the request, but another one, saved in exception.
+            if (exception != null) {
+
+               throw createFromOtherException(exception);
+
+            }
+
+        }
+
+        public static RequestException createExceptionIfError(String response) {
+
+            try {
+                JsonNode jsonNode = mapper.readTree(response);
+                if (jsonNode.has("error")) {
+                    // Error response.
+
+                    return new RequestException(jsonNode);
+
+                }
+            } catch (IOException e) {
+                return createFromOtherException(e);
+            }
+
+            return null;
+        }
+
+        public static RequestException createFromOtherException(Exception e) {
+            return new RequestException(0, e.getLocalizedMessage());
         }
 
         @Override

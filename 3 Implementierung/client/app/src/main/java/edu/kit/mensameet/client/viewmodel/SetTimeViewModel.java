@@ -55,6 +55,6 @@ public class SetTimeViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        TIME_SAVED_NEXT, TIME_SAVED_BACK, DEFAULT
+        TIME_SAVED_NEXT, TIME_SAVED_BACK
     }
 }
