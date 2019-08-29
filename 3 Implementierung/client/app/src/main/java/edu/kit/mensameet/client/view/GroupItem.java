@@ -168,7 +168,7 @@ public class GroupItem extends MensaMeetItem<Group> {
                 @Override
                 public void onClick(View view) {
 
-                    SelectOneLineDialog selectOneLineDialog = new SelectOneLineDialog(context, new SelectOneLineDialog.OnPositiveClickListener() {
+                    SelectOneLineDialog selectOneLineDialog = new SelectOneLineDialog(context, getRepresentedValue(R.string.field_line), new SelectOneLineDialog.OnPositiveClickListener() {
                         @Override
                         public void onPositiveClick(SelectOneLineDialog dialog) {
                             List<Line> selectedLines = dialog.getSelectedLines();
@@ -179,12 +179,20 @@ public class GroupItem extends MensaMeetItem<Group> {
                                         .setText(MealLines.valueOf(mealLine).getId());
                                 setRepresentedValue(R.string.field_line, mealLine);
 
-
                             }
                         }
                     });
 
                     selectOneLineDialog.show();
+
+                    TextView msgTxt = (TextView) selectOneLineDialog.findViewById(android.R.id.message);
+                    msgTxt.setTextSize(16.0f);
+
+                    /*
+                    // Title font must be set after show();
+                    TextView title = selectOneLineDialog.getWindow().findViewById(android.R.id.message);
+                    title.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+                    selectOneLineDialog.getWindow().add*/
                 }
             });
 

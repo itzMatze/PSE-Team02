@@ -64,7 +64,7 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
         recyclerView.setAdapter(adapter);
 
         if (dividers) {
-            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+            DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(context,
                     layoutManager.getOrientation());
             recyclerView.addItemDecoration(dividerItemDecoration);
         }
