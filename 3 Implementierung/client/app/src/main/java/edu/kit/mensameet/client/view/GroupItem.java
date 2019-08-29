@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.core.content.res.ResourcesCompat;
+
 import java.util.Date;
 import java.util.List;
 
@@ -101,7 +103,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         // Field: name
         TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
         // TextView is the parent class of EditText and includes it
-        nameField.setTypeface(null, Typeface.BOLD);
+        nameField.setTypeface(nameField.getTypeface(), Typeface.BOLD);
         view.addView(nameField);
 
         // Field: motto
@@ -234,6 +236,13 @@ public class GroupItem extends MensaMeetItem<Group> {
 
             final Button joinButton = new Button(context);
             joinButton.setLayoutParams(WIDTH_MATCH_PARENT);
+            joinButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+            joinButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
+            joinButton.setTextSize(18);
+            joinButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+            joinButton.setTypeface(joinButton.getTypeface(), Typeface.BOLD);
+            joinButton.setAllCaps(false);
+
             joinButton.setText(R.string.join_group);
             joinButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
@@ -241,7 +250,6 @@ public class GroupItem extends MensaMeetItem<Group> {
                     handler.joinGroup();
                 }
             });
-            joinButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
 
             expandArea.addView(joinButton);
         }
@@ -253,6 +261,13 @@ public class GroupItem extends MensaMeetItem<Group> {
 
                 final Button deleteButton = new Button(context);
                 deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
+                deleteButton.setTextSize(18);
+                deleteButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+                deleteButton.setTypeface(deleteButton.getTypeface(), Typeface.BOLD);
+                deleteButton.setAllCaps(false);
+
                 deleteButton.setText(R.string.delete_group);
                 deleteButton.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
@@ -276,7 +291,6 @@ public class GroupItem extends MensaMeetItem<Group> {
 
                     }
                 });
-                deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
 
                 expandArea.addView(deleteButton);
             }

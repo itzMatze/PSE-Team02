@@ -13,11 +13,12 @@ public class MensaMeetUserPictureList {
 
     private MensaMeetUserPictureList() {
         pictures = new MensaMeetUserPicture[]{
-                new MensaMeetUserPicture(0, R.drawable.burger),
-                new MensaMeetUserPicture(1, R.drawable.salad),
-                new MensaMeetUserPicture(2, R.drawable.cheese),
-                new MensaMeetUserPicture(3, R.drawable.pizza),
-                new MensaMeetUserPicture(4, R.drawable.carrot),
+                new MensaMeetUserPicture(0, R.drawable.mm_burger),
+                new MensaMeetUserPicture(1, R.drawable.mm_broccoli),
+                new MensaMeetUserPicture(2, R.drawable.mm_cheese),
+                new MensaMeetUserPicture(3, R.drawable.mm_pizza),
+                new MensaMeetUserPicture(4, R.drawable.mm_carrot),
+                new MensaMeetUserPicture(5, R.drawable.mm_cutlet),
         };
     }
 

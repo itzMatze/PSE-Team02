@@ -38,13 +38,18 @@ public class RequestUtilTest {
     @Test
     public void userTest() {
 
-
-
-        String str1 = RequestUtil.createUser(testUser.getToken());
+        try {
+            RequestUtil.createUser(testUser.getToken());
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
+        }
 //        Assert.assertNotNull(str1);
 
-        String str2 = RequestUtil.updateUser(testUser);
-
+        try {
+            RequestUtil.updateUser(testUser);
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
+        }
 
         try {
             User actual = RequestUtil.getUser(testUser.getToken(),testUser.getToken());

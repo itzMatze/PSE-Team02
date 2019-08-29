@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.lifecycle.Observer;
 
 import java.util.HashMap;
@@ -95,6 +96,7 @@ public abstract class MensaMeetItem<T> {
             editText.setHint(id);
             editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
+            editText.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
             //MensaMeetUtil.applyStyle(editText, R.style.normal_text);
             return editText;
         } else {
@@ -103,6 +105,8 @@ public abstract class MensaMeetItem<T> {
             textView.setTextSize(textSize);
             textView.setLayoutParams(layoutParams);
             MensaMeetUtil.applyStyle(textView, R.style.normal_text);
+            textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+
             return textView;
         }
     }
@@ -137,6 +141,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         textView.setLayoutParams(WIDTH_MATCH_PARENT);
         textView.setText(defaultTextId);
+        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
 
         linearLayout.addView(textView);
 
@@ -159,6 +164,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         //textView.setLayoutParams(layoutParams);
         MensaMeetUtil.applyStyle(textView, R.style.label_text);
+        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
 
         return textView;
     }
@@ -178,6 +184,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         //textView.setLayoutParams(layoutParams);
         MensaMeetUtil.applyStyle(textView, R.style.label_text);
+        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
 
         return textView;
     }

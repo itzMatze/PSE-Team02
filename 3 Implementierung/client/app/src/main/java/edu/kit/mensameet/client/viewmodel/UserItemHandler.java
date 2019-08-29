@@ -2,6 +2,9 @@ package edu.kit.mensameet.client.viewmodel;
 
 import android.util.Pair;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
+
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.util.RequestUtil;
@@ -42,13 +45,23 @@ public class UserItemHandler extends MensaMeetItemHandler<User> {
 
             }
 
-            objectData = null;
+            /*
+
+            // Delete user on Firebase.
+
+            final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            try {
+                mAuth.deleteUser(objectData.getToken());
+            } catch (FirebaseAuthException e) {
+                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.USER_DELETED_SERVER_NOT_FIREBASE));
+                return;
+            }*/
 
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.USER_DELETED));
         }
     }
 
     public enum State implements StateInterface {
-        USER_DELETED, USER_DELETION_FAILED, SHOW_USER
+        USER_DELETED, USER_DELETION_FAILED, SHOW_USER, USER_DELETED_SERVER_NOT_FIREBASE
     }
 }

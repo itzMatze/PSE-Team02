@@ -31,6 +31,9 @@ public abstract class MensaMeetViewModel extends ViewModel {
      * @return Live data element.
      */
     public SingleLiveEvent<Pair<String, StateInterface>> getEventLiveData() {
+        if (eventLiveData == null) {
+            eventLiveData = new SingleLiveEvent<>();
+        }
         return eventLiveData;
     }
 

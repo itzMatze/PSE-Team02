@@ -62,7 +62,7 @@ public class SimpleTest {
 
             System.out.println("soll" +  mapper.writer().writeValueAsString(testRefferences));
 
-            List<Group> resultFromServer = RequestUtil.getGroupByPrefferences(new MensaMeetTime(new Time(11,30,0), new Time(13,0,0)),
+            List<Group> resultFromServer = RequestUtil.getGroupByPrefferences("", new MensaMeetTime(new Time(11,30,0), new Time(13,0,0)),
                     mealLines);
 
             for(Group g : resultFromServer){

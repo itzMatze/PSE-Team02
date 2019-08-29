@@ -54,7 +54,7 @@ public class LineItem extends MensaMeetItem<Line> {
         // Element: name
         TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
         // TextView is the parent class of EditText and includes it
-        nameField.setTypeface(null, Typeface.BOLD);
+        nameField.setTypeface(nameField.getTypeface(), Typeface.BOLD);
         view.addView(nameField);
 
         // Element: meals

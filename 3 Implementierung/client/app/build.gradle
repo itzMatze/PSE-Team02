@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'de.mannodermaus.android-junit5'
 
 android {
     compileSdkVersion 28
@@ -20,6 +21,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    testOptions {
+        unitTests {
+            includeAndroidResources = true
+        }
+    }
 }
 
 dependencies {
@@ -32,7 +39,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:17.0.0'
     implementation 'com.google.firebase:firebase-database:17.0.0'
     implementation 'com.google.firebase:firebase-storage:17.0.0'
+    //implementation 'com.google.firebase:firebase-admin:6.9.0'
+
     testImplementation 'junit:junit:4.12'
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.3.2"
+
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
@@ -46,6 +57,23 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test:rules:1.1.0'
+
+    testImplementation 'org.robolectric:robolectric:4.3'
+
+    testImplementation 'org.mockito:mockito-core:2.4.0'
+    testImplementation "org.powermock:powermock-module-junit4:1.7.0RC2"
+    testImplementation "org.powermock:powermock-module-junit4-rule:1.7.0RC2"
+    testImplementation "org.powermock:powermock-api-mockito2:1.7.0RC2"
+    testImplementation "org.powermock:powermock-classloading-xstream:1.7.0RC2"
+
+    //testImplementation 'org.powermock:powermock-core:1.7.0RC2'
+    //testImplementation 'org.powermock:powermock-module-junit4:1.7.0RC2'
+    //testImplementation 'org.powermock:powermock-api-mockito2:1.7.0RC2'
+
+    testImplementation "org.junit.jupiter:junit-jupiter-api:5.3.2"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:5.3.2"
+    testImplementation "org.junit.jupiter:junit-jupiter-params:5.3.2"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

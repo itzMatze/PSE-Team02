@@ -148,6 +148,13 @@ public class GroupJoinedActivity extends MensaMeetActivity {
                             finish();
                             startActivity(getIntent());
 
+                        } else if (it.second == UserItemHandler.State.USER_DELETED_SERVER_NOT_FIREBASE) {
+
+                            showMessage(GroupJoinedActivity.this, R.string.user_deleted_server_not_firebase, it);
+
+                            finish();
+                            startActivity(getIntent());
+
                         } else if (it.second == UserItemHandler.State.USER_DELETION_FAILED) {
 
                             showMessage(GroupJoinedActivity.this, R.string.user_deletion_failed, it);
