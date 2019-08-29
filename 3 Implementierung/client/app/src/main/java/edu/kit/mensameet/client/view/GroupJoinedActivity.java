@@ -185,6 +185,13 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             finish();
             gotoActivity(HomeActivity.class);
 
+        } else if (it.second == GroupJoinedViewModel.State.ERROR_LOADING_GROUP_SO_USER_UPDATED) {
+
+            showMessage(this, R.string.error_loading_group_so_user_updated, it);
+
+            finish();
+            gotoActivity(HomeActivity.class);
+
         } else if (it.second == GroupJoinedViewModel.State.ERROR_LEAVING_GROUP) {
 
             showMessage(this, R.string.error_leaving_group, it);

@@ -142,4 +142,5 @@
     <string name="really_delete_group">Willst du die Gruppe wirklich löschen?</string>
     <string name="user_deleted_server_not_firebase">Der Benutzer wurde auf dem Server, aber nicht bei Firebase gelöscht</string>
     <string name="slogan">Weil alleine essen doof ist.</string>
+    <string name="error_loading_group_so_user_updated">Fehler beim Laden der Gruppe, daher Benutzer aktualisiert</string>
 </resources>
