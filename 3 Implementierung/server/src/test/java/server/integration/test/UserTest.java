@@ -7,14 +7,23 @@ import java.time.LocalTime;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.server.ResponseStatusException;
 
+import kit.edu.mensameet.server.Application;
 import kit.edu.mensameet.server.controller.GroupController;
 import kit.edu.mensameet.server.controller.GroupRepository;
 import kit.edu.mensameet.server.model.Group;
 import kit.edu.mensameet.server.model.MealLine;
 import kit.edu.mensameet.server.model.Preference;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = Application.class)
+@AutoConfigureMockMvc
 
 public class UserTest {
 	
@@ -60,7 +69,7 @@ public class UserTest {
 	
 	@After
 	public void tearDown() {
-		//controller.removeAllGroups();
+		controller.removeAllGroups();
 		repository.deleteAll();
 	}
 }

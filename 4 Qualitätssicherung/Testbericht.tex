@@ -48,11 +48,115 @@
 
 Dieses Dokument verschafft einen Überblick über die \Gls{Qualitaetssicherung} des Projekts. In dieser Phase wurde die Überdeckung der \Gls{Unittest}s maximiert, die Testszenarien des Pflichtenhefts durchgegangen und gefundene Fehler behoben. Des Weiteren wurde ein \Gls{Hallway Usability Test} durchgeführt. Die dokumentierten Tests wurden wieder unterteilt in einen Server- und Clientteil.
 
-\chapter{Unittests}
+\chapter{Bug Fixes}
 \section{Server}
+
+\begin{itemize}
+\item Sceduler\\ \\
+Symptom: Die Funktionen die einmal täglich aufgerufen werden sollten, wurden nicht ausgeführt. TimeController.deleteGroups() und TimeController.updateMensaData() wurden nicht aufgerufen.\\ \\
+Ursache: Die Annotationen @Component hat in der Klasse TimeController hat gefehlt, damit hat SpringBoot die Klasse nicht gefunden und den Sceduler nicht Initialisiert.\\ \\
+Behebung:  Die Annotation wurde hinzugefügt.
+\end{itemize}
+
+\section{Client}
+
+\chapter{Unittests}
+Für die Unit Tests wurde das Framework JUnit verwendet. Die Testabdeckung am Server wurde mit EclEmma überprüft.
+
+\section{Server}
+\begin{itemize}
+
+\item GroupController - Test
+getestete Funktionalitäten, zusätzlich zu den bisherigen aus letztem Dokument
+\begin{itemize}
+
+
+\item getGroupByPreferecne
+Test: Zwei Testgruppen wurden dem Repository hinzugefügt jeweils mit der selben meetingTime, aber unterschiedlichen Essenslinien
+Dann wurde die Methode getGroupByPreference mit Start und Endzeit, sodass beide Gruppen sie erfüllen und einem Array aus Essenslinien, von denen es nur eine Übereinstimmung mit den Gruppen gibt, aufgerufen.
+Da GetGroupByPreference sowohl die angegebenen Zeiten, als auch die Essenslinien berücksichtigt, dürfte nur eine Gruppe zurückgegeben werden.
+zum überprüfen würde die Länge des zurückgegebenen Arrays überprüft.
+\\ \\
+Test2: Analog zu oben, nur dass keine Gruppe eine übereinstimmende Essenslinie mit den Preferenzen hatte.
+Ziel war es zu sehen, ob ein Array der Länge 0 zurückgegeben wird oder unerwartetes Verhalten auftritt.
+Wie erwartet hatte das zurückgegebene Array die Länge null.
+\\ \\
+Test3: Analog zu oben, gruppen haben passende Essenslinie aber nur eine Gruppe hat eine passende (Rand) Uhrzeit, und wie erwartet wird genau diese Gruppe zurückgegeben.
+\end{itemize}
+
+\item UserController - Test 
+getestete Funkitonalitäten zusätzlich zu denen aus letztem Dokument
+
+\begin{itemize}
+
+\item DeleteUser
+Test 1: Ein User ("User1") wurde anhand seines Tokens ins Repository hinzugefügt. Nun wird versucht einen anderen User ("User2"), der nicht im Repository liegt, aus dem Repository zu löschen. Wie erwartet, wird dabei kein anderer User gelöscht, sondern eine ResponseStatusException geworfen.
+
+\item DeleteAllUser
+Test1: Zwei User werden ins Repository hinzugefügt. Danach wird DeleteAllUser aufgerufen, nun sollte kein User mehr im Repository liegen. Beim Versuch auf einen der User mit der Methode "User getUser(String token)" aus dem Repository zu holen, wird eine ResponseStatusException geworfen. 
+
+\item IntitalizeAdminUser
+Test 1: Die Methode intializeAdminUser wird aufgerufen, da es noch keinen AdminUser gibt, wird einer neu angelegt. Um das zu überprüfen, prüfen wir, dass das angelegte Userobjekt nicht leer ist.
+
+Test 2: Die Methode initalizeAdminUser wird zweimal aufgerufen. Beim ersten Aufruf wird ein Admin User angelegt, beim zweiten Aufruf sollte nichts passieren, da bereits ein Admin User existiert. 
+\end{itemize}
+\end{itemize}
+
 \section{Client}
 
 \chapter{Testszenarien}
+\section{Server}
+
+Die nachfolgenden Tests laufen ausschließlich auf dem Server und sind dazu da die klassenübergreifende Funktionalitäten zu testen.\\
+
+
+\begin{itemize}
+
+\item Szenario 1 (MK60, MK 80, MK100)\\
+Vorbedingung: Es ist bereits User Alice im UserRepository. Dieser User ist in keiner Gruppe.\\
+Ablauf: Der User erstellt eine Gruppe und verlässt sie anschließend wieder.\\
+Nachbedingung: Der User ist in keiner Gruppe und die erstellte Gruppe hat sich gelöscht, als Alice, als letzter User ausgetreten ist.\\
+
+
+\item Szenario 2 (MK70, MK 80)\\
+Vorbedingung: Es existieren die User A,B und C. Es existiert eine Gruppe X die mit User A und B voll ist. \\
+Ablauf: User B verlässt die Gruppe, sodass Platz für User C frei wird. Dieser tritt dann der Gruppe bei.\\
+Nachbedingung: User A und C sind in Gruppe X und User B ist in keiner Gruppe.\\
+
+
+\item Szenario 3 (MK 100)\\
+Vorbedingung: Es existiert ein User A der in der Gruppe X ist.\\
+Ablauf: Es werden (um Mitternacht) alle Gruppen gelöscht.\\
+Nachbedingung: User A  ist in keiner Gruppe und die Gruppe X existiert nicht mehr.\\
+
+\item Szenario 4 (MK110)\\
+Vorbedingung: Es existiert ein User A der in der Gruppe X ist und ein Admin User.\\
+Ablauf: Die Gruppe X wird von dem Admin User gelöscht.\\
+Nachbedingung: User A  ist in keiner Gruppe und die Gruppe X existiert nicht mehr.\\
+
+
+\end{itemize}
+
+
+
+\section{Client}
+
+Die nachfolgenden Tests laufen auf dem Client und sind zur Überprüfung der korrekten Zusammenarbeit von mehreren Komponenten auf Server und Client.
+
+\begin{itemize}
+
+\item User Registrieren/Anmelden
+\item User Profil ändern und wieder lesen.
+\item Mensalinien auswählen, Zeit festlegen und Gruppen anzeigen lassen.
+\item Gruppe erstellen und anzeigen lassen. Gruppe verlassen.
+\item Nach Gruppen suchen und einer beitreten.
+\item Nach Gruppen suchen und User in der Gruppe anzeige lassen.
+\item Admin User: Gruppen suchen und eine gefundene Gruppe löschen.
+\item Admin User: Gruppen suchen und einen User in einer gefundenen Gruppe löschen.
+
+
+\end{itemize}
+
 
 \chapter{Hallway Usability Testing}
 

@@ -30,8 +30,8 @@ public class MensaDataController {
 	
 	/**
 	 * This method checks if the current meal plan is already saved on the server. If not it 
-	 * will be loaded from an extern URL
-	 * @return the current mensa data of the day
+	 * will be loaded from an external URL
+	 * @return the current MensaData of the day
 	 * @throws IOException
 	 */
 	public MensaData getMensaData() throws IOException {
