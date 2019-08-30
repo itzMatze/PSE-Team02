@@ -61,11 +61,6 @@ public class MensaMeetTime {
         return !(startTime.compareTo(endTime) == 0);
     }
 
-    /*
-    for testing
-    todo: delete, ask question why
-     */
-
     @Override
     public String toString() {
         if (startTime == null) {
