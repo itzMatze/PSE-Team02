@@ -71,10 +71,15 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
                 }
 
                 MensaMeetSession.getInstance().setUser(userUpdate);
+                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_SAVED));
+
+            } else {
+
+                eventLiveData.setValue(new Pair<String, StateInterface>(null, State.ERROR_SAVING_GROUP));
 
             }
 
-            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.GROUP_SAVED));
+
 
         } else {
 

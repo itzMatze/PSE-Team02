@@ -39,10 +39,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(GroupJoinedViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_joined);
         binding.setVm(viewModel);
@@ -208,6 +205,14 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     }
 
     @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() == null) {
+            finish();
+        }
+    }
+
+    @Override
     public void onClickBack() {
 
         new AlertDialog.Builder(this)
@@ -230,4 +235,5 @@ public class GroupJoinedActivity extends MensaMeetActivity {
                 .show();
 
     }
+
 }

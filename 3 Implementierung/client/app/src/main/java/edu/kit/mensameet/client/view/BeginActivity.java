@@ -30,10 +30,7 @@ public class BeginActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         binding.setVm(viewModel);
@@ -68,4 +65,13 @@ public class BeginActivity extends MensaMeetActivity {
             gotoActivity(RegisterActivity.class);
         }
     }
+
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+        }
+    }
+
 }

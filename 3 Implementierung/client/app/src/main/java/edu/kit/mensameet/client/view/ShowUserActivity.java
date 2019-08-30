@@ -32,10 +32,7 @@ public class ShowUserActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(ShowUserViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_user);
         binding.setVm(viewModel);
@@ -63,11 +60,20 @@ public class ShowUserActivity extends MensaMeetActivity {
 
     @Override
     protected void reloadData() {
+        super.reloadData();
         userItem.fillObjectData();
     }
 
     @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete()) {
+            finish();
+        }
+    }
+
+    @Override
     public void onClickBack() {
-        onBackPressed();
+        goBack();
     }
 }

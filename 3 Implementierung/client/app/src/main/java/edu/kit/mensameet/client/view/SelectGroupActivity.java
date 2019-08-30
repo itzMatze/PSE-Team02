@@ -41,10 +41,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_group);
         binding.setVm(viewModel);
@@ -272,6 +269,13 @@ public class SelectGroupActivity extends MensaMeetActivity {
         }
     }
 
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
+            finish();
+        }
+    }
 
     @Override
     public void onClickBack() {
