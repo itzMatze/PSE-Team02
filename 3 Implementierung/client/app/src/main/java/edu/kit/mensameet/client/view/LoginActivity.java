@@ -2,6 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,10 +28,7 @@ public class LoginActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setVm(viewModel);
@@ -38,6 +37,20 @@ public class LoginActivity extends MensaMeetActivity {
         observeLiveData();
         initializeButtons();
 
+        // Hide other buttons.
+        if (buttonNext != null) {
+            buttonNext.setVisibility(View.GONE);
+        }
+
+        if (buttonHome != null) {
+            buttonHome.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onClickBack() {
+        gotoActivity(BeginActivity.class);
     }
 
     /** Hook method for livedata processing
@@ -76,5 +89,13 @@ public class LoginActivity extends MensaMeetActivity {
 
         }
 
+    }
+
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+        }
     }
 }

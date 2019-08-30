@@ -31,10 +31,10 @@
     <string name="selectLine">Wähle eine Linie</string>
     <string name="groups">Gruppen:</string>
     <string name="chooseTime">Wähle eine Zeit</string>
-    <string name="register">Register</string>
+    <string name="register">Registrieren</string>
     <string name="between">zwischen</string>
     <string name="and">und</string>
-    <string name="join_group">beitreten</string>
+    <string name="join_group">Beitreten</string>
     <string name="start_before_end">Die Startzeit muss vor der Endzeit liegen!</string>
     <string name="test_list_classes_only_for_test_purposes">Test List classes (only for test purposes)</string>
     <string name="field_name">Name</string>
@@ -140,4 +140,7 @@
     <string name="delete_created_group_by_leaving">Du kannst eine erstellte Gruppe wieder löschen, indem du sie verlässt, vorausgesetzt, niemand anderes ist ihr inzwischen beigetreten</string>
     <string name="really_delete_user">Willst du den Benutzer wirklich löschen?</string>
     <string name="really_delete_group">Willst du die Gruppe wirklich löschen?</string>
+    <string name="user_deleted_server_not_firebase">Der Benutzer wurde auf dem Server, aber nicht bei Firebase gelöscht</string>
+    <string name="slogan">Weil alleine essen doof ist.</string>
+    <string name="error_loading_group_so_user_updated">Fehler beim Laden der Gruppe, daher Benutzer aktualisiert</string>
 </resources>

@@ -39,10 +39,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(GroupJoinedViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group_joined);
         binding.setVm(viewModel);
@@ -148,6 +145,13 @@ public class GroupJoinedActivity extends MensaMeetActivity {
                             finish();
                             startActivity(getIntent());
 
+                        } else if (it.second == UserItemHandler.State.USER_DELETED_SERVER_NOT_FIREBASE) {
+
+                            showMessage(GroupJoinedActivity.this, R.string.user_deleted_server_not_firebase, it);
+
+                            finish();
+                            startActivity(getIntent());
+
                         } else if (it.second == UserItemHandler.State.USER_DELETION_FAILED) {
 
                             showMessage(GroupJoinedActivity.this, R.string.user_deletion_failed, it);
@@ -178,6 +182,13 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             finish();
             gotoActivity(HomeActivity.class);
 
+        } else if (it.second == GroupJoinedViewModel.State.ERROR_LOADING_GROUP_SO_USER_UPDATED) {
+
+            showMessage(this, R.string.error_loading_group_so_user_updated, it);
+
+            finish();
+            gotoActivity(HomeActivity.class);
+
         } else if (it.second == GroupJoinedViewModel.State.ERROR_LEAVING_GROUP) {
 
             showMessage(this, R.string.error_leaving_group, it);
@@ -190,6 +201,14 @@ public class GroupJoinedActivity extends MensaMeetActivity {
             viewModel.invalidateSession();
             finish();
             gotoActivity(HomeActivity.class);
+        }
+    }
+
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() == null) {
+            finish();
         }
     }
 
@@ -216,4 +235,5 @@ public class GroupJoinedActivity extends MensaMeetActivity {
                 .show();
 
     }
+
 }

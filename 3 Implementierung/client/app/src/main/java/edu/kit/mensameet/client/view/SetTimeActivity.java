@@ -35,10 +35,7 @@ public class SetTimeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_set_time);
         binding.setVm(viewModel);
@@ -112,6 +109,8 @@ public class SetTimeActivity extends MensaMeetActivity {
 
     protected void reloadData() {
 
+        super.reloadData();
+
         MensaMeetTime savedTime = viewModel.getChosenTime();
 
         if (savedTime != null) {
@@ -128,6 +127,14 @@ public class SetTimeActivity extends MensaMeetActivity {
             gotoActivity(SelectGroupActivity.class);
         } else if (it.second == SetTimeViewModel.State.TIME_SAVED_BACK) {
             gotoActivity(SelectLinesActivity.class);
+        }
+    }
+
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
+            finish();
         }
     }
 

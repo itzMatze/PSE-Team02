@@ -90,6 +90,18 @@ public class RequestUtilTest {
 
             Group expected = RequestUtil.createGroup(testGroup, testGroup.getToken());
 
+        try {
+            RequestUtil.createUser(testUser.getToken());
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            RequestUtil.updateUser(testUser);
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
+        }
+
             Group actualGroup = RequestUtil.getGroup(expected.getToken(),expected.getToken());
             Assert.assertNotNull(actualGroup);
             Assert.assertEquals(expected.getName(), actualGroup.getName());
@@ -104,31 +116,5 @@ public class RequestUtilTest {
             RequestUtil.deleteGroup(expected.getToken(),testUser.getToken());
 
     }
-/*
-delete user only with admin account
-    @After
-    public final void after() {
-        RequestUtil.deleteUser(testUser.getToken());
-    }
-*/
-
-/*todo
-    @Test
-    public void groupTest() {
-
-        Group expect = RequestUtil.createGroup(testGroup, testGroup.getToken());
-
-        // create group and get group
-        try {
-            Group actual = RequestUtil.getGroup(expect.getToken());
-            Assert.assertNotNull(expect.getToken());
-            Assert.assertEquals(expect.getToken(), actual.getToken());
-            Assert.assertEquals("testMotto", actual.getMotto());
-        }catch (Exception e){
-
-        }
-
-    }
-*/
 
 }

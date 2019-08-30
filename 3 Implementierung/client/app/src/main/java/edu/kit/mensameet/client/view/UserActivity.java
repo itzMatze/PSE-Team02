@@ -41,10 +41,7 @@ public class UserActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back.
-        if (viewModel.getUser() == null) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user);
         binding.setVm(viewModel);
@@ -87,6 +84,8 @@ public class UserActivity extends MensaMeetActivity {
      */
     @Override
     protected void reloadData() {
+
+        super.reloadData();
 
         User user = viewModel.getUser();
 
@@ -152,6 +151,14 @@ public class UserActivity extends MensaMeetActivity {
             viewModel.invalidateSession();
             finish();
             gotoActivity(HomeActivity.class);
+        }
+    }
+
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.getUser() == null) {
+            finish();
         }
     }
 

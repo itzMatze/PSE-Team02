@@ -27,10 +27,7 @@ public class HomeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.getUser() == null) {
-            onBackPressed();
-        }
+        checkAccess();
 
         setContentView(R.layout.activity_home);
 
@@ -85,9 +82,18 @@ public class HomeActivity extends MensaMeetActivity {
         } else if (it.second == HomeViewModel.State.TO_GROUP_JOINED) {
             gotoActivity(GroupJoinedActivity.class);
         } else if (it.second == HomeViewModel.State.TO_BEGIN) {
+            finish();
             gotoActivity(BeginActivity.class);
         }
     }
 
+    @Override
+    protected void checkAccess() {
+
+        // Illegal state to show activity, go back.
+        if (viewModel.getUser() == null) {
+            finish();
+        }
+    }
 
 }

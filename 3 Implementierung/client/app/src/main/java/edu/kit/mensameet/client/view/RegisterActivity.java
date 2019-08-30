@@ -2,6 +2,7 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
@@ -29,10 +30,7 @@ public class RegisterActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
-        }
+        checkAccess();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
         binding.setVm(viewModel);
@@ -41,6 +39,20 @@ public class RegisterActivity extends MensaMeetActivity {
         observeLiveData();
         initializeButtons();
 
+        // Hide other buttons.
+        if (buttonNext != null) {
+            buttonNext.setVisibility(View.GONE);
+        }
+
+        if (buttonHome != null) {
+            buttonHome.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onClickBack() {
+        gotoActivity(BeginActivity.class);
     }
 
 
@@ -80,4 +92,11 @@ public class RegisterActivity extends MensaMeetActivity {
         }
     }
 
+    @Override
+    protected void checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+        }
+    }
 }
