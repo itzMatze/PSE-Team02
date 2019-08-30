@@ -23,7 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class UITest {
+public class BeginActivityTest {
     @Rule
     public ActivityTestRule<BeginActivity> beginActivityRule =
             new ActivityTestRule<>(BeginActivity.class);
@@ -33,6 +33,15 @@ public class UITest {
         onView(withId(R.id.login)).perform(click());
         onView(withId(R.id.usernameTextInput)).check(matches(isDisplayed()));
         onView(withId(R.id.password)).check(matches(isDisplayed()));
+        onView(withId(R.id.login)).check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void gotoRegisterTest() {
+        onView(withId(R.id.register)).perform(click());
+        onView(withId(R.id.email)).check(matches(isDisplayed()));
+        onView(withId(R.id.password)).check(matches(isDisplayed()));
+        onView(withId(R.id.confirmPassword)).check(matches(isDisplayed()));
         onView(withId(R.id.login)).check(matches(isDisplayed()));
     }
 }
