@@ -347,9 +347,11 @@ public class RequestUtil {
 
     /**
      *
+     * @param firebaseToken
      * @param time
      * @param lines
      * @return
+     * @throws RequestException
      */
     public static List<Group> getGroupByPrefferences(final String firebaseToken, final MensaMeetTime time, final String[] lines) throws RequestException {
 
@@ -530,7 +532,7 @@ public class RequestUtil {
      */
 
 
-    public static class GroupForRequest {
+    private static class GroupForRequest {
 
         String name;
         String motto;
@@ -713,6 +715,9 @@ public class RequestUtil {
         public static void handleException(String response, Exception exception) throws RequestException {
 
             try {
+
+                ObjectMapper mapper2 = mapper;
+
                 JsonNode jsonNode = mapper.readTree(response);
                 if (jsonNode.has("error")) {
                     // Error response.

@@ -30,6 +30,27 @@ public class RegisterActivityTest {
             new ActivityTestRule<>(RegisterActivity.class);
 
     @Test
+    public void registerTest() {
+        String s = String.valueOf(Math.round(Math.random() * 1000000000));
+        onView(withId(R.id.email)).perform(typeText(s + "@testaccount.com"));
+        onView(withId(R.id.email)).check(matches(withText(s + "@testaccount.com")));
+        onView(withId(R.id.password)).perform(typeText("passwort"));
+        onView(withId(R.id.password)).check(matches(withText("passwort")));
+        onView(withId(R.id.confirmPassword)).perform(typeText("passwort"));
+        onView(withId(R.id.confirmPassword)).check(matches(withText("passwort")));
+        onView(withId(R.id.login)).perform(click());
+        // wait for server to register user
+        onView(isRoot()).perform(TestHelper.waitId(5000));
+        // potentially fails when server answer comes to slow
+        onView(withId(R.id.navigation_home)).perform(click());
+        onView(withId(R.id.goEat)).check(matches(isDisplayed()));
+        onView(withId(R.id.profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.logout)).check(matches(isDisplayed()));
+        onView(withId(R.id.imageView2)).check(matches(isDisplayed()));
+        onView(withId(R.id.logout)).perform(click());
+    }
+
+    @Test
     public void alreadyRegisteredTest() {
         onView(withId(R.id.email)).perform(typeText("matze@matze.com"));
         onView(withId(R.id.email)).check(matches(withText("matze@matze.com")));
