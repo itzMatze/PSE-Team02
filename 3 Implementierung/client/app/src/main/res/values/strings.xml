@@ -143,4 +143,8 @@
     <string name="user_deleted_server_not_firebase">Der Benutzer wurde auf dem Server, aber nicht bei Firebase gelöscht</string>
     <string name="slogan">Weil alleine essen doof ist.</string>
     <string name="error_loading_group_so_user_updated">Fehler beim Laden der Gruppe, daher Benutzer aktualisiert</string>
+    <string name="no_time_chosen">Keine Zeit ausgewählt</string>
+    <string name="no_lines_chosen">Keine Linien ausgewählt</string>
+    <string name="group_saved_but_error_joining">Die Gruppe wurde erstellt, aber das Beitreten scheiterte</string>
+    <string name="list_recyclerview">RecyclerView-Liste</string>
 </resources>
