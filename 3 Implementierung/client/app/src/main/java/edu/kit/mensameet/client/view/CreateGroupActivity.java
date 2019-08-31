@@ -121,6 +121,14 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.error_saving_group, it);
 
+
+        } else if (it.second ==  CreateGroupViewModel.State.GROUP_SAVED_BUT_ERROR_JOINING) {
+
+            showMessage(this, R.string.group_saved_but_error_joining, it);
+
+            finish();
+            gotoActivity(SelectGroupActivity.class);
+
         } else if (it.second ==  CreateGroupViewModel.State.RELOADING_USER_FAILED) {
 
             showMessage(this, R.string.reloading_user_failed, it);

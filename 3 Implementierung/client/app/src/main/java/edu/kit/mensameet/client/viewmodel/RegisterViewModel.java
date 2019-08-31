@@ -147,6 +147,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
 
                             } catch (RequestUtil.RequestException e) {
 
+                                mAuth.signOut();
                                 eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.CREATE_ACCOUNT_FAILED));
                                 return;
 

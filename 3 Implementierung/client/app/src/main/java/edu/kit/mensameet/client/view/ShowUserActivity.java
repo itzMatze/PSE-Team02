@@ -30,7 +30,7 @@ public class ShowUserActivity extends MensaMeetActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(ShowUserViewModel.class);
-        super.viewModel = viewModel;
+        initializeViewModel(viewModel);
 
         checkAccess();
 
@@ -67,7 +67,7 @@ public class ShowUserActivity extends MensaMeetActivity {
     @Override
     protected void checkAccess() {
         // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUserToShow() == null) {
             finish();
         }
     }
