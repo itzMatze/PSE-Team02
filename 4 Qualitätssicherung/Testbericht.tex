@@ -12,7 +12,8 @@
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage[toc]{glossaries}
-
+\usepackage{pgfplots}
+\usepackage{float}
 \makeglossaries
 
 \newglossaryentry{Unittest}
@@ -159,6 +160,117 @@ Die nachfolgenden Tests laufen auf dem Client und sind zur Überprüfung der kor
 
 
 \chapter{Hallway Usability Testing}
+
+\section{Einleitung}
+TODO: Was sind Hallway Tests, wozu sind sie gut. \\
+
+Aussage von Jakob Nielsen (gilt als einer der führenden Persönlichkeiten auf dem Gebiet Benutzerfreundlichkeit, Gründer der Beratungsfirme Nielson Norman Group für Gebrauchstauglichkeit): Mit 5 Probanden lassen sich bereits 85 \% der Usability Probleme finden.
+
+TODO Quelle in Fußnote
+Quelle:  https://www.nngroup.com/articles/why-you-only-need-to-test-with-5-users/ 
+\begin{figure}[ht]
+	\centering
+  \includegraphics[scale=0.5]{Stichprobe.jpg}
+	\caption{Stichprobengröße für Usability Tests}
+	\label{fig2}
+\end{figure}
+\newpage
+\section{Vorbereitung}
+Für uns war es besonders wichtig zu sehen, ob Probanden die für sie unbekannte App, mühelos bedienen können und problemlos die vorgegebenen Ziele erreichen können.
+Generelles Feedback, z.b. der Wunsch nach weiteren Funktionalitäten, war im Hinblick auf eine eventuelle Veröffentlichung der Applikation ebenfalls interessant für uns. \\
+Unter diesen Gesichtspunkten haben wir folgendne Fragebogen (Abbilding 5.2) zusammengestellt, den die Probanden, nach Durchführung von festgelegten Aufgaben(Listing 5.1.), ausfüllen durften.\\
+Um sicherzustellen, dass unsere Aufgaben und Befragung nicht zu viel Zeit in Anspruch nehmen, haben wir es vorher selbst durchgespielt und uns dabei bewusst Zeit gelassen.
+
+
+
+\subsubsection*{Listing 5.1. Aufgabenliste}
+\begin{itemize}
+	\item 1.) Bearbeite dein Profil: Ändere den Namen und das Profilbild
+	\item 2.) Plane zwischen 12 und 14 Uhr an der Cafeteria Essen zu gehen
+	\item 3.) Trete einer Gruppe bei
+	\item 4.) Schau dir das Profil eines Gruppenmitgliedes an
+	\item 5.) Verlasse die Gruppe
+	\item 6.) Erstelle eine eigene Gruppe
+\end{itemize}
+\newpage
+\begin{figure}[H]
+	\centering
+  \includegraphics[scale=0.7]{Umfrage.pdf}
+	\caption{Evaluationsbogen}
+	\label{fig2}
+\end{figure}
+\newpage
+
+\section{Durchführung}
+Es wurden Personen auf dem KIT Campus, welche im Forum saßen, folgendermaßen angesprochen: \\
+\ \\
+\textit{Hallo, dürfen wir euch eine Frage stellen? Esst ihr regelmäßig in der Mensa?} \\ 
+\ \\
+Personen die diese Frage bejahten kamen als Probanden in Frage. \\
+\ \\
+\textit{Würdet ihr an einer kleinen Umfrage teilnehmen, es dauert nur 5 Minuten und als Dankeschön bekommt ihr ein paar Schoko Bons.}  \\ 
+\ \\
+Bei Zusage wurde eine Person aus der Personengruppe ausgewählt.\\
+\ \\
+\textit{Also, wir haben eine App entwickelt, mit der sich Leute anonym mit Fremden zum Essen gehen an der Mensa verabreden können und wir wollten uns etwas Feedback dazu einholen, deshalb darfst du die App jetzt kurz für uns testen. Du kriegst gleich ein Handy von uns, auf dem ist bereits ein User registriert und eingeloggt und dann musst du einfach diese sechs Aufgaben(zeigt Aufgabenliste) abarbeiten.} \\
+\ \\
+Während der Durchführung achteten wir auf die Zeit, schauten aufmerksam zu und notierten uns hinterher unsere Beobachtungen, die im Abschnitt Ergebnisse aufgeführt sind. \\
+Nachdem die Aufgaben durchgeführt wurden erhielten die Probanden den Evaluatiosbogen.\\
+\ \\
+\textit{So, du hast jetzt während den Aufgaben alle Funktionalitäten der App kennen gelernt, jetzt musst du nur noch diesen Umfragebogen ausfüllen und dann bist du fertig.}
+
+\newpage
+\section{Ergebnisse}
+Unser Test umfasste sieben Probanden, die alle auf oben beschriebene Weise am Campus angesprochen wurden.
+
+\subsection*{Beobachtungen}
+Die Probanden benötigten jeweils 5-7 Minuten für den gesamten Test, ab dem Zeitpunkt, ab dem sie das Handy und die Aufgabenliste bekamen. Hauptsächlich nahmen sie sich unterschiedlich viel Zeit für den Fragebogen.\\
+\ \\
+Zwei Probanden speicherten ihre Profiländerung nicht über den Speichern-Button sondern drückten stattdessen auf Zurück  um wieder in das Home Menü zu gelangen.
+\ \\
+Sechs von sieben Probanden haben nicht gemerkt, dass nicht nur drei sondern sechs Proflbilder zur Wahl standen.
+\ \\
+Beim Erstellen einer Gruppe ist die maximale Mitgliederzahl auf 1 einstellbar. 
+
+\subsection*{Auswertung der Evaluationsbögen}
+\ \\
+\begin{tikzpicture}\begin{axis}[width=1.1\textwidth,height=0.6\textwidth,ybar,enlargelimits=0.1,symbolic x coords={Trifft nicht zu, Trifft eher nicht zu, Neutral, Trifft eher zu, Trifft voll zu}
+,xtick={Trifft nicht zu, Trifft eher nicht zu, Neutral, Trifft eher zu, Trifft voll zu}, ylabel={Anzahl Antworten}]
+
+\addplot[color=blue] coordinates{(Trifft nicht zu,0) (Trifft eher nicht zu,0) (Neutral,0) (Trifft eher zu,2) (Trifft voll zu,5)};
+\addplot[color=red] coordinates{(Trifft nicht zu,1) (Trifft eher nicht zu,2) (Neutral,1) (Trifft eher zu,1) (Trifft voll zu,2)};
+\addplot[color=green] coordinates{(Trifft nicht zu,0) (Trifft eher nicht zu,0) (Neutral,0) (Trifft eher zu,1) (Trifft voll zu,6)};
+
+\end{axis} 
+\end{tikzpicture}
+\ \\
+Legende: \ \\
+Blau: Die App war intuitiv/leicht bedienbar. \\
+Rot:  Ich würde diese App selber benutzen/weiterempfehlen. \\
+Grün: Das Design hat mir gefallen.
+
+\newpage
+\subsection*{Antworten in den Freitextfeldern}
+
+\subsubsection*{Wünscht du dir noch weitere Funktionen?}
+Vier von sieben Probanden füllten dieses Feld aus: \\
+\ \\
+- Hashtags für die Gruppen zum Suchen \\
+- Bewertungssystem für das Essen \\
+- Aktualisieren des Essenplans, wenn etwas ausgegangen ist \\ 
+- Bewerten von Essen und Personen \\
+- Chat innerhalb der Gruppe
+
+\subsubsection*{Was hat dir gefallen, was hat dir nicht gefallen?}
+Zwei von sieben Probanden füllten dieses Feld aus: \\
+\ \\
+- Einfache Bedienbarkeit, Gute Funktionalität und vorrausschauendes Texting \\
+- Hübsches Design \\
+\ \\
+\subsection*{Fazit}
+
+TODO
+
 
 \printglossaries
 \end{document}
