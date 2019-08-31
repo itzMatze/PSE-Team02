@@ -72,9 +72,10 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         /*
 
+        // Mock data
+
         List<Group> dataList = new ArrayList<Group>();
 
-        // Mock data
         Group g1 = new Group();
         g1.setName("Mensaphilosophen");
         g1.setMotto("Du bist, was du isst!");
@@ -265,6 +266,14 @@ public class SelectGroupActivity extends MensaMeetActivity {
         if (it.second == SelectGroupViewModel.State.LOADING_GROUPS_FAILED) {
 
             showMessage(this, R.string.loading_groups_failed, it);
+
+        } else if (it.second == SelectGroupViewModel.State.NO_TIME_CHOSEN) {
+
+            showMessage(this, R.string.no_time_chosen, it);
+
+        } else if (it.second == SelectGroupViewModel.State.NO_LINES_CHOSEN) {
+
+            showMessage(this, R.string.no_lines_chosen, it);
 
         }
     }

@@ -51,6 +51,7 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
 
         // set up the RecyclerView
         this.recyclerView = new RecyclerView(context);
+        this.recyclerView.setId((int)R.string.list_recyclerview);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(RecyclerView.VERTICAL);

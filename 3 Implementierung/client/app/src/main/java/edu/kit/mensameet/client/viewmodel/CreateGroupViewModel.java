@@ -50,7 +50,7 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
 
                 } catch (RequestUtil.RequestException e) {
 
-                    eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.ERROR_SAVING_GROUP));
+                    eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.GROUP_SAVED_BUT_ERROR_JOINING));
                     return;
 
                 }
@@ -89,6 +89,6 @@ public class CreateGroupViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        GROUP_SAVED, ERROR_SAVING_GROUP, RELOADING_USER_FAILED
+        GROUP_SAVED, ERROR_SAVING_GROUP, GROUP_SAVED_BUT_ERROR_JOINING, RELOADING_USER_FAILED
     }
 }

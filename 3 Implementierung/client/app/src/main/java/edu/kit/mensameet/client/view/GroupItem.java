@@ -386,9 +386,9 @@ public class GroupItem extends MensaMeetItem<Group> {
             return;
         }
 
-        objectData.setName(super.extractTextField(R.string.field_name));
-        objectData.setMotto(super.extractTextField(R.string.field_motto));
-        objectData.setMeetingDate(MensaMeetTime.stringToTime(super.extractTextField(R.string.field_time)));
+        objectData.setName(extractTextField(R.string.field_name));
+        objectData.setMotto(extractTextField(R.string.field_motto));
+        objectData.setMeetingDate(MensaMeetTime.stringToTime(extractTextField(R.string.field_time)));
         objectData.setLine(getRepresentedValue(R.string.field_line));
 
         String maxMembers = extractSpinnerOrTextField(R.string.field_max_members);
