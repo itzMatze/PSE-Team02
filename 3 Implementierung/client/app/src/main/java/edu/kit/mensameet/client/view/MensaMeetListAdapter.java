@@ -128,7 +128,9 @@ public class MensaMeetListAdapter<T> extends RecyclerView.Adapter<MensaMeetListA
                 }
             }
         } else if (displayMode == MensaMeetList.DisplayMode.SINGLE_SELECT) {
-            selectedObjects.add(items.get(selectedId).getObjectData());
+            if (selectedId > -1) {
+                selectedObjects.add(items.get(selectedId).getObjectData());
+            }
         }
 
         return selectedObjects;

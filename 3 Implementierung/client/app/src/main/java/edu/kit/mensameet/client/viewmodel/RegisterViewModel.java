@@ -147,6 +147,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
 
                             } catch (RequestUtil.RequestException e) {
 
+                                mAuth.signOut();
                                 eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.CREATE_ACCOUNT_FAILED));
                                 return;
 
@@ -173,7 +174,7 @@ public class RegisterViewModel extends MensaMeetViewModel {
 
                             } catch (RequestUtil.RequestException e) {
 
-                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.INITIALIZATION_FAILED));
+                                eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.ACCOUNT_CREATED_BUT_INITIALIZATION_FAILED));
                                 return;
 
                             }
@@ -194,6 +195,6 @@ public class RegisterViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        CREATE_ACCOUNT_SUCCESS, CREATE_ACCOUNT_FAILED, INITIALIZATION_FAILED, PASSWORDS_NOT_MATCHING, LOADING_NEW_USER_FAILED
+        CREATE_ACCOUNT_SUCCESS, CREATE_ACCOUNT_FAILED, ACCOUNT_CREATED_BUT_INITIALIZATION_FAILED, PASSWORDS_NOT_MATCHING, LOADING_NEW_USER_FAILED
     }
 }

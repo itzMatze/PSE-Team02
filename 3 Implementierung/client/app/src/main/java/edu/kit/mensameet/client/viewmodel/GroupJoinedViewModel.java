@@ -25,6 +25,31 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
 
         } catch (RequestUtil.RequestException e) {
 
+            int errorCode = e.getErrorCode();
+
+            if (errorCode == 404) {
+                // Group not found, so not existing any more.
+
+                User userToUpdate = MensaMeetSession.getInstance().getUser();
+                userToUpdate.setGroupToken(null);
+
+                try {
+
+                    RequestUtil.updateUser(userToUpdate);
+
+                    // Reached only if update is successful:
+                    MensaMeetSession.getInstance().setUser(userToUpdate);
+                    eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.ERROR_LOADING_GROUP_SO_USER_UPDATED));
+                    return false;
+
+                } catch (RequestUtil.RequestException e2) {
+
+                    // Do nothing, everything stays unchanged.
+
+                }
+
+            }
+
             eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.ERROR_LOADING_GROUP));
             return false;
 
@@ -80,6 +105,11 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        GROUP_LEFT, ERROR_LOADING_GROUP, ERROR_LEAVING_GROUP, RELOADING_USER_FAILED
+        GROUP_LEFT, ERROR_LOADING_GROUP, ERROR_LEAVING_GROUP, RELOADING_USER_FAILED, ERROR_LOADING_GROUP_SO_USER_UPDATED;
+    }
+
+    //todo: only for tests
+    public void setGroup(Group group) {
+        this.group = group;
     }
 }

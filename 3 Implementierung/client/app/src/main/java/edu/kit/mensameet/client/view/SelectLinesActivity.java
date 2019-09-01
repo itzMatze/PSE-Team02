@@ -3,7 +3,6 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -37,9 +36,8 @@ public class SelectLinesActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SelectLinesViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
+        if (!checkAccess()) {
+            return;
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_lines);
@@ -71,6 +69,8 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
     @Override
     protected void reloadData() {
+
+        super.reloadData();
 
         List<Line> chosenLines = viewModel.getChosenLines();
 
@@ -108,5 +108,15 @@ public class SelectLinesActivity extends MensaMeetActivity {
     public void onClickBack() {
         viewModel.setSelectedLines(lineList.getSelectedObjects());
         viewModel.saveLinesAndBack();
+    }
+
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
+            finish();
+            return false;
+        }
+        return true;
     }
 }

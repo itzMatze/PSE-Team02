@@ -7,8 +7,14 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Time;
+import java.util.Date;
+import java.util.List;
+
 import edu.kit.mensameet.client.model.Gender;
 import edu.kit.mensameet.client.model.Group;
+import edu.kit.mensameet.client.model.MealLines;
+import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.model.Status;
 import edu.kit.mensameet.client.model.Subject;
 import edu.kit.mensameet.client.model.User;
@@ -17,10 +23,15 @@ import edu.kit.mensameet.client.model.User;
 public class RequestUtilTest {
 
     ObjectMapper mapper = new ObjectMapper();
-    User testUser = new User();
+    User testUser;
     Group testGroup = new Group();
+
+    String[] lines;
+
     @Before
     public void setUp() throws Exception {
+
+        testUser = new User();
         testUser.setGender(Gender.MALE);
         testUser.setToken("testUser941");
         testUser.setMotto("");
@@ -31,54 +42,79 @@ public class RequestUtilTest {
         testUser.setIsAdmin(true);
         testUser.setGroupToken(null);
 
-        testGroup.setToken("testGroup");
+        testGroup.setToken("testToken");
         testGroup.setMotto("testMotto");
+        testGroup.setName("testName");
+        Date testTime = new Date();
+        testTime.setHours(12);
+        testTime.setMinutes(0);
+        testGroup.setMeetingDate(testTime);
+        testGroup.setLine(MealLines.CURRY_LINE.toString());
+
+        lines = new String[4];
+        lines[0] = MealLines.LINE_SIX.toString();
+        lines[1] = MealLines.CAFETARIA_LATE.toString();
+        lines[2] = MealLines.LINE_FOUR_FIVE.toString();
+        lines[3] = MealLines.CURRY_LINE.toString();
     }
 
-    @Test
-    public void userTest() {
-
-
-
-        String str1 = RequestUtil.createUser(testUser.getToken());
-//        Assert.assertNotNull(str1);
-
-        String str2 = RequestUtil.updateUser(testUser);
-
-
-        try {
-            User actual = RequestUtil.getUser(testUser.getToken(),testUser.getToken());
-            Assert.assertEquals(testUser.getMotto(), actual.getMotto());
-            Assert.assertEquals(testUser.getIsAdmin(), actual.getIsAdmin());
-            Assert.assertEquals(testUser.getGender(), actual.getGender());
-        }catch (Exception e){
-
-        }
-    }
-/*
-delete user only with admin account
+    /*
+    delete user only with admin account
+     */
     @After
-    public final void after() {
-        RequestUtil.deleteUser(testUser.getToken());
+    public final void tearDown() throws Exception {
+            RequestUtil.deleteUser(testUser.getToken(),testUser.getToken());
     }
-*/
 
-/*todo
     @Test
-    public void groupTest() {
+    public void mensaDataTest() throws Exception{
+        Assert.assertNotNull(RequestUtil.getMensaData());
+    }
 
-        Group expect = RequestUtil.createGroup(testGroup, testGroup.getToken());
+    @Test
+    public void userTest() throws Exception{
 
-        // create group and get group
+        Assert.assertNotNull(testUser);
+            RequestUtil.createUser(testUser.getToken());
+            RequestUtil.updateUser(testUser);
+
+            User actual = RequestUtil.getUser(testUser.getToken(),testUser.getToken());
+            Assert.assertNotNull(actual);
+            Assert.assertEquals(testUser.toString(), actual.toString());
+
+    }
+
+
+    @Test
+    public void groupTest() throws Exception{
+
+            Group expected = RequestUtil.createGroup(testGroup, testGroup.getToken());
+
         try {
-            Group actual = RequestUtil.getGroup(expect.getToken());
-            Assert.assertNotNull(expect.getToken());
-            Assert.assertEquals(expect.getToken(), actual.getToken());
-            Assert.assertEquals("testMotto", actual.getMotto());
-        }catch (Exception e){
-
+            RequestUtil.createUser(testUser.getToken());
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
         }
 
+        try {
+            RequestUtil.updateUser(testUser);
+        } catch (RequestUtil.RequestException e) {
+            e.printStackTrace();
+        }
+
+            Group actualGroup = RequestUtil.getGroup(expected.getToken(),expected.getToken());
+            Assert.assertNotNull(actualGroup);
+            Assert.assertEquals(expected.getName(), actualGroup.getName());
+
+            List<Group> groupList = RequestUtil.getGroupByPrefferences(testUser.getToken(), new MensaMeetTime(new Time(11,30,0), new Time(13,0,0)),
+                    lines);
+            Assert.assertFalse(groupList.isEmpty());
+
+            RequestUtil.addUserToGroup(expected.getToken(), testUser.getToken());
+            RequestUtil.removeUserFromGroup(expected.getToken(), testUser.getToken());
+
+            RequestUtil.deleteGroup(expected.getToken(),testUser.getToken());
+
     }
-*/
+
 }

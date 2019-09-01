@@ -6,21 +6,15 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
 
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -43,9 +37,6 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-
-        // Center title
-        centerTitle();
 
         // Always keep app in portrait position
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -141,7 +132,9 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
     public void onClickBack() {};
 
     // Hook method for Data reload.
-    protected void reloadData() {};
+    protected void reloadData() {
+        checkAccess();
+    };
 
     // Called when app is resumed.
     @Override
@@ -158,8 +151,7 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
     protected void gotoHome() {
         // TODO: do not hardcode the name of the home activity instead, fetch homeActivity from MensaMeetSession
 
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        gotoActivity(HomeActivity.class);
     }
 
     // General method for
@@ -170,6 +162,13 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Shows a toast message using eventLiveData content.
+     *
+     * @param context activity
+     * @param id string resource id of the message to be shown
+     * @param it eventLiveData content
+     */
     protected void showMessage(Context context, @StringRes int id, Pair<String, StateInterface> it) {
 
         String message = getResources().getString(id);
@@ -182,31 +181,21 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
 
     }
 
-    // Centering for the title.
-    private void centerTitle() {
-        /*ArrayList<View> textViews = new ArrayList<>();
+    /**
+     * Checks if the activity can be accessed.
+     *
+     * @return if the activity can be accessed.
+     */
+    protected Boolean checkAccess() {
+        return false;
+    }
 
-        getWindow().getDecorView().findViewsWithText(textViews, getTitle(), View.FIND_VIEWS_WITH_TEXT);
+    @Override
+    public void onBackPressed() {
+        // Deactivate Android back button.
+    }
 
-        if (textViews.size() > 0) {
-            AppCompatTextView appCompatTextView = null;
-            if(textViews.size() == 1) {
-                appCompatTextView = (AppCompatTextView) textViews.get(0);
-            } else {
-                for(View v : textViews) {
-                    if(v.getParent() instanceof Toolbar) {
-                        appCompatTextView = (AppCompatTextView) v;
-                        break;
-                    }
-                }
-            }
-
-            if(appCompatTextView != null) {
-                ViewGroup.LayoutParams params = appCompatTextView.getLayoutParams();
-                params.width = ViewGroup.LayoutParams.MATCH_PARENT;
-                appCompatTextView.setLayoutParams(params);
-                appCompatTextView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-            }
-        } */
+    protected void goBack() {
+        super.onBackPressed();
     }
 }

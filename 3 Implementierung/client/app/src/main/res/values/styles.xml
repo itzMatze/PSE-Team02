@@ -6,6 +6,19 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/enriqueta</item>
+        <item name="fontFamily">@font/enriqueta</item>
+        <item name="android:textViewStyle">@style/MensaMeetTextViewStyle</item>
+    </style>
+
+    <style name="MensaMeetTextViewStyle" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/enriqueta</item>
+        <item name="fontFamily">@font/enriqueta</item>
+    </style>
+
+    <style name="MensaMeetTextStyle">
+        <item name="android:fontFamily">@font/enriqueta</item>
+        <item name="fontFamily">@font/enriqueta</item>
     </style>
 
     <style name="item_container">
@@ -48,6 +61,11 @@
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:layout_marginLeft">0dp</item>
         <item name="android:layout_marginRight">0dp</item>
+    </style>
+
+    <style name="HiddenTitleTheme" parent="AppTheme">
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
     </style>
 
 </resources>

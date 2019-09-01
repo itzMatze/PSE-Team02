@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,6 +13,8 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.Date;
 
@@ -104,7 +107,10 @@ public class UserItem extends MensaMeetItem<User> {
         }
 
         // Field: name
-        descriptionArea.addView(createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE));
+        TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
+        // TextView is the parent class of EditText and includes it
+        nameField.setTypeface(nameField.getTypeface(), Typeface.BOLD);
+        descriptionArea.addView(nameField);
 
         // Field: motto
         descriptionArea.addView(createTextField(R.string.field_motto, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
@@ -213,6 +219,13 @@ public class UserItem extends MensaMeetItem<User> {
 
                     final Button deleteButton = new Button(context);
                     deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                    deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                    deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
+                    deleteButton.setTextSize(18);
+                    deleteButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+                    deleteButton.setTypeface(deleteButton.getTypeface(), Typeface.BOLD);
+                    deleteButton.setAllCaps(false);
+
                     deleteButton.setText(R.string.delete_user);
                     deleteButton.setOnClickListener(new View.OnClickListener() {
                         public void onClick(View v) {
@@ -237,7 +250,6 @@ public class UserItem extends MensaMeetItem<User> {
 
                         }
                     });
-                    deleteButton.setBackgroundColor(context.getResources().getColor(R.color.button_color_blue));
 
                     descriptionArea.addView(deleteButton);
                 }

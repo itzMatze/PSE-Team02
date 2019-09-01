@@ -5,64 +5,77 @@
 \setlist[todolist]{label=$\square$}
 \usepackage{blindtext}
 \usepackage{graphicx}
+\usepackage[a4paper]{geometry}
 \usepackage[absolute]{textpos}
 \usepackage[utf8]{inputenc}
 \setlength{\TPHorizModule}{2cm}
-\setlength{\TPVertModule}{5cm}
-\textblockorigin{190mm}{10mm} 
+\setlength{\TPVertModule}{2cm}
+\pagestyle{empty}
+%\textblockorigin{210mm}{10mm} 
 \newenvironment{Ckcol}[1]{\begin{multicols}{#1}%
         \begin{todolist}}%
               {\end{todolist}%
                            \end{multicols}}
 \begin{document}
-\center \section*{Umfrage} 
-Die Navigation der App war intuitiv leicht bedienbar.
+\begin{center} \section*{Evaluation} 
+\ \\
+\  \\
+\ \\ 
+\ \\
+Die App war intuitiv/leicht bedienbar.
    \begin{Ckcol}{3}
 
     \item  Trifft voll zu
-    \item  Trifft nicht zu
-    \item  Trifft ehernicht zu
+    \item  Trifft eher nicht zu
+    \item  Trifft eher zu
     \item  Trifft gar nicht zu
     \item  Neutral
 
-   \end{Ckcol}     
+   \end{Ckcol}  
+   
+   \ \\
 
  Ich würde diese App selber benutzen/weiterempfehlen.
       \begin{Ckcol}{3}
 
     \item  Trifft voll zu
-    \item  Trifft nicht zu
-    \item  Trifft ehernicht zu
+    \item  Trifft eher nicht zu
+    \item  Trifft eher zu
     \item  Trifft gar nicht zu
     \item  Neutral
     
 
    \end{Ckcol}
  
+   \ \\
    
-   
-  Das Design hat mir ... gefallen.
+  Das Design hat mir gefallen.
       \begin{Ckcol}{3}
 
-    \item  Sehr gut
-    \item  Eher gut
-    \item  Mäßig gut
-    \item  Eher nicht
-    \item  Gar nicht
+   \item  Trifft voll zu
+    \item  Trifft eher nicht zu
+    \item  Trifft eher zu
+    \item  Trifft gar nicht zu
+    \item  Neutral
     
 
    \end{Ckcol}
-   
-   
-Wünscht du dir noch weitere Funktionalitäten?
+    \ \\
+   \ \\
+  
+Wünscht du dir noch weitere Funktionen?
+\end{center}
 \begin{center}
  \setlength{\fboxsep}{1pt} 
- \fbox{\parbox[t][4cm][t]{10cm}{~}}
+ \fbox{\parbox[t][4cm][t]{12cm}{~}}
 \end{center}
 
-Was hat dir gefallen, was hat dir nicht gefallen?
+\ \\
 \begin{center}
+Was hat dir gefallen? Was hat dir nicht gefallen?
+
  \setlength{\fboxsep}{1pt} 
- \fbox{\parbox[t][4cm][t]{10cm}{~}}
+ \fbox{\parbox[t][4cm][t]{12cm}{~}}
 \end{center}
+
 \end{document}

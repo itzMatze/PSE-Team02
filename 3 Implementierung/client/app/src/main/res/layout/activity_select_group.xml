@@ -25,12 +25,14 @@
                 android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="16dp"
+                android:layout_alignParentBottom="true"
                 android:layout_marginRight="8dp"
+                android:layout_marginBottom="16dp"
+                android:background="@color/floating_action_button_color"
                 android:clickable="true"
-                app:srcCompat="@android:drawable/ic_menu_add"/>
+                app:backgroundTint="@color/floating_action_button_color"
+                app:srcCompat="@android:drawable/ic_menu_add" />
         </RelativeLayout>
 
         <include layout="@layout/bottom_navigation_area"/>

@@ -2,6 +2,7 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
+import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -24,12 +25,11 @@ public class LoginActivity extends MensaMeetActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
-        }
+        if (!checkAccess()) {
+            return;
+        };
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setVm(viewModel);
@@ -38,6 +38,20 @@ public class LoginActivity extends MensaMeetActivity {
         observeLiveData();
         initializeButtons();
 
+        // Hide other buttons.
+        if (buttonNext != null) {
+            buttonNext.setVisibility(View.GONE);
+        }
+
+        if (buttonHome != null) {
+            buttonHome.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onClickBack() {
+        gotoActivity(BeginActivity.class);
     }
 
     /** Hook method for livedata processing
@@ -49,8 +63,14 @@ public class LoginActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.login_succeeded, it);
 
-            finish();
-            gotoActivity(HomeActivity.class);
+            if (viewModel.currentUserDataIncomplete()) {
+                finish();
+                gotoActivity(UserActivity.class);
+            } else {
+                finish();
+                gotoActivity(HomeActivity.class);
+            }
+
 
         } else if (it.second == LoginViewModel.State.LOG_IN_FAILED) {
 
@@ -76,5 +96,15 @@ public class LoginActivity extends MensaMeetActivity {
 
         }
 
+    }
+
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+            return false;
+        }
+        return true;
     }
 }

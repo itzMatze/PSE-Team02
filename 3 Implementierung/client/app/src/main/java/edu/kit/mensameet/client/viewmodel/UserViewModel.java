@@ -53,8 +53,6 @@ public class UserViewModel extends MensaMeetViewModel {
     {
         if (user != null) {
 
-            user.setIsAdmin(true);
-
             try {
 
                 RequestUtil.updateUser(user);

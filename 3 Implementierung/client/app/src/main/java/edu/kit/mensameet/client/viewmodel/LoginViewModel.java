@@ -140,6 +140,7 @@ public class LoginViewModel extends MensaMeetViewModel {
 
                             } catch (RequestUtil.RequestException e) {
 
+                                mAuth.signOut();
                                 eventLiveData.setValue(new Pair<String, StateInterface>(e.getLocalizedMessage(), State.LOADING_USER_FAILED));
                                 return;
 

@@ -29,7 +29,6 @@ public class MensaMeetSession {
     private Group chosenGroup;
     private Group createdGroup;
     private User userToShow;
-    private Boolean loggedIn = false;
 
     private MensaMeetSession() {
     }
@@ -175,7 +174,6 @@ public class MensaMeetSession {
         setChosenTime(null);
         setCreatedGroup(null);
         setUserToShow(null);
-        loggedIn = true;
 
     }
 
@@ -187,11 +185,6 @@ public class MensaMeetSession {
         setChosenTime(null);
         setCreatedGroup(null);
         setUserToShow(null);
-        loggedIn = false;
-    }
-
-    public Boolean isLoggedIn() {
-        return loggedIn;
     }
 
 }

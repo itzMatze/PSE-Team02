@@ -1,7 +1,5 @@
 package edu.kit.mensameet.client.view;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
@@ -27,10 +25,9 @@ public class HomeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.getUser() == null) {
-            onBackPressed();
-        }
+        if (!checkAccess()) {
+            return;
+        };
 
         setContentView(R.layout.activity_home);
 
@@ -85,9 +82,20 @@ public class HomeActivity extends MensaMeetActivity {
         } else if (it.second == HomeViewModel.State.TO_GROUP_JOINED) {
             gotoActivity(GroupJoinedActivity.class);
         } else if (it.second == HomeViewModel.State.TO_BEGIN) {
+            finish();
             gotoActivity(BeginActivity.class);
         }
     }
 
+    @Override
+    protected Boolean checkAccess() {
+
+        // Illegal state to show activity, go back.
+        if (viewModel.getUser() == null) {
+            finish();
+            return false;
+        }
+        return true;
+    }
 
 }

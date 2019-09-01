@@ -1,10 +1,8 @@
 package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -41,9 +39,8 @@ public class SelectGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
+        if (!checkAccess()) {
+            return;
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_group);
@@ -75,9 +72,10 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         /*
 
+        // Mock data
+
         List<Group> dataList = new ArrayList<Group>();
 
-        // Mock data
         Group g1 = new Group();
         g1.setName("Mensaphilosophen");
         g1.setMotto("Du bist, was du isst!");
@@ -235,6 +233,13 @@ public class SelectGroupActivity extends MensaMeetActivity {
                                 finish();
                                 startActivity(getIntent());
 
+                            } else if (it.second == UserItemHandler.State.USER_DELETED_SERVER_NOT_FIREBASE) {
+
+                                showMessage(SelectGroupActivity.this, R.string.user_deleted_server_not_firebase, it);
+
+                                finish();
+                                startActivity(getIntent());
+
                             } else if (it.second == UserItemHandler.State.USER_DELETION_FAILED) {
 
                                 showMessage(SelectGroupActivity.this, R.string.user_deletion_failed, it);
@@ -262,9 +267,26 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.loading_groups_failed, it);
 
+        } else if (it.second == SelectGroupViewModel.State.NO_TIME_CHOSEN) {
+
+            showMessage(this, R.string.no_time_chosen, it);
+
+        } else if (it.second == SelectGroupViewModel.State.NO_LINES_CHOSEN) {
+
+            showMessage(this, R.string.no_lines_chosen, it);
+
         }
     }
 
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
+            finish();
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public void onClickBack() {

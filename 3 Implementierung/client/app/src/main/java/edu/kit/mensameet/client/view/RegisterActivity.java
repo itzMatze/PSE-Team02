@@ -2,14 +2,12 @@ package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
 import android.util.Pair;
-import android.widget.Toast;
+import android.view.View;
 
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import edu.kit.mensameet.client.view.databinding.ActivityRegisterBinding;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.RegisterViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
@@ -29,9 +27,8 @@ public class RegisterActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         super.viewModel = viewModel;
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
+        if (!checkAccess()) {
+            return;
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register);
@@ -41,6 +38,20 @@ public class RegisterActivity extends MensaMeetActivity {
         observeLiveData();
         initializeButtons();
 
+        // Hide other buttons.
+        if (buttonNext != null) {
+            buttonNext.setVisibility(View.GONE);
+        }
+
+        if (buttonHome != null) {
+            buttonHome.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    public void onClickBack() {
+        gotoActivity(BeginActivity.class);
     }
 
 
@@ -60,12 +71,14 @@ public class RegisterActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.registration_failed, it);
 
-        } else if (it.second == RegisterViewModel.State.INITIALIZATION_FAILED) {
+        } else if (it.second == RegisterViewModel.State.ACCOUNT_CREATED_BUT_INITIALIZATION_FAILED) {
 
-            showMessage(this, R.string.initialization_failed, it);
+            showMessage(this, R.string.account_created_but_initialization_failed, it);
 
             // Invalidate created session data.
             viewModel.invalidateSession();
+            finish();
+            gotoActivity(BeginActivity.class);
 
         } else if (it.second == RegisterViewModel.State.LOADING_NEW_USER_FAILED) {
 
@@ -80,4 +93,13 @@ public class RegisterActivity extends MensaMeetActivity {
         }
     }
 
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+            return false;
+        }
+        return true;
+    }
 }

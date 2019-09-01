@@ -6,7 +6,6 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.RequestUtil;
 
 /**
@@ -17,8 +16,20 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
     private List<Group> receivedGroups;
 
     public Boolean loadGroups() {
+
+        if (getChosenTime() == null) {
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.NO_TIME_CHOSEN));
+            return false;
+        }
+
         // prepare chosen list for server request
-        List<Line> chosenLines = MensaMeetSession.getInstance().getChosenLines();
+        List<Line> chosenLines = getChosenLines();
+
+        if (chosenLines == null) {
+            eventLiveData.setValue(new Pair<String, StateInterface>(null, State.NO_LINES_CHOSEN));
+            return false;
+        }
+
         String[] chosenMealLines = new String[chosenLines.size()];
 
         for (int i = 0; i < chosenLines.size(); i++) {
@@ -31,7 +42,7 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
         List<Group> receivedGroups = null;
         try {
 
-            receivedGroups = RequestUtil.getGroupByPrefferences(MensaMeetSession.getInstance().getUser().getToken(), MensaMeetSession.getInstance().getChosenTime(), chosenMealLines);
+            receivedGroups = RequestUtil.getGroupByPrefferences(getUser().getToken(), getChosenTime(), chosenMealLines);
 
         } catch (RequestUtil.RequestException e) {
 
@@ -50,6 +61,6 @@ public class SelectGroupViewModel extends MensaMeetViewModel {
     }
 
     public enum State implements StateInterface {
-        LOADING_GROUPS_FAILED
+        LOADING_GROUPS_FAILED, NO_TIME_CHOSEN, NO_LINES_CHOSEN
     }
 }

@@ -13,11 +13,9 @@ import java.util.List;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MealLines;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
@@ -39,10 +37,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back.
-        if (viewModel.currentUserDataIncomplete()) {
-            onBackPressed();
-        }
+        if (!checkAccess()) {
+            return;
+        };
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         binding.setVm(viewModel);
@@ -94,6 +91,8 @@ public class CreateGroupActivity extends MensaMeetActivity {
     @Override
     protected void reloadData() {
 
+        super.reloadData();
+        
         Group createdGroup = viewModel.getCreatedGroup();
 
         if (createdGroup != null) {
@@ -122,6 +121,14 @@ public class CreateGroupActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.error_saving_group, it);
 
+
+        } else if (it.second ==  CreateGroupViewModel.State.GROUP_SAVED_BUT_ERROR_JOINING) {
+
+            showMessage(this, R.string.group_saved_but_error_joining, it);
+
+            finish();
+            gotoActivity(SelectGroupActivity.class);
+
         } else if (it.second ==  CreateGroupViewModel.State.RELOADING_USER_FAILED) {
 
             showMessage(this, R.string.reloading_user_failed, it);
@@ -132,6 +139,16 @@ public class CreateGroupActivity extends MensaMeetActivity {
             gotoActivity(HomeActivity.class);
 
         }
+    }
+
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back.
+        if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
+            finish();
+            return false;
+        }
+        return true;
     }
 
     /**

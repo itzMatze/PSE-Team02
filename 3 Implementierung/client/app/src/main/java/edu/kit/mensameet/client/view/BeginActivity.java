@@ -3,15 +3,11 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 
-import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.view.databinding.ActivityBeginBinding;
 import edu.kit.mensameet.client.viewmodel.BeginViewModel;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
@@ -30,10 +26,9 @@ public class BeginActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
         super.initializeViewModel(viewModel);
 
-        // Illegal state to show activity, go back (if user is not null, there was another activity before.
-        if (viewModel.getUser() != null) {
-            onBackPressed();
-        }
+        if (!checkAccess()) {
+            return;
+        };
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         binding.setVm(viewModel);
@@ -68,4 +63,15 @@ public class BeginActivity extends MensaMeetActivity {
             gotoActivity(RegisterActivity.class);
         }
     }
+
+    @Override
+    protected Boolean checkAccess() {
+        // Illegal state to show activity, go back (if user is not null, there was another activity before.
+        if (viewModel.getUser() != null) {
+            finish();
+            return false;
+        }
+        return true;
+    }
+
 }
