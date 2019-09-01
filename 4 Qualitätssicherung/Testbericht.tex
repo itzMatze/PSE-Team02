@@ -54,10 +54,16 @@ Dieses Dokument verschafft einen Überblick über die \Gls{Qualitaetssicherung} 
 \section{Bug Fixes}
 
 \begin{itemize}
-\item Sceduler\\ \\
+\item Scheduler\\ \\
 Symptom: Die Funktionen die einmal täglich aufgerufen werden sollten, wurden nicht ausgeführt. TimeController.deleteGroups() und TimeController.updateMensaData() wurden nicht aufgerufen.\\ \\
 Ursache: Die Annotationen @Component hat in der Klasse TimeController hat gefehlt, damit hat SpringBoot die Klasse nicht gefunden und den Sceduler nicht Initialisiert.\\ \\
 Behebung:  Die Annotation wurde hinzugefügt.
+
+\item user.groupToken bei Mitternacht nicht gelöscht.\\ \\
+Symptom: Nach löschen aller Gruppen durch die Funktion GroupController.removeAllGroups() wurde bei Usern nicht das groupToken auf null gesetzt.\\ \\
+Ursache: Es wurde zwar über alle User iteriert und auf der Instanz die der Iterator zurück gegeben hat das Token auf null gesetzt, aber die User wurden nicht wieder im UserRepository und somit in der Datenbank aktualisiert.\\ \\
+Behebung: Nach dem Löschen des Tokens werden die User wieder gespeichert.
+
 \end{itemize}
 
 
