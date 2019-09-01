@@ -84,13 +84,7 @@ public class IntegrationTest {
 		
 		//The user now shouldn't be in any group and the group should be deleted.
 		assertEquals(amadeus.getGroupToken(), null);
-		
-		 try {
-			assertEquals(groupController.getGroup(groupX.getToken()), null);	
-	        fail("Expected an IndexOutOfBoundsException to be thrown");
-	    } catch (Exception e) {
-	        return;
-	    }	
+		assertFalse(groupRepository.existsById(groupX.getToken()));
 	}
 	
 	@Test
@@ -123,13 +117,7 @@ public class IntegrationTest {
 		//Amadeus needs to be refreshed, because the changes are only made on the entity in the repository.
 		amadeus = userController.getUser(amadeus.getToken());
 		assertEquals(amadeus.getGroupToken(), null);
-
-		try {
-			assertEquals(groupController.getGroup(groupX.getToken()), null);	
-	        fail("Expected an IndexOutOfBoundsException to be thrown");
-	    } catch (Exception e) {
-	        return;
-	    }	
+		assertFalse(groupRepository.existsById(groupX.getToken()));
 	}
 
 	@Test
@@ -148,7 +136,6 @@ public class IntegrationTest {
 		assertFalse(userRepository.existsById(amadeus.getToken()));
 		assertFalse(groupRepository.existsById(groupX.getToken()));
 	}
-
 	
 	@After
 	public void tearDown() {
