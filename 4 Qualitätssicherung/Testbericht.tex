@@ -68,12 +68,12 @@ Behebung: Nach dem Löschen des Tokens werden die User wieder gespeichert.
 
 
 \section{Unittests}
-Für die Unit Tests wurde das Framework JUnit verwendet. Die Testabdeckung am Server wurde mit EclEmma überprüft.
+Für die Unit Tests wurde, wie schon zuvor, das Framework JUnit verwendet. Die Testabdeckung am Server wurde mit EclEmma überprüft. Einige Klassen enthalten keinerlei Logik und rufen nur Funktionen anderer Klassen auf, entsprechend wurden diese nicht getestet. \\
+Zusätzlich zu den bisherigen Unit Tests, welche im Bericht der Implementierungsphase dokumentiert sind, wurden die folgenden hinzugefügt: 
 
 \begin{itemize}
 
 \item GroupController - Test
-getestete Funktionalitäten, zusätzlich zu den bisherigen aus letztem Dokument
 \begin{itemize}
 
 
@@ -91,7 +91,6 @@ Test3: Analog zu oben, gruppen haben passende Essenslinie aber nur eine Gruppe h
 \end{itemize}
 
 \item UserController - Test 
-getestete Funkitonalitäten zusätzlich zu denen aus letztem Dokument
 
 \begin{itemize}
 
@@ -108,9 +107,9 @@ Test 2: Die Methode initalizeAdminUser wird zweimal aufgerufen. Beim ersten Aufr
 \end{itemize}
 \end{itemize}
 
-\section{Testszenarien}
+\section{Integration-Test}
 
-Die nachfolgenden Tests laufen ausschließlich auf dem Server und sind dazu da die klassenübergreifende Funktionalitäten zu testen.\\
+Die nachfolgenden Testszenarien laufen ausschließlich auf dem Server und sind dazu da die klassenübergreifende Funktionalitäten zu testen.\\
 
 
 \begin{itemize}
