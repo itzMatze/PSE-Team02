@@ -35,7 +35,9 @@ public class SetTimeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         super.viewModel = viewModel;
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_set_time);
         binding.setVm(viewModel);
@@ -131,11 +133,13 @@ public class SetTimeActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
         if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
             finish();
+            return false;
         }
+        return true;
     }
 
     @Override

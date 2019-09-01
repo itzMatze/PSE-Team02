@@ -3,7 +3,6 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -41,7 +40,9 @@ public class UserActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         super.viewModel = viewModel;
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user);
         binding.setVm(viewModel);
@@ -155,11 +156,13 @@ public class UserActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
         if (viewModel.getUser() == null) {
             finish();
+            return false;
         }
+        return true;
     }
 
     /**

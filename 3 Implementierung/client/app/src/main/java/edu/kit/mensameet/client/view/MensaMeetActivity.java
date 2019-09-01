@@ -1,27 +1,20 @@
 package edu.kit.mensameet.client.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.AppCompatTextView;
 import androidx.lifecycle.Observer;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.ArrayList;
 
 import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
@@ -169,6 +162,13 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Shows a toast message using eventLiveData content.
+     *
+     * @param context activity
+     * @param id string resource id of the message to be shown
+     * @param it eventLiveData content
+     */
     protected void showMessage(Context context, @StringRes int id, Pair<String, StateInterface> it) {
 
         String message = getResources().getString(id);
@@ -181,8 +181,13 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
 
     }
 
-    protected void checkAccess() {
-
+    /**
+     * Checks if the activity can be accessed.
+     *
+     * @return if the activity can be accessed.
+     */
+    protected Boolean checkAccess() {
+        return false;
     }
 
     @Override

@@ -8,12 +8,9 @@ import android.widget.LinearLayout;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
 import edu.kit.mensameet.client.view.databinding.ActivityShowUserBinding;
-import edu.kit.mensameet.client.view.databinding.ActivityUserBinding;
 import edu.kit.mensameet.client.viewmodel.ShowUserViewModel;
-import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
 /**
  * The activity to show a user's profile. The user is transmitted
@@ -32,7 +29,9 @@ public class ShowUserActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(ShowUserViewModel.class);
         initializeViewModel(viewModel);
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_show_user);
         binding.setVm(viewModel);
@@ -65,11 +64,13 @@ public class ShowUserActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
         if (viewModel.currentUserDataIncomplete() || viewModel.getUserToShow() == null) {
             finish();
+            return false;
         }
+        return true;
     }
 
     @Override
