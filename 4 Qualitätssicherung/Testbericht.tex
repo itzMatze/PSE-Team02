@@ -49,8 +49,9 @@
 
 Dieses Dokument verschafft einen Überblick über die \Gls{Qualitaetssicherung} des Projekts. In dieser Phase wurde die Überdeckung der \Gls{Unittest}s maximiert, die Testszenarien des Pflichtenhefts durchgegangen und gefundene Fehler behoben. Des Weiteren wurde ein \Gls{Hallway Usability Test} durchgeführt. Die dokumentierten Tests wurden wieder unterteilt in einen Server- und Clientteil.
 
-\chapter{Bug Fixes}
-\section{Server}
+\chapter{Server}
+
+\section{Bug Fixes}
 
 \begin{itemize}
 \item Sceduler\\ \\
@@ -59,12 +60,10 @@ Ursache: Die Annotationen @Component hat in der Klasse TimeController hat gefehl
 Behebung:  Die Annotation wurde hinzugefügt.
 \end{itemize}
 
-\section{Client}
 
-\chapter{Unittests}
+\section{Unittests}
 Für die Unit Tests wurde das Framework JUnit verwendet. Die Testabdeckung am Server wurde mit EclEmma überprüft.
 
-\section{Server}
 \begin{itemize}
 
 \item GroupController - Test
@@ -103,10 +102,7 @@ Test 2: Die Methode initalizeAdminUser wird zweimal aufgerufen. Beim ersten Aufr
 \end{itemize}
 \end{itemize}
 
-\section{Client}
-
-\chapter{Testszenarien}
-\section{Server}
+\section{Testszenarien}
 
 Die nachfolgenden Tests laufen ausschließlich auf dem Server und sind dazu da die klassenübergreifende Funktionalitäten zu testen.\\
 
@@ -138,9 +134,122 @@ Nachbedingung: User A  ist in keiner Gruppe und die Gruppe X existiert nicht meh
 
 \end{itemize}
 
+\chapter{Client}
+
+\section{Allgemeines zum Testen und Verbessern}
+
+Die meisten Fehler wurden bereits beim „Ausprobieren“ der App bemerkt und mit dem Debugger lokalisiert, sodass passende Verbesserungen durchgeführt werden konnten. Durch Unit- und Integration-Tests wurden kaum noch Fehler gefunden, dafür aber Funktionalität der Verbesserungen abgesichert. Im Folgenden sind daher die Funktionalitäten der wichtigsten Klassen nach den Verbesserungen und dazu jeweils die diese absichernden Tests aufgelistet. Anschließend werden die Ergänzungen und Veränderungen seit der letzten Phase aufgezeigt und die Motivation dahinter, soweit nicht noch beschrieben, erklärt.
+Für die Unit-Tests reichte die in Android-Studio standardmäßig installierte Software nicht aus. Grund dafür ist, dass diese Testsoftware zu viele verwendete komplexere Klassen stubt und mockt, um die Tests schneller und unabhängiger zu machen. Eine Klasse wie Pair<String, State>, die essentiell für die Kommunikation zwischen ViewModel und Activity ist, wird bei den Tests durch einen leeren Stub ersetzt, der das Testen unmöglich macht. Daher mussten weitere Frameworks benutzt werden.
+
+\section{Tools zum Testen}
+
+\subsection{Robolectric}
+Robolectric ist ein Framework für Tests in Android Studio, das in Sachen Stubbing und Mocking von verwendeten Klassen geschickter vorgeht als der Standard in Android Studio. Klassen wie Pair werden nicht gestubt, sodass deren Funktionalität gewährleistet ist und sinnvolles Testen möglich wird. Daher wurde dieses Framework installiert.
+
+\subsection{Mockito und Powermockito}
+Bei Unit-Tests ist die Überschaubarkeit des Testbereichs wichtig, daher müssen Klassen und Funktionen, die zu weit aus dem Testbereich hinausführen, gemockt werden, wozu sich Mockito eignet. Was Mockito jedoch nicht kann, ist unter anderem, statische Klassen und Methoden zu mocken. Diese werden in MensaMeet bei Serveranfragen verwendet. Abhilfe schafft hier die Erweiterung Powermockito.
+
+\subsection{Espresso}
+
+\section{Models}
+\subsection{IdEnum}
+Das Interface IdEnum wurde neu eingeführt, um die Umwandlung von Enums mit Konstante-String-Paaren wie Gender, Status und Subject in SpinnerItem-Objekte für die Darstellung in Spinnern (Auswahllisten) zu erleichtern. Zuvor wurde nicht mit Wertepaaren gearbeitet (siehe MensaMeetItem -> E \& V -> Handhabung von Wertepaaren mit representedValues und SpinnerItem), was problematisch war. Die obengenannten Enums und MealLines implementieren dieses Interface.
+
+\subsection{MensaMeetSession}
+Dies ist das Singleton, das alle wichtigen activityübergreifenden Daten einer Sitzung wie den aktuellen Benutzer und seine Linienauswahl speichert. \\
+\textbf{Elemente (Auswahl)}
+
+\begin{itemize}
+\item Attribut user \\
+Dies ist der aktuelle Benutzer. Es ist genau dann null, wenn kein Benutzer eingeloggt ist, und kann in diesem Sinne abgefragt werden. Die Gruppe, der der Benutzer beigetreten ist, wird in dessen Attribut groupToken spezifiziert.
+\item Methode userDataIncomplete \\
+Sie gibt an, ob die Profildaten des aktuellen Benutzers noch nicht ausreichend spezifiziert sind, also ob eine der obligatorischen Angaben Name und Status noch fehlt.
+\item Attribut createdGroup \\
+Hier wird der Gruppenentwurf des Benutzers nach dem Verlassen von CreateGroupActivity gespeichert, auch wenn er unvollständig ist, damit der Benutzer ihn zu einem späteren Zeitpunkt weiter bearbeiten kann.
+\item Methode createdGroupDataIncomplete \\
+Sie überprüft, ob die Angaben des Gruppenentwurfs vollständig sind, sodass sie zum Server geschickt werden kann.
+\item Methode initialize \\
+Mit ihr werden die Daten in MensaMeetSession zu Beginn einer Sitzung initialisiert. Die meisten Daten werden auf null gesetzt, der Parameter user als user gesetzt, der Speiseplan vom Server geladen.
+\item Methode invalidate \\
+Das Gegenstück zu initialize, dass am Ende einer Sitzung alle Daten auf null setzt.
+\end{itemize}
+
+\textbf{Ergänzungen und Verbesserungen seit der letzten Phase}
+
+\begin{itemize}
+\item Verzicht auf Attribut chosenGroup \\
+Die vom Benutzer ausgewählte Gruppe wird nur noch als groupToken in seiner Klasse spezifiziert. Es ist nicht sinnvoll, das ganze Group-Objekt zu speichern, da es sich ständig durch neue Mitglieder oder durch Löschung verändern kann. 
+\item Verzicht auf Attribut receivedGroup \\
+Zuvor wurden die passenden Gruppen, die bei SelectGroupActivity vom Server geladen werden, in der Session-Datei gespeichert. Dies ist jedoch nicht nötig, da sie außer in SelectGroupActivity nirgends mehr gebraucht werden.
+\item createdGroupDataIncomplete hinzugefügt
+\item initialize und invalidate hinzugefügt \\
+Dadurch werden Ein- und Ausloggen standardisiert.
+\item Prinzip “Kein aktuelles User-Objekt, keine Sitzung“ \\
+Scheitert das Anfordern des User-Objekts für den aktuellen Benutzer vom Server, so wird die Sitzung sofort beendet. Zum einen kann es immer sein, dass der aktuelle Benutzer zwischenzeitlich gelöscht wurde, zum anderen ist sind ohne aktuelles User-Objekt keine sinnvollen Aktionen in der App mehr möglich. Der Benutzer müsste versuchen, sich neu einzuloggen.
+
+\end{itemize}
+
+\section{Util-Klassen}
+
+\subsection{HTTPUtil}
+Die Klasse HTTPUtil dient zur Kommunikation mit dem Server. Ihre Methoden entsprechen größtenteils bekannten Standard-Beispielen. \\
+\textbf{Ergänzungen und Verbesserungen seit der letzten Phase} \\
+\begin{itemize}
+\item Weiterleitung der Serverantwort auch bei Fehler \\
+Die bisherige Implementation der Methode fetch lieferte nur die Serverantwort als JSON-String, wenn kein Fehler vorlag. Ansonsten wurde eine Exception geworfen und die Methode ohne lesen der Serverantwort beendet. Es war jedoch wünschenswert, den genauen Fehlercode und die Fehlermeldung in der App auswerten und gegebenenfalls an den Benutzer weiterleiten zu können. Daher würde die Methode dahingehend verändert, dass sie im Fehlerfall keine Exception, dafür aber den JSON-String der Serverantwort, der Fehlercode und -meldung weitergibt.
+\end{itemize}
+
+\subsection{RequestUtil}
+Die Methoden der Klasse RequestUtil entsprechend den Diensten, die der MensaMeet-Server anbietet. Sie akzeptieren Objekte der Klassen, die verarbeitet werden sollen, serialisieren sie zu JSON und führen mit Hilfe von HTTPUtil die konkreten Serveranfragen durch. Die JSON-Antwort wird dann wieder zu den jeweiligen Objekten deserialisiert und an den Aufrufer der Methode zurückgegeben. \\
+
+\textbf{Elemente} \\
+
+\begin{itemize}
+\item Methode createUser
+\item \textit{util.RequestUtilTest.userTest()}
+\item Methode getUser
+\item \textit{util.RequestUtilTest.userTest()}
+\item Methode updateUser
+\item \textit{util.RequestUtilTest.userTest()}
+\item Methode deleteUser
+\item \textit{util.RequestUtilTest.tearDown()}
+\item Methode createGroup
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode getGroup
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode getGroupByPrefferences
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode deleteGroup
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode addUserToGroup
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode removeUserFromGroup
+\item \textit{util.RequestUtilTest.groupTest()}
+\item Methode getMensaData
+\item \textit{util.RequestUtilTest.mensaDataTest()}
+\item Klasse GroupForRequest \\
+\textit{Diese Klasse ist nötig, da sich die Group-Klasse, die vom Server verlangt wird, von der im Client unterscheidet. Im Client sind die Zeiten zur als Date-Objekte, beim Server als Strings hinterlegt. Der Konstruktor und die Methode parseToGroup dienen zur Umwandlung.}
+\item Klasse GroupForRequestWithToken \\
+\textit{Diese Klasse ist nötig, da beim Erstellen einer neuen Klasse ein Group-Objekt ohne das Attribut token an den Server übertragen muss, um von diesem ein Group-Objekt mit servergeneriertem Token zu erhalten. Diese Klasse enthält token, die Klasse GroupForRequest nicht.   }
+\item Klasse GroupWithPrefferences \\
+\textit{Diese Klasse entspricht dem JSON-Objekt, das bei einer Anfrage in getGroupByPrefferences dem Server übermittelt wird.}
+\item Klasse RequestException
+\textit{Diese Exception dient dazu, den Aufrufer einer Methode von RequestUtil bei einem vom Server verursachten oder sonstigen Fehler zu benachrichtigen und ihm Informationen zum Fehler zu übergeben. Ein Konstruktor liest aus dem aus der Serverantwort erzeugten JsonNode Fehlercode- und Fehlernachricht und speichert sie. Liegt kein Serverfehler vor, werden die Daten von eventuell auftretenden anderen Exceptions weitergeleitet. } \\
+
+\textbf{Ergänzungen und Verbesserungen seit der letzten Phase}
+
+\item GroupForRequestWithToken \\
+\textit{Zuvor wurden keine servergenerieten tokens vom Server empfangen, da immer ein Group-Objekt mit Attribut token gesendet und dieses vom Server übernommen wurde. Ein servergeneriertes Token ist jedoch notwendig für die eindeutige Identifizierbarkeit einer erstellten Gruppe. }
+\item Weiterleitung von Server- und anderen Exceptions \\
+\textit{Zuvor konnte man einen Fehler nur erkennen, wenn das von einer Methode in RequestUtil zurückgegebene Objekt nicht den Erwartungen entsprach. Dies war jedoch nicht eindeutig und aussagekräftig.}
+
+\end{itemize}
 
 
-\section{Client}
+
+
+
+\subsection{Testszenarien}
 
 Die nachfolgenden Tests laufen auf dem Client und sind zur Überprüfung der korrekten Zusammenarbeit von mehreren Komponenten auf Server und Client.
 
