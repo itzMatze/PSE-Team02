@@ -152,6 +152,12 @@ Bei Unit-Tests ist die Überschaubarkeit des Testbereichs wichtig, daher müssen
 \subsection{Espresso}
 Mit Espresso ist es möglich Tests in der laufenden App durchzuführen. Man ersetzt damit einen menschlichen Tester, der sich durch die App klickt und testet ob alles so funktioniert wie es soll. Der Hintergrund dabei ist, dass man die Tests automatisiert durchführen möchte und man auch in der Lage sein will, ein Testszenario zu reproduzieren, um die Fehlerursache ausfindig zu machen. Espresso macht genau diese Dinge möglich und nimmt dem Programmierer so jede Menge Arbeit beim Testen ab.
 
+
+\section{Berücksichtigung des Testens bei der Implementierung}
+Beim Testen mit den obengenannten Tools zeigte sich, dass es sinnvoll sein kann, schon bei der Implementation den Code leichter testbar zu machen. Ein Hauptproblem war die Injektion eines gespyten oder gemockten ViewModels in eine Activity. Das ViewModel wird nicht über einen Konstruktor übergeben, sondern normalerweise in der Activity durch die Methode ViewModelProviders.of(this).get(ViewModel.class) geholt. Die Lösung dieses Problems bestand darin, den Aufruf dieser Methode vom weiteren Programmablauf zu trennen. Hierzu wurde der Inhalt der Activity-Lebenszyklus-Methode onCreate nach diesem Aufruf in die Methode onStart verlegt, welche vom System direkt nach onCreate aufgerufen wird. Robolectric bietet mit der Klasse ActivityController ein Tool an, um onCreate und onStart separat aufzurufen. Zwischen diesen Aufrufen kann nun eine Methode der Activity aufgerufen werden, die ein gemocktes oder gespytes ViewModel-Objekt entgegennimmt und als Attribut viewModel setzt. Diese Methode wurde in Activities, die sie benötigen, als setViewModel implementiert und mit der Annotation @VisibleForTesting versehen, damit sie nur in Tests verwendet werden kann.
+
+
+
 \section{Models}
 \subsection{IdEnum}
 Das Interface IdEnum wurde neu eingeführt, um die Umwandlung von Enums mit Konstante-String-Paaren wie Gender, Status und Subject in SpinnerItem-Objekte für die Darstellung in Spinnern (Auswahllisten) zu erleichtern. Zuvor wurde nicht mit Wertepaaren gearbeitet (siehe MensaMeetItem -> E \& V -> Handhabung von Wertepaaren mit representedValues und SpinnerItem), was problematisch war. Die obengenannten Enums und MealLines implementieren dieses Interface.
@@ -264,7 +270,7 @@ MensaMeetActivity ist die abstrakte Oberklasse aller Activities in MensaMeet, Me
 \item Methode initializeViewModel \\
 \textit{Jede Unterklasse der Activity kann diese Methode an beliebiger Stelle benutzen, um dem Attribut viewModel das konkrete ViewModel zuzuweisen. Die Initialisierung des Attributs ist Vorbedingung für den Aufruf weiterer Methoden, die darauf zugreifen.}
 \item Methode checkAccess\\
-\textit{Sie überprüft, ob die Zugangsbedingungen zur Activity erfüllt sind. Da sie leer ist und auch nicht standardmäßig in einer anderen Methode aufgerufen wird, ist sie eher als Anregung für die Unterklassen zu verstehen. In diesen Enthält sie neben einer Auswertung den Befehl, die Activity im negativen Fall zu beenden, wobei der Benutzer in die vorhergehende Activity im Activity-Stack zurückfällt. Da sie meistens über das ViewModel auf MensaMeetSession zugreift, muss sie nach der Methode initalizeViewModel aufgerufen werden.}
+\textit{Sie überprüft, ob die Zugangsbedingungen zur Activity erfüllt sind. Da sie leer ist und auch nicht standardmäßig in einer anderen Methode aufgerufen wird, ist sie eher als Anregung für die Unterklassen zu verstehen. In diesen Enthält sie neben einer Auswertung den Befehl, die Activity im negativen Fall zu beenden, wobei der Benutzer in die vorhergehende Activity im Activity-Stack zurückfällt. Sie gibt zurück, ob im Programm weitergefahren werden kann, sodass die Activity die aktuelle Methode sofort mit return beenden kann. Da sie meistens über das ViewModel auf MensaMeetSession zugreift, muss sie nach der Methode initalizeViewModel aufgerufen werden.}
 \item Methode observeLiveData\\
 \textit{Sie beobachtet das SingleLiveData-Objekt eventLiveData des ViewModels und muss daher nach initializeViewModel aufgerufen werden. Das Objekt dient zur Kommunikation des ViewModels mit der Activity, das nach dem MVVM-Modell nicht direkt auf die Activity zugreifen darf. Falls das ViewModel eventLiveData ändert, wird die Activity benachrichtigt und kann den veränderten Wert auslesen, der eine Statusänderung und eine zugehörige Nachricht enthält. Zur Auswertung dieser Veränderung wird die Schablonenmethode processStateChange aufgerufen.}
 \item Methode processStateChange\\
@@ -279,8 +285,6 @@ MensaMeetActivity ist die abstrakte Oberklasse aller Activities in MensaMeet, Me
 \textit{Sie werden beim Klicken auf die jeweiligen Buttons aufgerufen und können von den Unterklassen überschrieben werden, um das Verhalten anzupassen}
 \item Methode onResume\\
 \textit{Sie wird bei einer Rückkehr zur Activity aufgerufen, falls diese zwischenzeitlich in den Hintergrund getreteten ist. Selbst ruft sie wiederum onResume der Oberklasse AppCompatActivity auf und danach die Schablonenmethode reloadData}
-\item Methode reloadData\\
-\textit{Sie wird vom System bei der Rückkehr zur Activity aufgerufen, falls diese zwischenzeitlich in den Hintergrund getreteten ist, kann jedoch überall, auch in onCreate aufgerufen werden, falls das initiale Laden der von der Activity benötigten Daten dem erneuten Laden nach einer Rückkehr entspricht. Sie kann quasi als Auslagerungsmethode der Datenladung benutzt werden.}
 \item Methoden gotoActivity und gotoHome\\
 \textit{Starten eine andere Activity und leiten den Benutzer an sie weiter.}
 \item Methode onBackPressed\\
@@ -318,6 +322,8 @@ MensaMeetActivity ist die abstrakte Oberklasse aller Activities in MensaMeet, Me
 \textit{Ursprünglich wurde angenommen, dass der displayMode auch für die Logik im ViewModel entscheidend sein könnte. Dies hat sich jedoch nicht bestätigt, weshalb das unnötige Attribut entfernt wurde.}
 \item Methodenbeendigung nach jeder eventLiveData-Änderung \\
 \textit{Zuvor wurde fälschlicherweise angenommen, dass die Methode und alle weiteren Methoden sofort beendet wurde, sobald der Beobachter benachrichtigt wird. Dies ist jedoch nicht der Fall, daher müssen die Methoden explizit beendet werden.}
+\item Methode reloadData entfernt\\
+\textit{Sie diente als Auslagerungsmethode für die Ladung der Daten und wurde sowohl einmal am Anfang in onCreate als auch in onResume, d.h. immer bei der Rückkehr zur Activity vom System standardmäßig aufgerufen. Da jedoch onResume auch am Anfang nach onCreate und onStart aufgerufen wird, entspricht die Funktion dieser Methode eigentlich der von reloadData und macht letztere überflüssig, der Inhalt von reloadData wurde in onResume transferiert.}
 \end{itemize}
 
 \subsection{BeginActivity und BeginViewModel}
@@ -331,7 +337,8 @@ BeginActivity ist die erste Activity, die dem Benutzer nach dem Starten der App 
 
 \subsubsection{Verhalten} 
 \begin{itemize}
-\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist. 
+\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist.\\
+ \textit{view.BeginActivityTest.onCreate\_userNotNull\_ActivityFinishes()}
 \item Bei Klick auf Login kommt man zu LoginActivity \\
 viewmodel.BeginViewModelTest.toLoginSuccess()
 \item Bei Klick auf Registrieren kommt man zu RegisterActivity. \\
@@ -357,17 +364,25 @@ Auf LoginActivity kann sich der Benutzer mit seinen Firebase-Login-Daten bei Men
 
 \subsubsection{Verhalten}
 \begin{itemize}
-\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist.
-\item Bei Klick auf Zurück gelangt der Benutzer auf BeginActivity.
+\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist.\\
+\textit{view.LoginActivityTest.onCreate\_userNotNull\_ActivityFinishes()}
+\item Bei Klick auf Zurück gelangt der Benutzer auf BeginActivity.\\
+\textit{view.LoginActivityTest.clickBack\_startBeginActivity()}
 \item Bei Klick auf Login wird der Login-Prozess beim ViewModel gestartet.
-\item Falls ein Textfeld leer ist, Fehlermeldung.
+\item Falls ein Textfeld leer ist, Fehlermeldung.\\
+\textit{view.LoginActivityTest.clickLogin\_oneEditTextEmpty\_errorMessage()}
 \item Mit den Daten wird bei Firebase das Einloggen versucht. 
 \item Bei erfolgreichem Einloggen wird ein User-Token empfangen. Mit diesem wird beim Server das entsprechende User-Objekt angefordert.
 \item Bei gescheitertem Einloggen wird die Fehlermeldung von Firebase angezeigt.
-\item Wird ein User-Objekt vom Server empfangen, wird damit in MensaMeetSession die neue Sitzung initialisiert. 
+\item Wird ein User-Objekt vom Server empfangen, wird damit in MensaMeetSession versucht, die neue Sitzung initialisiert. 
 \item Wird kein User-Objekt empfangen, wird der Benutzer bei Firebase wieder ausgeloggt und die Fehlermeldung des Servers angezeigt. Grundsatz: kein aktuelles User-Objekt, keine Sitzung. Der Benutzer verbleibt in der Activity.
-\item Sind die Angaben im User-Objekt ausreichend (Name und Status dürfen nicht leer sein), wird der Benutzer zu HomeActivity weitergeleitet.
-\item Sind die Angaben im User-Objekt nicht ausreichend, wird der Benutzer zu UserActivity weitergeleitet, damit er sie dort ergänzen kann.
+\item Ist die Initialisierung der neuen Sitzung erfolgreich, wird das aktuelle User-Objekt betrachtet.
+\item Ist die Initialisierung der neuen Sitzung nicht erfolgreich, was am Scheitern des Ladens der Mensalinien liegt, verleibt der Benutzer unangemeldet in der Activity. Er kann dann versuchen, sich erneut einzuloggen. \\
+\textit{view.LoginActivityTest.loginSuccess\_initializationFails\_notLoggedIn()}
+\item Sind die Angaben im User-Objekt ausreichend (Name und Status dürfen nicht leer sein), wird der Benutzer zu HomeActivity weitergeleitet.\\
+\textit{view.LoginActivityTest.loginSuccess\_userDataComplete\_startHomeActivity()}
+\item Sind die Angaben im User-Objekt nicht ausreichend, wird der Benutzer zu UserActivity weitergeleitet, damit er sie dort ergänzen kann.\\
+\textit{view.LoginActivityTest.loginSuccess\_userDataIncomplete\_startUserActivity()}
 
 \end{itemize}
 
@@ -384,6 +399,63 @@ Auf LoginActivity kann sich der Benutzer mit seinen Firebase-Login-Daten bei Men
 \item Fehlermeldung von Firebase nun an Benutzer übermittelt
 
 \end{itemize}
+
+\textbf{Anmerkungen zum Testen} \\
+Das automatische Testen gestaltete sich in diesem Fall schwierig, da im ViewModel mit verschachtelten Interface-Implementationen gearbeitet wird. Auch die Abhängigkeit von Firebase erschwert das Testen und die fehlende Möglichkeit, private Attribute zuzugreifen.
+
+
+\subsection{RegisterActivity und RegisterViewModel}
+Auf RegisterActivity kann sich der Benutzer mit Hilfe von Firebase bei MensaMeet als neuer Benutzer registrieren. RegisterViewModel kommuniziert dabei mit dem Firebase-Projekt von MensaMeet und dem Server.
+
+\subsubsection{Sichtbare Elemente}
+
+\begin{itemize}
+\item E-Mail-Adresse (Textfeld)
+\item Passwort (Textfeld)
+\item Passwortwiederholung (Textfeld)
+\item Registrieren (Button)
+\item Zurück (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+
+\begin{itemize}
+\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist. \\
+\textit{view.RegisterActivityTest.onCreate\_userNotNull\_ActivityFinishes()}
+\item Bei Klick auf Zurück gelangt der Benutzer auf BeginActivity.\\
+\textit{view.RegisterActivityTest.clickBack\_startBeginActivity()}
+\item Bei Klick auf Registrieren wird der Registrierungsprozess beim ViewModel gestartet.
+\item Falls ein Textfeld leer ist oder die Passwörter nicht übereinstimmen, Fehlermeldung.\\
+\textit{view.RegisterActivityTest.clickLogin\_passwordsNotEqual\_errorMessage()}
+\item Mit den Daten wird bei Firebase die Registrierung versucht.
+\item Bei erfolgreicher Registrierung wird ein User-Token empfangen. Mit diesem wird beim Server ein entsprechendes User-Objekt erzeugt. 
+\item Bei gescheiterter Registrierung wird die Fehlermeldung von Firebase angezeigt.
+\item Ist die Erzeugung des User-Objekt erfolgreich, wird es vom Server angefordert.
+\item st die Erzeugung des User-Objekts nicht erfolgreich, wird der Benutzer bei Firebase ausgeloggt und die Fehlermeldung des Servers angezeigt. 
+Achtung: Wenn der Benutzer sich mit seinen Firebase-Daten nun einloggt, gelingt dies zwar bei Firebase, es wir jedoch kein User-Objekt vom Server zu bekommen sein. Es darf auch nicht versucht werden, ein neues User-Objekt anzulegen, da es auch sein kann, dass der Benutzer absichtlich beim Server gelöscht wurde. Momentan ist es nur möglich, den Benutzer manuell bei Firebase zu löschen. Die Benutzerverwaltung mit Firebase war jedoch kein Musskriterium und soll zu einem späteren Zeitpunkt vervollständigt werden.  
+\item Wird das User-Objekt vom Server empfangen, wird damit in MensaMeetSession versucht, die neue Sitzung zu initialisieren.
+\item Wird kein User-Objekt empfangen, wird der Benutzer bei Firebase wieder ausgeloggt und die Fehlermeldung des Servers angezeigt. Grundsatz: kein aktuelles User-Objekt, keine Sitzung. Der Benutzer verbleibt in der Activity.
+\item Ist die Initialisierung der neuen Sitzung erfolgreich, wird der Benutzer zu UserActivity weitergeleitet, damit er seine MensaMeet-Benutzerdaten eingeben kann.\\
+\textit{view.RegisterActivityTest.loginSuccess\_startUserActivity()}
+\item Ist die Initialisierung der neuen Sitzung nicht erfolgreich, was am Scheitern des Ladens der Mensalinien liegt, wird der Benutzer uneingeloggt zu BeginActivity weitergeleitet. Er kann dann versuchen, sich einzuloggen.\\
+\textit{view.RegisterActivityTest.loginSuccess\_initializationFails\_startBeginActivity()}
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Initialisierung der Sitzung bereits hier
+\item Verhalten beim Scheitern der Server-Anfragen
+\item Zurück-Button (siehe MensaMeetActivity -> E\&V -> Deaktivierung des Android-Zurück-Buttons)
+\item Richtiger Umgang mit leeren Eingabefeldern\\
+\textit{Zuvor stürzte die App immer ab. Grund war, dass leere Eingabefelder nicht erkannt wurden, da sie immer standardmäßig einen Leerstring enthalten und nicht wie erwartet null. Der Leerstring wurde an Firebase übermittelt, wodurch es zu einer Exception und dem Absturz der App kam. Dies wurde behoben, indem auch der Leerstring erkannt wird.}
+\item Fehlermeldung an Benutzer, falls Passwörter nicht identisch
+\item Fehlermeldung von Firebase nun an Benutzer übermittelt
+\end{itemize}
+
+\textbf{Anmerkungen zum Testen}\\
+Das automatische Testen gestaltete sich in diesem Fall schwierig, da im ViewModel mit verschachtelten Interface-Implementationen gearbeitet wird. Auch die Abhängigkeit von Firebase erschwert das Testen und die fehlende Möglichkeit, private Attribute zuzugreifen.
 
 \subsection{UserActivity und UserViewModel}
 Auf UserActivity kann der Benutzer die von ihm veränderbaren Daten seines MensaMeet-Benutzerprofils bearbeiten. UserViewModel lädt und speichert die Daten beim Server. 
@@ -407,21 +479,28 @@ Auf UserActivity kann der Benutzer die von ihm veränderbaren Daten seines Mensa
 \subsubsection{Verhalten}
 
 \begin{itemize}
-\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist.
-\item Falls die Benutzerdaten nicht ausreichend sind (Name oder Status leer), wird der Verwerfen-Button nicht angezeigt. Der Benutzer kann die Änderungen zwar immer noch über den Home-Button verwerfen, soll aber dazu animiert werden, seine Daten zu vervollständigen und zu speichern.
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist.\\
+\textit{view.UserActivityTest.onCreate\_userNull\_ActivityFinishes()}
+\item Falls die Benutzerdaten nicht ausreichend sind (Name oder Status leer), wird der Verwerfen-Button nicht angezeigt. Der Benutzer kann die Änderungen zwar immer noch über den Home-Button verwerfen, soll aber dazu animiert werden, seine Daten zu vervollständigen und zu speichern.\\
+\textit{view.UserActivityTest.userDataIncomplete\_noDiscardButton()}
 \item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel das User-Objekt des Benutzers jedes Mal neu vom Server geladen und in MensaMeetSession gespeichert. \\
 \textit{viewmodel.UserViewModelTest.reloadingUserFailed()}
+\item Scheitert das Laden des User-Objekts vom Server, wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: Kein aktuelles User-Objekt, keine Sitzung. \\
+\textit{view.UserActivityTest. loadUserFailed\_logout()}
 \item Die Activity bindet ein UserItem im DisplayMode BIG\_EDITABLE ein, in dem alle Elemente außer der Navigationsbuttons enthalten sind.
 \item Der Auswahlbereich für das Benutzerbild, ein UserPictureItem im DisplayMode BIG\_EDITABLE, zeigt das aktuelle Benutzerbild an. Falls noch keins ausgewählt wurde, wird das Default-Bild angezeigt. 
 \item Bei Klick auf den Auswahlbereich für das Benutzerbild öffnet sich eine Liste von Benutzerbildern. Wird eins angeklickt, wir dieses als neues Benutzerbild ausgewählt.
 \item Ist noch kein Geburtsdatum spezifiziert, wird ein Platzhaltertext angezeigt.
 \item Bei Klick auf das Feld des Geburtsdatums wird ein Datum-Auswahldialog geöffnet.
-\item Bei Klick auf Verwerfen gelangt der Benutzer auf HomeActivity, von wo er in diesem Fall gekommen sein muss. Es werden keine Daten gespeichert.
-\item  Bei Klick auf Home gelangt der Benutzer auf HomeActivity, es werden keine Daten gespeichert.
+\item Bei Klick auf Verwerfen gelangt der Benutzer auf HomeActivity, von wo er in diesem Fall gekommen sein muss. Es werden keine Daten gespeichert.\\
+\textit{view.UserActivityTest.clickDiscard\_startHomeActivityAndNoDataSaved()}
+\item  Bei Klick auf Home gelangt der Benutzer auf HomeActivity, es werden keine Daten gespeichert.\\
+\textit{view.UserActivityTest.clickHome\_startHomeActivityAndNoDataSaved()}
 \item Bei Klick auf Speichern wird der Speicherprozess im ViewModel gestartet. Es wird versucht, das User-Objekt auf dem Server upzudaten. \\
 \textit{viewmodel.UserViewModelTest.saveUserFailed(), viewmodel.UserViewModelTest.saveUserSuccess(), viewmodel.UserViewModelTest.saveUserIsNull()}
 \item Ist das Update des User-Objekts erfolgreich, wird auf HomeActivity weitergeleitet.
-\item Ist das Update des User-Objekts nicht erfolgreich, wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung
+\item Ist das Update des User-Objekts nicht erfolgreich, wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung\\
+\textit{view.UserActivityTest.updateUserSuccess\_startHomeActivity()}
 \end{itemize}
 
 \subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
@@ -431,6 +510,12 @@ Auf UserActivity kann der Benutzer die von ihm veränderbaren Daten seines Mensa
 \item Unvollständigkeit der Benutzerdaten nun erlaubt \\
 \textit{Dass die Benutzerdaten ausreichend sind (Name und Status nicht leer), ist Voraussetzung, um in der App ab der Linienauswahl fortfahren zu können. Im Fall, das die Benutzerdaten nicht ausreichend sind, musste der Benutzer sie früher in UserActivity ausreichend ergänzen, um weiterfahren zu können, entsprechend gab es nur den Speichern-Button und es wurden die Daten überprüft. Nun wurde aber doch ein der Home-Button ergänzt und ausreichende Daten werden hier nicht mehr verlangt. Hierdurch soll der Benutzer die Freiheit bekommen, die Benutzerdaten zu einem späteren Zeitpunkt zu ergänzen. Von HomeActivity gelangt er nun mit nicht ausrechenden Daten auch nicht mehr weiter zu SelectLinesActivity, sondern wird wieder auf UserActivity umgeleitet. }
 \item Verhalten beim Scheitern der Server-Anfrage
+\item Sofortige Beendigung nach checkAccess\\
+\textit{Gefunden durch view.UserActivityTest.onCreate\_userNull\_ActivityFinishes()
+Nach dem Befehl finish() lief die Activity weiter zu einem Befehl, der einen Mock erfordert und dadurch eine Exception produzierte. Grund: finish() beendet die aktuelle Methode nicht sofort. Lösung: checkAccess erhielt einen Boolean-Rückgabewert, mit dem die Activity entscheiden kann, ob die aktuelle Methode sofort mit return beendet wird. }
+\item Weiterleitung nach Scheitern des Ladens des Users korrigiert\\
+\textit{Gefunden durch view.UserActivityTest.loadUserFailed\_logout()
+Statt auf BeginActivity wurde auf HomeActivity weitergeleitet.}
 \end{itemize}
 
 \subsection{HomeActivity und HomeViewModel}
@@ -446,13 +531,16 @@ HomeActivity ist die zentrale Seite des Benutzers im eingeloggten Zustand, von w
 
 \subsubsection{Verhalten}
 \begin{itemize}
-\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist \\
+\textit{view.HomeActivityTest.start\_userNull\_ActivityFinishes()}
 \item Bei Klick auf Essen gehen wird vom ViewModel überprüft, ob die Benutzerdaten ausreichen. Falls nein wird auf UserActivity weitergeleitet. \\
 \textit{viewmodel.HomeViewModelTest.goEatToUserPage()}
 \item Ansonsten wird überprüft, ob der aktuelle Benutzer ein Grouptoken und damit eine Gruppe hat, in der er Mitglied ist. Falls ja, wird er auf GroupJoinedActivity weitergeleitet, falls nein auf SelectLinesActivity. \\
 \textit{viewmodel.HomeViewModelTest.goEatToUserPage(), viewmodel.HomeViewModelTest.goEatToSelectLinesPage(), viewmodel.HomeViewModelTest.goEatToJoinedGroupPage()}
-\item Bei Klick auf Dein Profil wird auf UserActivity weitergeleitet.
-\item Bei Klick auf Abmelden wird die Sitzung invalidiert und auf BeginActivity umgeleitet.
+\item Bei Klick auf Dein Profil wird auf UserActivity weitergeleitet.\\
+\textit{view.HomeActivityTest.clickYourProfile\_startUserActivity()}
+\item Bei Klick auf Abmelden wird die Sitzung invalidiert und auf BeginActivity umgeleitet.\\
+\textit{view.HomeActivityTest. clickLogout\_logout()}
 
 \end{itemize}
 
@@ -461,6 +549,10 @@ HomeActivity ist die zentrale Seite des Benutzers im eingeloggten Zustand, von w
 \item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
 \item Überprüfung der Benutzerdaten bei Klick auf Essen gehen (siehe UserActivity)
 \item Invalidierung der Sitzung beim Abmelden
+\item Weiterleitung korrigiert\\
+\textit{Gefunden durch viewmodel.HomeViewModelTest.goEatToUserPage() 
+Bei nicht ausreichenden Benutzerdaten wurde nicht auf UserActivity weitergeleitet. Grund: Nach der Auswertung wurde die Methode nicht beendet, sondern lief zur Auswertung des groupTokens weiter. Deren Ergebnis war dann ausschlaggebend für die Weiterleitung. Lösung: return nach erster Auswertung ergänzt.}
+
 \end{itemize}
 
 \subsection{SelectLinesActivity und SelectLinesViewModel}
@@ -476,10 +568,15 @@ Auf SelectLinesActivity kann der Benutzer eine oder mehrere Mensalinien auswähl
 
 \subsubsection{Verhalten}
 \begin{itemize}
-\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind. \\
+\textit{view.SelectLinesActivityTest.start\_userIncomplete\_ActivityFinishes()}
+\item Die Activity bindet eine LineList ein, die wiederum LineItems im DisplayMode SMALL enthält. 
+\item Initialisiert wird die Liste mit dem Mensadaten aus MensaMeetSession.
+\item Beim Klicken auf eine Linie wird diese markiert und dabei dunkel hinterlegt, beim erneuten Klicken darauf wird die Markierung wieder entfernt.
 \item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits eine Linienauswahl gespeichert ist, die in die Mensalinien-Liste geladen wird.
 \item Die Activity bindet eine LineList ein, die wiederum LineItems im DisplayMode SMALL enthält.
-\item Beim Klicken auf eine Linie wird diese markiert und dabei dunkel hinterlegt, beim erneuten Klicken darauf wird die Markierung wieder entfernt.
+\item Beim Klicken auf eine Linie wird diese markiert und dabei dunkel hinterlegt, beim erneuten Klicken darauf wird die Markierung wieder entfernt. \\
+\textit{view.SelectLinesActivityTest.start\_chosenLinesExist\_selectInList()}
 \item Es können mehrere Linien gleichzeitig markiert werden.
 \item Bei Klick auf Weiter wird überprüft, ob mindestens eine Linie ausgewählt wurde. Falls nicht, Fehlermeldung, der Benutzer verbleibt in der Activity. Ansonsten wird die Auswahl dem ViewModel übergeben, das sie in MensaMeetSession speichert. Anschließend wird SetTimeActivity aufgerufen.\\
 \textit{viewmodel.SelectLinesViewModelTest.noLinesSelected(),
@@ -508,21 +605,29 @@ In SetTimeActivity kann der Benutzer die Zeit oder den Zeitraum auswählen, in d
 
 \subsubsection{Verhalten}
 \begin{itemize}
-\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
-\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits eine Zeitintervall-Auswahl gespeichert ist, die in die Mensalinien-Liste geladen wird.
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.\\
+\textit{view.SetTimeActivityTest.start\_userIncomplete\_ActivityFinishes()}
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits eine Zeitintervall-Auswahl gespeichert ist, die in die Mensalinien-Liste geladen wird.\\
+\textit{view.SetTimeActivityTest.start\_chosenTimeExist\_load()}
 \item Wurde noch keine Start- oder Endzeit ausgewählt, wird jeweils 12:00 angezeigt.
 \item Bei Klick auf Start- oder Endzeit wird ein Zeit-Auswahldialog geöffnet.
-\item Wurde eine Start- oder Endzeit ausgewählt im Auswahldialog und dieser geschlossen, wird überprüft, ob die Endzeit nach der Startzeit liegt. Ist dies nicht der Fall, ist die Auswahl wirkungslos. 
+\item Wurde eine Start- oder Endzeit ausgewählt im Auswahldialog und dieser geschlossen, wird überprüft, ob die Endzeit nach der Startzeit liegt. Ist dies nicht der Fall, ist die Auswahl wirkungslos. \\
+\textit{view.SetTimeActivityTest.chooseStartTime\_afterEndTime\_noEffect()}
 \item Bei Klick auf Weiter wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird SelectGroupActivity aufgerufen.\\
 \textit{viewmodel.SetTimeViewModelTest.saveTimeAndNextSuccess()}
 \item Bei Klick auf Zurück wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird SelectLinesActivity aufgerufen\\
 \textit{viewmodel.SetTimeViewModelTest.saveTimeAndBackSuccess()}
-\item Bei Klick auf Home wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird HomeActivity aufgerufen
+\item Bei Klick auf Home wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird HomeActivity aufgerufen \\
+\textit{view.SetTimeActivityTest.clickHome\_saveAndStartSelectHomeActivity()}
 \end{itemize}
 
 \subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
 \begin{itemize}
 \item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Speicherung der Zeit auch bei Klick auf Home\\
+\textit{Gefunden durch view.SetTimeActivityTest.clickHome\_saveAndStartSelectHomeActivity()
+Für diesen Fall war keine Speicherung implementiert.
+}
 \end{itemize}
 
 \subsection{SelectGroupActivity und SelectGroupViewModel}
