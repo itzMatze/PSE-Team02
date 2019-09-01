@@ -1,10 +1,8 @@
 package edu.kit.mensameet.client.view;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Pair;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -41,7 +39,9 @@ public class SelectGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_select_group);
         binding.setVm(viewModel);
@@ -279,11 +279,13 @@ public class SelectGroupActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
         if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
             finish();
+            return false;
         }
+        return true;
     }
 
     @Override

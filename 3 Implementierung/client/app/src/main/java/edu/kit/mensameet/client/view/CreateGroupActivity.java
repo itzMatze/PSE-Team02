@@ -13,11 +13,9 @@ import java.util.List;
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MealLines;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
-import edu.kit.mensameet.client.viewmodel.MensaMeetViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 
 /**
@@ -39,7 +37,9 @@ public class CreateGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        };
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         binding.setVm(viewModel);
@@ -142,11 +142,13 @@ public class CreateGroupActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
         if (viewModel.currentUserDataIncomplete() || viewModel.getUser().getGroupToken() != null) {
             finish();
+            return false;
         }
+        return true;
     }
 
     /**

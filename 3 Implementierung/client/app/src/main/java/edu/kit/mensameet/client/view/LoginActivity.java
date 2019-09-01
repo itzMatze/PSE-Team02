@@ -3,7 +3,6 @@ package edu.kit.mensameet.client.view;
 import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
-import android.widget.LinearLayout;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
@@ -26,9 +25,11 @@ public class LoginActivity extends MensaMeetActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
 
-        checkAccess();
+        if (!checkAccess()) {
+            return;
+        };
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setVm(viewModel);
@@ -62,8 +63,14 @@ public class LoginActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.login_succeeded, it);
 
-            finish();
-            gotoActivity(HomeActivity.class);
+            if (viewModel.currentUserDataIncomplete()) {
+                finish();
+                gotoActivity(UserActivity.class);
+            } else {
+                finish();
+                gotoActivity(HomeActivity.class);
+            }
+
 
         } else if (it.second == LoginViewModel.State.LOG_IN_FAILED) {
 
@@ -92,10 +99,12 @@ public class LoginActivity extends MensaMeetActivity {
     }
 
     @Override
-    protected void checkAccess() {
+    protected Boolean checkAccess() {
         // Illegal state to show activity, go back (if user is not null, there was another activity before.
         if (viewModel.getUser() != null) {
             finish();
+            return false;
         }
+        return true;
     }
 }
