@@ -322,19 +322,23 @@ MensaMeetActivity ist die abstrakte Oberklasse aller Activities in MensaMeet, Me
 \subsection{BeginActivity und BeginViewModel}
 BeginActivity ist die erste Activity, die dem Benutzer nach dem Starten der App angezeigt wird. BeginViewModel enthält die Methoden, die beim Klicken der Buttons aufgerufen werden und wiederum bei der Activity den Seitenwechsel triggern (siehe MensaMeetActivity -> Elemente in MensaMeetActivity -> observeLiveData). \\
 
-\textbf{Sichtbare Elemente} \\
+\subsubsection{Sichtbare Elemente} 
 \begin{itemize}
 \item Login (Button)
 \item Registrieren (Button) \\
+\end{itemize}
 
-\textbf{Verhalten} \\
+\subsubsection{Verhalten} 
+\begin{itemize}
 \item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist. 
 \item Bei Klick auf Login kommt man zu LoginActivity \\
 viewmodel.BeginViewModelTest.toLoginSuccess()
 \item Bei Klick auf Registrieren kommt man zu RegisterActivity. \\
 viewmodel.BeginViewModelTest.toRegisterSuccess()
+\end{itemize}
 
-\textbf{Ergänzungen und Verbesserungen seit der letzten Phase} \\
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase} 
+\begin{itemize}
 \item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
 \end{itemize}
 
@@ -595,9 +599,233 @@ viewmodel.SelectGroupViewModelTest.loadingGroupFailed()}
 Um sich im Administrator-Status einzuloggen, kann das Konto admin@mensameet.de, Passwort adminadmin verwendet werden.  
 
 \subsection{CreateGroupActivity und CreateGroupViewActivity}
+In CreateGroupActivity kann der Benutzer eine neue Gruppe erstellen. CreateGroupViewModel überträgt die Daten an MensaMeetSession zur Zwischenspeicherung oder an den Server.
 
 
 
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Name (Textfeld)
+\item Motto (Textfeld)
+\item Zeit (Textfeld mit Auswahldialog)
+\item Linie (Textfeld mit Auswahldialog)
+\item Maximale Mitgliederanzahl (Auswahlliste)
+\item Zurück (Button)
+\item Home (Button)
+\item Weiter (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits einen Gruppenentwurf gespeichert ist, der dann geladen wird. Falls nicht, wird als Linie die erste der in SelectLinesActivity auswählten Linien eingestellt und als Zeit die in SetTimeActivity ausgewählte Startzeit
+\item Die Activity bindet ein GroupItem im DisplayMode BIG\_EDITABLE ein, das alle Elemente außer der Navigation enthält.
+\item Bei Klick auf Weiter speichert das ViewModel den Gruppenentwurf in MensaMeetSession und führt beim Server eine Anfrage zur Erstellung der Gruppe durch. \\
+\textit{viewmodel.CreateGroupViewModelTest.noCreatedGroup(),
+viewmodel.CreateGroupViewModelTest.createGroupFails(),
+viewmodel.CreateGroupViewModelTest.addUserToGroupFails(),
+viewmodel.CreateGroupViewModelTest.getUserFails()}
+\item Falls die Erstellung der Gruppe erfolgreich ist, wird eine Beitrittsanfrage in die Gruppe für den aktuellen Benutzer an den Server gesendet.
+\item Falls die Erstellung der Gruppe scheitert, Fehlermeldung, Benutzer verbleibt in Activity.
+\item Falls die Beitrittsanfrage in die Gruppe erfolgreich ist, wird das User-Objekt erneut beim Server angefordert.
+\item Falls die Beitrittsanfrage scheitert, Fehlermeldung, Benutzer wird auf SelectGroupActivity zurückgeleitet. Die Existenz einer Gruppe ohne Mitglieder ist nicht problematisch, der Beitritt kann auch zu einem späteren Zeitpunkt vom Benutzer versucht werden. 
+\item Falls das User-Objekt aktualisiert werden konnte, war der gesamte Gruppenerstellungsprozess erfolgreich und es wird auf GroupJoinedActivity weitergeleitet. Ansonsten wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung.
+\item Bei Klick auf Zurück speichert das ViewModel den Gruppenentwurf in MensaMeetSession und leitet auf SelectGroupActivity weiter.
+\item Bei Klick auf Home speichert das ViewModel den Gruppenentwurf in MensaMeetSession und leitet auf HomeActivity weiter.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Verhalten beim Scheitern der Server-Anfragen
+\item ViewModel-eigenes Attribut group entfernt\\
+\textit{Stattdessen wird direkt in das Attribut createdGroup von MensaMeetSession geschrieben, um unnötige Datenaktualisierungen zu vermeiden.}
+\item Hinweis an den Benutzer, dass eine Gruppe gelöscht wird, wenn er sie als letztes Mitglied verlässt
+\end{itemize}
+
+
+\subsection{ShowUserActivity und ShowUserViewModel}
+ShowUserActivity zeigt das Profil eines Benutzers an. ShowUserViewModel sorgt für die Kommunikation mit MensaMeetSession, ist aber leer, da alle benötigten Methoden von MensaMeetViewModel ererbt werden.
+
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Benutzerbild
+\item Name (Textanzeige)
+\item Motto (Textanzeige)
+\item Geburtsdatum (Textanzeige)
+\item Geschlecht (Textanzeige)
+\item Status(Textanzeige)
+\item Fachrichtung(Textanzeige)
+\item Zurück (Button)
+\item Home (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist, ausreichende Benutzerdaten angegeben sind sowie userToShow in MensaMeetSession ungleich null ist.
+\item Bei (Wieder-)Eintritt in die Activity wird über das ViewModel aus MensaMeetSession der userToShow geladen. 
+\item Die Activity bindet ein UserItem im DisplayMode BIG\_NOTEDITABLE ein, das alle Elemente außer der Navigation enthält.
+\item Bei Klick auf Zurück wird auf die aufrufende Seite zurückgeleitet, die im Activity-Stack von Android gespeichert ist. 
+\item Bei Klick auf Home wird auf HomeActivity weitergeleitet
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\end{itemize}
+
+
+\subsection{GroupJoinedActivity und GroupJoinedViewModel}
+Diese Activity zeigt die Gruppe an, in der der Benutzer Mitglied ist. Sie wird nach einem Gruppenbeitritt, nach einer Gruppenerstellung und dem darauf automatisch erfolgenden Beitritt sowie danach jedes Mal bei Klick auf Essen gehen in HomeActivity angezeigt. Der Benutzer kann hier auch aus der Gruppe austreten. GroupJoinedViewModel lädt die Gruppe vom Server und schickt an diesen die Austrittsanfrage.
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Name (Textanzeige)
+\item Motto (Textanzeige)
+\item Zeit (Textanzeige)
+\item Linie (Textanzeige)
+\item Mitgliederzahl/Maximale Mitgliederzahl (Textanzeige)
+\item Gruppe löschen (Button), falls aktueller Benutzer Administrator
+\item Mitglieder (Liste), enthält pro Eintrag:
+
+\begin{itemize}
+\item Benutzerbild
+\item Name (Textanzeige)
+\item Motto (Textanzeige)
+\item Benutzer löschen (Button), falls aktueller Benutzer Administrator und nicht dem Benutzer identisch
+\end{itemize}
+ 
+\item Gruppe verlassen (Button)
+\item Home (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist, ausreichende Benutzerdaten angegeben sind und das Grouptoken des Benutzers nicht null ist.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel jedes Mal mit Hilfe des Grouptokens die Gruppe beim Server angefordert. Eine derart häufige Aktualisierung ist sinnvoll, da sich die Mitgliederanzahl einer Gruppe ständig ändern kann. \\
+\textit{viewmodel.GroupJoinedViewModelTest.groupNotFound(),
+viewmodel.GroupJoinedViewModelTest.loadingGroupFailed()}
+\item Falls das Laden der Gruppe scheitert, wird der Fehlercode betrachtet. Zeigt er an, dass die Gruppe nicht (mehr) existiert (404), kann davon ausgegangen werden, dass die Gruppe gelöscht wurde. In diesem Fall wird das Grouptoken beim aktuellen Benutzer auf null gesetzt und versucht, sein User-Objekt am Server upzudaten.\\
+\textit{viewmodel.GroupJoinedViewModelTest.groupNotFound(),
+viewmodel.GroupJoinedViewModelTest.updateUserSuccess()}
+\item Zeigt der Fehlercode einen anderen Fehler an, wird der Fehler dem Benutzer gemeldet und der Benutzer auf HomeActivity weitergeleitet. 
+\item Gelingt das Update des Users, wird dem Benutzer gemeldet, dass die Gruppe nicht mehr ladbar ist und er nicht mehr Mitglied darin ist. Er wird auf HomeActivity weitergeleitet und kann nun wieder nach neuen Gruppen suchen.
+\item Gelingt das Update des Users nicht, wird sein User-Objekt in MensaMeetSession auch nicht verändert. Er wird nach einer Fehlermeldung auf HomeActivity weitergeleitet und ist in der Lage vor dem Aufruf dieser Activity. 
+\item Das Verhalten bei Klick auf Gruppe löschen und Benutzer löschen entspricht dem in SelectGroupActivity.
+\item Bei Klick auf Gruppe verlassen versucht das ViewModel zunächst, den Benutzer auf dem Server aus der Gruppe zu entfernen. \\
+\textit{viewmodel.GroupJoinedViewModelTest.leavingGroupFailed(),
+viewmodel.GroupJoinedViewModelTest.leavingGroupSuccess()}
+\item Gelingt das Entfernen des Benutzers, wird sein User-Objekt neu vom Server angefordert.\\
+\textit{viewmodel.GroupJoinedViewModelTest.reloadingUserFailed()}
+\item Gelingt das Entfernen des Benutzers nicht, Fehlermeldung, Benutzer verleibt in der Activity. 
+\item Kann das User-Objekt vom Server empfangen werden, wird es in MensaMeetSession aktualisiert und der Benutzer auf HomeActivity weitergeleitet. Ansonsten wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Erneutes Laden der Gruppe bei jedem Eintritt in die Activity \\
+\textit{Zuvor wurde die Gruppe nach dem Beitritt nur noch lokal aus MensaMeetSession geladen. Aufgrund der Veränderlichkeit der Gruppenmitglieder sowie der Möglichkeit, dass die Gruppe zwischenzeitlich gelöscht wird, ist eine häufige Aktualisierung sinnvoll.}
+\item Verhalten beim Scheitern der Server-Anfragen
+\item Methode setGroupByToken im ViewModel gibt nun ein Boolean zurück\\
+\textit{Mit false wird der aufrufenden Methode in der Activity signalisiert, dass ein Fehler aufgetreten ist. Diese Methode kann sich dann sofort beenden, was nötig ist, dass erst dann in der Activity der Beobachter der veränderten eventLiveData mit Fehlerstatus und Fehlerstring benachrichtigt wird und den Fehler auswerten kann.}
+\item Beim Verlassen der Gruppe Bestätigungsdialog hinzugefügt
+
+\end{itemize}
+
+\subsection{MensaMeetList, MensaMeetListHandler und MensaMeetAdapter}
+Diese Klassen und ihre Unterklassen für Line, Group und User sind für die Darstellung der Listen mittels RecyclerViews zuständig. Sie binden jeweils MensaMeetItem- bzw. deren Unterklassen-Objekte für die einzelnen Listeneinträge. Da die Funktionsweise sich am Standard für die Einbindung von RecyclerViews orientiert und es in diesem Bereich kaum Änderungen seit der letzten Phase gab, seien die Klassen hier nicht näher beschrieben. 
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Keine Auswahl bei LineList führte zum Absturz\\
+\textit{LineList ist in SelectOneLineDialog eingebunden, der in CreateGroupActivity bei der Auswahl einer Linie für die zu erstellende Gruppe aufgerufen wird. Wurde kein Objekt ausgewählt und der Dialog mit OK geschlossen, stürzte die App ab. Grund dafür war, dass in der Methode MensaMeetListAdapter beim hier vorliegenden displayMode SINGLE\_SELECT der ausgewählte Listeneintrag mit seinem Listenindex in der Variable selectedId gespeichert wurde, deren Defaultwert -1 ist. In der Methode getSelectedObjects wurde mit selectedId direkt auf die Liste zugegriffen, ohne zu überprüfen, ob sie noch den Defaultwert enthält, was bei der Auswahl keiner Linie der Fall ist. Die Überprüfung wurde ergänzt.}
+
+\end{itemize}
+
+\subsection{MensaMeetItem und MensaMeetItemHandler}
+MensaMeetItem ist die abstrakte Oberklasse für die Item-Klassen für Line, Group und User. Items können sowohl Listenelemente sein als auch einzeln angezeigt werden, in groß und klein, bearbeitbar oder nicht bearbeitbar. Sie enthalten sichtbare Elemente, die über eine Id identifiziert werden, welche zugleich die Id der sie beschreibenden Stringressource ist. MensaMeetItemHandler und dessen Unterklassen enthalten analog zu den ViewModels die Logik. Die Kommunikation geschieht hier ebenso über ein SingleLiveData-Objekt, das beobachtet wird.
+
+\subsubsection{Elemente von MensaMeetItem}
+\begin{itemize}
+\item Attribut handler \\
+\textit{Analog zum ViewModel bei Activity wird der Handler in einem Attribut gehalten. Auch die Initialisierung geschieht analog mit initializeHandler.}
+\item Methode observeHandlerLiveData\\
+\textit{Analog zu Activity gibt es auch hier eine Methode zum Initalisierung der Beobachtung von eventLiveData im Handler. Sie wird in der App jedoch nicht gebraucht, da meistens die äußere Activity eventLiveData beobachtet, was auch möglich ist. }
+\item Attribut view \\
+\textit{Es enthält die View, also die gesamte sichtbare Einheit des Items.}
+\item Methode createView\\
+\textit{Sie erzeugt die View und speichert sie im Attribut ab. Sie muss von jeder Unterklasse implementiert werden, weshalb sie abstrakt ist. In diesen Implemetierung werden die anzuzeigenden Felder wie „Name“ oder „Motto“ nacheinander abgearbeitet, wobei jeweils falls nötig die verschiedenen DisplayModes unterschieden werden: Bei
+BIG\_EDITABLE kann zum Beispiel ein Spinner angezeigt werden, während bei BIG\_NOTEDITABLE ein einfaches Textfeld eingeblendet wird. }
+\item Methode createTextField \\
+\textit{Um immer wieder gebrauchte sichtbare Elemente für die View in createView zu erzeugen, gibt es in MensaMeetItem viele Hilfsmethoden. Die am häufigsten benutzte ist createTextField, womit je nach displayMode (BIG\_NOTEDITABLE oder BIG\_EDITABLE) eine Textanzeige oder ein editierbares Textfeld erzeugt wird. Das Element, das wiederum eine View ist, erhält eine id, die zugleich die id der String-Ressource ist, welche sie beschreibt. }
+\item Methode createLinkTextField\\
+\textit{Sie erzeugt eine Textanzeige, die dunkel hinterlegt ist und dadurch als Link gekennzeichnet ist. In createView einer Unterklasse wird ein ClickListener angehängt, der das Verhalten nach dem Link beschreibt.}
+\item Methode createLabel \\
+\textit{Sie erzeugt eine beschreibende Textanzeige.}
+\item Methode fillObjectData\\
+\textit{Sie sorgt dafür, dass die erzeugen Elemente der View mit Daten gefüllt werden, die aus dem im Attribut objectData des Handlers gespeichert werden. Sie wird bei allen Items gebraucht und ist daher abstrakt, damit sie implementiert werden muss.}
+\item Methode fillTextField \\
+\textit{Sie soll in fillObjectData aufgerufen werden und befüllt ein Textfeld oder eine Textanzeige mit den zugehörigen Daten. }
+\item Methode setSpinnerOrTextField\\
+\textit{Sie soll in fillObjectData aufgerufen werden und befüllt ein Element, das entweder ein Spinner, also eine Auswahlliste oder ein Textfeld bzw. eine Textanzeige ist. In der Auswahlliste wird das jeweilige Listenelement dann ausgewählt. }
+\item Attribut representedValues\\
+\textit{Es gibt Daten, die eine Repräsentation besitzen, welche in einem sichtbaren Element angezeigt werden, und einen Wert besitzen, mit dem gearbeitet wird. In dieser HashMap werden, falls vorhanden, unter der Id eines sichtbaren Elements, das die Repräsentation enthält, der Wert des Datenelements gespeichert. Bei Spinnern werden diese Datenpaare mit Hilfe der Klasse SpinnerItem gespeichert, die diese wiederum aus IdEnums (siehe Model -> IdEnum) generieren können.   }
+\item Methode fillSublist \\
+\textit{Sie lädt eine verschachtelte Unterliste.}
+\item Methode saveObjectData\\
+\textit{In dieser Methode soll im displayMode BIG\_EDITABLE in der jeweiligen Unterklasse das Auslesen der sichtbaren Elemente implementiert werden, wozu es Hilfsmethoden wie extractTextField und extractSpinnerOrTextField gibt.}
+
+\end{itemize}
+
+\subsubsection{Elemente von MensaMeetItemHandler}
+
+\begin{itemize}
+\item Attribut eventLiveData\\
+\textit{Analog zum ViewModel enthält auch der Handler ein beobachtbares SingleLiveEvent.}
+\item Weiteren Methoden der Klasse\\
+\textit{Sie rufen jeweils entsprechende Methoden in MensaMeetSession auf. Grund dafür ist, dass nach dem MVVM-Modell die View nicht direkt mit dem Model kommunizieren, sondern ihre Daten vom ViewModel bzw. hier Handler beziehen sollte. }
+\item Entfernung des Attributs objectData in MensaMeetItem \\
+\textit{Die Datenhaltung sollte ausschließlich im Handler geschehen, stattdessen wird daher nun immer handler.objectData benutzt.}
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Handhabung von Wertepaaren mit representedValues und SpinnerItem \\
+\textit{In der früheren Version gab es keine Handhabung von Wertepaaren. Bei Enums wie model.Status wurden die Werte für einen Spinner zum Beispiel immer „hin- und herübersetzt“. Dies ist jedoch unsicher, da die Zuordnung Enum-Wert -> String (z. B. MALE -> „männlich“) zwar eindeutig, der umgekehrte Fall es aber nicht sein muss. Nun wird nur noch mit den eindeutigen repräsentieren Werten gearbeitet.}
+\item Einzelmethode observeLiveData (siehe MensaMeetActivity)
+\item MVVM-konformer Zugriff auf MensaMeetSession nur noch über Handler
+\item Attribut objectData statt in MensaMeetItem nun in MensaMeetHandler gespeichert, hierfür bei MensaMeetItemHandler Typ hinzugefügt\\
+\textit{Zuvor war das Datenobjekt inkonsequenterweise im Item gespeichert, nun wurde es MVVM-konform in den Handler verschoben.}
+\item Attribut displayMode bei Handler entfernt
+\textit{Ursprünglich wurde angenommen, dass der displayMode auch für die Logik im Handler entscheidend sein könnte. Dies hat sich jedoch nicht bestätigt, weshalb das  unnötige Attribut entfernt wurde.}
+
+\end{itemize}
+
+\subsection{GroupItem und GroupItemHandler}
+GroupItem enthält die Anzeige, GroupItemHander die Logik eines einzelnen Gruppenelements. 
+Für Aufbau und Methoden siehe (siehe MensaMeetItem, SelectGroupActivity, CreateGroupActivity und GroupJoinedActivity). 
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Verarbeitung von Wertepaaren (siehe MensaMeetItem)
+\item Fehlerbehandlung der bei Scheitern der Serveranfragen im Handler (siehe Activities)
+\item Kein Beitreten-Button in GroupItem, falls Gruppe voll 
+
+\end{itemize}
+
+\subsection{UserItem und UserItemHandler}
+UserItem enthält die Anzeige, UserItemHander die Logik eines einzelnen Gruppenelements. Für Aufbau und Methoden siehe (siehe UserActivity, ShowUserActivity, SelectGroupActivity,  und GroupJoinedActivity). 
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Verarbeitung von Wertepaaren (siehe MensaMeetItem)
+\item Fehlerbehandlung der bei Scheitern der Serveranfragen im Handler (siehe Activities)
+\end{itemize}
 
 
 
