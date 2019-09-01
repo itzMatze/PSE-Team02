@@ -20,7 +20,7 @@ public class MembershipController {
 	private GroupRepository groupRepository;
 	
 	/**
-	 * Adss a user to a group.
+	 * Adds a user to a group.
 	 * 
 	 * @param user the user to be added.
 	 * @param group the group the user should get added to.
@@ -48,11 +48,10 @@ public class MembershipController {
 		while (iterator.hasNext()) {
 			User iteratedUser = iterator.next();
 			
-			if (iteratedUser.getToken() == user.getToken()) {
+			if (iteratedUser.getToken().equals(user.getToken())) {
 				group.getMembers().remove(iteratedUser);
 				
 				if (group.getMembers().size() == 0) {
-					groupRepository.save(group);
 					groupRepository.delete(group);
 				} else {
 					groupRepository.save(group);					

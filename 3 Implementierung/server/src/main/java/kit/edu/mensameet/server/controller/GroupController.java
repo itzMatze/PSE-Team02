@@ -80,10 +80,12 @@ public class GroupController {
 	 * Removes all groups from the repository.
 	 */
 	public void removeAllGroups() {
-		groupRepository.deleteAll();
 		userRepository.findAll().forEach(member -> {
 			member.setGroupToken(null);
+			userRepository.save(member);
 		});
+
+		groupRepository.deleteAll();
 	}
 	
 	/**

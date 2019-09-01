@@ -12,8 +12,6 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.rule.PowerMockRule;
 import org.robolectric.RobolectricTestRunner;
 
-import java.security.SecureRandom;
-
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.model.User;
@@ -72,6 +70,24 @@ public class GroupJoinedViewModelTest {
         // Then
         Assert.assertEquals(vm.getEventLiveData().getValue(),
                 new Pair<String, StateInterface>("error loading Group", GroupJoinedViewModel.State.ERROR_LOADING_GROUP));
+    }
+
+    @Test
+    public void updateUserSuccess() throws RequestUtil.RequestException {
+
+        PowerMockito.mockStatic(RequestUtil.class);
+        MensaMeetSession.getInstance().setUser(new User());
+
+        // Given
+        when(RequestUtil.getGroup(any(String.class), any(String.class)))
+                .thenThrow(new RequestUtil.RequestException(404, "error loading Group"));
+
+        // When
+        vm.setGroupByToken("token");
+
+        // Then
+        Assert.assertEquals(vm.getEventLiveData().getValue(),
+                new Pair<String, StateInterface>("error loading Group", GroupJoinedViewModel.State.ERROR_LOADING_GROUP_SO_USER_UPDATED));
     }
 
     @Test

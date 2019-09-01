@@ -6,7 +6,6 @@ import java.util.List;
 
 import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
-import edu.kit.mensameet.client.model.MensaMeetSession;
 import edu.kit.mensameet.client.util.RequestUtil;
 
 /**

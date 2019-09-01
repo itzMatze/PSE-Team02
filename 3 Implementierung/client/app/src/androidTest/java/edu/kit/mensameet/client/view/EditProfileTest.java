@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
-import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
@@ -99,10 +98,9 @@ public class EditProfileTest {
         onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
         onView(withId(R.string.field_status)).check(matches(isDisplayed()));
         onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_gender)).perform(swipeUp());
         onView(withId(R.string.field_subject)).perform(click());
-        onView(allOf(withText("Informatik"))).perform(click());
-        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Informatik"))));
+        onView(allOf(withText("Pädagogik"))).perform(click());
+        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Pädagogik"))));
         onView(withId(R.id.navigation_next)).perform(click());
         onView(withId(R.id.goEat)).check(matches(isDisplayed()));
         onView(withId(R.id.profile)).check(matches(isDisplayed()));
@@ -112,30 +110,23 @@ public class EditProfileTest {
         onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
         onView(withId(R.string.field_status)).check(matches(isDisplayed()));
         onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_gender)).perform(swipeUp());
-        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Informatik"))));
+        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Pädagogik"))));
+        onView(withId(R.string.field_subject)).perform(click());
+        onView(allOf(withText("Physik"))).perform(click());
+        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Physik"))));
+        onView(isRoot()).perform(TestHelper.waitId(300));
+        onView(withId(R.id.navigation_next)).perform(click());
+        onView(withId(R.id.goEat)).check(matches(isDisplayed()));
+        onView(withId(R.id.profile)).check(matches(isDisplayed()));
+        onView(withId(R.id.logout)).check(matches(isDisplayed()));
+        onView(withId(R.id.imageView2)).check(matches(isDisplayed()));
+        onView(withId(R.id.profile)).perform(click());
+        onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
+        onView(withId(R.string.field_status)).check(matches(isDisplayed()));
+        onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
+        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Physik"))));
         onView(withId(R.id.navigation_home)).perform(click());
         onView(withId(R.id.logout)).perform(click());
-        // causes JSON parse error
-        /*onView(isRoot()).perform(TestHelper.waitId(300));
-        onView(withId(R.string.field_subject)).perform(click());
-        onView(isRoot()).perform(TestHelper.waitId(300));
-        onView(allOf(withText("Mathematik"))).perform(click());
-        onView(withId(R.string.field_gender)).perform(swipeUp());
-        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Mathematik"))));
-        onView(isRoot()).perform(TestHelper.waitId(300));
-        onView(withId(R.id.navigation_next)).perform(click());
-        onView(withId(R.id.goEat)).check(matches(isDisplayed()));
-        onView(withId(R.id.profile)).check(matches(isDisplayed()));
-        onView(withId(R.id.logout)).check(matches(isDisplayed()));
-        onView(withId(R.id.imageView2)).check(matches(isDisplayed()));
-        onView(withId(R.id.profile)).perform(click());
-        onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_status)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_subject)).check(matches(withSpinnerText(containsString("Mathematik"))));
-        onView(withId(R.id.navigation_home)).perform(click());
-        onView(withId(R.id.logout)).perform(click());*/
     }
 
     @Test
@@ -156,10 +147,8 @@ public class EditProfileTest {
         onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
         onView(withId(R.string.field_status)).check(matches(isDisplayed()));
         onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_gender)).perform(swipeUp());
         onView(withId(R.string.field_status)).perform(click());
         onView(allOf(withText("Student*in"))).perform(click());
-        onView(isRoot()).perform(TestHelper.waitId(300));
         onView(withId(R.string.field_status)).check(matches(withSpinnerText(containsString("Student*in"))));
         onView(withId(R.id.navigation_next)).perform(click());
         onView(withId(R.id.goEat)).check(matches(isDisplayed()));
@@ -170,13 +159,9 @@ public class EditProfileTest {
         onView(withId(R.string.field_gender)).check(matches(isDisplayed()));
         onView(withId(R.string.field_status)).check(matches(isDisplayed()));
         onView(withId(R.string.field_subject)).check(matches(isDisplayed()));
-        onView(withId(R.string.field_gender)).perform(swipeUp());
         onView(withId(R.string.field_status)).check(matches(withSpinnerText(containsString("Student*in"))));
-        onView(isRoot()).perform(TestHelper.waitId(300));
         onView(withId(R.string.field_status)).perform(click());
-        onView(isRoot()).perform(TestHelper.waitId(300));
         onView(allOf(withText("anderer"))).perform(click());
-        onView(withId(R.string.field_gender)).perform(swipeUp());
         onView(withId(R.string.field_status)).check(matches(withSpinnerText(containsString("anderer"))));
         onView(isRoot()).perform(TestHelper.waitId(300));
         onView(withId(R.id.navigation_next)).perform(click());
