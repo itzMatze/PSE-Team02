@@ -150,6 +150,7 @@ Robolectric ist ein Framework für Tests in Android Studio, das in Sachen Stubbi
 Bei Unit-Tests ist die Überschaubarkeit des Testbereichs wichtig, daher müssen Klassen und Funktionen, die zu weit aus dem Testbereich hinausführen, gemockt werden, wozu sich Mockito eignet. Was Mockito jedoch nicht kann, ist unter anderem, statische Klassen und Methoden zu mocken. Diese werden in MensaMeet bei Serveranfragen verwendet. Abhilfe schafft hier die Erweiterung Powermockito.
 
 \subsection{Espresso}
+Mit Espresso ist es möglich Tests in der laufenden App durchzuführen. Man ersetzt damit einen menschlichen Tester, der sich durch die App klickt und testet ob alles so funktioniert wie es soll. Der Hintergrund dabei ist, dass man die Tests automatisiert durchführen möchte und man auch in der Lage sein will, ein Testszenario zu reproduzieren, um die Fehlerursache ausfindig zu machen. Espresso macht genau diese Dinge möglich und nimmt dem Programmierer so jede Menge Arbeit beim Testen ab.
 
 \section{Models}
 \subsection{IdEnum}
@@ -827,7 +828,15 @@ UserItem enthält die Anzeige, UserItemHander die Logik eines einzelnen Gruppene
 \item Fehlerbehandlung der bei Scheitern der Serveranfragen im Handler (siehe Activities)
 \end{itemize}
 
+\section{Integration-Test}
 
+\begin{itemize}
+\item BeginActivityTest: Testet auf der grafischen Oberfläche, ob man von der BeginActivity mit den entsprechenden Buttons auch das gewünschte Ziel erreicht
+\item HomeActivityTest: Testet auf der grafischen Oberfläche, ob man von der HomeActivity mit den entsprechenden Buttons auch das gewünschte Ziel erreicht
+\item LoginActivityTest: Testet auf der grafischen Oberfläche, ob der Login funktioniert, indem einmal getestet wird, ob es möglich ist, sich mit korrekten Daten anzumelden und ob man mit falschen Daten abgelehnt wird.
+\item RegisterActivityTest: Testet auf der grafischen Oberfläche, ob die Registrierung funktioniert, indem getestet wird, ob es möglich ist, sich mit gültigen Daten zu registrieren. Außerdem wird auch mit diversen ungültigen Daten getestet, wie einer falsch formatierten Email Adresse oder nicht übereinstimmender Passwörter, ob die Registrierung dann abgelehnt wird.
+\item EditProfileTest: Testet auf der grafischen Oberfläche, ob der Benutzer sein Profil bearbeiten kann. 
+\end{itemize}
 
 \section{Testszenarien}
 
