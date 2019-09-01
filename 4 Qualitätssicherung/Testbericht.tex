@@ -245,11 +245,363 @@ Die Methoden der Klasse RequestUtil entsprechend den Diensten, die der MensaMeet
 
 \end{itemize}
 
+\section{Activity-ViewModel-, List-ListHandler und Item-ItemHandler Paare}
+
+Die Activities sowie ihre Unterelemente Lists und Items sind für die Darstellung der Benutzeroberfläche zuständig, während die zugehörigen ViewModels und Handlers die Logik dahinter enthalten. \\
+
+Die Activity-Viewmodel-Paare sind nach ihrem frühestmöglichen Erscheinen in einem Benutzungsdurchlauf geordnet. Die Beschreibung des Verhaltens geschieht in chronologischer Reihenfolge. \\
+
+\subsection{MensaMeetActivity und MensaMeetViewModel} 
+MensaMeetActivity ist die abstrakte Oberklasse aller Activities in MensaMeet, MensaMeetViewModel die abstrakte Oberklasse aller ViewModels. Beide Klassen enthalten Attribute, Methoden und Vorgänge, die in mehreren oder allen Activities und ViewModels benötigt werden. \\
+ \subsubsection{Elemente in MensaMeetActivity} 
+ 
+ \begin{itemize}
+ \item Methode onCreate \\
+ \textit{Sie ruft onCreate der Oberklasse AppCompatActivity auf und sollte immer am Anfang der onCreate-Methode einer Unterklasse aufgerufen werden, da die Activity sonst teilweise nicht richtig dargestellt wird. Zudem enthält sie die Anweisung, dass die App immer vertikal angezeigt wird und nicht gedreht wird, da dabei unerwünschtes Verhalten auftreten kann, dessen Behandlung zusätzlichen Aufwand erfordert.}
+\item Attribut viewModel \\
+\textit{Das zur Activity gehörende ViewModel}
+\item Methode initializeViewModel \\
+\textit{Jede Unterklasse der Activity kann diese Methode an beliebiger Stelle benutzen, um dem Attribut viewModel das konkrete ViewModel zuzuweisen. Die Initialisierung des Attributs ist Vorbedingung für den Aufruf weiterer Methoden, die darauf zugreifen.}
+\item Methode checkAccess\\
+\textit{Sie überprüft, ob die Zugangsbedingungen zur Activity erfüllt sind. Da sie leer ist und auch nicht standardmäßig in einer anderen Methode aufgerufen wird, ist sie eher als Anregung für die Unterklassen zu verstehen. In diesen Enthält sie neben einer Auswertung den Befehl, die Activity im negativen Fall zu beenden, wobei der Benutzer in die vorhergehende Activity im Activity-Stack zurückfällt. Da sie meistens über das ViewModel auf MensaMeetSession zugreift, muss sie nach der Methode initalizeViewModel aufgerufen werden.}
+\item Methode observeLiveData\\
+\textit{Sie beobachtet das SingleLiveData-Objekt eventLiveData des ViewModels und muss daher nach initializeViewModel aufgerufen werden. Das Objekt dient zur Kommunikation des ViewModels mit der Activity, das nach dem MVVM-Modell nicht direkt auf die Activity zugreifen darf. Falls das ViewModel eventLiveData ändert, wird die Activity benachrichtigt und kann den veränderten Wert auslesen, der eine Statusänderung und eine zugehörige Nachricht enthält. Zur Auswertung dieser Veränderung wird die Schablonenmethode processStateChange aufgerufen.}
+\item Methode processStateChange\\
+\textit{Sie wird bei Veränderung von eventLiveData im ViewModel aufgerufen und wertet die Änderung aus, die einen neuen Status und eine zugehörige Nachricht enthält. Jede Activity kann sie individuell überschreiben.}
+\item Methode showMessage\\
+\textit{Sie blendet eine Kombination aus einer gegebenen Stringressource und der über eventLiveData vom ViewModel übermittelten Nachricht, die zum Beispiel vom Server stammt, in Form eines Toasts (temporär angezeigtes Nachrichtenfeld am unteren Bildschirmrand) ein. Damit lassen sich zum Beispiel Serverfehler anzeigen.}
+\item Attribute buttonHome, buttonNext und buttonBack\\
+\textit{Diese Buttons werden in den meisten Activities angezeigt.}
+\item Methode initializeButtons\\
+\textit{Sie findet mit Hilfe der View-Ids die Buttons in der View der Activity und weist sie den entsprechenden Attributen zu. Daher sollte die Methode erst dann aufgerufen werden, wenn die View der Activity initialisiert wurde. Zudem weist sie den Buttons ClickListener zu, die auf die Methoden onClickHome, onClickNext und onClickBack verweisen.}
+\item Methoden onClickHome, onClickNext und onClickBack\\
+\textit{Sie werden beim Klicken auf die jeweiligen Buttons aufgerufen und können von den Unterklassen überschrieben werden, um das Verhalten anzupassen}
+\item Methode onResume\\
+\textit{Sie wird bei einer Rückkehr zur Activity aufgerufen, falls diese zwischenzeitlich in den Hintergrund getreteten ist. Selbst ruft sie wiederum onResume der Oberklasse AppCompatActivity auf und danach die Schablonenmethode reloadData}
+\item Methode reloadData\\
+\textit{Sie wird vom System bei der Rückkehr zur Activity aufgerufen, falls diese zwischenzeitlich in den Hintergrund getreteten ist, kann jedoch überall, auch in onCreate aufgerufen werden, falls das initiale Laden der von der Activity benötigten Daten dem erneuten Laden nach einer Rückkehr entspricht. Sie kann quasi als Auslagerungsmethode der Datenladung benutzt werden.}
+\item Methoden gotoActivity und gotoHome\\
+\textit{Starten eine andere Activity und leiten den Benutzer an sie weiter.}
+\item Methode onBackPressed\\
+\textit{Sie wird vom System bei Betätigung des Android-Back-Buttons aufgerufen und leitet zur Activity weiter, die die aktuelle Activity gestartet hat. Dies ist manchmal jedoch nicht erwünscht, die Navigation in der App soll ausschließlich über die eigenen Buttons erfolgen. Daher wird die Methode leer überschrieben und der Button generell deaktiviert.}
+\item Methode goBack\\
+\textit{Sie ruft onBackPressed in der Oberklasse auf und stellt somit deren Funktion zur Verfügung, falls sie doch einmal benötigt wird (siehe ShowUserActivity).}
+\end{itemize}
+
+\subsubsection{Elemente in MensaMeetViewModel}
+\begin{itemize}
+\item Attribut singleLiveData\\
+\textit{Das SingleLiveData-Objekt, das von der Activity beobachtet wird (siehe oben).}
+\item Weiteren Methoden der Klasse \\
+\textit{Sie rufen jeweils entsprechende Methoden in MensaMeetSession auf. Grund dafür ist, dass nach dem MVVM-Modell die Activity nicht direkt mit dem Model kommunizieren, sondern ihre Daten vom ViewModel beziehen sollte.}
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item initializeViewModel, um die Zuweisung des ViewModel zu regulieren\\
+\textit{Zuvor wurde das ViewModel direkt super.viewModel zugewiesen.}
+\item checkAccess, um mehr ungültige Zustände zu vermeiden
+\item SingleLiveEvent eventLiveData von Pair<MensaMeetViewModel, StateInterface> in Pair <String, StateInterface> geändert\\
+\textit{Die vorherige Lösung stammt aus der Android-Schulung, damit das sendende ViewModel immer als Quelle mitgeliefert wird. In den Anwendungsfällen von MensaMeet ist das ViewModel jedoch immer bekannt und braucht nicht mitgeliefert zu werden. Stattdessen ist es sinnvoller, eine eventuelle Fehlernachricht als String mitzuliefern.}
+\item observeLiveData, um die Beobachtung von eventLiveData im ViewModel an beliebiger Stelle initialisieren zu können\\
+\textit{Zuvor war ihr Inhalt Teil der Methode onCreate, wodurch diese als super.onCreate erst nach Initialisierung des ViewModel aufgerufen werden konnte. Sie sollte jedoch immer als erstes in onCreate der Unterklassen aufgerufen werden, da es sonst zu Darstellungsproblemen wie dem Fehlen eines Hintergrundbildes kommen kann}
+\item processStateChange nun in jeder Activity einheitlich genutzt\\
+\textit{Zuvor gab es bei manchen Activities individuelle Lösungen.}
+\item initializeButtons\\
+\textit{Ihr Inhalt war zuvor ebenfalls Teil der Methode onCreate. Wenn diese jedoch als erstes in onCreate der Unterklassen aufgerufen werden soll, käme die Initialisierung der Buttons vor der Initialisierung der View der Activity, was unmöglich ist, daher die Auslagerung in eine eigene Methode.}
+\item showMessage\\
+\textit{Sie bündelt die oft benutzte Anweisungsfolge.}
+\item Deaktivierung des Android-Back-Buttons durch leere Methode onBackPressed
+\item MVVM-konformer Zugriff auf MensaMeetSession nur noch über ViewModel
+\item Attribut displayMode bei ViewModel entfernt\\
+\textit{Ursprünglich wurde angenommen, dass der displayMode auch für die Logik im ViewModel entscheidend sein könnte. Dies hat sich jedoch nicht bestätigt, weshalb das unnötige Attribut entfernt wurde.}
+\item Methodenbeendigung nach jeder eventLiveData-Änderung \\
+\textit{Zuvor wurde fälschlicherweise angenommen, dass die Methode und alle weiteren Methoden sofort beendet wurde, sobald der Beobachter benachrichtigt wird. Dies ist jedoch nicht der Fall, daher müssen die Methoden explizit beendet werden.}
+\end{itemize}
+
+\subsection{BeginActivity und BeginViewModel}
+BeginActivity ist die erste Activity, die dem Benutzer nach dem Starten der App angezeigt wird. BeginViewModel enthält die Methoden, die beim Klicken der Buttons aufgerufen werden und wiederum bei der Activity den Seitenwechsel triggern (siehe MensaMeetActivity -> Elemente in MensaMeetActivity -> observeLiveData). \\
+
+\textbf{Sichtbare Elemente} \\
+\begin{itemize}
+\item Login (Button)
+\item Registrieren (Button) \\
+
+\textbf{Verhalten} \\
+\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist. 
+\item Bei Klick auf Login kommt man zu LoginActivity \\
+viewmodel.BeginViewModelTest.toLoginSuccess()
+\item Bei Klick auf Registrieren kommt man zu RegisterActivity. \\
+viewmodel.BeginViewModelTest.toRegisterSuccess()
+
+\textbf{Ergänzungen und Verbesserungen seit der letzten Phase} \\
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\end{itemize}
+
+\subsection{LoginActivity und LoginViewModel}
+
+Auf LoginActivity kann sich der Benutzer mit seinen Firebase-Login-Daten bei MensaMeet einloggen. LoginViewModel kommuniziert dabei mit dem Firebase-Projekt von MensaMeet und dem Server.
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item E-Mail-Adresse (Textfeld)
+\item Passwort (Textfeld)
+\item Login (Button)
+\item Zurück (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nicht zugreifbar, wenn der Benutzer eingeloggt ist.
+\item Bei Klick auf Zurück gelangt der Benutzer auf BeginActivity.
+\item Bei Klick auf Login wird der Login-Prozess beim ViewModel gestartet.
+\item Falls ein Textfeld leer ist, Fehlermeldung.
+\item Mit den Daten wird bei Firebase das Einloggen versucht. 
+\item Bei erfolgreichem Einloggen wird ein User-Token empfangen. Mit diesem wird beim Server das entsprechende User-Objekt angefordert.
+\item Bei gescheitertem Einloggen wird die Fehlermeldung von Firebase angezeigt.
+\item Wird ein User-Objekt vom Server empfangen, wird damit in MensaMeetSession die neue Sitzung initialisiert. 
+\item Wird kein User-Objekt empfangen, wird der Benutzer bei Firebase wieder ausgeloggt und die Fehlermeldung des Servers angezeigt. Grundsatz: kein aktuelles User-Objekt, keine Sitzung. Der Benutzer verbleibt in der Activity.
+\item Sind die Angaben im User-Objekt ausreichend (Name und Status dürfen nicht leer sein), wird der Benutzer zu HomeActivity weitergeleitet.
+\item Sind die Angaben im User-Objekt nicht ausreichend, wird der Benutzer zu UserActivity weitergeleitet, damit er sie dort ergänzen kann.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Initialisierung der Sitzung bereits hier
+\item Verhalten beim Scheitern der Server-Anfragen
+\item Zurück-Button (siehe MensaMeetActivity -> E\&V -> Deaktivierung des Android-Zurück-Buttons)
+\item Richtiger Umgang mit leeren Eingabefeldern\\
+\textit{Zuvor stürzte die App immer ab. Grund war, dass leere Eingabefelder nicht erkannt wurden, da sie immer standardmäßig einen Leerstring enthalten und nicht wie erwartet null. Der Leerstring wurde an Firebase übermittelt, wodurch es zu einer Exception und dem Absturz der App kam. Dies wurde behoben, indem auch der Leerstring erkannt wird.}
+\item Methode matchPattern zur Datenüberprüfung im ViewModel entfernt\\
+\textit{In der danach aufgerufenen Methode login findet auch eine Überprüfung statt.}
+\item Fehlermeldung von Firebase nun an Benutzer übermittelt
+
+\end{itemize}
+
+\subsection{UserActivity und UserViewModel}
+Auf UserActivity kann der Benutzer die von ihm veränderbaren Daten seines MensaMeet-Benutzerprofils bearbeiten. UserViewModel lädt und speichert die Daten beim Server. 
+
+\subsubsection{Sichtbare Elemente}
+
+\begin{itemize}
+\item Auswahlbereich für Benutzerbild
+\item Name (Textfeld)
+\item Motto (Textfeld)
+\item Geburtsdatum (Textfeld mit Auswahldialog)
+\item Geschlecht (Auswahlliste)
+\item Status (Auswahlliste)
+\item Fachrichtung (Auswahlliste)
+\item Verwerfen (Button), nicht immer angezeigt (siehe Verhalten)
+\item Home (Button) 
+\item Speichern (Button)
+
+\end{itemize}
+
+\subsubsection{Verhalten}
+
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist.
+\item Falls die Benutzerdaten nicht ausreichend sind (Name oder Status leer), wird der Verwerfen-Button nicht angezeigt. Der Benutzer kann die Änderungen zwar immer noch über den Home-Button verwerfen, soll aber dazu animiert werden, seine Daten zu vervollständigen und zu speichern.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel das User-Objekt des Benutzers jedes Mal neu vom Server geladen und in MensaMeetSession gespeichert. \\
+\textit{viewmodel.UserViewModelTest.reloadingUserFailed()}
+\item Die Activity bindet ein UserItem im DisplayMode BIG\_EDITABLE ein, in dem alle Elemente außer der Navigationsbuttons enthalten sind.
+\item Der Auswahlbereich für das Benutzerbild, ein UserPictureItem im DisplayMode BIG\_EDITABLE, zeigt das aktuelle Benutzerbild an. Falls noch keins ausgewählt wurde, wird das Default-Bild angezeigt. 
+\item Bei Klick auf den Auswahlbereich für das Benutzerbild öffnet sich eine Liste von Benutzerbildern. Wird eins angeklickt, wir dieses als neues Benutzerbild ausgewählt.
+\item Ist noch kein Geburtsdatum spezifiziert, wird ein Platzhaltertext angezeigt.
+\item Bei Klick auf das Feld des Geburtsdatums wird ein Datum-Auswahldialog geöffnet.
+\item Bei Klick auf Verwerfen gelangt der Benutzer auf HomeActivity, von wo er in diesem Fall gekommen sein muss. Es werden keine Daten gespeichert.
+\item  Bei Klick auf Home gelangt der Benutzer auf HomeActivity, es werden keine Daten gespeichert.
+\item Bei Klick auf Speichern wird der Speicherprozess im ViewModel gestartet. Es wird versucht, das User-Objekt auf dem Server upzudaten. \\
+\textit{viewmodel.UserViewModelTest.saveUserFailed(), viewmodel.UserViewModelTest.saveUserSuccess(), viewmodel.UserViewModelTest.saveUserIsNull()}
+\item Ist das Update des User-Objekts erfolgreich, wird auf HomeActivity weitergeleitet.
+\item Ist das Update des User-Objekts nicht erfolgreich, wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Unvollständigkeit der Benutzerdaten nun erlaubt \\
+\textit{Dass die Benutzerdaten ausreichend sind (Name und Status nicht leer), ist Voraussetzung, um in der App ab der Linienauswahl fortfahren zu können. Im Fall, das die Benutzerdaten nicht ausreichend sind, musste der Benutzer sie früher in UserActivity ausreichend ergänzen, um weiterfahren zu können, entsprechend gab es nur den Speichern-Button und es wurden die Daten überprüft. Nun wurde aber doch ein der Home-Button ergänzt und ausreichende Daten werden hier nicht mehr verlangt. Hierdurch soll der Benutzer die Freiheit bekommen, die Benutzerdaten zu einem späteren Zeitpunkt zu ergänzen. Von HomeActivity gelangt er nun mit nicht ausrechenden Daten auch nicht mehr weiter zu SelectLinesActivity, sondern wird wieder auf UserActivity umgeleitet. }
+\item Verhalten beim Scheitern der Server-Anfrage
+\end{itemize}
+
+\subsection{HomeActivity und HomeViewModel}
+HomeActivity ist die zentrale Seite des Benutzers im eingeloggten Zustand, von wo aus er zur Linienauswahl und der Bearbeitung seines Benutzerprofils gelangen und sich wieder abmelden, d. h. ausloggen kann. HomeViewModel überprüft unter anderem, ob Activity-Wechsel zulässig sind und führt den Logout durch.
+
+\subsubsection{Sichtbare Elemente}
+
+\begin{itemize}
+\item Essen gehen (Button)
+\item Dein Profil (Button)
+\item Abmelden (Button
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist
+\item Bei Klick auf Essen gehen wird vom ViewModel überprüft, ob die Benutzerdaten ausreichen. Falls nein wird auf UserActivity weitergeleitet. \\
+\textit{viewmodel.HomeViewModelTest.goEatToUserPage()}
+\item Ansonsten wird überprüft, ob der aktuelle Benutzer ein Grouptoken und damit eine Gruppe hat, in der er Mitglied ist. Falls ja, wird er auf GroupJoinedActivity weitergeleitet, falls nein auf SelectLinesActivity. \\
+\textit{viewmodel.HomeViewModelTest.goEatToUserPage(), viewmodel.HomeViewModelTest.goEatToSelectLinesPage(), viewmodel.HomeViewModelTest.goEatToJoinedGroupPage()}
+\item Bei Klick auf Dein Profil wird auf UserActivity weitergeleitet.
+\item Bei Klick auf Abmelden wird die Sitzung invalidiert und auf BeginActivity umgeleitet.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Überprüfung der Benutzerdaten bei Klick auf Essen gehen (siehe UserActivity)
+\item Invalidierung der Sitzung beim Abmelden
+\end{itemize}
+
+\subsection{SelectLinesActivity und SelectLinesViewModel}
+Auf SelectLinesActivity kann der Benutzer eine oder mehrere Mensalinien auswählen, an denen er essen möchte. SelectLinesViewModel sorgt für die lokale Zwischenspeicherung der Auswahl beim Verlassen der Activity und ihr Laden bei einem erneuten Besuch.
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Mensalinien mit Essen (Liste)
+\item Zurück (Button)
+\item Home (Button)
+\item Weiter (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits eine Linienauswahl gespeichert ist, die in die Mensalinien-Liste geladen wird.
+\item Die Activity bindet eine LineList ein, die wiederum LineItems im DisplayMode SMALL enthält.
+\item Beim Klicken auf eine Linie wird diese markiert und dabei dunkel hinterlegt, beim erneuten Klicken darauf wird die Markierung wieder entfernt.
+\item Es können mehrere Linien gleichzeitig markiert werden.
+\item Bei Klick auf Weiter wird überprüft, ob mindestens eine Linie ausgewählt wurde. Falls nicht, Fehlermeldung, der Benutzer verbleibt in der Activity. Ansonsten wird die Auswahl dem ViewModel übergeben, das sie in MensaMeetSession speichert. Anschließend wird SetTimeActivity aufgerufen.\\
+\textit{viewmodel.SelectLinesViewModelTest.noLinesSelected(),
+viewmodel.SelectLinesViewModelTest.linesSavedNext()}
+\item Bei Klick auf Home oder Zurück wird die Auswahl, auch wenn sie leer ist, in MensaMeetSession gespeichert und HomeActivity aufgerufen.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Funktionalität des Zurück-Buttons ergänzt
+\end{itemize}
+
+\subsection{SetTimeActivity und SetTimeViewModel}
+In SetTimeActivity kann der Benutzer die Zeit oder den Zeitraum auswählen, in der er sich zum Essen treffen möchte. SetTimeViewModel sorgt für die lokale Zwischenspeicherung der Angaben beim Verlassen der Activity und ihr erneutes Laden bei einer Rückkehr.
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Endzeit (Textfeld mit Auswahldialog)
+\item Startzeit (Textfeld mit Auswahldialog)
+\item Zurück (Button) 
+\item Home (Button) 
+\item Weiter (Button) 
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel überprüft, ob in MensaMeetSession bereits eine Zeitintervall-Auswahl gespeichert ist, die in die Mensalinien-Liste geladen wird.
+\item Wurde noch keine Start- oder Endzeit ausgewählt, wird jeweils 12:00 angezeigt.
+\item Bei Klick auf Start- oder Endzeit wird ein Zeit-Auswahldialog geöffnet.
+\item Wurde eine Start- oder Endzeit ausgewählt im Auswahldialog und dieser geschlossen, wird überprüft, ob die Endzeit nach der Startzeit liegt. Ist dies nicht der Fall, ist die Auswahl wirkungslos. 
+\item Bei Klick auf Weiter wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird SelectGroupActivity aufgerufen.\\
+\textit{viewmodel.SetTimeViewModelTest.saveTimeAndNextSuccess()}
+\item Bei Klick auf Zurück wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird SelectLinesActivity aufgerufen\\
+\textit{viewmodel.SetTimeViewModelTest.saveTimeAndBackSuccess()}
+\item Bei Klick auf Home wird das Zeitintervall dem ViewModel übergeben, das es in MensaMeetSession speichert. Anschließend wird HomeActivity aufgerufen
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\end{itemize}
+
+\subsection{SelectGroupActivity und SelectGroupViewModel}
+In SelectGroupActivity werden dem Benutzer die Gruppen angezeigt, die zu seiner Linien- und Zeitauswahl passen. Er kann einer Gruppe beitreten oder zu CreateGroupActivity wechseln, wo er selbst eine erstellen kann. SelectGroupViewModel ist für das Laden der Gruppen vom Server zuständig, jedoch nicht für den Gruppenbeitritt, der im GroupItemHandler der GroupItems realisiert wird.
+
+\subsubsection{Sichtbare Elemente}
+\begin{itemize}
+\item Passende Gruppen (Liste), enthält pro Eintrag:
+
+\begin{itemize}
+\item Name (Textanzeige
+\item Motto (Textanzeige)
+\item Zeit (Textanzeige)
+\item Linie (Textanzeige)
+\item Mitgliederzahl/Maximale Mitgliederzahl (Textanzeige)
+\item Beitreten (Button), falls Gruppe nicht voll
+\item Gruppe löschen (Button), falls aktueller Benutzer Administrator
+\item Mitglieder (Liste), enthält pro Eintrag:
+
+\begin{itemize}
+\item Benutzerbild
+\item Name (Textanzeige)
+\item Motto (Textanzeige)
+\item Benutzer löschen (Button), falls aktueller Benutzer Administrator und nicht dem Benutzer identisch
+\end{itemize}
+\end{itemize}
+
+\item Neue Gruppe Erstellen (FloatingActionButton)
+\item Zurück (Button)
+\item Home (Button)
+\end{itemize}
+
+\subsubsection{Verhalten}
+\begin{itemize}
+\item Die Activity ist nur zugreifbar, wenn der Benutzer eingeloggt ist und ausreichende Benutzerdaten angegeben sind.
+\item Bei (Wieder-)Eintritt in die Activity wird vom ViewModel jedes Mal überprüft, ob ausgewählte Linien und eine ausgewählte Zeit in MensaMeetSession ungleich null sind, falls ja, eine neue Anfrage nach den passenden Gruppen an den Server gesendet und die erhaltenen Gruppen gespeichert. \\
+\textit{viewmodel.SelectGroupViewModelTest.noTimeChosen(),
+viewmodel.SelectGroupViewModelTest.noLinesChosen(),
+viewmodel.SelectGroupViewModelTest.loadingGroupFailed()}
+\item Falls Linien oder Zeit gleich null sind, Fehlermeldung, Verbleib in Activity.
+\item Falls Serveranfrage nach den Gruppen fehlschlägt, Fehlermeldung, Verbleib in Activity.
+\item Die Activity bindet eine GroupList, die wiederum GroupItems im DisplayMode SMALL enthält. Jedes GroupItem enthält wiederum eine UserList mit UserItems im DisplayMode SMALL. Ein UserItem enthält zudem für die Darstellung des Benutzerbildes ein UserPictureItem im DisplayMode SMALL. Die Logik für die Items befindet sich jeweils in einem GroupItemHandler bzw. UserItemHandler.
+\item Zur Kommunikation mit dem Group- und UserItems beobachtet die Activity deren eventLiveData-Elemente (siehe MensaMeetActivity -> Elemente in MensaMeetActivity -> observeLiveData).
+\item Die Gruppen werden zunächst in einer Kurzdarstellung angezeigt. Klickt man auf sie, klappen sie auf und zeigen die Buttons sowie die Mitgliederliste.
+\item Es wird die Anzahl der Gruppenmitglieder ermittelt und neben der maximalen Mitgliederanzahl angezeigt.
+\item Bei Klick auf Beitreten in einer Gruppe sendet der GroupItemHandler eine Beitrittsanfrage mit dem aktuellen Benutzer an den Server.  
+\item Falls die Beitrittsanfrage erfolgreich ist, wird das User-Objekt des aktuellen Benutzers, das nun mit der Gruppenzugehörigkeit aktualisiert ist, beim Server angefordert. 
+\item Falls das User-Objekt aktualisiert werden konnte, wird die Activity über eventLiveData benachrichtigt, die dann zu GroupJoinedActivity wechselt.
+\item Falls die Beitrittsanfrage scheitert, Fehlermeldung, Benutzer verleibt in Activity.
+\item Falls das User-Objekt nicht aktualisiert werden konnte, wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung.
+\item Bei Klick auf Gruppe löschen sendet der GroupItemHandler eine Löschanfrage an den Server.
+\item Falls die Löschanfrage erfolgreich ist, wird überprüft, ob der aktuelle Benutzer in der Gruppe war. Falls ja, wird sein User-Objekt neu vom Server angefordert. Ansonsten wird die Activity neu gestartet, damit die Gruppen neu geladen werden.
+\item Falls das User-Objekt aktualisiert werden konnte, wird die Activity ebenfalls neu gestartet. Ansonsten wird die Sitzung beendet und auf BeginActivity weitergeleitet. Grundsatz: kein aktuelles User-Objekt, keine Sitzung.
+\item Bei Klick auf Benutzer löschen wird eine Löschanfrage an den Server gesendet. 
+\item Falls die Löschanfrage erfolgreich ist, wird die Activity neu gestartet. Ansonsten, Fehlermeldung.
+\item Bei Klick auf den Bereich eines Benutzers wird dieser detailliert angezeigt. Hierzu wird sein User-Objekt in MensaMeetSession als userToShow hinterlegt und ShowUserActivity aufgerufen.
+\item Bei Klick auf Neue Gruppe erstellen wird auf CreateGroupActivity weitergeleitet.
+\item Bei Klick auf Zurück wird auf SetTimeActivity weitergeleitet.
+\item Bei Klick auf Home wird auf HomeActivity weitergeleitet.
+
+\end{itemize}
+
+\subsubsection{Ergänzungen und Verbesserungen seit der letzten Phase}
+\begin{itemize}
+\item Zugriffskontrolle (siehe MensaMeetActivity -> E\&V -> checkAccess)
+\item Überprüfung, ob Linien und Zeit in MensaMeetSession ungleich null sind
+\item Verhalten beim Scheitern der Server-Anfragen
+\item Erneutes laden der Daten vom Server bei jedem Eintritt in die Activity\\
+\textit{Zuvor wurden die Daten nur geladen, wenn die Activity neu gestartet wurde, nun werden sie auch in der Methode relaodData, die bei jedem Wiedereintritt in die Activity aufgerufen wird, neu geladen. Dies ist sinnvoll, da sich Gruppendaten durch neue Mitglieder häufig ändern können.}
+\item Methode loadGroups im ViewModel gibt nun ein Boolean zurück \\
+\textit{Mit false wird der aufrufenden Methode in der Activity signalisiert, dass ein Fehler aufgetreten ist. Diese Methode kann sich dann sofort beenden, was nötig ist, dass erst dann in der Activity der Beobachter der veränderten eventLiveData mit Fehlerstatus und Fehlerstring benachrichtigt wird und den Fehler auswerten kann.} \\
+\end{itemize}
+
+\textbf{Hinweis: Administrator-Status} \\
+Um sich im Administrator-Status einzuloggen, kann das Konto admin@mensameet.de, Passwort adminadmin verwendet werden.  
+
+\subsection{CreateGroupActivity und CreateGroupViewActivity}
 
 
 
 
-\subsection{Testszenarien}
+
+
+\section{Testszenarien}
 
 Die nachfolgenden Tests laufen auf dem Client und sind zur Überprüfung der korrekten Zusammenarbeit von mehreren Komponenten auf Server und Client.
 
@@ -264,9 +616,7 @@ Die nachfolgenden Tests laufen auf dem Client und sind zur Überprüfung der kor
 \item Admin User: Gruppen suchen und eine gefundene Gruppe löschen.
 \item Admin User: Gruppen suchen und einen User in einer gefundenen Gruppe löschen.
 
-
 \end{itemize}
-
 
 \chapter{Hallway Usability Testing}
 
