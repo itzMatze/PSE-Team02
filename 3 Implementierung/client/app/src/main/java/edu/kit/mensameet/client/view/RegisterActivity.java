@@ -72,12 +72,14 @@ public class RegisterActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.registration_failed, it);
 
-        } else if (it.second == RegisterViewModel.State.INITIALIZATION_FAILED) {
+        } else if (it.second == RegisterViewModel.State.ACCOUNT_CREATED_BUT_INITIALIZATION_FAILED) {
 
-            showMessage(this, R.string.initialization_failed, it);
+            showMessage(this, R.string.account_created_but_initialization_failed, it);
 
             // Invalidate created session data.
             viewModel.invalidateSession();
+            finish();
+            gotoActivity(BeginActivity.class);
 
         } else if (it.second == RegisterViewModel.State.LOADING_NEW_USER_FAILED) {
 

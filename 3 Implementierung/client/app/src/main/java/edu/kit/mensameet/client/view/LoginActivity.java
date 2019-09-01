@@ -26,7 +26,7 @@ public class LoginActivity extends MensaMeetActivity {
         super.onCreate(savedInstanceState);
 
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
-        super.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
 
         checkAccess();
 
@@ -62,8 +62,14 @@ public class LoginActivity extends MensaMeetActivity {
 
             showMessage(this, R.string.login_succeeded, it);
 
-            finish();
-            gotoActivity(HomeActivity.class);
+            if (viewModel.currentUserDataIncomplete()) {
+                finish();
+                gotoActivity(UserActivity.class);
+            } else {
+                finish();
+                gotoActivity(HomeActivity.class);
+            }
+
 
         } else if (it.second == LoginViewModel.State.LOG_IN_FAILED) {
 

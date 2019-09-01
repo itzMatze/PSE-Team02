@@ -40,10 +40,8 @@ public class HomeViewModel extends MensaMeetViewModel {
         // Check if user data complete
         if (MensaMeetSession.getInstance().userDataIncomplete()) {
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_USER));
-        }
 
-
-        if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
+        } else if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
             // If no group is yet chosen
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_SELECT_LINES));
 
