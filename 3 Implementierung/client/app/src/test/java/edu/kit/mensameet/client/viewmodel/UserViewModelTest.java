@@ -1,5 +1,4 @@
 package edu.kit.mensameet.client.viewmodel;
-
 import android.util.Pair;
 
 import org.junit.Assert;
@@ -20,6 +19,7 @@ import edu.kit.mensameet.client.util.RequestUtil;
 import static org.mockito.ArgumentMatchers.any;
 import static org.powermock.api.mockito.PowerMockito.doNothing;
 import static org.powermock.api.mockito.PowerMockito.doThrow;
+import static org.powermock.api.mockito.PowerMockito.mock;
 import static org.powermock.api.mockito.PowerMockito.when;
 
 /**
@@ -28,99 +28,85 @@ import static org.powermock.api.mockito.PowerMockito.when;
 @RunWith(RobolectricTestRunner.class)
 @PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
 @PrepareForTest(RequestUtil.class)
-
-public class CreateGroupViewModelTest {
-
+public class UserViewModelTest {
     @Rule
     public PowerMockRule rule = new PowerMockRule();
 
-    CreateGroupViewModel vm = new CreateGroupViewModel();;
+    UserViewModel vm = new UserViewModel();;
 
     @Test
-    public void noCreatedGroup() {
-
-        // Given
-        MensaMeetSession.getInstance().setCreatedGroup(null);
-
-        // When
-        vm.saveGroupAndNext();
-
-        // Then
-        Assert.assertEquals(vm.getEventLiveData().getValue(),
-                new Pair<String, StateInterface>(null, CreateGroupViewModel.State.ERROR_SAVING_GROUP));
-
-    }
-
-    @Test
-    public void createGroupFails() throws RequestUtil.RequestException {
+    public void reloadingUserFailed() throws RequestUtil.RequestException {
 
         PowerMockito.mockStatic(RequestUtil.class);
         MensaMeetSession.getInstance().setCreatedGroup(new Group());
         MensaMeetSession.getInstance().setUser(new User());
-
         // Given
-        when(RequestUtil.createGroup(any(Group.class), any(String.class)))
-            .thenThrow(new RequestUtil.RequestException(0, "createGroup failed"));
+        when(RequestUtil.getUser(any(String.class), any(String.class)))
+                .thenThrow(new RequestUtil.RequestException(0, "reloading user failed"));
 
         // When
-        vm.saveGroupAndNext();
+        vm.loadUser();
 
         // Then
         Assert.assertEquals(vm.getEventLiveData().getValue(),
-                new Pair<String, StateInterface>("createGroup failed", CreateGroupViewModel.State.ERROR_SAVING_GROUP));
+                new Pair<String, StateInterface>("reloading user failed", UserViewModel.State.RELOADING_USER_FAILED));
 
     }
 
     @Test
-    public void addUserToGroupFails() throws Exception {
+    public void saveUserFailed() throws Exception {
 
         PowerMockito.mockStatic(RequestUtil.class);
         MensaMeetSession.getInstance().setCreatedGroup(new Group());
         MensaMeetSession.getInstance().setUser(new User());
-
+        vm.setUser(new User());
         // Given
-        when(RequestUtil.createGroup(any(Group.class), any(String.class)))
-                .thenReturn(new Group());
-
-        doThrow(new RequestUtil.RequestException(0, "addUserToGroup failed"))
-                .when(RequestUtil.class, "addUserToGroup", any(String.class), any(String.class));
+        doThrow(new RequestUtil.RequestException(0, "save user failed"))
+                .when(RequestUtil.class, "updateUser", any(User.class));
 
         // When
-        vm.saveGroupAndNext();
+        vm.saveUserAndNext();
 
         // Then
         Assert.assertEquals(vm.getEventLiveData().getValue(),
-                new Pair<String, StateInterface>("addUserToGroup failed", CreateGroupViewModel.State.ERROR_SAVING_GROUP));
+                new Pair<String, StateInterface>("save user failed", UserViewModel.State.ERROR_SAVING_USER));
 
     }
 
     @Test
-    public void getUserFails() throws Exception {
+    public void saveUserSuccess() throws Exception {
 
         PowerMockito.mockStatic(RequestUtil.class);
         MensaMeetSession.getInstance().setCreatedGroup(new Group());
         MensaMeetSession.getInstance().setUser(new User());
-
+        vm.setUser(new User());
         // Given
-        when(RequestUtil.createGroup(any(Group.class), any(String.class)))
-                .thenReturn(new Group());
-
         doNothing()
-                .when(RequestUtil.class, "addUserToGroup", any(String.class), any(String.class));
-
-        doThrow(new RequestUtil.RequestException(0, "getting user failed"))
-                .when(RequestUtil.class, "getUser", any(String.class), any(String.class));
-
+                .when(RequestUtil.class, "updateUser", any(User.class));
 
         // When
-        vm.saveGroupAndNext();
+        vm.saveUserAndNext();
 
         // Then
         Assert.assertEquals(vm.getEventLiveData().getValue(),
-                new Pair<String, StateInterface>("getting user failed", CreateGroupViewModel.State.RELOADING_USER_FAILED));
+                new Pair<String, StateInterface>(null, UserViewModel.State.USER_SAVED_NEXT));
 
     }
 
+    @Test
+    public void saveUserIsNull() throws Exception {
 
+        PowerMockito.mockStatic(RequestUtil.class);
+        MensaMeetSession.getInstance().setCreatedGroup(new Group());
+        MensaMeetSession.getInstance().setUser(new User());
+        vm.setUser(null);
+
+        // When
+        vm.saveUserAndNext();
+
+        // Then
+        Assert.assertEquals(vm.getEventLiveData().getValue(),
+                new Pair<String, StateInterface>(null, UserViewModel.State.ERROR_SAVING_USER));
+
+    }
 }
-

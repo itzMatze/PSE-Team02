@@ -1,14 +1,9 @@
 package edu.kit.mensameet.client.viewmodel;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.util.Pair;
 
 import edu.kit.mensameet.client.model.MensaMeetSession;
-import edu.kit.mensameet.client.model.User;
-import edu.kit.mensameet.client.view.GroupJoinedActivity;
-import edu.kit.mensameet.client.view.SelectLinesActivity;
-import edu.kit.mensameet.client.view.UserActivity;
 
 /**
  * The view model behind home activity.
@@ -40,8 +35,11 @@ public class HomeViewModel extends MensaMeetViewModel {
         // Check if user data complete
         if (MensaMeetSession.getInstance().userDataIncomplete()) {
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_USER));
+            return;
+        }
 
-        } else if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
+
+        if (MensaMeetSession.getInstance().getUser().getGroupToken() == null) {
             // If no group is yet chosen
             eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TO_SELECT_LINES));
 

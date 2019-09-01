@@ -107,4 +107,9 @@ public class GroupJoinedViewModel extends MensaMeetViewModel {
     public enum State implements StateInterface {
         GROUP_LEFT, ERROR_LOADING_GROUP, ERROR_LEAVING_GROUP, RELOADING_USER_FAILED, ERROR_LOADING_GROUP_SO_USER_UPDATED;
     }
+
+    //todo: only for tests
+    public void setGroup(Group group) {
+        this.group = group;
+    }
 }
