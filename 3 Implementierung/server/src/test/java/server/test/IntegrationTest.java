@@ -50,18 +50,9 @@ public class IntegrationTest {
 
 	@Autowired
 	private MembershipController membershipController;
-
-	
-	private MealLine line = MealLine.CAFETARIA;
-	private LocalTime meetingTime; //= LocalTime.of(12, 30);
-	private LocalTime startTime = LocalTime.of(12, 00);
-	private LocalTime endTime = LocalTime.of(13, 30);
-	private MealLine[] lines;
-	
-	
-	private User amadeus, beethoven, chopin; //= new Group("name", "motto", 2, line, meetingTime ); 
-	private Group groupX, groupY; // = new Group ("name2", "motto2", 4, line, meetingTime);	
-	private Preference mypref; 
+		
+	private User amadeus, beethoven, chopin; 
+	private Group groupX;	
 	
 	@Before 
 	public void setUp() {
@@ -69,8 +60,7 @@ public class IntegrationTest {
 		beethoven = new User("beethoven");
 		chopin = new User("chopin");
 		
-		groupX = new Group("groupX", "", 2, line, startTime);
-		groupY = new Group("groupY", "", 2, line, startTime);
+		groupX = new Group("groupX", "", 2,  MealLine.CAFETARIA, LocalTime.of(12, 00));
 	}
 	
 	@Test
@@ -128,7 +118,6 @@ public class IntegrationTest {
 		membershipController.addUserToGroup(amadeus, groupX);
 		
 		//Here we simulate a deletion of amadeus via an admin user.
-		System.out.println("now");
 		userController.deleteUser(amadeus.getToken());
 		
 		//Now Amadeus and groupX should be deleted.
