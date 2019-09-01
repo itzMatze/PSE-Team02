@@ -22,7 +22,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
  */
 public class SetTimeActivity extends MensaMeetActivity {
     private ActivitySetTimeBinding binding;
-    private SetTimeViewModel viewModel;
+    protected SetTimeViewModel viewModel;
 
     private TextView startTime;
     private TextView endTime;
@@ -34,6 +34,12 @@ public class SetTimeActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(SetTimeViewModel.class);
         super.viewModel = viewModel;
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -105,13 +111,16 @@ public class SetTimeActivity extends MensaMeetActivity {
 
         });
 
-        reloadData();
-
     }
 
-    protected void reloadData() {
+    @Override
+    protected void onResume() {
 
-        super.reloadData();
+        super.onResume();
+
+        if (!checkAccess()) {
+            return;
+        }
 
         MensaMeetTime savedTime = viewModel.getChosenTime();
 
@@ -129,6 +138,8 @@ public class SetTimeActivity extends MensaMeetActivity {
             gotoActivity(SelectGroupActivity.class);
         } else if (it.second == SetTimeViewModel.State.TIME_SAVED_BACK) {
             gotoActivity(SelectLinesActivity.class);
+        } else if (it.second == SetTimeViewModel.State.TIME_SAVED_HOME) {
+            gotoActivity(HomeActivity.class);
         }
     }
 
@@ -150,5 +161,10 @@ public class SetTimeActivity extends MensaMeetActivity {
     @Override
     public void onClickBack() {
         viewModel.saveTimeAndBack();
+    }
+
+    @Override
+    public void onClickHome() {
+        viewModel.saveTimeAndHome();
     }
 }

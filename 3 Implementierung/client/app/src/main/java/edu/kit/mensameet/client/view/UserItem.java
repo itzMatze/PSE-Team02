@@ -14,7 +14,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.core.content.res.ResourcesCompat;
+import androidx.annotation.VisibleForTesting;
 
 import java.util.Date;
 
@@ -41,6 +41,12 @@ public class UserItem extends MensaMeetItem<User> {
         super(context, displayMode, objectData);
 
         handler = new UserItemHandler(objectData);
+        super.initializeHandler(handler);
+    }
+
+    @VisibleForTesting
+    public void setHandler(UserItemHandler handler) {
+        this.handler = handler;
         super.initializeHandler(handler);
     }
 
@@ -222,7 +228,7 @@ public class UserItem extends MensaMeetItem<User> {
                     deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                     deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
                     deleteButton.setTextSize(18);
-                    deleteButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+                    deleteButton.setTypeface(standardFont);
                     deleteButton.setTypeface(deleteButton.getTypeface(), Typeface.BOLD);
                     deleteButton.setAllCaps(false);
 

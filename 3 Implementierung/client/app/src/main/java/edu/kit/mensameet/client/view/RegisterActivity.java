@@ -17,7 +17,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public class RegisterActivity extends MensaMeetActivity {
 
     private ActivityRegisterBinding binding;
-    private RegisterViewModel viewModel;
+    protected RegisterViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +26,12 @@ public class RegisterActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(RegisterViewModel.class);
         super.viewModel = viewModel;
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -46,7 +52,6 @@ public class RegisterActivity extends MensaMeetActivity {
         if (buttonHome != null) {
             buttonHome.setVisibility(View.GONE);
         }
-
     }
 
     @Override

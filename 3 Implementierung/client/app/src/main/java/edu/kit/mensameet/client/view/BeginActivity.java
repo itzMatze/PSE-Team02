@@ -16,7 +16,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public class BeginActivity extends MensaMeetActivity {
 
     private ActivityBeginBinding binding;
-    private BeginViewModel viewModel;
+    protected BeginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +25,12 @@ public class BeginActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(BeginViewModel.class);
         super.initializeViewModel(viewModel);
+    }
 
-        if (!checkAccess()) {
-            return;
-        };
+    @Override
+    protected void onStart() {
+
+        super.onStart();
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_begin);
         binding.setVm(viewModel);
@@ -43,7 +45,6 @@ public class BeginActivity extends MensaMeetActivity {
             gotoHome();
         }
         */
-
     }
 
     /** Hook method for livedata processing

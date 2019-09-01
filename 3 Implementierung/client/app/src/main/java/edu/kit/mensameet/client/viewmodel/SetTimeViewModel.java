@@ -54,7 +54,14 @@ public class SetTimeViewModel extends MensaMeetViewModel {
         eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TIME_SAVED_BACK));
     }
 
+    public void saveTimeAndHome() {
+
+        saveTime();
+
+        eventLiveData.setValue(new Pair<String, StateInterface>(null, State.TIME_SAVED_HOME));
+    }
+
     public enum State implements StateInterface {
-        TIME_SAVED_NEXT, TIME_SAVED_BACK
+        TIME_SAVED_NEXT, TIME_SAVED_BACK, TIME_SAVED_HOME
     }
 }

@@ -21,7 +21,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
  */
 public class SelectLinesActivity extends MensaMeetActivity {
 
-    private SelectLinesViewModel viewModel;
+    protected SelectLinesViewModel viewModel;
     private ActivitySelectLinesBinding binding;
     /**
      * List of lines.
@@ -35,6 +35,12 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(SelectLinesViewModel.class);
         super.initializeViewModel(viewModel);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -62,15 +68,16 @@ public class SelectLinesActivity extends MensaMeetActivity {
                 true);
 
         container.addView(lineList.getView());
-
-        reloadData();
-
     }
 
     @Override
-    protected void reloadData() {
+    protected void onResume() {
 
-        super.reloadData();
+        super.onResume();
+
+        if (!checkAccess()) {
+            return;
+        }
 
         List<Line> chosenLines = viewModel.getChosenLines();
 

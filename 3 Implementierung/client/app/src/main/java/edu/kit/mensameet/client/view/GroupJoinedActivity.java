@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -20,13 +21,14 @@ import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.GroupJoinedViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 import edu.kit.mensameet.client.viewmodel.UserItemHandler;
+import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
 /**
  * Activity shown when the user has joined a group. Then it replaces SelectLinesActivity until the meeting is over or when the user leaves the group.
  */
 public class GroupJoinedActivity extends MensaMeetActivity {
 
-    private GroupJoinedViewModel viewModel;
+    protected GroupJoinedViewModel viewModel;
     private ActivityGroupJoinedBinding binding;
     private GroupItem groupItem;
     private LinearLayout container;
@@ -38,6 +40,18 @@ public class GroupJoinedActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(GroupJoinedViewModel.class);
         super.initializeViewModel(viewModel);
+
+    }
+
+    @VisibleForTesting
+    protected void setViewModel(GroupJoinedViewModel viewModel) {
+        this.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -165,9 +179,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
 
             }
 
-
         }
-
     }
 
     @Override

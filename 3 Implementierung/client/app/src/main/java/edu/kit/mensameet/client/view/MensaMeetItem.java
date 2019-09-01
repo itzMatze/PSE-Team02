@@ -1,6 +1,7 @@
 package edu.kit.mensameet.client.view;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,6 +42,8 @@ public abstract class MensaMeetItem<T> {
 
     protected View view;
 
+    protected Typeface standardFont = null;
+
     /**
      * Constructor.
      *
@@ -51,6 +54,12 @@ public abstract class MensaMeetItem<T> {
     public MensaMeetItem(Context context, DisplayMode displayMode, T objectData) {
         this.context = context;
         this.displayMode = displayMode;
+
+        try {
+            standardFont = ResourcesCompat.getFont(context, R.font.enriqueta);
+        } catch (Exception e) {
+
+        }
 
     }
 
@@ -96,7 +105,7 @@ public abstract class MensaMeetItem<T> {
             editText.setHint(id);
             editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
-            editText.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+            editText.setTypeface(standardFont);
             //MensaMeetUtil.applyStyle(editText, R.style.normal_text);
             return editText;
         } else {
@@ -105,7 +114,7 @@ public abstract class MensaMeetItem<T> {
             textView.setTextSize(textSize);
             textView.setLayoutParams(layoutParams);
             MensaMeetUtil.applyStyle(textView, R.style.normal_text);
-            textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+            textView.setTypeface(standardFont);
 
             return textView;
         }
@@ -141,7 +150,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         textView.setLayoutParams(WIDTH_MATCH_PARENT);
         textView.setText(defaultTextId);
-        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+        textView.setTypeface(standardFont);
 
         linearLayout.addView(textView);
 
@@ -164,7 +173,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         //textView.setLayoutParams(layoutParams);
         MensaMeetUtil.applyStyle(textView, R.style.label_text);
-        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+        textView.setTypeface(standardFont);
 
         return textView;
     }
@@ -184,7 +193,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         //textView.setLayoutParams(layoutParams);
         MensaMeetUtil.applyStyle(textView, R.style.label_text);
-        textView.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+        textView.setTypeface(standardFont);
 
         return textView;
     }

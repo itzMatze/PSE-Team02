@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -21,7 +22,7 @@ import edu.kit.mensameet.client.viewmodel.UserViewModel;
  */
 public class UserActivity extends MensaMeetActivity {
 
-    private UserViewModel viewModel;
+    protected UserViewModel viewModel;
     private ActivityUserBinding binding;
     /**
      * The item class containing the view of a single user profile.
@@ -39,6 +40,11 @@ public class UserActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(UserViewModel.class);
         super.viewModel = viewModel;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -72,21 +78,22 @@ public class UserActivity extends MensaMeetActivity {
 
         Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_LONG).show();
 
-        /* If no or incomplete user data is given, the user should not be able to go back or away, hence only the
-            next button with caption 'save' is provided.
-         */
+    }
 
-        reloadData();
-
+    @VisibleForTesting
+    protected void setViewModel(UserViewModel viewModel) {
+        this.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
     }
 
     /**
+     *
      * Reloads the user data.
      */
     @Override
-    protected void reloadData() {
+    protected void onResume() {
 
-        super.reloadData();
+        super.onResume();
 
         User user = viewModel.getUser();
 
@@ -151,7 +158,7 @@ public class UserActivity extends MensaMeetActivity {
             // Logout.
             viewModel.invalidateSession();
             finish();
-            gotoActivity(HomeActivity.class);
+            gotoActivity(BeginActivity.class);
         }
     }
 

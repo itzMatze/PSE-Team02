@@ -8,6 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -19,13 +20,14 @@ import edu.kit.mensameet.client.viewmodel.GroupItemHandler;
 import edu.kit.mensameet.client.viewmodel.SelectGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
 import edu.kit.mensameet.client.viewmodel.UserItemHandler;
+import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
 /**
  * Activity showing the groups fitting to the lines and time of the user and offering the possibility to join a group.
  */
 public class SelectGroupActivity extends MensaMeetActivity {
 
-    private SelectGroupViewModel viewModel;
+    protected SelectGroupViewModel viewModel;
     private ActivitySelectGroupBinding binding;
 
     private GroupList groupList;
@@ -38,6 +40,18 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.initializeViewModel(viewModel);
+
+    }
+
+    @VisibleForTesting
+    protected void setViewModel(SelectGroupViewModel viewModel) {
+        this.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -256,9 +270,14 @@ public class SelectGroupActivity extends MensaMeetActivity {
         }
 
         Toast.makeText(this, R.string.create_button_description, Toast.LENGTH_LONG).show();
+
     }
 
-/**
+    protected void observeGroupAndUserLiveData() {
+
+    }
+
+    /**
  * Communcation with the view model
  */
     @Override

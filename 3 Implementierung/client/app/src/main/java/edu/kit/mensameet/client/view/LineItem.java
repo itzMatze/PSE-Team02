@@ -74,12 +74,25 @@ public class LineItem extends MensaMeetItem<Line> {
 
         fillTextField(R.string.field_name, context.getResources().getString(MealLines.valueOf(objectData.getMealLine()).getId()));
 
-        String mealsText = "";
-        for (int i = 0; i < objectData.getMeals().length; i++) {
-            mealsText += objectData.getMeals()[i] + "\n\n";
+
+
+        String[] meals = objectData.getMeals();
+        if (meals != null) {
+
+            String mealsText = "";
+
+            for (int i = 0; i < meals.length; i++) {
+
+                mealsText += meals[i];
+
+                if (i < meals.length - 1) {
+                    mealsText += "\n\n";
+                }
+            }
+
+            fillTextField(R.string.field_meals, mealsText);
         }
 
-        fillTextField(R.string.field_meals, mealsText);
 
 
     }

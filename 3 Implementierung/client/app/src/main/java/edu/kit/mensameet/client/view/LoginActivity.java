@@ -17,7 +17,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public class LoginActivity extends MensaMeetActivity {
 
     private ActivityLoginBinding binding;
-    private LoginViewModel viewModel;
+    protected LoginViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,9 +27,15 @@ public class LoginActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         super.initializeViewModel(viewModel);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         if (!checkAccess()) {
             return;
-        };
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setVm(viewModel);
@@ -46,7 +52,6 @@ public class LoginActivity extends MensaMeetActivity {
         if (buttonHome != null) {
             buttonHome.setVisibility(View.GONE);
         }
-
     }
 
     @Override

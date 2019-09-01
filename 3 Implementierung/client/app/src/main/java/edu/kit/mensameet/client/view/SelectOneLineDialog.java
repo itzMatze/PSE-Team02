@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
-import androidx.core.content.res.ResourcesCompat;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

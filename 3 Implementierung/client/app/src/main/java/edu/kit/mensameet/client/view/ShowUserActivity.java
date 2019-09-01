@@ -17,7 +17,7 @@ import edu.kit.mensameet.client.viewmodel.ShowUserViewModel;
  * */
 public class ShowUserActivity extends MensaMeetActivity {
 
-    private ShowUserViewModel viewModel;
+    protected ShowUserViewModel viewModel;
     private ActivityShowUserBinding binding;
     private UserItem userItem;
 
@@ -28,6 +28,12 @@ public class ShowUserActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(ShowUserViewModel.class);
         initializeViewModel(viewModel);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         if (!checkAccess()) {
             return;
@@ -55,11 +61,6 @@ public class ShowUserActivity extends MensaMeetActivity {
 
         container.addView(userItem.getView());
 
-    }
-
-    @Override
-    protected void reloadData() {
-        super.reloadData();
         userItem.fillObjectData();
     }
 

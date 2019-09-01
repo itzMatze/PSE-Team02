@@ -15,7 +15,7 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
  */
 public class HomeActivity extends MensaMeetActivity {
 
-    private HomeViewModel viewModel;
+    protected HomeViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +25,15 @@ public class HomeActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(HomeViewModel.class);
         super.initializeViewModel(viewModel);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         if (!checkAccess()) {
             return;
-        };
+        }
 
         setContentView(R.layout.activity_home);
 
@@ -35,6 +41,7 @@ public class HomeActivity extends MensaMeetActivity {
         initializeButtons();
 
         //SharedPreferences sharedPrefs = getSharedPreferences("MensaMeetApp", Context.MODE_PRIVATE);
+
     }
 
     /**

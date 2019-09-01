@@ -80,7 +80,9 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
     }
 
     protected void initializeViewModel(MensaMeetViewModel viewModel) {
+
         this.viewModel = viewModel;
+
     }
 
     protected void observeLiveData() {
@@ -130,22 +132,6 @@ public abstract class MensaMeetActivity extends AppCompatActivity {
      * Click method for back button.
      */
     public void onClickBack() {};
-
-    // Hook method for Data reload.
-    protected void reloadData() {
-        checkAccess();
-    };
-
-    // Called when app is resumed.
-    @Override
-    protected void onResume() {
-
-        // Data reload needed.
-        reloadData();
-
-        super.onResume();
-
-    }
 
     // Method for redirecting home.
     protected void gotoHome() {

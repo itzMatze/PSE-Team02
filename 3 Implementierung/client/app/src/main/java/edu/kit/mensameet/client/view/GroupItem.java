@@ -14,7 +14,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
+
+import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.List;
@@ -33,6 +36,9 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
  * View representation of a single group, either as full-page or list element version.
  */
 public class GroupItem extends MensaMeetItem<Group> {
+
+    private int MAX_MEMBERS_MIN = 2;
+    private int MAX_MEMBERS_MAX = 20; // minimum: 2
 
     private UserList userList;
     private GroupItemHandler handler;
@@ -55,6 +61,12 @@ public class GroupItem extends MensaMeetItem<Group> {
             userList = new UserList(context, objectData.getUsers(), MensaMeetList.DisplayMode.NO_SELECT, false);
         }
 
+    }
+
+    @VisibleForTesting
+    public void setHandler(GroupItemHandler handler) {
+        this.handler = handler;
+        super.initializeHandler(handler);
     }
 
     /**
@@ -202,6 +214,15 @@ public class GroupItem extends MensaMeetItem<Group> {
 
             view.addView(createTextField(R.string.field_line, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
 
+            if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
+                TextView meeting = new TextView(context);
+                MensaMeetUtil.applyStyle(meeting, R.style.normal_text);
+                meeting.setText(R.string.meeting_point);
+                meeting.setTypeface(standardFont);
+                meeting.setTextSize(12);
+                view.addView(meeting);
+            }
+
         }
 
         // Field: Maximum member number
@@ -219,11 +240,10 @@ public class GroupItem extends MensaMeetItem<Group> {
             MensaMeetUtil.applyStyle(dropdown, R.style.dropdown_labelled);
 
             dropdown.setId((int)R.string.field_max_members);
-            int maxMemberMax = context.getResources().getInteger(R.integer.max_member_max);
 
-            String[] items = new String[maxMemberMax];
-            for (int i = 0; i < maxMemberMax; i++) {
-                items[i] = Integer.toString(i + 1);
+            String[] items = new String[MAX_MEMBERS_MAX - 1];
+            for (int i = 0; i < MAX_MEMBERS_MAX - 1 ; i++) {
+                items[i] = Integer.toString(i + 2);
             }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_dropdown_item, items);
@@ -247,7 +267,7 @@ public class GroupItem extends MensaMeetItem<Group> {
             joinButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             joinButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
             joinButton.setTextSize(18);
-            joinButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+            joinButton.setTypeface(standardFont);
             joinButton.setTypeface(joinButton.getTypeface(), Typeface.BOLD);
             joinButton.setAllCaps(false);
 
@@ -272,7 +292,7 @@ public class GroupItem extends MensaMeetItem<Group> {
                 deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
                 deleteButton.setTextSize(18);
-                deleteButton.setTypeface(ResourcesCompat.getFont(context, R.font.enriqueta));
+                deleteButton.setTypeface(standardFont);
                 deleteButton.setTypeface(deleteButton.getTypeface(), Typeface.BOLD);
                 deleteButton.setAllCaps(false);
 
@@ -343,14 +363,21 @@ public class GroupItem extends MensaMeetItem<Group> {
         }
 
         String line = objectData.getLine();
-        if (line != null && MealLines.valueOf(line) != null) {
-            fillTextField(R.string.field_line, context.getResources().getString(MealLines.valueOf(line).getId()));
+        MealLines mealLine = null;
+        try {
+            mealLine = MealLines.valueOf(line);
+        } catch (Exception e) {
+            // not corresponding mealLine
+        }
+
+        if (line != null && mealLine != null) {
+            fillTextField(R.string.field_line, context.getResources().getString(mealLine.getId()));
             setRepresentedValue(R.string.field_line, line);
         }
 
         View maxMembersField = view.findViewById((int)R.string.field_max_members);
         if (maxMembersField != null && maxMembersField instanceof Spinner) {
-            int spinnerIndex = objectData.getMaxMembers() - 1; // value a -> index a-1
+            int spinnerIndex = objectData.getMaxMembers() - 2; // value a -> index a-2
             ((Spinner)maxMembersField).setSelection(spinnerIndex);
         }
 
@@ -394,7 +421,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         String maxMembers = extractSpinnerOrTextField(R.string.field_max_members);
 
         if (maxMembers == null) {
-            objectData.setMaxMembers(0);
+            objectData.setMaxMembers(MAX_MEMBERS_MIN);
         } else {
             objectData.setMaxMembers(Integer.parseInt(maxMembers));
         }

@@ -5,6 +5,7 @@ import android.util.Pair;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.ViewModelProviders;
 
@@ -17,12 +18,14 @@ import edu.kit.mensameet.client.model.MensaMeetTime;
 import edu.kit.mensameet.client.view.databinding.ActivityCreateGroupBinding;
 import edu.kit.mensameet.client.viewmodel.CreateGroupViewModel;
 import edu.kit.mensameet.client.viewmodel.StateInterface;
+import edu.kit.mensameet.client.viewmodel.UserViewModel;
 
 /**
  * Activity with the form to create a new group.
  */
 public class CreateGroupActivity extends MensaMeetActivity {
-    private CreateGroupViewModel viewModel;
+
+    protected CreateGroupViewModel viewModel;
     private ActivityCreateGroupBinding binding;
     /*
     Group item containing the form.
@@ -37,9 +40,15 @@ public class CreateGroupActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(CreateGroupViewModel.class);
         super.initializeViewModel(viewModel);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
         if (!checkAccess()) {
             return;
-        };
+        }
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_create_group);
         binding.setVm(viewModel);
@@ -83,16 +92,21 @@ public class CreateGroupActivity extends MensaMeetActivity {
         container.addView(groupItem.getView());
 
         Toast.makeText(this, R.string.delete_created_group_by_leaving, Toast.LENGTH_LONG).show();
+
     }
 
     /**
      * Hook method implementation to reload data.
      */
     @Override
-    protected void reloadData() {
+    protected void onResume() {
 
-        super.reloadData();
-        
+        super.onResume();
+
+        if (!checkAccess()) {
+            return;
+        }
+
         Group createdGroup = viewModel.getCreatedGroup();
 
         if (createdGroup != null) {
@@ -141,6 +155,12 @@ public class CreateGroupActivity extends MensaMeetActivity {
         }
     }
 
+    @VisibleForTesting
+    protected void setViewModel(CreateGroupViewModel viewModel) {
+        this.viewModel = viewModel;
+        super.initializeViewModel(viewModel);
+    }
+
     @Override
     protected Boolean checkAccess() {
         // Illegal state to show activity, go back.
@@ -149,6 +169,19 @@ public class CreateGroupActivity extends MensaMeetActivity {
             return false;
         }
         return true;
+    }
+
+    /**
+     * At home, the data is saved locally.
+     */
+    @Override
+    public void onClickHome() {
+        groupItem.saveEditedObjectData();
+        viewModel.setCreatedGroup(groupItem.getObjectData());
+
+        Toast.makeText(this, R.string.group_data_locally_saved, Toast.LENGTH_LONG).show();
+        gotoActivity(HomeActivity.class);
+
     }
 
     /**

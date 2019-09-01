@@ -2,10 +2,8 @@ package edu.kit.mensameet.client.view;
 
 import android.content.Intent;
 import android.os.Build;
+import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,11 +12,11 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.android.controller.ActivityController;
 import org.robolectric.annotation.Config;
 import org.robolectric.shadows.ShadowIntent;
-import org.robolectric.shadows.ShadowToast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.kit.mensameet.client.model.Group;
 import edu.kit.mensameet.client.model.Line;
 import edu.kit.mensameet.client.model.MensaData;
 import edu.kit.mensameet.client.model.MensaMeetSession;
@@ -32,8 +30,7 @@ import static org.robolectric.Shadows.shadowOf;
 
 @RunWith(RobolectricTestRunner.class)
 @Config(sdk = Build.VERSION_CODES.O_MR1)
-public class SelectLinesActivityTest {
-
+public class CreateGroupActivityTest {
 
     private User completeUser;
 
@@ -59,15 +56,14 @@ public class SelectLinesActivityTest {
         mensaData.setLines(mensaLines.toArray(new Line[0]));
 
         MensaMeetSession.getInstance().setMensaData(mensaData);
-
     }
 
     @Test
     public void start_userIncomplete_ActivityFinishes() {
 
-        SelectLinesActivity activity;
-        ActivityController<SelectLinesActivity> activityController;
-        activityController = Robolectric.buildActivity(SelectLinesActivity.class);
+        CreateGroupActivity activity;
+        ActivityController<CreateGroupActivity> activityController;
+        activityController = Robolectric.buildActivity(CreateGroupActivity.class);
         activity = activityController.get();
 
         MensaMeetSession.getInstance().setUser(new User());
@@ -82,125 +78,87 @@ public class SelectLinesActivityTest {
     }
 
     @Test
-    public void start_chosenLinesExist_selectInList() {
+    public void start_createdGroupExists_load() {
 
-        SelectLinesActivity activity;
-        ActivityController<SelectLinesActivity> activityController;
-        activityController = Robolectric.buildActivity(SelectLinesActivity.class);
+        CreateGroupActivity activity;
+        ActivityController<CreateGroupActivity> activityController;
+        activityController = Robolectric.buildActivity(CreateGroupActivity.class);
         activity = activityController.get();
 
         MensaMeetSession.getInstance().setUser(completeUser);
 
-        // Create selected lines
-        Line linie1 = new Line();
-        linie1.setMealLine("LINE_ONE");
-        List<Line> chosenLines = new ArrayList<>();
-        chosenLines.add(linie1);
-
-        MensaMeetSession.getInstance().setChosenLines(chosenLines);
-
-        activityController.create();
-        activityController.start();
-        activityController.resume();
-
-        RecyclerView recyclerView = activity.findViewById((int)R.string.list_recyclerview);
-
-        MensaMeetListAdapter<Line> adapter = (MensaMeetListAdapter)recyclerView.getAdapter();
-        // Get selected item in list
-        List<Line> selectedList = adapter.getSelectedObjects();
-
-        assertEquals(linie1, selectedList.get(0));
-
-        activityController.destroy();
-
-    }
-
-    @Test
-    public void noLineSelected_errorMessage() {
-
-        SelectLinesActivity activity;
-        ActivityController<SelectLinesActivity> activityController;
-        activityController = Robolectric.buildActivity(SelectLinesActivity.class);
-        activity = activityController.get();
-
-        MensaMeetSession.getInstance().setUser(completeUser);
+        // Create group template
+        Group template = new Group();
+        template.setName("Template");
+        MensaMeetSession.getInstance().setCreatedGroup(template);
 
         activityController.create();
         activityController.start();
         activityController.resume();
         activityController.visible();
 
-        // No line selected.
+        TextView groupName = activity.findViewById((int)R.string.field_name);
 
-        // Get list.
-        RecyclerView recyclerView = activity.findViewById((int)R.string.list_recyclerview);
-
-        recyclerView.getChildAt(0).performClick();
-
-        activity.findViewById(R.id.navigation_next).performClick();
-
-        assertEquals(activity.getResources().getString(R.string.selectALine),
-                ShadowToast.getTextOfLatestToast());
+        assertEquals("Template", groupName.getText().toString());
 
         activityController.destroy();
-
     }
 
     @Test
-    public void linesSelected_saveAndStartSetTimeActivity() {
+    public void clickHome_saveAndStartHomeActivity() {
 
-        SelectLinesActivity activity;
-        ActivityController<SelectLinesActivity> activityController;
-        activityController = Robolectric.buildActivity(SelectLinesActivity.class);
+        CreateGroupActivity activity;
+        ActivityController<CreateGroupActivity> activityController;
+        activityController = Robolectric.buildActivity(CreateGroupActivity.class);
         activity = activityController.get();
 
         MensaMeetSession.getInstance().setUser(completeUser);
-        MensaMeetSession.getInstance().setChosenLines(null);
+        MensaMeetSession.getInstance().setCreatedGroup(null);
 
         activityController.create();
         activityController.start();
         activityController.resume();
         activityController.visible();
 
-        // Get list.
-        RecyclerView recyclerView = activity.findViewById((int)R.string.list_recyclerview);
-
-        recyclerView.getChildAt(0).performClick();
-
-        activity.findViewById(R.id.navigation_next).performClick();
+        activity.findViewById(R.id.navigation_home).performClick();
 
         // Saved.
-        assertNotNull(MensaMeetSession.getInstance().getChosenLines());
+        assertNotNull(MensaMeetSession.getInstance().getCreatedGroup());
 
         // Redirect to SetTimeActivity
         Intent startedIntent = shadowOf(activity).getNextStartedActivity();
         ShadowIntent shadowIntent = shadowOf(startedIntent);
-        assertEquals(SetTimeActivity.class, shadowIntent.getIntentClass());
+        assertEquals(HomeActivity.class, shadowIntent.getIntentClass());
 
         activityController.destroy();
     }
 
-    @After
-    public void cleanUp() {
-
-    }
-}
-
-
-/*
-
-@RunWith(RobolectricTestRunner.class)
-@PowerMockIgnore({ "org.mockito.*", "org.robolectric.*", "android.*" })
-@PrepareForTest(RequestUtil.class)
-public class SelectLinesActivityTest {
-
     @Test
-    public void accessList() {
+    public void clickBack_saveAndStartSelectGroupActivity() {
 
-        SelectLinesActivity activity = Robolectric.setupActivity(SelectLinesActivity.class);
-        activity.findViewById((int)R.string.list_recyclerview).performClick();
+        CreateGroupActivity activity;
+        ActivityController<CreateGroupActivity> activityController;
+        activityController = Robolectric.buildActivity(CreateGroupActivity.class);
+        activity = activityController.get();
 
+        MensaMeetSession.getInstance().setUser(completeUser);
+        MensaMeetSession.getInstance().setCreatedGroup(null);
+
+        activityController.create();
+        activityController.start();
+        activityController.resume();
+        activityController.visible();
+
+        activity.findViewById(R.id.navigation_back).performClick();
+
+        // Saved.
+        assertNotNull(MensaMeetSession.getInstance().getCreatedGroup());
+
+        // Redirect to SetTimeActivity
+        Intent startedIntent = shadowOf(activity).getNextStartedActivity();
+        ShadowIntent shadowIntent = shadowOf(startedIntent);
+        assertEquals(SelectGroupActivity.class, shadowIntent.getIntentClass());
+
+        activityController.destroy();
     }
-
 }
-*/

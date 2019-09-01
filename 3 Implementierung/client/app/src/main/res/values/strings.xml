@@ -188,4 +188,5 @@
     <string name="subject_sports">Sport</string>
     <string name="subject_techno_mathematics">Technomathematik</string>
     <string name="subject_water_science_and_engineering">Water Science and Engineering</string>
+    <string name="meeting_point">Treffpunkt ist immer am Ende der Schlange.</string>
 </resources>
