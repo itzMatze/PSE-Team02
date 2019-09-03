@@ -1,0 +1,16 @@
+Qualitätssicherung Präsentation
+
+1. Code Coverage
+
+	-
+
+2.Bugs die wir gefunden haben
+
+	-Scheduler
+	-Group Token bei user wird nicht gelöscht wenn seine Gruppe gelöscht wird.
+
+3. Hallway Tests
+
+	-
+
+4. wie würden wir weitermqchen
