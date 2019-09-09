@@ -13,8 +13,8 @@ import edu.kit.mensameet.client.model.User;
  */
 public class UserList extends MensaMeetList<User> {
 
-    public UserList(Context context, List<User> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
-        super(context, data, displayMode, false);
+    public UserList(Context context, List<User> data, MensaMeetList.DisplayMode displayMode, Boolean dividers, Boolean scrolling) {
+        super(context, data, displayMode, dividers, scrolling);
     }
 
     @Override

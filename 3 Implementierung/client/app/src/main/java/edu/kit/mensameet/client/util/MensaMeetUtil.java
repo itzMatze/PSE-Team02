@@ -68,7 +68,11 @@ public class MensaMeetUtil {
             if (item != null &&
                     item instanceof SpinnerItem) {
 
-                if (((SpinnerItem)item).getValue().equals(value)) {
+                if (((SpinnerItem)item).getValue() == null) {
+                    if (value == null) {
+                        return i;
+                    }
+                } else if (((SpinnerItem)item).getValue().equals(value)) {
                     return i;
                 }
 

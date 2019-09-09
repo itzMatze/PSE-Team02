@@ -76,8 +76,6 @@ public class UserActivity extends MensaMeetActivity {
         // The user item is added to the container.
         container.addView(userItem.getView());
 
-        Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_LONG).show();
-
     }
 
     @VisibleForTesting
@@ -113,6 +111,12 @@ public class UserActivity extends MensaMeetActivity {
 
         if (userDataIncomplete) {
 
+            Toast.makeText(this,
+                    getResources().getString(R.string.name_and_status_required) + ".\n"
+                    + getResources().getString(R.string.change_picture_by_click),
+                    Toast.LENGTH_LONG)
+                    .show();
+
             // Hide other buttons.
             if (buttonBack != null) {
                 buttonBack.setVisibility(View.GONE);
@@ -130,7 +134,11 @@ public class UserActivity extends MensaMeetActivity {
                 buttonBack.setText(R.string.discard);
             }
 
+            Toast.makeText(this, R.string.change_picture_by_click, Toast.LENGTH_LONG).show();
+
         }
+
+
 
     }
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 import androidx.lifecycle.Observer;
 
 import java.util.HashMap;
@@ -31,12 +32,16 @@ import edu.kit.mensameet.client.viewmodel.StateInterface;
 public abstract class MensaMeetItem<T> {
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    protected static final LinearLayout.LayoutParams WIDTH_WRAP_CONTENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    protected static final LinearLayout.LayoutParams WIDTH_HEIGHT_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    protected static final LinearLayout.LayoutParams BUTTON_LAYOUT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);;
 
     protected Context context;
     protected DisplayMode displayMode;
     protected MensaMeetItemHandler<T> handler;
 
     protected Map<Integer, String> representedValues = new HashMap<>();
+    protected Map<Integer, String> defaultValues = new HashMap<>();
 
     protected ViewGroup.LayoutParams layoutParams = WIDTH_MATCH_PARENT;
 
@@ -54,6 +59,11 @@ public abstract class MensaMeetItem<T> {
     public MensaMeetItem(Context context, DisplayMode displayMode, T objectData) {
         this.context = context;
         this.displayMode = displayMode;
+
+        BUTTON_LAYOUT.setMargins(context.getResources().getInteger(R.integer.button_standard_margin_horizontal_px),
+                context.getResources().getInteger(R.integer.button_standard_margin_vertical_px),
+                context.getResources().getInteger(R.integer.button_standard_margin_horizontal_px),
+                context.getResources().getInteger(R.integer.button_standard_margin_vertical_px));
 
         try {
             standardFont = ResourcesCompat.getFont(context, R.font.enriqueta);
@@ -99,10 +109,24 @@ public abstract class MensaMeetItem<T> {
      */
 
     protected View createTextField(@StringRes int id, ViewGroup.LayoutParams layoutParams, int textSize) {
+       return createTextField(id, context.getResources().getString(id), layoutParams, textSize);
+    }
+
+    /**
+     * Creates a text field, which can be either an EditText or a TextView, depending on the preference.
+     *
+     * @param id Id of the string resource with a description of the field, at the same time used as id for the field itself.
+     * @param hintText Hint text if EditText.
+     * @param layoutParams Layout parameters.
+     * @param textSize Text size.
+     * @return The text field as view.
+     */
+
+    protected View createTextField(@StringRes int id, String hintText, ViewGroup.LayoutParams layoutParams, int textSize) {
         if (displayMode == DisplayMode.BIG_EDITABLE) {
             EditText editText = new EditText(context);
             editText.setId((int)id);
-            editText.setHint(id);
+            editText.setHint(hintText);
             editText.setTextSize(textSize);
             editText.setLayoutParams(layoutParams);
             editText.setTypeface(standardFont);
@@ -119,6 +143,8 @@ public abstract class MensaMeetItem<T> {
             return textView;
         }
     }
+
+
 
     /**
      * Create a clickable link TextView.
@@ -150,6 +176,7 @@ public abstract class MensaMeetItem<T> {
         textView.setTextSize(textSize);
         textView.setLayoutParams(WIDTH_MATCH_PARENT);
         textView.setText(defaultTextId);
+        setDefaultValue((int)id, context.getResources().getString(defaultTextId));
         textView.setTypeface(standardFont);
 
         linearLayout.addView(textView);
@@ -210,7 +237,26 @@ public abstract class MensaMeetItem<T> {
         if (field != null) {
             if (field instanceof TextView) {
                 TextView textView = (TextView) field;
-                textView.setText(text);
+
+                if (text == null || text.equals("")) {
+
+                    if (displayMode == DisplayMode.BIG_EDITABLE) {
+
+                        if (defaultValueSet(id)) {
+                            textView.setText(getDefaultValue(id));
+                        } else {
+                            textView.setText(text);
+                        }
+
+                    } else {
+                        textView.setVisibility(View.GONE);
+                    }
+                } else {
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(text);
+                }
+
+
             }
         }
 
@@ -230,7 +276,7 @@ public abstract class MensaMeetItem<T> {
                 ((Spinner) field).setSelection(
                         MensaMeetUtil.getIndexInSpinner((Spinner) field, value));
             } else if (field instanceof TextView) {
-                ((TextView) field).setText(value);
+                fillTextField(id, value);
             }
         }
     }
@@ -261,7 +307,7 @@ public abstract class MensaMeetItem<T> {
                         MensaMeetUtil.getIndexInSpinner((Spinner) field, value));
             } else if (field instanceof TextView) {
                 // If TextView to be set, put representation there and value as representedValue
-                ((TextView)field).setText(representation);
+                fillTextField(id, representation);
                 setRepresentedValue(id, value);
             }
         }
@@ -335,10 +381,10 @@ public abstract class MensaMeetItem<T> {
     protected void fillSublist(@StringRes int id, MensaMeetList sublist) {
         View sublistContainer = view.findViewById((int)id);
 
-        if (sublistContainer != null && sublistContainer instanceof LinearLayout) {
-            LinearLayout linearLayout = (LinearLayout) sublistContainer;
-            linearLayout.removeAllViews();
-            linearLayout.addView(sublist.getView());
+        if (sublistContainer != null && sublistContainer instanceof NestedScrollView) {
+            NestedScrollView nestedScrollView = (NestedScrollView) sublistContainer;
+            nestedScrollView.removeAllViews();
+            nestedScrollView.addView(sublist.getView());
         }
     }
 
@@ -414,6 +460,21 @@ public abstract class MensaMeetItem<T> {
         return representedValues.containsKey(new Integer(id));
     }
 
+    protected void setDefaultValue(@StringRes int id, String value) {
+        defaultValues.put(new Integer(id), value);
+    }
+
+    protected String getDefaultValue(@StringRes int id) {
+        if (defaultValueSet(id)) {
+            return defaultValues.get(new Integer(id));
+        }
+
+        return null;
+    }
+
+    protected Boolean defaultValueSet(@StringRes int id) {
+        return defaultValues.containsKey(new Integer(id));
+    }
     /**
      * Display modes of Items.
      */

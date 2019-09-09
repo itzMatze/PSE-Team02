@@ -20,8 +20,8 @@ public class GroupList extends MensaMeetList<Group> {
      * @param displayMode
      * @param dividers
      */
-    public GroupList(Context context, List<Group> data, DisplayMode displayMode, Boolean dividers) {
-        super(context, data, displayMode, dividers);
+    public GroupList(Context context, List<Group> data, DisplayMode displayMode, Boolean dividers, Boolean scrolling) {
+        super(context, data, displayMode, dividers, scrolling);
     }
 
     @Override

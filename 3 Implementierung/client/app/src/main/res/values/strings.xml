@@ -79,9 +79,9 @@
     <string name="password_title">Passwort</string>
     <string name="confirm_password_title">Passwort bestätigen</string>
     <string name="selectALine">Wähle eine oder mehrere Linie(n) aus!</string>
-    <string name="your_gender">Du bist</string>
+    <string name="your_gender">Dein Geschlecht</string>
     <string name="you_eat">Du isst</string>
-    <string name="your_subject">Deine Fachrichtung ist</string>
+    <string name="your_subject">Deine Fachrichtung</string>
     <string name="field_meals">Mahlzeiten</string>
     <string name="title_select_lines">Wähle deine Mensalinie(n)</string>
     <string name="title_set_time">Wann möchtest du essen gehen?</string>
@@ -102,7 +102,7 @@
     <string name="status_apprentice">Auszubildende*r</string>
     <string name="status_college_student">Student*in</string>
     <string name="status_professor">Professor*in</string>
-    <string name="you_are">Du bist</string>
+    <string name="you_are">Dein Status</string>
     <string name="line_one">Linie 1</string>
     <string name="line_two">Linie 2</string>
     <string name="line_three">Linie 3</string>
@@ -189,4 +189,8 @@
     <string name="subject_techno_mathematics">Technomathematik</string>
     <string name="subject_water_science_and_engineering">Water Science and Engineering</string>
     <string name="meeting_point">Treffpunkt ist immer am Ende der Schlange.</string>
+    <string name="delete">Löschen</string>
+    <string name="not_chosen">nicht ausgewählt</string>
+    <string name="name_and_status_required">Name und Status sind obligatorisch</string>
+    <string name="group_will_be_deleted">Die Gruppe wird danach gelöscht</string>
 </resources>

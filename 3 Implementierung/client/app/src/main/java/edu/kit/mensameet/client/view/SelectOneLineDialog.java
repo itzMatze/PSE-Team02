@@ -33,7 +33,7 @@ public class SelectOneLineDialog extends AlertDialog {
 
         setTitle(R.string.selectLine);
 
-        final LineList lineList = new LineList(getContext(), new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaData().getLines())), MensaMeetList.DisplayMode.SINGLE_SELECT, true);
+        final LineList lineList = new LineList(getContext(), new ArrayList<Line>(Arrays.asList(MensaMeetSession.getInstance().getMensaData().getLines())), MensaMeetList.DisplayMode.SINGLE_SELECT, true, true);
 
         // Find the Line object in mensa line list according to line name givenLine, todo: easier solution
         Line selectedLine = null;

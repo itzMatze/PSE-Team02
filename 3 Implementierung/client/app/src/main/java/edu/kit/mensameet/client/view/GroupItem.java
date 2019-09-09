@@ -16,6 +16,7 @@ import android.widget.TimePicker;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.NestedScrollView;
 
 import org.w3c.dom.Text;
 
@@ -58,7 +59,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         super.initializeHandler(handler);
 
         if (objectData != null) {
-            userList = new UserList(context, objectData.getUsers(), MensaMeetList.DisplayMode.NO_SELECT, false);
+            userList = new UserList(context, objectData.getUsers(), MensaMeetList.DisplayMode.NO_SELECT, false, false);
         }
 
     }
@@ -113,57 +114,19 @@ public class GroupItem extends MensaMeetItem<Group> {
         view.setPadding(leftPadding, topPadding, rightPadding, bottomPadding);
 
         // Field: name
-        TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
+        TextView nameField = (TextView)createTextField(R.string.field_name, context.getResources().getString(R.string.field_name) + "*", WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
         // TextView is the parent class of EditText and includes it
         nameField.setTypeface(nameField.getTypeface(), Typeface.BOLD);
         view.addView(nameField);
 
         // Field: motto
-        view.addView(createTextField(R.string.field_motto, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+        view.addView(createTextField(R.string.field_motto, context.getResources().getString(R.string.field_motto) + "*", WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
 
-        // Field: time
+        LinearLayout infoBar = new LinearLayout(context);
         if (displayMode == DisplayMode.BIG_EDITABLE) {
-
-            final LinearLayout chooseTime = createLinkTextField(
-                    R.string.field_time,
-                    R.string.chooseTime,
-                    WIDTH_MATCH_PARENT,
-                    SMALLER_FONT_SIZE);
-
-            chooseTime.setOnClickListener(new View.OnClickListener() {
-
-                private int chosenHour = 12;
-                private int chosenMinutes = 0;
-
-                @Override
-                public void onClick(View view) {
-
-                    TimePickerDialog timePickerDialog = new TimePickerDialog(
-                            context,
-                            android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
-                            new TimePickerDialog.OnTimeSetListener() {
-
-                        @Override
-                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
-
-                            ((TextView)chooseTime.findViewById((int)R.string.field_time))
-                                    .setText(String.format("%02d:%02d", hourOfDay, minutes));
-                            chosenHour = hourOfDay;
-                            chosenMinutes = minutes;
-                        }
-                    }, chosenHour, chosenMinutes, true);
-
-                    timePickerDialog.show();
-                }
-
-            });
-
-            view.addView(chooseTime);
-
+            infoBar.setOrientation(LinearLayout.VERTICAL);
         } else {
-
-            view.addView(createTextField(R.string.field_time, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
-
+            infoBar.setOrientation(LinearLayout.HORIZONTAL);
         }
 
         // Field: line
@@ -208,20 +171,56 @@ public class GroupItem extends MensaMeetItem<Group> {
                 }
             });
 
-            view.addView(chooseLine);
+            infoBar.addView(chooseLine);
 
         } else {
 
-            view.addView(createTextField(R.string.field_line, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+            infoBar.addView(createTextField(R.string.field_line, WIDTH_WRAP_CONTENT, SMALLER_FONT_SIZE));
 
-            if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
-                TextView meeting = new TextView(context);
-                MensaMeetUtil.applyStyle(meeting, R.style.normal_text);
-                meeting.setText(R.string.meeting_point);
-                meeting.setTypeface(standardFont);
-                meeting.setTextSize(12);
-                view.addView(meeting);
-            }
+        }
+
+        // Field: time
+        if (displayMode == DisplayMode.BIG_EDITABLE) {
+
+            final LinearLayout chooseTime = createLinkTextField(
+                    R.string.field_time,
+                    R.string.chooseTime,
+                    WIDTH_MATCH_PARENT,
+                    SMALLER_FONT_SIZE);
+
+            chooseTime.setOnClickListener(new View.OnClickListener() {
+
+                private int chosenHour = 12;
+                private int chosenMinutes = 0;
+
+                @Override
+                public void onClick(View view) {
+
+                    TimePickerDialog timePickerDialog = new TimePickerDialog(
+                            context,
+                            android.R.style.Theme_Holo_Light_Dialog_NoActionBar,
+                            new TimePickerDialog.OnTimeSetListener() {
+
+                        @Override
+                        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minutes) {
+
+                            ((TextView)chooseTime.findViewById((int)R.string.field_time))
+                                    .setText(String.format("%02d:%02d", hourOfDay, minutes));
+                            chosenHour = hourOfDay;
+                            chosenMinutes = minutes;
+                        }
+                    }, chosenHour, chosenMinutes, true);
+
+                    timePickerDialog.show();
+                }
+
+            });
+
+            infoBar.addView(chooseTime);
+
+        } else {
+
+            infoBar.addView(createTextField(R.string.field_time, WIDTH_WRAP_CONTENT, SMALLER_FONT_SIZE));
 
         }
 
@@ -229,11 +228,11 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         if (displayMode == DisplayMode.SMALL || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
-            view.addView(createTextField(R.string.members, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+            infoBar.addView(createTextField(R.string.members, WIDTH_WRAP_CONTENT, SMALLER_FONT_SIZE));
 
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
-            view.addView(createLabel(R.string.field_max_members, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
+            infoBar.addView(createLabel(context.getResources().getString(R.string.field_max_members) + "*", WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             //get the spinner from the xml.
             Spinner dropdown = new Spinner(context);
@@ -250,8 +249,20 @@ public class GroupItem extends MensaMeetItem<Group> {
 
             dropdown.setAdapter(adapter);
 
-            view.addView(dropdown);
+            infoBar.addView(dropdown);
 
+        }
+
+        view.addView(infoBar);
+
+        // Hint: Meeting point
+        if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
+            TextView meeting = new TextView(context);
+            MensaMeetUtil.applyStyle(meeting, R.style.normal_text);
+            meeting.setText(R.string.meeting_point);
+            meeting.setTypeface(standardFont);
+            meeting.setTextSize(12);
+            view.addView(meeting);
         }
 
         LinearLayout expandArea = new LinearLayout(context);
@@ -263,7 +274,7 @@ public class GroupItem extends MensaMeetItem<Group> {
         if (displayMode == DisplayMode.SMALL && (handler.getObjectData().getMaxMembers() > handler.getObjectData().getUsers().size())) {
 
             final Button joinButton = new Button(context);
-            joinButton.setLayoutParams(WIDTH_MATCH_PARENT);
+            joinButton.setLayoutParams(BUTTON_LAYOUT);
             joinButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             joinButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
             joinButton.setTextSize(18);
@@ -288,7 +299,7 @@ public class GroupItem extends MensaMeetItem<Group> {
             if (displayMode == DisplayMode.SMALL || displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
                 final Button deleteButton = new Button(context);
-                deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                deleteButton.setLayoutParams(BUTTON_LAYOUT);
                 deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                 deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
                 deleteButton.setTextSize(18);
@@ -328,12 +339,10 @@ public class GroupItem extends MensaMeetItem<Group> {
         // Field: User list
         if (displayMode != DisplayMode.BIG_EDITABLE) {
 
-            LinearLayout userListContainer = new LinearLayout(context);
-            userListContainer.setOrientation(LinearLayout.VERTICAL);
-            userListContainer.setLayoutParams(WIDTH_MATCH_PARENT);
-            userListContainer.setId((int)R.string.field_member_list);
-
-            expandArea.addView(userListContainer);
+            NestedScrollView nestedScrollView = new NestedScrollView(context);
+            nestedScrollView.setLayoutParams(WIDTH_HEIGHT_MATCH_PARENT);
+            nestedScrollView.setId((int)R.string.field_member_list);
+            expandArea.addView(nestedScrollView);
         }
 
         view.addView(expandArea);

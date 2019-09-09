@@ -107,13 +107,15 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.SMALL) {
 
             descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+            descriptionArea.setPadding(context.getResources().getInteger(R.integer.description_standard_padding_left_px), 0, 0, 0);
+
         } else {
 
             descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
 
         // Field: name
-        TextView nameField = (TextView)createTextField(R.string.field_name, WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
+        TextView nameField = (TextView)createTextField(R.string.field_name, context.getResources().getString(R.string.field_name) + "*", WIDTH_MATCH_PARENT, BIGGER_FONT_SIZE);
         // TextView is the parent class of EditText and includes it
         nameField.setTypeface(nameField.getTypeface(), Typeface.BOLD);
         descriptionArea.addView(nameField);
@@ -122,12 +124,13 @@ public class UserItem extends MensaMeetItem<User> {
         descriptionArea.addView(createTextField(R.string.field_motto, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
 
         // Field: birth date
+
         if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             final LinearLayout chooseDate = createLinkTextField(
                     R.string.field_birth_date,
                     R.string.set_birth_date,
-                    WIDTH_MATCH_PARENT,
+                    new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0),
                     SMALLER_FONT_SIZE);
 
             chooseDate.setOnClickListener(new View.OnClickListener() {
@@ -149,11 +152,20 @@ public class UserItem extends MensaMeetItem<User> {
                         }
                     }, chosenYear, chosenMonth - 1, chosenDay);
 
+                    timePickerDialog.setButton(DialogInterface.BUTTON_NEUTRAL, context.getResources().getString(R.string.delete), new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ((TextView) chooseDate.findViewById((int) R.string.field_birth_date))
+                                    .setText(getDefaultValue(R.string.field_birth_date));
+                        }
+                    });
+
                     timePickerDialog.show();
                 }
             });
 
             descriptionArea.addView(chooseDate);
+
         } else if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(createTextField(R.string.field_birth_date, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
@@ -163,6 +175,7 @@ public class UserItem extends MensaMeetItem<User> {
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
 
             descriptionArea.addView(createTextField(R.string.field_gender, WIDTH_MATCH_PARENT, SMALLER_FONT_SIZE));
+
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
             descriptionArea.addView(createLabel(R.string.your_gender, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
@@ -185,7 +198,7 @@ public class UserItem extends MensaMeetItem<User> {
 
         } else if (displayMode == DisplayMode.BIG_EDITABLE) {
 
-            descriptionArea.addView(createLabel(R.string.you_are, WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
+            descriptionArea.addView(createLabel(context.getResources().getString(R.string.you_are) + "*", WIDTH_MATCH_PARENT, context.getResources().getInteger(R.integer.font_size_small)));
 
             Spinner dropdown = new Spinner(context);
             dropdown.setId((int) R.string.field_status);
@@ -224,7 +237,7 @@ public class UserItem extends MensaMeetItem<User> {
                 if (displayMode == DisplayMode.SMALL && !handler.getObjectData().equals(handler.getCurrentUser())) {
 
                     final Button deleteButton = new Button(context);
-                    deleteButton.setLayoutParams(WIDTH_MATCH_PARENT);
+                    deleteButton.setLayoutParams(BUTTON_LAYOUT);
                     deleteButton.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
                     deleteButton.setTextColor(context.getResources().getColor(R.color.button_text_color));
                     deleteButton.setTextSize(18);
@@ -290,10 +303,12 @@ public class UserItem extends MensaMeetItem<User> {
 
         fillTextField(R.string.field_motto, objectData.getMotto());
 
+        String birthDateString = null;
         Date birthDate = objectData.getBirthdate();
         if (birthDate != null) {
-            fillTextField(R.string.field_birth_date, MensaMeetTime.dateToString(birthDate));
+            birthDateString = MensaMeetTime.dateToString(birthDate);
         }
+        fillTextField(R.string.field_birth_date, birthDateString);
 
         setSpinnerOrTextField(R.string.field_gender, objectData.getGender());
 
@@ -326,11 +341,23 @@ public class UserItem extends MensaMeetItem<User> {
 
         objectData.setBirthdate(d);
 
-        objectData.setGender(Gender.valueOf(extractSpinnerOrTextField(R.string.field_gender)));
+        Gender gender = null;
+        try {
+            gender = Gender.valueOf(extractSpinnerOrTextField(R.string.field_gender));
+        } catch (Exception e) {}
+        objectData.setGender(gender);
 
-        objectData.setStatus(Status.valueOf(extractSpinnerOrTextField(R.string.field_status)));
+        Status status = null;
+        try {
+            status = Status.valueOf(extractSpinnerOrTextField(R.string.field_status));
+        } catch (Exception e) {}
+        objectData.setStatus(status);
 
-        objectData.setSubject(Subject.valueOf(extractSpinnerOrTextField(R.string.field_subject)));
+        Subject subject = null;
+        try {
+            subject = Subject.valueOf(extractSpinnerOrTextField(R.string.field_subject));
+        } catch (Exception e) {}
+        objectData.setSubject(subject);
 
         handler.setObjectData(objectData);
     }

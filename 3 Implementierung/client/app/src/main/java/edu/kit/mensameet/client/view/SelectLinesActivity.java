@@ -65,6 +65,7 @@ public class SelectLinesActivity extends MensaMeetActivity {
 
         lineList = new LineList(this, linesList,
                 MensaMeetList.DisplayMode.MULTIPLE_SELECT,
+                true,
                 true);
 
         container.addView(lineList.getView());

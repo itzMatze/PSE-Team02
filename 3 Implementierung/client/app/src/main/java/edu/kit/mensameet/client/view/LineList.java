@@ -20,8 +20,8 @@ public class LineList extends MensaMeetList<Line> {
      * @param displayMode List display mode.
      * @param dividers Whether dividers should be displayed.
      */
-    public LineList(Context context, List<Line> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
-        super(context, data, displayMode, true);
+    public LineList(Context context, List<Line> data, MensaMeetList.DisplayMode displayMode, Boolean dividers, Boolean scrolling) {
+        super(context, data, displayMode, dividers, scrolling);
     }
 
     @Override

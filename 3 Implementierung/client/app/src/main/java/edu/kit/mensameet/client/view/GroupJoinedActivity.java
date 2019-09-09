@@ -231,9 +231,16 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     @Override
     public void onClickBack() {
 
+        String dialogMessage = getResources().getString(R.string.really_leave_group);
+
+        if (viewModel.getGroup().getUsers().size() == 1) {
+            // Current user is last member of the group.
+            dialogMessage += "\n" + getResources().getString(R.string.group_will_be_deleted) + ".";
+        }
+
         new AlertDialog.Builder(this)
                 .setTitle(R.string.leave_group)
-                .setMessage(R.string.really_leave_group)
+                .setMessage(dialogMessage)
 
                 // Specifying a listener allows you to take an action before dismissing the dialog.
                 // The dialog is automatically dismissed when a dialog button is clicked.

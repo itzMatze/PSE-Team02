@@ -23,12 +23,15 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
     protected List<T> data;
     protected DisplayMode displayMode;
     protected Boolean dividers;
+    protected Boolean scrolling;
     protected LinearLayout view;
     protected RecyclerView recyclerView;
     protected MensaMeetListAdapter adapter;
     protected LinearLayoutManager layoutManager;
 
     protected static final LinearLayout.LayoutParams WIDTH_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    protected static final LinearLayout.LayoutParams WIDTH_HEIGHT_MATCH_PARENT = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+
 
     /**
      * Constructor.
@@ -38,25 +41,27 @@ public abstract class MensaMeetList<T> implements MensaMeetListAdapter.ItemClick
      * @param displayMode   List display mode.
      * @param dividers  Whether dividers should be displayed.
      */
-    public MensaMeetList(Context context, List<T> data, MensaMeetList.DisplayMode displayMode, Boolean dividers) {
+    public MensaMeetList(Context context, List<T> data, MensaMeetList.DisplayMode displayMode, Boolean dividers, Boolean scrolling) {
 
         this.context = context;
         if (data == null) data = new ArrayList<T>();
         this.data = data;
         this.displayMode = displayMode;
         this.dividers = dividers;
+        this.scrolling = scrolling;
         this.view = new LinearLayout(context);
-        this.view.setLayoutParams(WIDTH_MATCH_PARENT);
+        this.view.setLayoutParams(WIDTH_HEIGHT_MATCH_PARENT);
         this.view.setOrientation(LinearLayout.VERTICAL);
 
         // set up the RecyclerView
-        this.recyclerView = new RecyclerView(context);
-        this.recyclerView.setId((int)R.string.list_recyclerview);
+        recyclerView = new RecyclerView(context);
+        recyclerView.setId((int)R.string.list_recyclerview);
         layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        this.recyclerView.setLayoutParams(WIDTH_MATCH_PARENT);
+        recyclerView.setLayoutParams(WIDTH_HEIGHT_MATCH_PARENT);
         ((SimpleItemAnimator) recyclerView.getItemAnimator()).setSupportsChangeAnimations(false);
+        recyclerView.setNestedScrollingEnabled(scrolling);
 
 
         List<MensaMeetItem<T>> items = createItems();

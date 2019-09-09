@@ -171,6 +171,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
                 this,
                 viewModel.getReceivedGroups(),
                 MensaMeetList.DisplayMode.SINGLE_SELECT,
+                true,
                 true);
 
         container.addView(groupList.getView());
