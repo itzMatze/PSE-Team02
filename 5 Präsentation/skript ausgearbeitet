@@ -5,7 +5,7 @@ Uns war wichtig, dass es keine Dating App wird, deshalb haben wir auf die Mögli
 
 >>Folie mit Screenshot bei ProfilbildAuswahl
 
-Momentan kann man durch das eigene Motto im Profil und das Gruppenmotto die Möglic Persönlichkeit zu verleihen
+Momentan kann man durch das eigene Motto im Profil und das Gruppenmotto die Möglich Persönlichkeit zu verleihen
 
 Desweiteren hat ein Gruppengründer keine Sonderrechte, er kann nicht die Gruppe löschen und vorallem keine Mitglieder rauskicken, er kann lediglich selbst austreten, aber sofern andere Mitgieder drin waren, bleibt die Gruppe dann einfach bestehen.
 Unvoreingenommen. 
@@ -22,7 +22,7 @@ Für die Client seite war klar, dass wir mit Android Studio arbeiten werden, imm
 
 In der Entwurfsphase, in der wir unzählige UML Diagramme erstellten. oder um genau zu sein: 
 
->>Folie mit Zahlen wie viele Diagramme es jeweils gab 
+>>Folie mit Zahlen wie viele Diagramme es jeweils gab (Kreisdiagramm)
 
 
 Matze: 
@@ -35,14 +35,52 @@ Daher war es schwer einen detaiilierten Entwurf im vorraus zu erstellen und an d
 
 TAN:
 
-Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen an unseren Model-Klassen und kleine änderungen an der Datenbank damit es mit Firebase kompartibel war. 
+Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen an unseren Model-Klassen und kleine änderungen an der Datenbank damit es mit Firebase kompartibel war.
+Erwähnsenswert ist auch die Einindung der Mensadaten, da die Mensa keine API bietet, haben wir selbst einen Crawler geschrieben mit der wie die Daten von den offiziellen Mensaseiten holen. Die Mensadaten werden jeden morgen um 8 Uhr geladen und auf den Server gespeichert. Da hatten wir 
 
 >> Folie mit Statistiken: Lines of Code, Commits 
 
 Getest wurde am Client mit den Frameworks JUnit, Mockito und Espresso getestet und am Server außschließlich mit JUnit. 
+Währendessen 
 Während der Testphase haben wir nicht nur den Code getestet und Bugs behoben sondern auch die Benutzerfreundlichkeit durch Hallway test
 
->> Folie Ergebnisse
+>> Folie Anzahl Probanden
+
+>> Folie mit unserer auswertung
 
 
 Ausblick
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
