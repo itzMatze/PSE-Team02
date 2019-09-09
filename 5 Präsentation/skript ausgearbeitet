@@ -16,15 +16,20 @@ Unvoreingenommen.
 Ein Bewertungssystem für Personen, aber auch für Essen  wurde auch von unseren befragten Testpersonen gewünscht, aber jetzt greif ich schon ein bisschen vor.
 Zunächst wollen wir noch ein wenig darüber reden wie wir die App umgesetzt haben.
 In der Definitionsphase, haben wir neben den Wunsch/Musskriterien und funktionalen anforderungen auch schon auf die Frameworks festgelegt.
-Für die Client seite war klar, dass wir Android Studio benutzen werden, immerhin ist es eine Android App. Auf Server Seite haben wir uns für Springboot entschieden,  weil vorallem für ein nicht-umfangreiches projekt schnell ein Grundgerüst steht, so dass enig Konfiguartionsarbeit anfällt und weiterhin hat dependency Injection und Schnittstellen zum einbinden von der Datenbank, für welche wir Mysql verwendet haben.
+Für die Client seite war klar, dass wir Android Studio benutzen werden, immerhin ist es eine Android App. Auf Server Seite haben wir uns für Springboot entschieden,  weil vorallem für ein nicht-umfangreiches projekt schnell ein Grundgerüst steht, so dass enig Konfiguartionsarbeit anfällt und weiterhin hat dependency Injection und Schnittstellen zum einbinden von der Datenbank, für welche wir Mysql verwendet haben. außerdem haben wir Firebase genutzt für die Resgistrierung und Verwaltung der User. 
 
 In der Entwurfsphase, in der wir unzählige UML Diagramme erstellten. oder um genau zu sein: X Digagramme 
 (Folie mit Zahlen wie viele Diagramme es jeweils gab) 
 
 
-In der Implementierungsphase haben wir dann versucht unser Design möglichst so umzusetzen. Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen.  
-und wir haben die beiden Seiten seperat entwickelt. Der Client wurde in Android Studio entwickelt und mit den Frameworks Mockito und Espresso getestet.
-Am Server haben wir das Framework Springboot verwendet, welches viel Konfigurationsarbeit übernimmt und uns durch dependency Injection einiges an Coderei erspart hat, Firebase für die Authentifizierung. Getestet haben wir am Server außschließlich mit JUnit. 
+In der Implementierungsphase haben wir dann versucht unser Design möglichst so umzusetzen. 
+  
+Beim Client mussten bei derImplementierung einiges anders gemacht werden und auch einiges ergänzt werden, das lag vorallem daran, dass wir  mit Android Studio und der Funktionsweise von Activitys und deren Lebenszyklen noch sehr wenig Erfahrung hatten. Dahingehend war es schwer einen detaiilierten Entwurf zu erstellen und an dieser Stelle sehen wir das als Nachteil des Wasserfallmodels, denn es wäre einfacher gewesen, nur einen grob-entwurf zu machen, dann schon zu Implementieren und währenddessen den Entwurf zu verfeinern. 
+Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen an unseren Model-Klassen und kleine änderungen an der Datenbank damit es mit Firebase kompartibel war. 
+
+Getest wurde am Client mit den Frameworks Mockito und Espresso getestet und am Server außschließlich mit JUnit. 
+
+Während der 
 
 
 
