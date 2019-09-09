@@ -112,6 +112,8 @@ public class UserItem extends MensaMeetItem<User> {
         } else {
 
             descriptionArea.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+            descriptionArea.setPadding(0, context.getResources().getInteger(R.integer.description_standard_padding_top_px), 0, 0);
+
         }
 
         // Field: name
