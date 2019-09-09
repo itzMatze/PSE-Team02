@@ -25,6 +25,9 @@ In der Entwurfsphase, in der wir unzählige UML Diagramme erstellten. oder um ge
 >>Folie mit Zahlen wie viele Diagramme es jeweils gab (Kreisdiagramm)
 
 
+
+
+
 Matze: 
 
 In der Implementierungsphase haben wir dann versucht unser Design möglichst so umzusetzen. 
@@ -33,24 +36,55 @@ Beim Client musste bei der Implementierung allerdings einiges anders gemacht wer
 Daher war es schwer einen detaiilierten Entwurf im vorraus zu erstellen und an dieser Stelle sehen wir das als Nachteil des Wasserfallmodells, weil man damit alles komplett festgelegt ist und dieses Modell eigentlich keine nachträglichen Änderungen zum Entwurf erlaubt. Man hätte also einen perfekt durchdachten Entwurf, der auch schon komplett funktiontüchtig wäre, machen müssen, was mit unserem Erfahrungslevel einfach nicht möglich war.
 
 
-TAN:
+
+
+Tan:
 
 Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen an unseren Model-Klassen und kleine änderungen an der Datenbank damit es mit Firebase kompartibel war.
-Erwähnsenswert ist auch die Einindung der Mensadaten, da die Mensa keine API bietet, haben wir selbst einen Crawler geschrieben mit der wie die Daten von den offiziellen Mensaseiten holen. Die Mensadaten werden jeden morgen um 8 Uhr geladen und auf den Server gespeichert. Da hatten wir 
+Erwähnsenswert ist auch die Einindung der Mensadaten, da die Mensa keine API bietet, haben wir selbst einen Crawler geschrieben mit der wie die Daten von den offiziellen Mensaseiten holen. Die Mensadaten werden jeden morgen um 8 Uhr geladen und auf den Server gespeichert. Da hatten wir auch einen Bug, nämlich dass es nicht automatisch aktualisiert wurde. Auch in der Datenbank  haben wir inkonsistenzen gefunden und behoben und am Client gab es z.B. Abstürze ohne, weil versucht wurde auf ungültige oder nicht-existente Objekte zuzugreifen. Mit noch weiteren kleineren Fehlen haben wir insgesam 12 bugs gefunden und behoben. 
+Getest wurde dabei am Client mit den Frameworks JUnit, Mockito und Espresso getestet und am Server außschließlich mit JUnit.
 
->> Folie mit Statistiken: Lines of Code, Commits 
+>> Folie mit Statistiken: Lines of Code, Commits  
 
-Getest wurde am Client mit den Frameworks JUnit, Mockito und Espresso getestet und am Server außschließlich mit JUnit. 
-Währendessen 
-Während der Testphase haben wir nicht nur den Code getestet und Bugs behoben sondern auch die Benutzerfreundlichkeit durch Hallway test
+Insgesamt hat unser Programm einen Umfang von xy Zeilen (incl. Kommentare und Leerzeilen) 
+Client Source Code: 6906 (incl Testklassen) (Total Lines 11264) 
+Server: 2264 (incl Testklassen) 
 
+Commits pro Phase: 
+Definitionsphase: 60 Commit
+Entwurfsphase: 112 Commit
+Implementierungsphase: 109 Commit
+Qualitätssicherung: 105 Commit
+
+
+ 
+Während der Testphase haben wir nicht nur den Code getestet und Bugs behoben sondern auch die Benutzerfreundlichkeit durch Hallway test getestet. Dazu sind wir an die Uni gegangen und haben im Forum nach geeigneten Probanden gesucht. Als geeignet haben wir Personen eingestuft, die regelmäßig in die Mensa essen gehen. 
+Befragt haben wir insgesamt 7 Leute, alle am selben Tag, als Belohnung bzw Anreiz mitzumachen gab es Schokolade. Dadurch hatten wir auch keine Schwierigkeiten bereitwillige Probanden zu finden.
+
+
+Diese Personen eine kurze Erklrung zu unserer App und mussten mit einem bereits eingeloggten Account folgende Aufgabenliste abarbeiten:
+
+>> Aufgabenliste Als Folie 
+
+Und anschließend folgende Fragen beantworten:
+
+>> Folie Fragebogen
+
+
+7 Testpersonen mag vielleicht wenig klingen, laut Studien von Jakob Nielsen, der als Vorreiter im Bereich Nutzerfreundlichkeit gilt, reichen aber bereits 5 Probanden um 85% der Usability Probleme zu finden. 
 >> Folie Anzahl Probanden
+Mit 7 probanden dürften wir also etwa 90% der Proleme gefunden haben. 
 
+Unseren Fragebogen haben wir natürlich ausgewertet 
 >> Folie mit unserer auswertung
 
+und festgestellt, dass die App im Allgemeinen als intuitiv Bedienbar und auch das Deisgn angenehm bewertet.
 
 Ausblick
-
+- Gewünscht haben sich die Probanden ein Bewertungssystem für Personen, das stand auch bei uns als Wunschkriterium im ersten Dokument 
+- Filtermöglichketen er Gruppen nach Kriterien
+- Ein Restriktionen beim Gruppe erstellen
+- Pushbenachrichtung 
 
 
 
