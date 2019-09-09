@@ -179,6 +179,11 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         }
 
+        // Hint: Meeting point
+        if (displayMode == DisplayMode.BIG_EDITABLE) {
+            addMeetingPoint(infoBar);
+        }
+
         // Field: time
         if (displayMode == DisplayMode.BIG_EDITABLE) {
 
@@ -255,14 +260,10 @@ public class GroupItem extends MensaMeetItem<Group> {
 
         view.addView(infoBar);
 
+
         // Hint: Meeting point
         if (displayMode == DisplayMode.BIG_NOTEDITABLE) {
-            TextView meeting = new TextView(context);
-            MensaMeetUtil.applyStyle(meeting, R.style.normal_text);
-            meeting.setText(R.string.meeting_point);
-            meeting.setTypeface(standardFont);
-            meeting.setTextSize(12);
-            view.addView(meeting);
+            addMeetingPoint(view);
         }
 
         LinearLayout expandArea = new LinearLayout(context);
@@ -349,6 +350,15 @@ public class GroupItem extends MensaMeetItem<Group> {
 
 
         return view;
+    }
+
+    private void addMeetingPoint(LinearLayout view) {
+        TextView meeting = new TextView(context);
+        MensaMeetUtil.applyStyle(meeting, R.style.normal_text);
+        meeting.setText(R.string.meeting_point);
+        meeting.setTypeface(standardFont);
+        meeting.setTextSize(12);
+        view.addView(meeting);
     }
 
     /**

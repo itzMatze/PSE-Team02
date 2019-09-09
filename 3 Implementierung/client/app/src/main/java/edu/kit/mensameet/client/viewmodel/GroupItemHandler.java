@@ -78,7 +78,7 @@ public class GroupItemHandler extends MensaMeetItemHandler<Group> {
 
         // If deleted group was the current user's group.
 
-        if (MensaMeetSession.getInstance().getUser().getGroupToken().equals(objectData.getToken())) {
+        if (MensaMeetSession.getInstance().getUser().getGroupToken() != null && MensaMeetSession.getInstance().getUser().getGroupToken().equals(objectData.getToken())) {
 
             // Reload user.
 
