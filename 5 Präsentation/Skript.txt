@@ -1,0 +1,23 @@
+Musskriterien
+	Nach der Livedemo sagen, dass wir alles haben.
+
+Welche Tolls wurden benutzt?
+	so wurde die Sachen umgesetzt
+
+Probelme
+	Teamarbeit
+	Client
+	Server
+
+
+Statistiken
+
+HallwayTest
+
+Zukunft der App:
+	Wunschkriterien
+
+Persönliches Feedback zu Wasserfallmodell
+	Serverseite war nicht so schlecht mit wasserfallmodell
+	Client war mit Android nicht kompatibel mit Wasserfallmodell
+		lag aber an unwissenheit über android entwicklung
