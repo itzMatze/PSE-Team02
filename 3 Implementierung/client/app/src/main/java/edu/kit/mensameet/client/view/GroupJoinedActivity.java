@@ -41,6 +41,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
         viewModel = ViewModelProviders.of(this).get(GroupJoinedViewModel.class);
         super.initializeViewModel(viewModel);
 
+        /*
     }
 
     @VisibleForTesting
@@ -52,7 +53,8 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+*/
+        
         if (!checkAccess()) {
             return;
         }

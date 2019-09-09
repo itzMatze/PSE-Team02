@@ -40,7 +40,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
 
         viewModel = ViewModelProviders.of(this).get(SelectGroupViewModel.class);
         super.initializeViewModel(viewModel);
-
+/*
     }
 
     @VisibleForTesting
@@ -52,7 +52,7 @@ public class SelectGroupActivity extends MensaMeetActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
+*/
         if (!checkAccess()) {
             return;
         }
