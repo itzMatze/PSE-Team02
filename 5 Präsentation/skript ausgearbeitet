@@ -1,0 +1,46 @@
+Schauspiel
+
+So, ihr habt jetzt unsere Motivation anschaulich gesehen. Ziel unserer App ist es, dass man nicht allein an der Mensa essen gehen muss und die Chance hat neue Kontakte zu knüpfen. Gerade für Menschen, die keinen Anschluss gefunden haben oder Studenten die ein Auslandssemester machen dürfte das Interessant sein, aber natürlich auch für alle jene, deren Freunde gerade keine Zeit haben.
+Uns war wichtig, dass es keine Dating App wird, deshalb haben wir auf die Möglichkeit Profilbilder hochzuladen bewusst verzichtet.
+
+
+	(Eine Schwierigkeit die sich dadurch ergibt: Woran erkennt man die Person mit der man sich trifft?
+	Gedacht ist, und so steht es auch als Hinweis in der Gruppe und Appbeschreibung, dass man bis zum Treffzeitunkt am Ende der 		Linienschlange wartet. 
+	Bei einem zukünfigen update würden wir das noch weiter verbessern?)
+Momentan kann man durch das eigene Motto im Profil und das Gruppenmotto die Möglic Persönlichkeit zu verleihen
+
+Desweiteren hat ein Gruppengründer keine Sonderrechte, er kann nicht die Gruppe löschen und vorallem keine Mitglieder rauskicken, er kann lediglich selbst austreten, aber sofern andere Mitgieder drin waren, bleibt die Gruppe dann einfach bestehen.
+Unvoreingenommen. 
+
+
+
+Ein Bewertungssystem für Personen, aber auch für Essen  wurde auch von unseren befragten Testpersonen gewünscht, aber jetzt greif ich schon ein bisschen vor.
+Zunächst wollen wir noch ein wenig darüber reden wie wir die App umgesetzt haben.
+In der Definitionsphase, haben wir neben den Wunsch/Musskriterien und funktionalen anforderungen auch schon auf die Frameworks festgelegt.
+Für die Client seite war klar, dass wir Android Studio benutzen werden, immerhin ist es eine Android App. außerdem haben wir Firebase genutzt für die Resgistrierung und Verwaltung der User. Jackson Object Mapper für die Umwandlung von JSon Daten, die der Server an den Client sendet, in Klassen.   Auf Server Seite haben wir uns entschieden Springboot, weil vorallem für ein nicht-umfangreiches projekt schnell ein Grundgerüst steht, so dass enig Konfiguartionsarbeit anfällt und weiterhin hat dependency Injection und Schnittstellen zum einbinden von der Datenbank, für welche wir Mysql verwendet haben. 
+
+In der Entwurfsphase, in der wir unzählige UML Diagramme erstellten. oder um genau zu sein: X Digagramme 
+(Folie mit Zahlen wie viele Diagramme es jeweils gab) 
+
+
+Matze: 
+
+In der Implementierungsphase haben wir dann versucht unser Design möglichst so umzusetzen. 
+  
+Beim Client musste bei der Implementierung allerdings einiges anders gemacht werden als geplant und auch einiges ergänzt werden. Das lag vor allem daran, dass wir  mit Android Studio und der Funktionsweise von Activitys und deren Lebenszyklen noch sehr wenig Erfahrung hatten. 
+Daher war es schwer einen detaiilierten Entwurf im vorraus zu erstellen und an dieser Stelle sehen wir das als Nachteil des Wasserfallmodells, weil man damit alles komplett festgelegt ist und dieses Modell eigentlich keine nachträglichen Änderungen zum Entwurf erlaubt. Man hätte also einen perfekt durchdachten Entwurf, der auch schon komplett funktiontüchtig wäre, machen müssen, was mit unserem Erfahrungslevel einfach nicht möglich war.
+
+
+TAN:
+
+Für die Server-Seite der anwendung hat das gut funktioniert und wir mussten nur wenige winzige Änderungen vornehmen an unseren Model-Klassen und kleine änderungen an der Datenbank damit es mit Firebase kompartibel war. 
+
+Statistiken: Lines of Code, Commits 
+
+Getest wurde am Client mit den Frameworks JUnit, Mockito und Espresso getestet und am Server außschließlich mit JUnit. 
+Während der Testphase haben wir nicht nur den Code getestet und Bugs behoben sondern auch die Benutzerfreundlichkeit durch Hallway test
+
+
+
+
+Ausblick
