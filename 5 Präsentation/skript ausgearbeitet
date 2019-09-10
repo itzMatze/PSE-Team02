@@ -1,26 +1,32 @@
 Schauspiel
 
-So, ihr habt jetzt unsere Motivation anschaulich gesehen. Ziel unserer App ist es, dass man nicht allein an der Mensa essen gehen muss und die Chance hat neue Kontakte zu knüpfen. Gerade für Menschen, die keinen Anschluss gefunden haben oder Studenten die ein Auslandssemester machen dürfte das Interessant sein, aber natürlich auch für alle jene, deren Freunde gerade keine Zeit haben.
-Uns war wichtig, dass es keine Dating App wird, deshalb haben wir auf die Möglichkeit Profilbilder hochzuladen bewusst verzichtet.
+So, ihr habt jetzt unsere Motivation anschaulich gesehen. Wie ihr gesehen habt, ist das Ziel unserer App, dass die Nutzer nicht allein an der Mensa essen gehen müssen, sondern in Gesellschaft von anderen gehen können, wodurch sich auch die Chance bietet neue Kontakte und neue Freundschaftnen zu knüpfen. Das mag besonders für die Menschen intressant sein, die bisher keinen Anschlussan der Uni gefunden haben, aus welchem Grund auch immer: wegen Schüchternheit oder z.B. Studenten die ein Auslandssemester hier machen , aber natürlich auch für all jene, deren Freunde gerade keine Zeit haben oder sogar Gruppen die einfach Lust haben noch neue Leute kennen zu lernen.
+Uns war wichtig, dass es keine Dating App wird. Man sollte einfach unvoreingenommen in diese Treffen gehen und daher haben wir bewusst auf die Möglichkeit verzichtet, eigene Profilbilder hochladen zu können. Stattdessen gibt es eine kleine Vorauswahl an Bildern, wie ihr hier nochmal sehen könnt. 
 
 >>Folie mit Screenshot bei ProfilbildAuswahl
 
-Momentan kann man durch das eigene Motto im Profil und das Gruppenmotto die Möglich Persönlichkeit zu verleihen
+Um das ganze trozdem ein wenig Persönlicher zu machen, kann man sich im Profil, ein eigenes Motto einstellen. Das ist ein Freitextfeld, so dass man etwas Platz hat, ein bisschen über sich selbst zu schreiben. Dieses Motto kann man auch jederzeit wieder ändern, also kann man es immer an seiner aktuellen Laune oder seinen aktuellen Intressen anpassen.
 
-Desweiteren hat ein Gruppengründer keine Sonderrechte, er kann nicht die Gruppe löschen und vorallem keine Mitglieder rauskicken, er kann lediglich selbst austreten, aber sofern andere Mitgieder drin waren, bleibt die Gruppe dann einfach bestehen.
-Unvoreingenommen. 
+Auch beim Gruppe erstellen, wird ein Motto für die Gruppe eingetragen. Dieses Motto kann danach aber nicht mehr geändert werden. 
+Das kann man nutzen um dem Treffen schon eine Richtiung mitzugeben,  z.B. kann man reinschreiben "ich möchte Informatiker treffen" oder "Lasst uns Karten spielen" 
+
+Ein Gruppengründer hat keine Sonderrechte gegenüber den anderen Mitgliedern d.h. er kann weder die Gruppe löschen noch irgendwelche Mitglieder rauskicken. Er kann den anderen Mitgliedern also die Verabredung nicht kaputt machen, er kann lediglich selber austreten, dann bleibt die Gruppe einfach ohne ihn weiter bestehen.
+
 
 >>Folie mit Screenshot innerhalb einer Gruppe
 
 
-Nun wollen wir noch ein wenig darüber reden wie wir die App umgesetzt haben.
-In der Definitionsphase, haben wir neben den Wunsch/Musskriterien und funktionalen anforderungen auch schon auf die Frameworks festgelegt.
+Nun wollen wir noch Vorstellen wie wir die App umgesetzt haben.
+Die Vorarbeit für die Implementierung erfolge in der Entwurfsphase, denn da wurden die Klassen und ihre Beziehungen modelliert und geplant auf welche Frameworks wir zurückgreifen wollen.
 
 >>Folie mit allen Frameworks (Mindmap-artig die Namen auf der Folie verteilt, nicht als Liste)
 
-Für die Client seite war klar, dass wir mit Android Studio arbeiten werden, immerhin sollte es eine Android App werden. Zudem haben wir Firebase genutzt für die Resgistrierung und Verwaltung der User und Jackson Object Mapper für die Umwandlung von JSon Daten in Klassen, da der Server nur JSon an den Client sendet.   Auf Server Seite haben wir uns entschieden Springboot, weil vorallem für ein nicht-umfangreiches projekt schnell ein Grundgerüst steht, so dass wenig Konfiguartionsarbeit anfällt und wir damit dependency Injection und Schnittstellen zum einbinden von der Datenbank, für welche wir Mysql verwendet haben, nutzen konnten. 
+Auf Client seite war klar, dass wir mit Android Studio arbeiten werden, immerhin entwickelten wir eine Android. 
+Wir haben das Framework Firebase für die Resgistrierung und Verwaltung der User und Userdaten festgeleg
+und Jackson (Object Mapper)sollte für die Umwandlung von JSon Dateien in Klassen sorgen, die bei der Kommunikation zwischen Server und Client vom Server an den Client geschickt werden. 
+Auf Server Seite haben wir uns entschieden Spring boot zu nutzen, weil man damit schnell eine lauffähige Anwendung schreiben kann, ohen das viel Konfiguartionsarbeit anfällt und wir Depence Injection nutzen wollten. Die Realisierung der Datenbank wurde mit MySQL geplant und sollte durch das Framework Hibernate in unser Programm eingebunden werden. 
 
-In der Entwurfsphase, in der wir unzählige UML Diagramme erstellten. oder um genau zu sein: 
+Im Laufe der Phase sind dabei so und so viele Diagramme entstanden: 
 
 >>Folie mit Zahlen wie viele Diagramme es jeweils gab (Kreisdiagramm)
 
@@ -84,7 +90,8 @@ Ausblick
 - Gewünscht haben sich die Probanden ein Bewertungssystem für Personen, das stand auch bei uns als Wunschkriterium im ersten Dokument 
 - Filtermöglichketen er Gruppen nach Kriterien
 - Ein Restriktionen beim Gruppe erstellen
-- Pushbenachrichtung 
+- Pushbenachrichtung als Erinnerung und wenn sich an der Gruppe etwas ändernt
+	(z.b. jmd ein/austritt)
 
 
 
