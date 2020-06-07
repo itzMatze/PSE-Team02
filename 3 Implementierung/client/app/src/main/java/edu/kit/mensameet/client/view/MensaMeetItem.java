@@ -386,6 +386,7 @@ public abstract class MensaMeetItem<T> {
             nestedScrollView.removeAllViews();
             nestedScrollView.addView(sublist.getView());
         }
+
     }
 
     /**

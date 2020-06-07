@@ -715,16 +715,20 @@ public class RequestUtil {
         public static void handleException(String response, Exception exception) throws RequestException {
 
             try {
+                
+                if (response != null) {
 
-                ObjectMapper mapper2 = mapper;
+                    ObjectMapper mapper2 = mapper;
 
-                JsonNode jsonNode = mapper.readTree(response);
-                if (jsonNode.has("error")) {
-                    // Error response.
+                    JsonNode jsonNode = mapper.readTree(response);
+                    if (jsonNode.has("error")) {
+                        // Error response.
 
-                    throw new RequestException(jsonNode);
+                        throw new RequestException(jsonNode);
 
+                    }
                 }
+
             } catch (IOException e) {
                 // readTree error with response can be ignored, thrown eg when response is ""
             }

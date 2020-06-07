@@ -54,7 +54,7 @@ public class GroupJoinedActivity extends MensaMeetActivity {
     protected void onStart() {
         super.onStart();
 */
-        
+
         if (!checkAccess()) {
             return;
         }

@@ -344,6 +344,7 @@ public class GroupItem extends MensaMeetItem<Group> {
             nestedScrollView.setLayoutParams(WIDTH_HEIGHT_MATCH_PARENT);
             nestedScrollView.setId((int)R.string.field_member_list);
             expandArea.addView(nestedScrollView);
+
         }
 
         view.addView(expandArea);
